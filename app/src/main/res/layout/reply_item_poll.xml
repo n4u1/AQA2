@@ -45,7 +45,7 @@
     <RelativeLayout
         android:id="@+id/relativeLayout_like"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_weight="2">
         <android.support.v7.widget.AppCompatImageView
             android:id="@+id/imageView_like"
@@ -54,7 +54,7 @@
             android:src="@drawable/ic_outline_thumb_up_24px" />
         <TextView
             android:id="@+id/textView_like"
-            android:layout_centerVertical="true"
+            android:layout_centerVertical="false"
             android:textSize="10dp"
             android:text="0"
             android:layout_toRightOf="@id/imageView_like"

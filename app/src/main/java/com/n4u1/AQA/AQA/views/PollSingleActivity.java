@@ -16,6 +16,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -48,6 +49,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.Locale;
 import java.util.Map;
@@ -64,7 +66,7 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
     private String replyKey;
 
     final ArrayList<ReplyDTO> replyDTOS = new ArrayList<>();
-    final ReplyAdapter replyAdapter = new ReplyAdapter(this, replyDTOS);
+
     int contentHit;
     boolean checkUserHitContent = false;
 
@@ -122,6 +124,39 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
 
         final String contentKey = getIntent().getStringExtra("contentKey");
         contentHit = getIntent().getIntExtra("contentHit", 999999);
+
+
+        //reply item click listener 댓글 좋아요 클릭 리스너
+        final ReplyAdapter replyAdapter = new ReplyAdapter(getApplicationContext(), replyDTOS, new ReplyAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, final int position) {
+                firebaseDatabase.getReference().child("reply").child(contentKey).addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        replyDTOS.clear();
+                        ArrayList<ReplyDTO> replyDTOTemp = new ArrayList<>();
+
+                        for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                            ReplyDTO replyDTO = snapshot.getValue(ReplyDTO.class);
+                            replyDTOTemp.add(replyDTO);
+                        }
+
+                        Collections.reverse(replyDTOTemp);
+                        replyDTOS.addAll(replyDTOTemp);
+
+                        String contentKey = replyDTOS.get(position).getContentKey();
+                        int temp = replyDTOS.size() - position - 1;
+
+                        onLikeClicked(firebaseDatabase.getReference().child("reply").child(contentKey).child(replyDTOTemp.get(temp).getReplyKey()));
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+            }
+        });
 
 
         mDatabaseReference = FirebaseDatabase.getInstance().getReference("user_contents").child(contentKey);
@@ -260,11 +295,8 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
                         replyDTOS.clear();
                         for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                             ReplyDTO replyDTO = snapshot.getValue(ReplyDTO.class);
-//                            Map<String, Object> replyDTO = (Map<String, Object>) snapshot.getValue();
                             replyDTOS.add(replyDTO);
                         }
-//                        Map<String, Object> replyDTO = (Map<String, Object>) dataSnapshot.getValue();
-
                         replyAdapter.notifyDataSetChanged();
                     }
 
@@ -309,7 +341,6 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
                 String date = getDate();
                 onReplyClicked(firebaseDatabase.getReference().child("user_contents").child(contentKey));
 
-//                replyKey = firebaseDatabase.child("user_contents").push().getKey();
                 replyKey = firebaseDatabase.getReference().child("reply").push().getKey();
 
                 ReplyDTO replyDTO = new ReplyDTO();
@@ -2462,6 +2493,43 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
         callbackStatistics = callbackStatistics.replace("]","");
 
         return callbackStatistics;
+    }
+
+    //댓글 좋아요 클릭
+    private void onLikeClicked(final DatabaseReference postRef) {
+
+        postRef.runTransaction(new Transaction.Handler() {
+            @Override
+            public Transaction.Result doTransaction(MutableData mutableData) {
+                ReplyDTO replyDTO = mutableData.getValue(ReplyDTO.class);
+
+                if (replyDTO == null) {
+                    return Transaction.success(mutableData);
+                }
+                //좋아요 누른 이력 있으면 지우고 카운트-1
+                if (replyDTO.likes.containsKey(auth.getCurrentUser().getUid())) {
+                    replyDTO.likeCount = replyDTO.likeCount - 1;
+                    replyDTO.likes.remove(auth.getCurrentUser().getUid());
+                 //좋아요 누른 이력 없으면 더하고 카운트+1
+                } else {
+                    replyDTO.likeCount = replyDTO.likeCount + 1;
+                    replyDTO.likes.put(auth.getCurrentUser().getUid(), true);
+                }
+
+                // Set value and report transaction success
+                mutableData.setValue(replyDTO);
+                return Transaction.success(mutableData);
+            }
+
+            @Override
+            public void onComplete(DatabaseError databaseError, boolean b, DataSnapshot dataSnapshot) {
+                // Transaction completed
+                Log.d("lkjlkj", "postTransaction:onComplete:" + databaseError);
+
+
+
+            }
+        });
     }
 }
 

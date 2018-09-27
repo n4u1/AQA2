@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -31,10 +32,18 @@ public class ReplyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     private FirebaseDatabase firebaseDatabase;
     private FirebaseAuth auth;
     private FirebaseDatabase mDatabase;
+    private OnItemClickListener mOnItemClickListener;
 
-    public ReplyAdapter(Context context, ArrayList<ReplyDTO> listItem) {
+
+    public interface OnItemClickListener {
+        public void onItemClick(View view, int position);
+    }
+
+
+    public ReplyAdapter(Context context, ArrayList<ReplyDTO> listItem, OnItemClickListener onItemClickListener) {
         this.mContext = context;
         this.replyDTO = listItem;
+        mOnItemClickListener = onItemClickListener; //댓글 좋아요 클릭 리스너 PollSingleActivity, PollRankingActivity
     }
 
     @NonNull
@@ -46,63 +55,18 @@ public class ReplyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
     @Override
     public void onBindViewHolder(@NonNull final RecyclerView.ViewHolder holder, final int position) {
-        final List<String> uidLists = new ArrayList<>();
+
         firebaseDatabase = FirebaseDatabase.getInstance();
         mDatabase = FirebaseDatabase.getInstance();
         auth = FirebaseAuth.getInstance();
-        //좋아요 클릭을위해서 참조해서 키값 받아옴
-        firebaseDatabase.getReference().child("user_contents").addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                uidLists.clear();
-                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    String uidKey = snapshot.getKey();
-                    uidLists.add(uidKey);
-                }
-                Collections.reverse(uidLists);
-            }
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-
-//        firebaseDatabase.getReference().child(uidLists.get(position)).child(position)
 
         ((ReplyViewHolder)holder).relativeLayout_like.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                onLikeClicked(firebaseDatabase.getReference().child("reply").child(uidLists.get(position)));
-                mDatabase.getReference().child("reply").addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        replyDTO.clear();
-                        ArrayList<ReplyDTO> replyDTOTemp = new ArrayList<>();
-
-                        for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                            ReplyDTO replyDTO = snapshot.getValue(ReplyDTO.class);
-                            replyDTOTemp.add(replyDTO);
-                        }
-
-                        Collections.reverse(replyDTOTemp);
-                        replyDTO.addAll(replyDTOTemp);
-
-                        if (replyDTO.get(position).likes.containsKey(auth.getCurrentUser().getUid())) {
-                            ((ReplyViewHolder)holder).imageView_like.setImageResource(R.drawable.ic_thumb_up_blue);
-                            ((ReplyViewHolder)holder).textView_like.setText(String.valueOf(replyDTO.get(position).likeCount));
-                        } else {
-                            ((ReplyViewHolder)holder).imageView_like.setImageResource(R.drawable.ic_outline_thumb_up_24px);
-                            ((ReplyViewHolder)holder).textView_like.setText(String.valueOf(replyDTO.get(position).likeCount));
-                        }
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                    }
-                });
+            public void onClick(View v) {
+                mOnItemClickListener.onItemClick(v, position);
             }
         });
+
 
 
         if (replyDTO.get(position).likes.containsKey(auth.getCurrentUser().getUid())) {
@@ -129,64 +93,4 @@ public class ReplyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     }
 
 
-
-    private void onLikeClicked(final DatabaseReference postRef) {
-
-        postRef.runTransaction(new Transaction.Handler() {
-            @Override
-            public Transaction.Result doTransaction(MutableData mutableData) {
-                ReplyDTO replyDTO = mutableData.getValue(ReplyDTO.class);
-                if (replyDTO == null) {
-                    return Transaction.success(mutableData);
-                }
-
-//                if (replyDTO.getLikes().containsKey(auth.getCurrentUser().getUid())) {
-                if (replyDTO.likes.containsKey(auth.getCurrentUser().getUid())) {
-                    // Unstar the post and remove self from stars
-                    // 좋아요카운트 -1 하고 리스트에서 삭제
-                    replyDTO.likeCount = replyDTO.likeCount - 1;
-                    replyDTO.likes.remove(auth.getCurrentUser().getUid());
-                    // users/내uid/컨텐트key/false      : 좋아요 누른 컨텐츠 리스트 false
-//                    firebaseDatabase.getReference()
-//                            .child("users")
-//                            .child(auth.getCurrentUser().getUid())
-//                            .child("likeReply")
-//                            .child(replyDTO.getContentKey())
-//                            .setValue("false");
-
-                } else {
-                    // Star the post and add self to stars
-                    replyDTO.likeCount = replyDTO.likeCount + 1;
-                    replyDTO.likes.put(auth.getCurrentUser().getUid(), true);
-                    // users/내uid/컨텐트key/true       : 좋아요 누른 컨텐츠 리스트 true
-//                    firebaseDatabase.getReference()
-//                            .child("users")
-//                            .child(auth.getCurrentUser().getUid())
-//                            .child("likeContent")
-//                            .child(replyDTO.getContentKey())
-//                            .setValue("true");
-
-//                    User user = new User();
-//                    Map<String, Object> userValues = user.toMap();
-//                    Map<String, Object> childUpdates = new HashMap<>();
-//                    childUpdates.put("/users/", userValues);
-//                    databaseReference.updateChildren(childUpdates);
-
-                }
-
-                // Set value and report transaction success
-                mutableData.setValue(replyDTO);
-                return Transaction.success(mutableData);
-            }
-
-            @Override
-            public void onComplete(DatabaseError databaseError, boolean b, DataSnapshot dataSnapshot) {
-                // Transaction completed
-                Log.d("lkjlkj", "postTransaction:onComplete:" + databaseError);
-
-
-
-            }
-        });
-    }
 }
