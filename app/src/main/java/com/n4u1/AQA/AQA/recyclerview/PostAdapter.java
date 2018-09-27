@@ -629,6 +629,7 @@ public class PostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>  
                     return Transaction.success(mutableData);
                 }
 
+
                 if (contentDTO.likes.containsKey(auth.getCurrentUser().getUid())) {
                     // Unstar the post and remove self from stars
                     // 좋아요카운트 -1 하고 리스트에서 삭제

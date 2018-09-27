@@ -61,6 +61,7 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
     private DatabaseReference mDatabaseReference;
     private DatabaseReference mDatabaseReferencePicker;
     private FirebaseDatabase firebaseDatabase;
+    private String replyKey;
 
     final ArrayList<ReplyDTO> replyDTOS = new ArrayList<>();
     final ReplyAdapter replyAdapter = new ReplyAdapter(this, replyDTOS);
@@ -259,8 +260,11 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
                         replyDTOS.clear();
                         for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                             ReplyDTO replyDTO = snapshot.getValue(ReplyDTO.class);
+//                            Map<String, Object> replyDTO = (Map<String, Object>) snapshot.getValue();
                             replyDTOS.add(replyDTO);
                         }
+//                        Map<String, Object> replyDTO = (Map<String, Object>) dataSnapshot.getValue();
+
                         replyAdapter.notifyDataSetChanged();
                     }
 
@@ -304,12 +308,17 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
             public void onClick(View v) {
                 String date = getDate();
                 onReplyClicked(firebaseDatabase.getReference().child("user_contents").child(contentKey));
+
+//                replyKey = firebaseDatabase.child("user_contents").push().getKey();
+                replyKey = firebaseDatabase.getReference().child("reply").push().getKey();
+
                 ReplyDTO replyDTO = new ReplyDTO();
+                replyDTO.setReplyKey(replyKey);
                 replyDTO.setDate(date);
                 replyDTO.setId(auth.getCurrentUser().getEmail());
                 replyDTO.setReply(pollActivity_editText_reply.getText().toString());
                 replyDTO.setContentKey(contentKey);
-                firebaseDatabase.getReference().child("reply").child(contentKey).push().setValue(replyDTO);
+                firebaseDatabase.getReference().child("reply").child(contentKey).child(replyKey).setValue(replyDTO);
                 firebaseDatabase.getReference().child("users").child(auth.getCurrentUser().getUid()).child("reply").child(contentKey).push().setValue(replyDTO);
                 pollActivity_editText_reply.setText(null);//editText 초기화
                 InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE); //키보드 숨기기

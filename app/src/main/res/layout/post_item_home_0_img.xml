@@ -74,7 +74,7 @@
                 android:id="@+id/imageView_like"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
-                android:src="@drawable/ic_favorite_border_black_24dp" />
+                android:src="@drawable/ic_outline_thumb_up_24px" />
 
             <TextView
                 android:layout_weight="1"

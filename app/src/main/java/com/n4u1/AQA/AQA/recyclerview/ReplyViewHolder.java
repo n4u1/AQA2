@@ -2,6 +2,8 @@ package com.n4u1.AQA.AQA.recyclerview;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.n4u1.AQA.AQA.R;
@@ -10,10 +12,15 @@ import com.n4u1.AQA.AQA.R;
 //adapter에 viewHolder가 들어갈것임
 public class ReplyViewHolder extends RecyclerView.ViewHolder{
 
-    public TextView textView_id, textView_reply, textView_date;
+    public TextView textView_id, textView_reply, textView_date, textView_like;
+    public ImageView imageView_like;
+    public RelativeLayout relativeLayout_like;
 
     public ReplyViewHolder(View itemView) {
         super(itemView);
+        relativeLayout_like = itemView.findViewById(R.id.relativeLayout_like);
+        imageView_like = itemView.findViewById(R.id.imageView_like);
+        textView_like = itemView.findViewById(R.id.textView_like);
         textView_date = itemView.findViewById(R.id.textView_date);
         textView_reply = itemView.findViewById(R.id.textView_reply);
         textView_id = itemView.findViewById(R.id.textView_id);
