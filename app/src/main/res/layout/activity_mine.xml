@@ -1,0 +1,331 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:theme="@style/TextLabel"
+    tools:context=".views.MineActivity">
+
+    <include layout="@layout/mytoolbar" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="54dp"
+            android:orientation="vertical"
+            android:padding="10dp">
+
+
+            <LinearLayout
+                android:id="@+id/mineActivity_linearLayout1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="12dp">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="3"
+                    android:text="계정"
+                    android:textColor="#383838"
+                    android:textSize="20dp" />
+
+                <TextView
+                    android:id="@+id/mineActivity_textView_account"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="7"
+                    android:text="a@a.com"
+                    android:textColor="#808080"
+                    android:textSize="18dp" />
+            </LinearLayout>
+
+
+            <View
+                android:id="@+id/view3"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_below="@+id/mineActivity_linearLayout1"
+                android:layout_marginBottom="4dp"
+                android:layout_marginTop="4dp"
+                android:background="#efefef" />
+
+
+            <LinearLayout
+                android:id="@+id/mineActivity_linearLayout2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/view3"
+                android:orientation="horizontal"
+                android:padding="12dp">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="3"
+                    android:text="성별"
+                    android:textColor="#383838"
+                    android:textSize="20dp" />
+
+                <TextView
+                    android:id="@+id/mineActivity_textView_gender"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="7"
+                    android:text="남자"
+                    android:textColor="#808080"
+                    android:textSize="18dp" />
+
+            </LinearLayout>
+
+
+            <View
+                android:id="@+id/view4"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_below="@+id/mineActivity_linearLayout2"
+                android:layout_marginBottom="4dp"
+                android:layout_marginTop="4dp"
+                android:background="#efefef" />
+
+            <LinearLayout
+                android:id="@+id/mineActivity_linearLayout3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/view4"
+                android:orientation="horizontal"
+                android:padding="12dp">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="3"
+                    android:text="나이"
+                    android:textColor="#383838"
+                    android:textSize="20dp" />
+
+                <TextView
+                    android:id="@+id/mineActivity_textView_age"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="7"
+                    android:text="11"
+                    android:textColor="#808080"
+                    android:textSize="18dp" />
+            </LinearLayout>
+
+
+            <View
+                android:id="@+id/view5"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_below="@+id/mineActivity_linearLayout3"
+                android:layout_marginBottom="4dp"
+                android:layout_marginTop="4dp"
+                android:background="#efefef" />
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/view4"
+                android:orientation="horizontal"
+                android:padding="12dp">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="3"
+                    android:text="비밀번호"
+                    android:textColor="#383838"
+                    android:textSize="20dp" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="5"
+                    android:text="******"
+                    android:textColor="#808080"
+                    android:textSize="18dp" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:text="변경하기"
+                    android:textColor="#808080"
+                    android:textSize="18dp" />
+            </LinearLayout>
+
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_below="@+id/mineActivity_linearLayout3"
+                android:layout_marginBottom="4dp"
+                android:layout_marginTop="4dp"
+                android:background="#efefef" />
+
+            <LinearLayout
+                android:id="@+id/mineActivity_linearLayout4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/view5"
+                android:orientation="horizontal"
+                android:padding="12dp">
+
+                <TextView
+                    android:id="@+id/mineActivity_textView_upload_"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="8"
+                    android:text="내가 올린 게시물"
+                    android:textColor="#383838"
+                    android:textSize="20dp" />
+
+                <TextView
+                    android:id="@+id/mineActivity_textView_upload"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:text="모아보기"
+                    android:textColor="#808080"
+                    android:textSize="18dp" />
+            </LinearLayout>
+
+
+            <View
+                android:id="@+id/view6"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_below="@+id/mineActivity_linearLayout4"
+                android:layout_marginBottom="4dp"
+                android:layout_marginTop="4dp"
+                android:background="#efefef" />
+
+
+            <LinearLayout
+                android:id="@+id/mineActivity_linearLayout5"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/view6"
+                android:orientation="horizontal"
+                android:padding="12dp">
+
+                <TextView
+                    android:id="@+id/mineActivity_textView_pickContent_"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="8"
+                    android:text="참여한 게시물"
+                    android:textColor="#383838"
+                    android:textSize="20dp" />
+
+                <TextView
+                    android:id="@+id/mineActivity_textView_pickContent"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:text="모아보기"
+                    android:textColor="#808080"
+                    android:textSize="18dp" />
+            </LinearLayout>
+
+
+            <View
+                android:id="@+id/view7"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_below="@+id/mineActivity_linearLayout5"
+                android:layout_marginBottom="4dp"
+                android:layout_marginTop="4dp"
+                android:background="#efefef" />
+
+            <LinearLayout
+                android:id="@+id/mineActivity_linearLayout6"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/view7"
+                android:orientation="horizontal"
+                android:padding="12dp">
+
+                <TextView
+                    android:id="@+id/mineActivity_textView_like_"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="8"
+                    android:text="좋아요 누른 게시물"
+                    android:textColor="#383838"
+                    android:textSize="20dp" />
+
+                <TextView
+                    android:id="@+id/mineActivity_textView_like"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:text="모아보기"
+                    android:textColor="#808080"                    
+                    android:textSize="18dp" />
+            </LinearLayout>
+
+
+            <View
+                android:id="@+id/view8"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_below="@+id/mineActivity_linearLayout6"
+                android:layout_marginBottom="4dp"
+                android:layout_marginTop="4dp"
+                android:background="#efefef" />
+
+
+            <LinearLayout
+                android:id="@+id/mineActivity_linearLayout7"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/view7"
+                android:orientation="horizontal"
+                android:padding="12dp">
+
+                <TextView
+                    android:id="@+id/mineActivity_textView_reply_"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="8"
+                    android:text="댓글 남긴 게시물"
+                    android:textColor="#383838"
+                    android:textSize="20dp" />
+
+                <TextView
+                    android:id="@+id/mineActivity_textView_reply"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:text="모아보기"
+                    android:textColor="#808080"
+                    android:textSize="18dp" />
+            </LinearLayout>
+
+
+            <View
+                android:id="@+id/view9"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_below="@+id/mineActivity_linearLayout7"
+                android:layout_marginBottom="4dp"
+                android:layout_marginTop="4dp"
+                android:background="#efefef" />
+
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</RelativeLayout>

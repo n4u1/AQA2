@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.n4u1.AQA.AQA">
+
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@drawable/q"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity android:name="com.n4u1.AQA.AQA.views.SplashActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name="com.n4u1.AQA.AQA.views.LoginActivity" />
+        <activity android:name="com.n4u1.AQA.AQA.views.HomeActivity" />
+        <activity android:name="com.n4u1.AQA.AQA.views.RegisterActivity" />
+        <activity android:name="com.n4u1.AQA.AQA.views.UserContentsUploadActivity" />
+        <activity android:name="com.n4u1.AQA.AQA.views.ContentTypeListActivity" />
+        <activity
+            android:name="com.n4u1.AQA.AQA.views.FileChoiceActivity"
+            android:label="@string/title_activity_file_choice"
+            android:theme="@style/AppTheme" />
+        <activity android:name="com.n4u1.AQA.AQA.views.TestActivity" />
+        <activity android:name="com.n4u1.AQA.AQA.views.PollActivity" />
+        <activity android:name="com.n4u1.AQA.AQA.views.PollRankingActivity" />
+        <activity android:name="com.n4u1.AQA.AQA.views.PollSingleActivity" />
+        <activity android:name="com.n4u1.AQA.AQA.views.CreateUserActivity" />
+        <activity
+            android:name="com.n4u1.AQA.AQA.dialog.RankingChoiceActivity"
+            android:theme="@style/Theme.RankingChoiceDialog" />
+        <activity android:name="com.n4u1.AQA.AQA.views.SearchHomeActivity" />
+        <activity android:name="com.n4u1.AQA.AQA.views.MineActivity" />
+        <activity android:name="com.n4u1.AQA.AQA.views.MyLikeContentsActivity" />
+        <activity android:name="com.n4u1.AQA.AQA.views.MyReplyContentsActivity" />
+        <activity android:name="com.n4u1.AQA.AQA.views.SearchResultActivity" />
+        <activity android:name="com.n4u1.AQA.AQA.views.MyPollActivity" />
+        <activity android:name="com.n4u1.AQA.AQA.views.MyUploadActivity" />
+        <activity android:name="com.n4u1.AQA.AQA.views.FullImageActivity"></activity>
+    </application>
+
+</manifest>

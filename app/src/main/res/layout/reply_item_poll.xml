@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="10">
+
+        <TextView
+            android:id="@+id/textView_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="8dp"
+            android:text="a@a.com"
+            android:textSize="14dp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/textView_reply"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/textView_id"
+            android:text="댓글입니당"
+            android:textColor="#6c6c6c"
+            android:textSize="14dp" />
+
+
+        <TextView
+            android:id="@+id/textView_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/textView_reply"
+            android:layout_alignLeft="@id/textView_reply"
+            android:layout_toRightOf="@+id/textView_reply"
+            android:paddingLeft="4dp"
+            android:text="시간입니당"
+            android:textColor="#9f9f9f"
+            android:textSize="10dp" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/relativeLayout_replyUp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="2">
+        <android.support.v7.widget.AppCompatImageView
+            android:id="@+id/imageView_like"
+            android:layout_width="14dp"
+            android:layout_height="14dp"
+            android:src="@drawable/ic_outline_thumb_up_24px" />
+        <TextView
+            android:layout_centerVertical="true"
+            android:textSize="10dp"
+            android:text="0"
+            android:layout_toRightOf="@id/imageView_like"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </RelativeLayout>
+
+</LinearLayout>
