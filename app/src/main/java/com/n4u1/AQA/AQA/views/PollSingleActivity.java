@@ -144,7 +144,7 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
                         Collections.reverse(replyDTOTemp);
                         replyDTOS.addAll(replyDTOTemp);
 
-                        String contentKey = replyDTOS.get(position).getContentKey();
+//                        String contentKey = replyDTOS.get(position).getContentKey();
                         int temp = replyDTOS.size() - position - 1;
 
                         onLikeClicked(firebaseDatabase.getReference().child("reply").child(contentKey).child(replyDTOTemp.get(temp).getReplyKey()));
