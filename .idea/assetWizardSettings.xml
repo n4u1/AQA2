@@ -16,11 +16,56 @@
                             <entry key="actionbar">
                               <value>
                                 <PersistentState>
+                                  <option name="children">
+                                    <map>
+                                      <entry key="image">
+                                        <value>
+                                          <PersistentState>
+                                            <option name="values">
+                                              <map>
+                                                <entry key="paddingPercent" value="-5" />
+                                              </map>
+                                            </option>
+                                          </PersistentState>
+                                        </value>
+                                      </entry>
+                                    </map>
+                                  </option>
                                   <option name="values">
                                     <map>
                                       <entry key="assetType" value="IMAGE" />
-                                      <entry key="imageAsset" value="C:\Users\FCIT175\Downloads\icons8-menu-24.png" />
-                                      <entry key="outputName" value="ic_hambugger" />
+                                      <entry key="imageAsset" value="C:\Users\n4u1\Desktop\n4u1\q_bg_w.jpg" />
+                                      <entry key="theme" value="CUSTOM" />
+                                    </map>
+                                  </option>
+                                </PersistentState>
+                              </value>
+                            </entry>
+                            <entry key="launcherLegacy">
+                              <value>
+                                <PersistentState>
+                                  <option name="children">
+                                    <map>
+                                      <entry key="image">
+                                        <value>
+                                          <PersistentState>
+                                            <option name="values">
+                                              <map>
+                                                <entry key="paddingPercent" value="5" />
+                                                <entry key="trimmed" value="true" />
+                                              </map>
+                                            </option>
+                                          </PersistentState>
+                                        </value>
+                                      </entry>
+                                    </map>
+                                  </option>
+                                  <option name="values">
+                                    <map>
+                                      <entry key="assetType" value="IMAGE" />
+                                      <entry key="iconShape" value="NONE" />
+                                      <entry key="imageAsset" value="C:\Users\n4u1\Desktop\n4u1\q_bg_w.jpg" />
+                                      <entry key="outputName" value="q_bg_home" />
                                     </map>
                                   </option>
                                 </PersistentState>
@@ -32,7 +77,7 @@
                                   <option name="values">
                                     <map>
                                       <entry key="assetType" value="IMAGE" />
-                                      <entry key="imageAsset" value="C:\Users\FCIT175\Downloads\icons8-menu-24.png" />
+                                      <entry key="imageAsset" value="C:\Users\n4u1\Desktop\n4u1\q_bg_w.jpg" />
                                     </map>
                                   </option>
                                 </PersistentState>
@@ -42,7 +87,7 @@
                         </option>
                         <option name="values">
                           <map>
-                            <entry key="outputIconType" value="ACTIONBAR" />
+                            <entry key="outputIconType" value="LAUNCHER_LEGACY" />
                           </map>
                         </option>
                       </PersistentState>
@@ -51,11 +96,6 @@
                 </map>
               </option>
             </PersistentState>
-          </value>
-        </entry>
-        <entry key="vectorWizard">
-          <value>
-            <PersistentState />
           </value>
         </entry>
       </map>

@@ -7,10 +7,12 @@ import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.n4u1.AQA.AQA.R;
@@ -34,7 +36,7 @@ import java.util.List;
 
 import static com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade;
 
-public class PostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>  {
+public class PostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private Context mContext;
     private ArrayList<ContentDTO> contentDTOS;
     private static final int ITEM_VIEW_TYPE_1 = 1;
@@ -55,6 +57,7 @@ public class PostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>  
         this.contentDTOS = listItem;
 
 
+        //load more 아래로 당겨서 로딩
         if (recyclerView.getLayoutManager() instanceof LinearLayoutManager) {
             final LinearLayoutManager linearLayoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
 
@@ -82,12 +85,6 @@ public class PostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>  
     }
 
 
-
-
-
-
-
-
     @NonNull
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         auth = FirebaseAuth.getInstance();
@@ -97,13 +94,13 @@ public class PostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>  
         } else if (viewType == ITEM_VIEW_TYPE_1) {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.post_item_home_1_img, parent, false);
             return new PostViewHolder1(view);
-        } else if (viewType == ITEM_VIEW_TYPE_2){
+        } else if (viewType == ITEM_VIEW_TYPE_2) {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.post_item_home_2_img, parent, false);
             return new PostViewHolder2(view);
         } else if (viewType == ITEM_VIEW_TYPE_3) {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.post_item_home_3_img, parent, false);
             return new PostViewHolder3(view);
-        } else if (viewType == VIEW_PROG){
+        } else if (viewType == VIEW_PROG) {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.progressbar_recyclerview, parent, false);
             return new ProgressViewHolder(view);
         } else {
@@ -147,9 +144,12 @@ public class PostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>  
     //contentDTO 내용을 아이템셋에 배치
     @Override
     public void onBindViewHolder(@NonNull final RecyclerView.ViewHolder holder, final int position) {
+
+
         final List<String> uidLists = new ArrayList<>();
         firebaseDatabase = FirebaseDatabase.getInstance();
         mDatabase = FirebaseDatabase.getInstance();
+
 
 
         //좋아요 클릭을위해서 참조해서 키값 받아옴
@@ -163,6 +163,7 @@ public class PostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>  
                 }
                 Collections.reverse(uidLists);
             }
+
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
@@ -170,36 +171,34 @@ public class PostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>  
         });
 
         switch (holder.getItemViewType()) {
-            case ITEM_VIEW_TYPE_0 :
+
+            case ITEM_VIEW_TYPE_0:
+
                 //이미지 클릭시 컨텐트 디테일(PollActivity) 로 넘어감
-                ((PostViewHolder)holder).imageView_postImg_0.setOnClickListener(new View.OnClickListener() {
+                ((PostViewHolder) holder).imageView_postImg_0.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         movePoll(position);
                     }
                 });
                 //아이템 바인딩
-                ((PostViewHolder)holder).textView_title.setText(contentDTOS.get(position).title);
-                ((PostViewHolder)holder).textView_userName.setText(contentDTOS.get(position).userID);
-                ((PostViewHolder)holder).textView_contentType.setText(contentDTOS.get(position).contentType);
-                ((PostViewHolder)holder).textView_hitCount.setText(String.valueOf(contentDTOS.get(position).contentHit));
+                ((PostViewHolder) holder).textView_title.setText(contentDTOS.get(position).title);
+                ((PostViewHolder) holder).textView_userName.setText(contentDTOS.get(position).userID);
+                ((PostViewHolder) holder).textView_contentType.setText(contentDTOS.get(position).contentType);
+                ((PostViewHolder) holder).textView_hitCount.setText(String.valueOf(contentDTOS.get(position).contentHit));
 
-                GlideApp
-                        .with(holder.itemView.getContext())
-                        .load(contentDTOS.get(position).imageUrl_0)
-                        .centerCrop()
-                        .thumbnail(Glide.with(holder.itemView.getContext()).load(R.drawable.loadingicon))
-                        .into(((PostViewHolder)holder).imageView_postImg_0);
+                GlideApp.with(holder.itemView.getContext()).load(contentDTOS.get(position).imageUrl_0).centerCrop().thumbnail(Glide.with(holder.itemView.getContext()).load(R.drawable.loadingicon)).into(((PostViewHolder) holder).imageView_postImg_0);
 
                 if (contentDTOS.get(position).likes.containsKey(auth.getCurrentUser().getUid())) {
-                    ((PostViewHolder)holder).imageView_like.setImageResource(R.drawable.ic_thumb_up_blue);
-                    ((PostViewHolder)holder).textView_likeCount.setText(String.valueOf(contentDTOS.get(position).likeCount));
+                    ((PostViewHolder) holder).imageView_like.setImageResource(R.drawable.ic_thumb_up_blue);
+                    ((PostViewHolder) holder).textView_likeCount.setText(String.valueOf(contentDTOS.get(position).likeCount));
                 } else {
-                    ((PostViewHolder)holder).imageView_like.setImageResource(R.drawable.ic_outline_thumb_up_24px);
-                    ((PostViewHolder)holder).textView_likeCount.setText(String.valueOf(contentDTOS.get(position).likeCount));
+                    ((PostViewHolder) holder).imageView_like.setImageResource(R.drawable.ic_outline_thumb_up_24px);
+                    ((PostViewHolder) holder).textView_likeCount.setText(String.valueOf(contentDTOS.get(position).likeCount));
                 }
 
-                ((PostViewHolder)holder).imageView_like.setOnClickListener(new View.OnClickListener() {
+
+                ((PostViewHolder) holder).imageView_like.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         onLikeClicked(firebaseDatabase.getReference().child("user_contents").child(uidLists.get(position)));
@@ -218,11 +217,11 @@ public class PostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>  
                                 contentDTOS.addAll(contentDTOSTemp);
 
                                 if (contentDTOS.get(position).likes.containsKey(auth.getCurrentUser().getUid())) {
-                                    ((PostViewHolder)holder).imageView_like.setImageResource(R.drawable.ic_thumb_up_blue);
-                                    ((PostViewHolder)holder).textView_likeCount.setText(String.valueOf(contentDTOS.get(position).likeCount));
+                                    ((PostViewHolder) holder).imageView_like.setImageResource(R.drawable.ic_thumb_up_blue);
+                                    ((PostViewHolder) holder).textView_likeCount.setText(String.valueOf(contentDTOS.get(position).likeCount));
                                 } else {
-                                    ((PostViewHolder)holder).imageView_like.setImageResource(R.drawable.ic_outline_thumb_up_24px);
-                                    ((PostViewHolder)holder).textView_likeCount.setText(String.valueOf(contentDTOS.get(position).likeCount));
+                                    ((PostViewHolder) holder).imageView_like.setImageResource(R.drawable.ic_outline_thumb_up_24px);
+                                    ((PostViewHolder) holder).textView_likeCount.setText(String.valueOf(contentDTOS.get(position).likeCount));
                                 }
                             }
 
@@ -236,148 +235,50 @@ public class PostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>  
                     }
                 });
 
-                //좋아요 클릭시 바로 하트모양 변경
-//                mDatabase.getReference().child("user_contents").addValueEventListener(new ValueEventListener() {
-//                    @Override
-//                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-////                        contentDTOS.clear();
-////                        for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-////                            ContentDTO contentDTO = snapshot.getValue(ContentDTO.class);
-////                            contentDTOS.add(contentDTO);
-////                        }
-//
-//                        if (contentDTOS.get(position).likes.containsKey(auth.getCurrentUser().getUid())) {
-//                            ((PostViewHolder)holder).imageView_like.setImageResource(R.drawable.ic_thumb_up_blue);
-//                            ((PostViewHolder)holder).textView_likeCount.setText(String.valueOf(contentDTOS.get(position).likeCount));
-//                        } else {
-//                            ((PostViewHolder)holder).imageView_like.setImageResource(R.drawable.ic_outline_thumb_up_24px);
-//                            ((PostViewHolder)holder).textView_likeCount.setText(String.valueOf(contentDTOS.get(position).likeCount));
-//                        }
-//                    }
-//
-//                    @Override
-//                    public void onCancelled(@NonNull DatabaseError databaseError) {
-//
-//                    }
-//                });
                 break;
 
-            case ITEM_VIEW_TYPE_1 :
-                ((PostViewHolder1)holder).imageView_postImg_0.setOnClickListener(new View.OnClickListener() {
+            case ITEM_VIEW_TYPE_1:
+                ((PostViewHolder1) holder).imageView_postImg_0.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         movePoll(position);
                     }
                 });
-                ((PostViewHolder1)holder).imageView_postImg_1.setOnClickListener(new View.OnClickListener() {
+                ((PostViewHolder1) holder).imageView_postImg_1.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         movePoll(position);
                     }
                 });
 
-                ((PostViewHolder1)holder).imageView_like.setOnClickListener(new View.OnClickListener() {
+                ((PostViewHolder1) holder).imageView_hitCount.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        onLikeClicked(firebaseDatabase.getReference().child("user_contents").child(uidLists.get(position)));
-                        mDatabase.getReference().child("user_contents").addListenerForSingleValueEvent(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                contentDTOS.clear();
-                                ArrayList<ContentDTO> contentDTOSTemp = new ArrayList<>();
-
-                                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                                    ContentDTO contentDTO = snapshot.getValue(ContentDTO.class);
-                                    contentDTOSTemp.add(contentDTO);
-                                }
-
-                                Collections.reverse(contentDTOSTemp);
-                                contentDTOS.addAll(contentDTOSTemp);
-
-                                if (contentDTOS.get(position).likes.containsKey(auth.getCurrentUser().getUid())) {
-                                    ((PostViewHolder1)holder).imageView_like.setImageResource(R.drawable.ic_thumb_up_blue);
-                                    ((PostViewHolder1)holder).textView_likeCount.setText(String.valueOf(contentDTOS.get(position).likeCount));
-                                } else {
-                                    ((PostViewHolder1)holder).imageView_like.setImageResource(R.drawable.ic_outline_thumb_up_24px);
-                                    ((PostViewHolder1)holder).textView_likeCount.setText(String.valueOf(contentDTOS.get(position).likeCount));
-                                }
-                            }
-
-                            @Override
-                            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                            }
-                        });
-
+                        Toast toast = Toast.makeText(mContext, "투표에 참가한 인원 입니다!", Toast.LENGTH_SHORT);
+                        toast.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL, 0, 0);
+                        toast.show();
                     }
                 });
 
+                ((PostViewHolder1) holder).textView_hitCount.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Toast toast = Toast.makeText(mContext, "투표에 참가한 인원 입니다!", Toast.LENGTH_SHORT);
+                        toast.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL, 0, 0);
+                        toast.show();
+                    }
+                });
 
-//                //좋아요 클릭시 바로 하트모양 변경
-//                mDatabase.getReference().child("user_contents").addValueEventListener(new ValueEventListener() {
-//                    @Override
-//                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-////                        contentDTOS.clear();
-////                        for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-////                            ContentDTO contentDTO = snapshot.getValue(ContentDTO.class);
-////                            contentDTOS.add(contentDTO);
-////                        }
-//
-//                        if (contentDTOS.get(position).likes.containsKey(auth.getCurrentUser().getUid())) {
-//                            ((PostViewHolder1)holder).imageView_like.setImageResource(R.drawable.ic_thumb_up_blue);
-//                            ((PostViewHolder1)holder).textView_likeCount.setText(String.valueOf(contentDTOS.get(position).likeCount));
-//                        } else {
-//                            ((PostViewHolder1)holder).imageView_like.setImageResource(R.drawable.ic_outline_thumb_up_24px);
-//                            ((PostViewHolder1)holder).textView_likeCount.setText(String.valueOf(contentDTOS.get(position).likeCount));
-//                        }
-//                    }
-//
-//                    @Override
-//                    public void onCancelled(@NonNull DatabaseError databaseError) {
-//
-//                    }
-//                });
-                if (contentDTOS.get(position).likes.containsKey(auth.getCurrentUser().getUid())) {
-                    ((PostViewHolder1)holder).imageView_like.setImageResource(R.drawable.ic_thumb_up_blue);
-                    ((PostViewHolder1)holder).textView_likeCount.setText(String.valueOf(contentDTOS.get(position).likeCount));
-                } else {
-                    ((PostViewHolder1)holder).imageView_like.setImageResource(R.drawable.ic_outline_thumb_up_24px);
-                    ((PostViewHolder1)holder).textView_likeCount.setText(String.valueOf(contentDTOS.get(position).likeCount));
-                }
-
-                ((PostViewHolder1)holder).textView_title.setText(contentDTOS.get(position).title);
-                ((PostViewHolder1)holder).textView_userName.setText(contentDTOS.get(position).userID);
-                ((PostViewHolder1)holder).textView_contentType.setText(contentDTOS.get(position).contentType);
-                ((PostViewHolder1)holder).textView_hitCount.setText(String.valueOf(contentDTOS.get(position).contentHit));
+                ((PostViewHolder1) holder).imageView_state.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Toast toast = Toast.makeText(mContext, "우와! 투표했더니 파란색이 칠해졌다!", Toast.LENGTH_SHORT);
+                        toast.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL, 0, 0);
+                        toast.show();
+                    }
+                });
                 
-                GlideApp.with(holder.itemView.getContext()).load(contentDTOS.get(position).imageUrl_0).centerCrop().thumbnail(Glide.with(holder.itemView.getContext()).load(R.drawable.loadingicon)).into(((PostViewHolder1)holder).imageView_postImg_0);
-                GlideApp.with(holder.itemView.getContext()).load(contentDTOS.get(position).imageUrl_1).centerCrop().thumbnail(Glide.with(holder.itemView.getContext()).load(R.drawable.loadingicon)).into(((PostViewHolder1)holder).imageView_postImg_1);
-
-
-
-                break;
-
-            case ITEM_VIEW_TYPE_2 :
-                ((PostViewHolder2)holder).imageView_postImg_0.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        movePoll(position);
-                    }
-                });
-                ((PostViewHolder2)holder).imageView_postImg_1.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        movePoll(position);
-                    }
-                });
-                ((PostViewHolder2)holder).imageView_postImg_2.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        movePoll(position);
-                    }
-                });
-
-                ((PostViewHolder2)holder).imageView_like.setOnClickListener(new View.OnClickListener() {
+                ((PostViewHolder1) holder).imageView_like.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         onLikeClicked(firebaseDatabase.getReference().child("user_contents").child(uidLists.get(position)));
@@ -396,11 +297,98 @@ public class PostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>  
                                 contentDTOS.addAll(contentDTOSTemp);
 
                                 if (contentDTOS.get(position).likes.containsKey(auth.getCurrentUser().getUid())) {
-                                    ((PostViewHolder2)holder).imageView_like.setImageResource(R.drawable.ic_thumb_up_blue);
-                                    ((PostViewHolder2)holder).textView_likeCount.setText(String.valueOf(contentDTOS.get(position).likeCount));
+                                    ((PostViewHolder1) holder).imageView_like.setImageResource(R.drawable.ic_thumb_up_blue);
+                                    ((PostViewHolder1) holder).textView_likeCount.setText(String.valueOf(contentDTOS.get(position).likeCount));
                                 } else {
-                                    ((PostViewHolder2)holder).imageView_like.setImageResource(R.drawable.ic_outline_thumb_up_24px);
-                                    ((PostViewHolder2)holder).textView_likeCount.setText(String.valueOf(contentDTOS.get(position).likeCount));
+                                    ((PostViewHolder1) holder).imageView_like.setImageResource(R.drawable.ic_outline_thumb_up_24px);
+                                    ((PostViewHolder1) holder).textView_likeCount.setText(String.valueOf(contentDTOS.get(position).likeCount));
+                                }
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                            }
+                        });
+
+                    }
+                });
+
+                if (contentDTOS.get(position).likes.containsKey(auth.getCurrentUser().getUid())) {
+                    ((PostViewHolder1) holder).imageView_like.setImageResource(R.drawable.ic_thumb_up_blue);
+                    ((PostViewHolder1) holder).textView_likeCount.setText(String.valueOf(contentDTOS.get(position).likeCount));
+                } else {
+                    ((PostViewHolder1) holder).imageView_like.setImageResource(R.drawable.ic_outline_thumb_up_24px);
+                    ((PostViewHolder1) holder).textView_likeCount.setText(String.valueOf(contentDTOS.get(position).likeCount));
+                }
+
+                Log.d("lkj...1", contentDTOS.get(position).title);
+                Log.d("lkj...1", contentDTOS.get(position).userID);
+
+                if (contentDTOS.get(position).title.length() >= 15) {
+                    ((PostViewHolder1) holder).textView_title.setText(contentDTOS.get(position).title.substring(0,15) + "...");
+                } else {
+                    ((PostViewHolder1) holder).textView_title.setText(contentDTOS.get(position).title);
+                }
+                if (contentDTOS.get(position).userID.length() >= 8) {
+                    ((PostViewHolder1) holder).textView_userName.setText(contentDTOS.get(position).userID.substring(0,8));
+                } else {
+                    ((PostViewHolder1) holder).textView_userName.setText(contentDTOS.get(position).userID);
+                }
+
+                ((PostViewHolder1) holder).textView_contentType.setText(contentDTOS.get(position).contentType);
+                ((PostViewHolder1) holder).textView_hitCount.setText(String.valueOf(contentDTOS.get(position).contentHit));
+
+                GlideApp.with(holder.itemView.getContext()).load(contentDTOS.get(position).imageUrl_0).centerCrop().thumbnail(Glide.with(holder.itemView.getContext()).load(R.drawable.loadingicon)).into(((PostViewHolder1) holder).imageView_postImg_0);
+                GlideApp.with(holder.itemView.getContext()).load(contentDTOS.get(position).imageUrl_1).centerCrop().thumbnail(Glide.with(holder.itemView.getContext()).load(R.drawable.loadingicon)).into(((PostViewHolder1) holder).imageView_postImg_1);
+
+
+                break;
+
+            case ITEM_VIEW_TYPE_2:
+                ((PostViewHolder2) holder).imageView_postImg_0.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        movePoll(position);
+                    }
+                });
+                ((PostViewHolder2) holder).imageView_postImg_1.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        movePoll(position);
+                    }
+                });
+                ((PostViewHolder2) holder).imageView_postImg_2.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        movePoll(position);
+                    }
+                });
+
+                ((PostViewHolder2) holder).imageView_like.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        onLikeClicked(firebaseDatabase.getReference().child("user_contents").child(uidLists.get(position)));
+                        mDatabase.getReference().child("user_contents").addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                contentDTOS.clear();
+                                ArrayList<ContentDTO> contentDTOSTemp = new ArrayList<>();
+
+                                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                                    ContentDTO contentDTO = snapshot.getValue(ContentDTO.class);
+                                    contentDTOSTemp.add(contentDTO);
+                                }
+
+                                Collections.reverse(contentDTOSTemp);
+                                contentDTOS.addAll(contentDTOSTemp);
+
+                                if (contentDTOS.get(position).likes.containsKey(auth.getCurrentUser().getUid())) {
+                                    ((PostViewHolder2) holder).imageView_like.setImageResource(R.drawable.ic_thumb_up_blue);
+                                    ((PostViewHolder2) holder).textView_likeCount.setText(String.valueOf(contentDTOS.get(position).likeCount));
+                                } else {
+                                    ((PostViewHolder2) holder).imageView_like.setImageResource(R.drawable.ic_outline_thumb_up_24px);
+                                    ((PostViewHolder2) holder).textView_likeCount.setText(String.valueOf(contentDTOS.get(position).likeCount));
                                 }
                             }
 
@@ -412,74 +400,85 @@ public class PostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>  
                     }
                 });
 
+                ((PostViewHolder2) holder).imageView_hitCount.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Toast toast = Toast.makeText(mContext, "투표에 참가한 인원 입니다!", Toast.LENGTH_SHORT);
+                        toast.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL, 0, 0);
+                        toast.show();
+                    }
+                });
 
-                //좋아요 클릭시 바로 하트모양 변경
-//                mDatabase.getReference().child("user_contents").addValueEventListener(new ValueEventListener() {
-//                    @Override
-//                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-////                        contentDTOS.clear();
-////                        for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-////                            ContentDTO contentDTO = snapshot.getValue(ContentDTO.class);
-////                            contentDTOS.add(contentDTO);
-////                        }
-//                        if (contentDTOS.get(position).likes.containsKey(auth.getCurrentUser().getUid())) {
-//                            ((PostViewHolder2)holder).imageView_like.setImageResource(R.drawable.ic_thumb_up_blue);
-//                            ((PostViewHolder2)holder).textView_likeCount.setText(String.valueOf(contentDTOS.get(position).likeCount));
-//                        } else {
-//                            ((PostViewHolder2)holder).imageView_like.setImageResource(R.drawable.ic_outline_thumb_up_24px);
-//                            ((PostViewHolder2)holder).textView_likeCount.setText(String.valueOf(contentDTOS.get(position).likeCount));
-//                        }
-//                    }
-//
-//                    @Override
-//                    public void onCancelled(@NonNull DatabaseError databaseError) {
-//
-//                    }
-//                });
+                ((PostViewHolder2) holder).textView_hitCount.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Toast toast = Toast.makeText(mContext, "투표에 참가한 인원 입니다!", Toast.LENGTH_SHORT);
+                        toast.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL, 0, 0);
+                        toast.show();
+                    }
+                });
+
+                ((PostViewHolder2) holder).imageView_state.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Toast toast = Toast.makeText(mContext, "우와! 투표했더니 파란색이 칠해졌다!", Toast.LENGTH_SHORT);
+                        toast.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL, 0, 0);
+                        toast.show();
+                    }
+                });
                 if (contentDTOS.get(position).likes.containsKey(auth.getCurrentUser().getUid())) {
-                    ((PostViewHolder2)holder).imageView_like.setImageResource(R.drawable.ic_thumb_up_blue);
-                    ((PostViewHolder2)holder).textView_likeCount.setText(String.valueOf(contentDTOS.get(position).likeCount));
+                    ((PostViewHolder2) holder).imageView_like.setImageResource(R.drawable.ic_thumb_up_blue);
+                    ((PostViewHolder2) holder).textView_likeCount.setText(String.valueOf(contentDTOS.get(position).likeCount));
                 } else {
-                    ((PostViewHolder2)holder).imageView_like.setImageResource(R.drawable.ic_outline_thumb_up_24px);
-                    ((PostViewHolder2)holder).textView_likeCount.setText(String.valueOf(contentDTOS.get(position).likeCount));
+                    ((PostViewHolder2) holder).imageView_like.setImageResource(R.drawable.ic_outline_thumb_up_24px);
+                    ((PostViewHolder2) holder).textView_likeCount.setText(String.valueOf(contentDTOS.get(position).likeCount));
                 }
 
-                ((PostViewHolder2)holder).textView_title.setText(contentDTOS.get(position).title);
-                ((PostViewHolder2)holder).textView_userName.setText(contentDTOS.get(position).userID);
-                ((PostViewHolder2)holder).textView_contentType.setText(contentDTOS.get(position).contentType);
-                ((PostViewHolder2)holder).textView_hitCount.setText(String.valueOf(contentDTOS.get(position).contentHit));
-                GlideApp.with(holder.itemView.getContext()).load(contentDTOS.get(position).imageUrl_0).centerCrop().thumbnail(Glide.with(holder.itemView.getContext()).load(R.drawable.loadingicon)).into(((PostViewHolder2)holder).imageView_postImg_0);
-                GlideApp.with(holder.itemView.getContext()).load(contentDTOS.get(position).imageUrl_1).centerCrop().thumbnail(Glide.with(holder.itemView.getContext()).load(R.drawable.loadingicon)).into(((PostViewHolder2)holder).imageView_postImg_1);
-                GlideApp.with(holder.itemView.getContext()).load(contentDTOS.get(position).imageUrl_2).centerCrop().thumbnail(Glide.with(holder.itemView.getContext()).load(R.drawable.loadingicon)).into(((PostViewHolder2)holder).imageView_postImg_2);
+
+                if (contentDTOS.get(position).title.length() >= 15) {
+                    ((PostViewHolder2) holder).textView_title.setText(contentDTOS.get(position).title.substring(0,15) + "...");
+                } else {
+                    ((PostViewHolder2) holder).textView_title.setText(contentDTOS.get(position).title);
+                }
+                if (contentDTOS.get(position).userID.length() >= 8) {
+                    ((PostViewHolder2) holder).textView_userName.setText(contentDTOS.get(position).userID.substring(0,8));
+                } else {
+                    ((PostViewHolder2) holder).textView_userName.setText(contentDTOS.get(position).userID);
+                }
+                ((PostViewHolder2) holder).textView_contentType.setText(contentDTOS.get(position).contentType);
+                ((PostViewHolder2) holder).textView_hitCount.setText(String.valueOf(contentDTOS.get(position).contentHit));
+                GlideApp.with(holder.itemView.getContext()).load(contentDTOS.get(position).imageUrl_0).centerCrop().thumbnail(Glide.with(holder.itemView.getContext()).load(R.drawable.loadingicon)).into(((PostViewHolder2) holder).imageView_postImg_0);
+                GlideApp.with(holder.itemView.getContext()).load(contentDTOS.get(position).imageUrl_1).centerCrop().thumbnail(Glide.with(holder.itemView.getContext()).load(R.drawable.loadingicon)).into(((PostViewHolder2) holder).imageView_postImg_1);
+                GlideApp.with(holder.itemView.getContext()).load(contentDTOS.get(position).imageUrl_2).centerCrop().thumbnail(Glide.with(holder.itemView.getContext()).load(R.drawable.loadingicon)).into(((PostViewHolder2) holder).imageView_postImg_2);
 
                 break;
 
-            case ITEM_VIEW_TYPE_3 :
-                ((PostViewHolder3)holder).imageView_postImg_0.setOnClickListener(new View.OnClickListener() {
+            case ITEM_VIEW_TYPE_3:
+                ((PostViewHolder3) holder).imageView_postImg_0.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         movePoll(position);
                     }
                 });
-                ((PostViewHolder3)holder).imageView_postImg_1.setOnClickListener(new View.OnClickListener() {
+                ((PostViewHolder3) holder).imageView_postImg_1.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         movePoll(position);
                     }
                 });
-                ((PostViewHolder3)holder).imageView_postImg_2.setOnClickListener(new View.OnClickListener() {
+                ((PostViewHolder3) holder).imageView_postImg_2.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         movePoll(position);
                     }
                 });
-                ((PostViewHolder3)holder).imageView_postImg_3.setOnClickListener(new View.OnClickListener() {
+                ((PostViewHolder3) holder).imageView_postImg_3.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         movePoll(position);
                     }
                 });
-                ((PostViewHolder3)holder).imageView_like.setOnClickListener(new View.OnClickListener() {
+                ((PostViewHolder3) holder).imageView_like.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         onLikeClicked(firebaseDatabase.getReference().child("user_contents").child(uidLists.get(position)));
@@ -499,11 +498,11 @@ public class PostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>  
 
 
                                 if (contentDTOS.get(position).likes.containsKey(auth.getCurrentUser().getUid())) {
-                                    ((PostViewHolder3)holder).imageView_like.setImageResource(R.drawable.ic_thumb_up_blue);
-                                    ((PostViewHolder3)holder).textView_likeCount.setText(String.valueOf(contentDTOS.get(position).likeCount));
+                                    ((PostViewHolder3) holder).imageView_like.setImageResource(R.drawable.ic_thumb_up_blue);
+                                    ((PostViewHolder3) holder).textView_likeCount.setText(String.valueOf(contentDTOS.get(position).likeCount));
                                 } else {
-                                    ((PostViewHolder3)holder).imageView_like.setImageResource(R.drawable.ic_outline_thumb_up_24px);
-                                    ((PostViewHolder3)holder).textView_likeCount.setText(String.valueOf(contentDTOS.get(position).likeCount));
+                                    ((PostViewHolder3) holder).imageView_like.setImageResource(R.drawable.ic_outline_thumb_up_24px);
+                                    ((PostViewHolder3) holder).textView_likeCount.setText(String.valueOf(contentDTOS.get(position).likeCount));
                                 }
                             }
 
@@ -517,47 +516,58 @@ public class PostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>  
                     }
                 });
 
+                ((PostViewHolder3) holder).imageView_hitCount.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Toast toast = Toast.makeText(mContext, "투표에 참가한 인원 입니다!", Toast.LENGTH_SHORT);
+                        toast.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL, 0, 0);
+                        toast.show();
+                    }
+                });
 
-                //좋아요 클릭시 바로 하트모양 변경
-//                mDatabase.getReference().child("user_contents").addValueEventListener(new ValueEventListener() {
-//                    @Override
-//                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-////                        contentDTOS.clear();
-////                        for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-////                            ContentDTO contentDTO = snapshot.getValue(ContentDTO.class);
-////                            contentDTOS.add(contentDTO);
-////                        }
-//                        if (contentDTOS.get(position).likes.containsKey(auth.getCurrentUser().getUid())) {
-//                            ((PostViewHolder3)holder).imageView_like.setImageResource(R.drawable.ic_thumb_up_blue);
-//                            ((PostViewHolder3)holder).textView_likeCount.setText(String.valueOf(contentDTOS.get(position).likeCount));
-//                        } else {
-//                            ((PostViewHolder3)holder).imageView_like.setImageResource(R.drawable.ic_outline_thumb_up_24px);
-//                            ((PostViewHolder3)holder).textView_likeCount.setText(String.valueOf(contentDTOS.get(position).likeCount));
-//                        }
-//                    }
-//
-//                    @Override
-//                    public void onCancelled(@NonNull DatabaseError databaseError) {
-//
-//                    }
-//                });
+                ((PostViewHolder3) holder).textView_hitCount.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Toast toast = Toast.makeText(mContext, "투표에 참가한 인원 입니다!", Toast.LENGTH_SHORT);
+                        toast.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL, 0, 0);
+                        toast.show();
+                    }
+                });
+
+                ((PostViewHolder3) holder).imageView_state.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Toast toast = Toast.makeText(mContext, "우와! 투표했더니 파란색이 칠해졌다!", Toast.LENGTH_SHORT);
+                        toast.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL, 0, 0);
+                        toast.show();
+                    }
+                });
                 if (contentDTOS.get(position).likes.containsKey(auth.getCurrentUser().getUid())) {
-                    ((PostViewHolder3)holder).imageView_like.setImageResource(R.drawable.ic_thumb_up_blue);
-                    ((PostViewHolder3)holder).textView_likeCount.setText(String.valueOf(contentDTOS.get(position).likeCount));
+                    ((PostViewHolder3) holder).imageView_like.setImageResource(R.drawable.ic_thumb_up_blue);
+                    ((PostViewHolder3) holder).textView_likeCount.setText(String.valueOf(contentDTOS.get(position).likeCount));
                 } else {
-                    ((PostViewHolder3)holder).imageView_like.setImageResource(R.drawable.ic_outline_thumb_up_24px);
-                    ((PostViewHolder3)holder).textView_likeCount.setText(String.valueOf(contentDTOS.get(position).likeCount));
+                    ((PostViewHolder3) holder).imageView_like.setImageResource(R.drawable.ic_outline_thumb_up_24px);
+                    ((PostViewHolder3) holder).textView_likeCount.setText(String.valueOf(contentDTOS.get(position).likeCount));
                 }
 
-                ((PostViewHolder3)holder).textView_title.setText(contentDTOS.get(position).title);
-                ((PostViewHolder3)holder).textView_userName.setText(contentDTOS.get(position).userID);
-                ((PostViewHolder3)holder).textView_contentType.setText(contentDTOS.get(position).contentType);
-                ((PostViewHolder3)holder).textView_hitCount.setText(String.valueOf(contentDTOS.get(position).contentHit));
 
-                GlideApp.with(holder.itemView.getContext()).load(contentDTOS.get(position).imageUrl_0).centerCrop().thumbnail(Glide.with(holder.itemView.getContext()).load(R.drawable.loadingicon)).into(((PostViewHolder3)holder).imageView_postImg_0);
-                GlideApp.with(holder.itemView.getContext()).load(contentDTOS.get(position).imageUrl_1).centerCrop().thumbnail(Glide.with(holder.itemView.getContext()).load(R.drawable.loadingicon)).into(((PostViewHolder3)holder).imageView_postImg_1);
-                GlideApp.with(holder.itemView.getContext()).load(contentDTOS.get(position).imageUrl_2).centerCrop().thumbnail(Glide.with(holder.itemView.getContext()).load(R.drawable.loadingicon)).into(((PostViewHolder3)holder).imageView_postImg_2);
-                GlideApp.with(holder.itemView.getContext()).load(contentDTOS.get(position).imageUrl_3).centerCrop().thumbnail(Glide.with(holder.itemView.getContext()).load(R.drawable.loadingicon)).into(((PostViewHolder3)holder).imageView_postImg_3);
+                if (contentDTOS.get(position).title.length() >= 15) {
+                    ((PostViewHolder3) holder).textView_title.setText(contentDTOS.get(position).title.substring(0,15) + "...");
+                } else {
+                    ((PostViewHolder3) holder).textView_title.setText(contentDTOS.get(position).title);
+                }
+                if (contentDTOS.get(position).userID.length() >= 8) {
+                    ((PostViewHolder3) holder).textView_userName.setText(contentDTOS.get(position).userID.substring(0,8));
+                } else {
+                    ((PostViewHolder3) holder).textView_userName.setText(contentDTOS.get(position).userID);
+                }
+                ((PostViewHolder3) holder).textView_contentType.setText(contentDTOS.get(position).contentType);
+                ((PostViewHolder3) holder).textView_hitCount.setText(String.valueOf(contentDTOS.get(position).contentHit));
+
+                GlideApp.with(holder.itemView.getContext()).load(contentDTOS.get(position).imageUrl_0).centerCrop().thumbnail(Glide.with(holder.itemView.getContext()).load(R.drawable.loadingicon)).into(((PostViewHolder3) holder).imageView_postImg_0);
+                GlideApp.with(holder.itemView.getContext()).load(contentDTOS.get(position).imageUrl_1).centerCrop().thumbnail(Glide.with(holder.itemView.getContext()).load(R.drawable.loadingicon)).into(((PostViewHolder3) holder).imageView_postImg_1);
+                GlideApp.with(holder.itemView.getContext()).load(contentDTOS.get(position).imageUrl_2).centerCrop().thumbnail(Glide.with(holder.itemView.getContext()).load(R.drawable.loadingicon)).into(((PostViewHolder3) holder).imageView_postImg_2);
+                GlideApp.with(holder.itemView.getContext()).load(contentDTOS.get(position).imageUrl_3).centerCrop().thumbnail(Glide.with(holder.itemView.getContext()).load(R.drawable.loadingicon)).into(((PostViewHolder3) holder).imageView_postImg_3);
 
 
                 break;
@@ -590,7 +600,8 @@ public class PostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>  
             intent.putExtras(bundle);
             mContext.startActivity(intent);
 
-        } if (contentDTOS.get(position).getPollMode().equals("단일 투표")) {
+        }
+        if (contentDTOS.get(position).getPollMode().equals("단일 투표")) {
 
             Intent intent = new Intent(mContext, PollSingleActivity.class);
             Bundle bundle = new Bundle();
@@ -613,10 +624,6 @@ public class PostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>  
 //            ((HomeActivity)mContext).resetActivity();
 //        }
 //    }
-
-
-
-
 
 
     private void onLikeClicked(final DatabaseReference postRef) {
@@ -654,12 +661,6 @@ public class PostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>  
                             .child("likeContent")
                             .child(contentDTO.getContentKey())
                             .setValue("true");
-//                    User user = new User();
-//                    Map<String, Object> userValues = user.toMap();
-//                    Map<String, Object> childUpdates = new HashMap<>();
-//                    childUpdates.put("/users/", userValues);
-//                    databaseReference.updateChildren(childUpdates);
-
                 }
 
                 // Set value and report transaction success
@@ -671,7 +672,6 @@ public class PostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>  
             public void onComplete(DatabaseError databaseError, boolean b, DataSnapshot dataSnapshot) {
                 // Transaction completed
                 Log.d("lkjlkj", "postTransaction:onComplete:" + databaseError);
-
 
 
             }

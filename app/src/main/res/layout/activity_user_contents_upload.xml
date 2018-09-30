@@ -98,7 +98,7 @@
                     android:id="@+id/editText_description"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="내용" />
+                    android:hint="내용  예)둘중 하나 골라주세요." />
             </android.support.design.widget.TextInputLayout>
 
 

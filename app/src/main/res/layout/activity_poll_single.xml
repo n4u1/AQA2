@@ -139,6 +139,20 @@
             </LinearLayout>
 
 
+            <!--투표하지 않은 게시물 입니다-->
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#efefef" />
+
+            <TextView
+                android:hint="투표에 참여해보세요!"
+                android:id="@+id/pollActivity_textView_pollState"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:textSize="16dp" />
+
             <!--내용-->
             <View
                 android:layout_width="match_parent"
@@ -157,6 +171,7 @@
                 android:layout_height="1dp"
                 android:background="#efefef" />
 
+            <!--좋아요, 투표수, 공유-->
 
             <!--후보 선택 이미지-->
             <RelativeLayout
@@ -656,10 +671,6 @@
             <!--&lt;!&ndash;android:layout_height="wrap_content" />&ndash;&gt;-->
             <!--</RelativeLayout>-->
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="#efefef" />
 
 
             <!--댓글 펼치기 -->
@@ -668,35 +679,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <TextView
-                    android:id="@+id/pollActivity_textView_reply"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:paddingTop="4dp"
-                    android:text="댓글펼치기(?)"
-                    android:textSize="18sp" />
 
-                <android.support.v7.widget.AppCompatImageView
-                    android:id="@+id/pollActivity_imageView_reply_downButton"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/pollActivity_textView_reply"
-                    android:src="@drawable/ic_keyboard_arrow_down_black_24dp" />
+                <ImageView
+                    android:layout_centerHorizontal="true"
+                    android:src="@drawable/ic_hambugger"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp" />
 
-                <android.support.v7.widget.AppCompatImageView
-                    android:id="@+id/pollActivity_imageView_reply_upButton"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/pollActivity_textView_reply"
-                    android:src="@drawable/ic_keyboard_arrow_up_black_24dp"
-                    android:visibility="gone" />
             </RelativeLayout>
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="#efefef" />
 
             <!--댓글 리스트-->
 
@@ -725,6 +716,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:hint="댓글..."
+                    android:textSize="20dp"
                     android:visibility="gone" />
 
                 <ImageView
