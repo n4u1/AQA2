@@ -44,6 +44,7 @@
                 android:textColor="#737373" />
 
             <TextView
+                android:id="@+id/textView_replyCount"
                 android:layout_toRightOf="@+id/textView_title"
                 android:text=" [5]"
                 android:layout_width="wrap_content"

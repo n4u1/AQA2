@@ -1,5 +1,7 @@
 package com.n4u1.AQA.AQA.models;
 
+import android.support.annotation.NonNull;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -8,8 +10,8 @@ public class ReplyDTO {
     private String reply;
     private String date;
     private String contentKey, replyKey;
-
     public int likeCount = 0;
+
 
     public Map<String, Boolean> likes = new HashMap<>();
 
@@ -61,4 +63,5 @@ public class ReplyDTO {
     public void setDate(String date) {
         this.date = date;
     }
+
 }

@@ -338,6 +338,7 @@ public class PostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
                 ((PostViewHolder1) holder).textView_contentType.setText(contentDTOS.get(position).contentType);
                 ((PostViewHolder1) holder).textView_hitCount.setText(String.valueOf(contentDTOS.get(position).contentHit));
+                ((PostViewHolder1)holder).textView_replyCount.setText(" [" + String.valueOf(contentDTOS.get(position).replyCount) + "]");
 
                 GlideApp.with(holder.itemView.getContext()).load(contentDTOS.get(position).imageUrl_0).centerCrop().thumbnail(Glide.with(holder.itemView.getContext()).load(R.drawable.loadingicon)).into(((PostViewHolder1) holder).imageView_postImg_0);
                 GlideApp.with(holder.itemView.getContext()).load(contentDTOS.get(position).imageUrl_1).centerCrop().thumbnail(Glide.with(holder.itemView.getContext()).load(R.drawable.loadingicon)).into(((PostViewHolder1) holder).imageView_postImg_1);
@@ -447,6 +448,7 @@ public class PostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 }
                 ((PostViewHolder2) holder).textView_contentType.setText(contentDTOS.get(position).contentType);
                 ((PostViewHolder2) holder).textView_hitCount.setText(String.valueOf(contentDTOS.get(position).contentHit));
+                ((PostViewHolder2)holder).textView_replyCount.setText(" [" + String.valueOf(contentDTOS.get(position).replyCount) + "]");
                 GlideApp.with(holder.itemView.getContext()).load(contentDTOS.get(position).imageUrl_0).centerCrop().thumbnail(Glide.with(holder.itemView.getContext()).load(R.drawable.loadingicon)).into(((PostViewHolder2) holder).imageView_postImg_0);
                 GlideApp.with(holder.itemView.getContext()).load(contentDTOS.get(position).imageUrl_1).centerCrop().thumbnail(Glide.with(holder.itemView.getContext()).load(R.drawable.loadingicon)).into(((PostViewHolder2) holder).imageView_postImg_1);
                 GlideApp.with(holder.itemView.getContext()).load(contentDTOS.get(position).imageUrl_2).centerCrop().thumbnail(Glide.with(holder.itemView.getContext()).load(R.drawable.loadingicon)).into(((PostViewHolder2) holder).imageView_postImg_2);
@@ -563,7 +565,7 @@ public class PostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 }
                 ((PostViewHolder3) holder).textView_contentType.setText(contentDTOS.get(position).contentType);
                 ((PostViewHolder3) holder).textView_hitCount.setText(String.valueOf(contentDTOS.get(position).contentHit));
-
+                ((PostViewHolder3)holder).textView_replyCount.setText(" [" + String.valueOf(contentDTOS.get(position).replyCount) + "]");
                 GlideApp.with(holder.itemView.getContext()).load(contentDTOS.get(position).imageUrl_0).centerCrop().thumbnail(Glide.with(holder.itemView.getContext()).load(R.drawable.loadingicon)).into(((PostViewHolder3) holder).imageView_postImg_0);
                 GlideApp.with(holder.itemView.getContext()).load(contentDTOS.get(position).imageUrl_1).centerCrop().thumbnail(Glide.with(holder.itemView.getContext()).load(R.drawable.loadingicon)).into(((PostViewHolder3) holder).imageView_postImg_1);
                 GlideApp.with(holder.itemView.getContext()).load(contentDTOS.get(position).imageUrl_2).centerCrop().thumbnail(Glide.with(holder.itemView.getContext()).load(R.drawable.loadingicon)).into(((PostViewHolder3) holder).imageView_postImg_2);

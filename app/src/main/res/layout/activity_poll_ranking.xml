@@ -640,37 +640,251 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-
                 <ImageView
                     android:layout_centerHorizontal="true"
                     android:src="@drawable/ic_hambugger"
                     android:layout_width="50dp"
                     android:layout_height="50dp" />
-
-                <!--<TextView-->
-                    <!--android:id="@+id/pollActivity_textView_reply"-->
-                    <!--android:layout_width="match_parent"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:gravity="center"-->
-                    <!--android:paddingTop="4dp"-->
-                    <!--android:text="댓글펼치기(?)"-->
-                    <!--android:textSize="18sp" />-->
-
-                <!--<android.support.v7.widget.AppCompatImageView-->
-                    <!--android:id="@+id/pollActivity_imageView_reply_downButton"-->
-                    <!--android:layout_width="match_parent"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:layout_below="@id/pollActivity_textView_reply"-->
-                    <!--android:src="@drawable/ic_keyboard_arrow_down_black_24dp" />-->
-
-                <!--<android.support.v7.widget.AppCompatImageView-->
-                    <!--android:id="@+id/pollActivity_imageView_reply_upButton"-->
-                    <!--android:layout_width="match_parent"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:layout_below="@id/pollActivity_textView_reply"-->
-                    <!--android:src="@drawable/ic_keyboard_arrow_up_black_24dp"-->
-                    <!--android:visibility="gone" />-->
             </RelativeLayout>
+
+
+
+            <!--댓글 리스트 중 베스트 댓글 0-->
+            <LinearLayout
+                android:layout_marginBottom="4dp"
+                android:background="#ececec"
+                android:id="@+id/linearLayout_bestReply0"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:visibility="gone">
+
+                <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="10"
+                    android:paddingTop="8dp"
+                    android:paddingBottom="8dp">
+
+
+                    <TextView
+                        android:id="@+id/bestReply_id0"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="8dp"
+                        android:text="a@a.com"
+                        android:textSize="14dp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/bestReply_reply0"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toRightOf="@+id/bestReply_id0"
+                        android:text="댓글입니당"
+                        android:textColor="#6c6c6c"
+                        android:textSize="14dp" />
+
+
+                    <TextView
+                        android:id="@+id/bestReply_date0"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/bestReply_reply0"
+                        android:layout_alignLeft="@id/bestReply_reply0"
+                        android:layout_toRightOf="@+id/bestReply_reply0"
+                        android:paddingLeft="4dp"
+                        android:text="시간입니당"
+                        android:textColor="#9f9f9f"
+                        android:textSize="10dp" />
+
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="2"
+                    android:paddingTop="8dp"
+                    android:paddingBottom="8dp">
+
+
+                    <android.support.v7.widget.AppCompatImageView
+                        android:id="@+id/bestReply_thumbImg0"
+                        android:layout_width="14dp"
+                        android:layout_height="14dp"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="2dp"
+                        android:src="@drawable/ic_thumb_up_black_24dp" />
+
+                    <TextView
+                        android:id="@+id/bestReply_likeCount0"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_toRightOf="@id/bestReply_thumbImg0"
+                        android:text="0"
+                        android:textSize="10dp" />
+                </RelativeLayout>
+            </LinearLayout>
+
+
+            <!--댓글 리스트 중 베스트 댓글 1-->
+            <LinearLayout
+                android:layout_marginBottom="4dp"
+                android:background="#ececec"
+                android:id="@+id/linearLayout_bestReply1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:visibility="gone">
+
+                <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="10"
+                    android:paddingTop="8dp"
+                    android:paddingBottom="8dp">
+
+
+                    <TextView
+                        android:id="@+id/bestReply_id1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="8dp"
+                        android:text="a@a.com"
+                        android:textSize="14dp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/bestReply_reply1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toRightOf="@+id/bestReply_id1"
+                        android:text="댓글입니당"
+                        android:textColor="#6c6c6c"
+                        android:textSize="14dp" />
+
+
+                    <TextView
+                        android:id="@+id/bestReply_date1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/bestReply_reply1"
+                        android:layout_alignLeft="@id/bestReply_reply1"
+                        android:layout_toRightOf="@+id/bestReply_id1"
+                        android:paddingLeft="4dp"
+                        android:text="시간입니당"
+                        android:textColor="#9f9f9f"
+                        android:textSize="10dp" />
+
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="2"
+                    android:paddingTop="8dp"
+                    android:paddingBottom="8dp">
+
+
+                    <android.support.v7.widget.AppCompatImageView
+                        android:id="@+id/bestReply_thumbImg1"
+                        android:layout_width="14dp"
+                        android:layout_height="14dp"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="2dp"
+                        android:src="@drawable/ic_thumb_up_black_24dp" />
+
+                    <TextView
+                        android:id="@+id/bestReply_likeCount1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_toRightOf="@id/bestReply_thumbImg1"
+                        android:text="0"
+                        android:textSize="10dp" />
+                </RelativeLayout>
+            </LinearLayout>
+
+
+
+            <!--댓글 리스트 중 베스트 댓글 2-->
+            <LinearLayout
+                android:layout_marginBottom="4dp"
+                android:background="#ececec"
+                android:id="@+id/linearLayout_bestReply2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:visibility="gone">
+
+                <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="10"
+                    android:paddingTop="8dp"
+                    android:paddingBottom="8dp">
+
+
+                    <TextView
+                        android:id="@+id/bestReply_id2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="8dp"
+                        android:text="a@a.com"
+                        android:textSize="14dp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/bestReply_reply2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toRightOf="@+id/bestReply_id2"
+                        android:text="댓글입니당"
+                        android:textColor="#6c6c6c"
+                        android:textSize="14dp" />
+
+                    <TextView
+                        android:id="@+id/bestReply_date2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/bestReply_reply2"
+                        android:layout_alignLeft="@id/bestReply_reply2"
+                        android:layout_toRightOf="@+id/bestReply_id2"
+                        android:paddingLeft="4dp"
+                        android:text="시간입니당"
+                        android:textColor="#9f9f9f"
+                        android:textSize="10dp" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="2"
+                    android:paddingTop="8dp"
+                    android:paddingBottom="8dp">
+
+                    <android.support.v7.widget.AppCompatImageView
+                        android:id="@+id/bestReply_thumbImg2"
+                        android:layout_width="14dp"
+                        android:layout_height="14dp"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="2dp"
+                        android:src="@drawable/ic_thumb_up_black_24dp" />
+
+                    <TextView
+                        android:id="@+id/bestReply_likeCount2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_toRightOf="@id/bestReply_thumbImg2"
+                        android:text="0"
+                        android:textSize="10dp" />
+                </RelativeLayout>
+            </LinearLayout>
 
 
             <!--댓글 리스트-->

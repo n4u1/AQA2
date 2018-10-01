@@ -15,10 +15,10 @@
         android:id="@+id/pollActivity_fab_result"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
-        android:layout_marginBottom="24dp"
+        android:layout_alignParentBottom="true"
         android:layout_marginRight="24dp"
+        android:layout_marginBottom="24dp"
         android:src="@drawable/q"
         app:backgroundTint="#ffffff" />
 
@@ -146,11 +146,11 @@
                 android:background="#efefef" />
 
             <TextView
-                android:hint="투표에 참여해보세요!"
                 android:id="@+id/pollActivity_textView_pollState"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
+                android:hint="투표에 참여해보세요!"
                 android:textSize="16dp" />
 
             <!--내용-->
@@ -190,10 +190,10 @@
                     android:id="@+id/pollActivity_textView_check_1"
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
-                    android:layout_alignBottom="@+id/pollActivity_imageView_choice_1"
                     android:layout_alignLeft="@+id/pollActivity_imageView_choice_1"
-                    android:layout_alignRight="@+id/pollActivity_imageView_choice_1"
                     android:layout_alignTop="@+id/pollActivity_imageView_choice_1"
+                    android:layout_alignRight="@+id/pollActivity_imageView_choice_1"
+                    android:layout_alignBottom="@+id/pollActivity_imageView_choice_1"
                     android:gravity="center"
                     android:text="1 선택"
                     android:textColor="#000000"
@@ -213,12 +213,12 @@
                     android:layout_width="match_parent"
                     android:layout_height="392dp"
                     android:layout_below="@id/pollActivity_textView_check_1"
-                    android:layout_marginBottom="16dp"
-                    android:layout_marginEnd="4dp"
-                    android:layout_marginLeft="4dp"
-                    android:layout_marginRight="4dp"
                     android:layout_marginStart="4dp"
+                    android:layout_marginLeft="4dp"
                     android:layout_marginTop="4dp"
+                    android:layout_marginEnd="4dp"
+                    android:layout_marginRight="4dp"
+                    android:layout_marginBottom="16dp"
                     android:scaleType="center"
                     android:visibility="gone" />
 
@@ -235,10 +235,10 @@
                     android:id="@+id/pollActivity_textView_check_2"
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
-                    android:layout_alignBottom="@+id/pollActivity_imageView_choice_2"
                     android:layout_alignLeft="@+id/pollActivity_imageView_choice_2"
-                    android:layout_alignRight="@+id/pollActivity_imageView_choice_2"
                     android:layout_alignTop="@+id/pollActivity_imageView_choice_2"
+                    android:layout_alignRight="@+id/pollActivity_imageView_choice_2"
+                    android:layout_alignBottom="@+id/pollActivity_imageView_choice_2"
                     android:gravity="center"
                     android:text="2 선택"
                     android:textColor="#000000"
@@ -258,12 +258,12 @@
                     android:layout_width="match_parent"
                     android:layout_height="392dp"
                     android:layout_below="@id/pollActivity_textView_check_2"
-                    android:layout_marginBottom="16dp"
-                    android:layout_marginEnd="4dp"
-                    android:layout_marginLeft="4dp"
-                    android:layout_marginRight="4dp"
                     android:layout_marginStart="4dp"
+                    android:layout_marginLeft="4dp"
                     android:layout_marginTop="4dp"
+                    android:layout_marginEnd="4dp"
+                    android:layout_marginRight="4dp"
+                    android:layout_marginBottom="16dp"
                     android:scaleType="center"
                     android:visibility="gone" />
 
@@ -280,10 +280,10 @@
                     android:id="@+id/pollActivity_textView_check_3"
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
-                    android:layout_alignBottom="@+id/pollActivity_imageView_choice_3"
                     android:layout_alignLeft="@+id/pollActivity_imageView_choice_3"
-                    android:layout_alignRight="@+id/pollActivity_imageView_choice_3"
                     android:layout_alignTop="@+id/pollActivity_imageView_choice_3"
+                    android:layout_alignRight="@+id/pollActivity_imageView_choice_3"
+                    android:layout_alignBottom="@+id/pollActivity_imageView_choice_3"
                     android:gravity="center"
                     android:text="3 선택"
                     android:textColor="#000000"
@@ -303,12 +303,12 @@
                     android:layout_width="match_parent"
                     android:layout_height="392dp"
                     android:layout_below="@id/pollActivity_textView_check_3"
-                    android:layout_marginBottom="16dp"
-                    android:layout_marginEnd="4dp"
-                    android:layout_marginLeft="4dp"
-                    android:layout_marginRight="4dp"
                     android:layout_marginStart="4dp"
+                    android:layout_marginLeft="4dp"
                     android:layout_marginTop="4dp"
+                    android:layout_marginEnd="4dp"
+                    android:layout_marginRight="4dp"
+                    android:layout_marginBottom="16dp"
                     android:scaleType="center"
                     android:visibility="gone" />
 
@@ -325,10 +325,10 @@
                     android:id="@+id/pollActivity_textView_check_4"
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
-                    android:layout_alignBottom="@+id/pollActivity_imageView_choice_4"
                     android:layout_alignLeft="@+id/pollActivity_imageView_choice_4"
-                    android:layout_alignRight="@+id/pollActivity_imageView_choice_4"
                     android:layout_alignTop="@+id/pollActivity_imageView_choice_4"
+                    android:layout_alignRight="@+id/pollActivity_imageView_choice_4"
+                    android:layout_alignBottom="@+id/pollActivity_imageView_choice_4"
                     android:gravity="center"
                     android:text="4 선택"
                     android:textColor="#000000"
@@ -348,12 +348,12 @@
                     android:layout_width="match_parent"
                     android:layout_height="392dp"
                     android:layout_below="@id/pollActivity_textView_check_4"
-                    android:layout_marginBottom="16dp"
-                    android:layout_marginEnd="4dp"
-                    android:layout_marginLeft="4dp"
-                    android:layout_marginRight="4dp"
                     android:layout_marginStart="4dp"
+                    android:layout_marginLeft="4dp"
                     android:layout_marginTop="4dp"
+                    android:layout_marginEnd="4dp"
+                    android:layout_marginRight="4dp"
+                    android:layout_marginBottom="16dp"
                     android:scaleType="center"
                     android:visibility="gone" />
 
@@ -370,10 +370,10 @@
                     android:id="@+id/pollActivity_textView_check_5"
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
-                    android:layout_alignBottom="@+id/pollActivity_imageView_choice_5"
                     android:layout_alignLeft="@+id/pollActivity_imageView_choice_5"
-                    android:layout_alignRight="@+id/pollActivity_imageView_choice_5"
                     android:layout_alignTop="@+id/pollActivity_imageView_choice_5"
+                    android:layout_alignRight="@+id/pollActivity_imageView_choice_5"
+                    android:layout_alignBottom="@+id/pollActivity_imageView_choice_5"
                     android:gravity="center"
                     android:text="5 선택"
                     android:textColor="#000000"
@@ -393,12 +393,12 @@
                     android:layout_width="match_parent"
                     android:layout_height="392dp"
                     android:layout_below="@id/pollActivity_textView_check_5"
-                    android:layout_marginBottom="16dp"
-                    android:layout_marginEnd="4dp"
-                    android:layout_marginLeft="4dp"
-                    android:layout_marginRight="4dp"
                     android:layout_marginStart="4dp"
+                    android:layout_marginLeft="4dp"
                     android:layout_marginTop="4dp"
+                    android:layout_marginEnd="4dp"
+                    android:layout_marginRight="4dp"
+                    android:layout_marginBottom="16dp"
                     android:scaleType="center"
                     android:visibility="gone" />
 
@@ -415,10 +415,10 @@
                     android:id="@+id/pollActivity_textView_check_6"
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
-                    android:layout_alignBottom="@+id/pollActivity_imageView_choice_6"
                     android:layout_alignLeft="@+id/pollActivity_imageView_choice_6"
-                    android:layout_alignRight="@+id/pollActivity_imageView_choice_6"
                     android:layout_alignTop="@+id/pollActivity_imageView_choice_6"
+                    android:layout_alignRight="@+id/pollActivity_imageView_choice_6"
+                    android:layout_alignBottom="@+id/pollActivity_imageView_choice_6"
                     android:gravity="center"
                     android:text="6 선택"
                     android:textColor="#000000"
@@ -438,12 +438,12 @@
                     android:layout_width="match_parent"
                     android:layout_height="392dp"
                     android:layout_below="@id/pollActivity_textView_check_6"
-                    android:layout_marginBottom="16dp"
-                    android:layout_marginEnd="4dp"
-                    android:layout_marginLeft="4dp"
-                    android:layout_marginRight="4dp"
                     android:layout_marginStart="4dp"
+                    android:layout_marginLeft="4dp"
                     android:layout_marginTop="4dp"
+                    android:layout_marginEnd="4dp"
+                    android:layout_marginRight="4dp"
+                    android:layout_marginBottom="16dp"
                     android:scaleType="center"
                     android:visibility="gone" />
 
@@ -460,10 +460,10 @@
                     android:id="@+id/pollActivity_textView_check_7"
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
-                    android:layout_alignBottom="@+id/pollActivity_imageView_choice_7"
                     android:layout_alignLeft="@+id/pollActivity_imageView_choice_7"
-                    android:layout_alignRight="@+id/pollActivity_imageView_choice_7"
                     android:layout_alignTop="@+id/pollActivity_imageView_choice_7"
+                    android:layout_alignRight="@+id/pollActivity_imageView_choice_7"
+                    android:layout_alignBottom="@+id/pollActivity_imageView_choice_7"
                     android:gravity="center"
                     android:text="7 선택"
                     android:textColor="#000000"
@@ -483,12 +483,12 @@
                     android:layout_width="match_parent"
                     android:layout_height="392dp"
                     android:layout_below="@id/pollActivity_textView_check_7"
-                    android:layout_marginBottom="16dp"
-                    android:layout_marginEnd="4dp"
-                    android:layout_marginLeft="4dp"
-                    android:layout_marginRight="4dp"
                     android:layout_marginStart="4dp"
+                    android:layout_marginLeft="4dp"
                     android:layout_marginTop="4dp"
+                    android:layout_marginEnd="4dp"
+                    android:layout_marginRight="4dp"
+                    android:layout_marginBottom="16dp"
                     android:scaleType="center"
                     android:visibility="gone" />
 
@@ -505,10 +505,10 @@
                     android:id="@+id/pollActivity_textView_check_8"
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
-                    android:layout_alignBottom="@+id/pollActivity_imageView_choice_8"
                     android:layout_alignLeft="@+id/pollActivity_imageView_choice_8"
-                    android:layout_alignRight="@+id/pollActivity_imageView_choice_8"
                     android:layout_alignTop="@+id/pollActivity_imageView_choice_8"
+                    android:layout_alignRight="@+id/pollActivity_imageView_choice_8"
+                    android:layout_alignBottom="@+id/pollActivity_imageView_choice_8"
                     android:gravity="center"
                     android:text="8 선택"
                     android:textColor="#000000"
@@ -528,12 +528,12 @@
                     android:layout_width="match_parent"
                     android:layout_height="392dp"
                     android:layout_below="@id/pollActivity_textView_check_8"
-                    android:layout_marginBottom="16dp"
-                    android:layout_marginEnd="4dp"
-                    android:layout_marginLeft="4dp"
-                    android:layout_marginRight="4dp"
                     android:layout_marginStart="4dp"
+                    android:layout_marginLeft="4dp"
                     android:layout_marginTop="4dp"
+                    android:layout_marginEnd="4dp"
+                    android:layout_marginRight="4dp"
+                    android:layout_marginBottom="16dp"
                     android:scaleType="center"
                     android:visibility="gone" />
 
@@ -550,10 +550,10 @@
                     android:id="@+id/pollActivity_textView_check_9"
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
-                    android:layout_alignBottom="@+id/pollActivity_imageView_choice_9"
                     android:layout_alignLeft="@+id/pollActivity_imageView_choice_9"
-                    android:layout_alignRight="@+id/pollActivity_imageView_choice_9"
                     android:layout_alignTop="@+id/pollActivity_imageView_choice_9"
+                    android:layout_alignRight="@+id/pollActivity_imageView_choice_9"
+                    android:layout_alignBottom="@+id/pollActivity_imageView_choice_9"
                     android:gravity="center"
                     android:text="9 선택"
                     android:textColor="#000000"
@@ -573,12 +573,12 @@
                     android:layout_width="match_parent"
                     android:layout_height="392dp"
                     android:layout_below="@id/pollActivity_textView_check_9"
-                    android:layout_marginBottom="16dp"
-                    android:layout_marginEnd="4dp"
-                    android:layout_marginLeft="4dp"
-                    android:layout_marginRight="4dp"
                     android:layout_marginStart="4dp"
+                    android:layout_marginLeft="4dp"
                     android:layout_marginTop="4dp"
+                    android:layout_marginEnd="4dp"
+                    android:layout_marginRight="4dp"
+                    android:layout_marginBottom="16dp"
                     android:scaleType="center"
                     android:visibility="gone" />
 
@@ -595,10 +595,10 @@
                     android:id="@+id/pollActivity_textView_check_10"
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
-                    android:layout_alignBottom="@+id/pollActivity_imageView_choice_10"
                     android:layout_alignLeft="@+id/pollActivity_imageView_choice_10"
-                    android:layout_alignRight="@+id/pollActivity_imageView_choice_10"
                     android:layout_alignTop="@+id/pollActivity_imageView_choice_10"
+                    android:layout_alignRight="@+id/pollActivity_imageView_choice_10"
+                    android:layout_alignBottom="@+id/pollActivity_imageView_choice_10"
                     android:gravity="center"
                     android:text="10 선택"
                     android:textColor="#000000"
@@ -618,12 +618,12 @@
                     android:layout_width="match_parent"
                     android:layout_height="392dp"
                     android:layout_below="@id/pollActivity_textView_check_10"
-                    android:layout_marginBottom="16dp"
-                    android:layout_marginEnd="4dp"
-                    android:layout_marginLeft="4dp"
-                    android:layout_marginRight="4dp"
                     android:layout_marginStart="4dp"
+                    android:layout_marginLeft="4dp"
                     android:layout_marginTop="4dp"
+                    android:layout_marginEnd="4dp"
+                    android:layout_marginRight="4dp"
+                    android:layout_marginBottom="16dp"
                     android:scaleType="center"
                     android:visibility="gone" />
 
@@ -672,7 +672,6 @@
             <!--</RelativeLayout>-->
 
 
-
             <!--댓글 펼치기 -->
             <RelativeLayout
                 android:id="@+id/pollActivity_relativeLayout_reply"
@@ -681,12 +680,250 @@
 
 
                 <ImageView
-                    android:layout_centerHorizontal="true"
-                    android:src="@drawable/ic_hambugger"
                     android:layout_width="50dp"
-                    android:layout_height="50dp" />
+                    android:layout_height="50dp"
+                    android:layout_centerHorizontal="true"
+                    android:src="@drawable/ic_hambugger" />
 
             </RelativeLayout>
+
+
+            <!--댓글 리스트 중 베스트 댓글 0-->
+            <LinearLayout
+                android:layout_marginBottom="4dp"
+                android:background="#ececec"
+                android:id="@+id/linearLayout_bestReply0"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:visibility="gone">
+
+                <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="10"
+                    android:paddingTop="8dp"
+                    android:paddingBottom="8dp">
+
+
+                    <TextView
+                        android:id="@+id/bestReply_id0"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="8dp"
+                        android:text="a@a.com"
+                        android:textSize="14dp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/bestReply_reply0"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toRightOf="@+id/bestReply_id0"
+                        android:text="댓글입니당"
+                        android:textColor="#6c6c6c"
+                        android:textSize="14dp" />
+
+
+                    <TextView
+                        android:id="@+id/bestReply_date0"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/bestReply_reply0"
+                        android:layout_alignLeft="@id/bestReply_reply0"
+                        android:layout_toRightOf="@+id/bestReply_reply0"
+                        android:paddingLeft="4dp"
+                        android:text="시간입니당"
+                        android:textColor="#9f9f9f"
+                        android:textSize="10dp" />
+
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="2"
+                    android:paddingTop="8dp"
+                    android:paddingBottom="8dp">
+
+
+                    <android.support.v7.widget.AppCompatImageView
+                        android:id="@+id/bestReply_thumbImg0"
+                        android:layout_width="14dp"
+                        android:layout_height="14dp"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="2dp"
+                        android:src="@drawable/ic_thumb_up_black_24dp" />
+
+                    <TextView
+                        android:id="@+id/bestReply_likeCount0"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_toRightOf="@id/bestReply_thumbImg0"
+                        android:text="0"
+                        android:textSize="10dp" />
+                </RelativeLayout>
+            </LinearLayout>
+
+
+            <!--댓글 리스트 중 베스트 댓글 1-->
+            <LinearLayout
+                android:layout_marginBottom="4dp"
+                android:background="#ececec"
+                android:id="@+id/linearLayout_bestReply1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:visibility="gone">
+
+                <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="10"
+                    android:paddingTop="8dp"
+                    android:paddingBottom="8dp">
+
+
+                    <TextView
+                        android:id="@+id/bestReply_id1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="8dp"
+                        android:text="a@a.com"
+                        android:textSize="14dp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/bestReply_reply1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toRightOf="@+id/bestReply_id1"
+                        android:text="댓글입니당"
+                        android:textColor="#6c6c6c"
+                        android:textSize="14dp" />
+
+
+                    <TextView
+                        android:id="@+id/bestReply_date1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/bestReply_reply1"
+                        android:layout_alignLeft="@id/bestReply_reply1"
+                        android:layout_toRightOf="@+id/bestReply_id1"
+                        android:paddingLeft="4dp"
+                        android:text="시간입니당"
+                        android:textColor="#9f9f9f"
+                        android:textSize="10dp" />
+
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="2"
+                    android:paddingTop="8dp"
+                    android:paddingBottom="8dp">
+
+
+                    <android.support.v7.widget.AppCompatImageView
+                        android:id="@+id/bestReply_thumbImg1"
+                        android:layout_width="14dp"
+                        android:layout_height="14dp"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="2dp"
+                        android:src="@drawable/ic_thumb_up_black_24dp" />
+
+                    <TextView
+                        android:id="@+id/bestReply_likeCount1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_toRightOf="@id/bestReply_thumbImg1"
+                        android:text="0"
+                        android:textSize="10dp" />
+                </RelativeLayout>
+            </LinearLayout>
+
+
+
+            <!--댓글 리스트 중 베스트 댓글 2-->
+            <LinearLayout
+                android:layout_marginBottom="4dp"
+                android:background="#ececec"
+                android:id="@+id/linearLayout_bestReply2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:visibility="gone">
+
+                <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="10"
+                    android:paddingTop="8dp"
+                    android:paddingBottom="8dp">
+
+
+                    <TextView
+                        android:id="@+id/bestReply_id2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="8dp"
+                        android:text="a@a.com"
+                        android:textSize="14dp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/bestReply_reply2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toRightOf="@+id/bestReply_id2"
+                        android:text="댓글입니당"
+                        android:textColor="#6c6c6c"
+                        android:textSize="14dp" />
+
+                    <TextView
+                        android:id="@+id/bestReply_date2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/bestReply_reply2"
+                        android:layout_alignLeft="@id/bestReply_reply2"
+                        android:layout_toRightOf="@+id/bestReply_id2"
+                        android:paddingLeft="4dp"
+                        android:text="시간입니당"
+                        android:textColor="#9f9f9f"
+                        android:textSize="10dp" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="2"
+                    android:paddingTop="8dp"
+                    android:paddingBottom="8dp">
+
+                    <android.support.v7.widget.AppCompatImageView
+                        android:id="@+id/bestReply_thumbImg2"
+                        android:layout_width="14dp"
+                        android:layout_height="14dp"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="2dp"
+                        android:src="@drawable/ic_thumb_up_black_24dp" />
+
+                    <TextView
+                        android:id="@+id/bestReply_likeCount2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_toRightOf="@id/bestReply_thumbImg2"
+                        android:text="0"
+                        android:textSize="10dp" />
+                </RelativeLayout>
+            </LinearLayout>
 
 
             <!--댓글 리스트-->
@@ -695,8 +932,7 @@
                 android:id="@+id/pollActivity_recyclerView_reply"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:visibility="gone"/>
-
+                android:visibility="gone" />
 
             <View
                 android:layout_width="match_parent"

@@ -17,7 +17,8 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
-        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        <RelativeLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="10"

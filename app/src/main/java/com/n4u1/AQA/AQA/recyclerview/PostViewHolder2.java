@@ -12,7 +12,7 @@ import com.n4u1.AQA.AQA.R;
 public class PostViewHolder2 extends RecyclerView.ViewHolder{
 
     public ImageView imageView_postImg_1, imageView_postImg_0, imageView_postImg_2, imageView_like, imageView_share, imageView_hitCount, imageView_state;
-    public TextView textView_likeCount, textView_userName, textView_title, textView_contentType, textView_hitCount;
+    public TextView textView_likeCount, textView_userName, textView_title, textView_contentType, textView_hitCount, textView_replyCount;
 
 
     public PostViewHolder2(View itemView) {
@@ -29,6 +29,6 @@ public class PostViewHolder2 extends RecyclerView.ViewHolder{
         textView_userName = itemView.findViewById(R.id.textView_userName);
         textView_title = itemView.findViewById(R.id.textView_title);
         textView_contentType = itemView.findViewById(R.id.textView_contentType);
-
+        textView_replyCount = itemView.findViewById(R.id.textView_replyCount);
     }
 }

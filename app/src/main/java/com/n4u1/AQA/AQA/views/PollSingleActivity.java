@@ -16,11 +16,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -50,7 +49,9 @@ import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.Locale;
 import java.util.Map;
 import java.util.TimeZone;
@@ -58,6 +59,7 @@ import java.util.TimeZone;
 public class PollSingleActivity extends AppCompatActivity implements View.OnClickListener {
 
     private boolean ACTIVITY_REPLY_FLAG;
+    private boolean ACTIVITY_BESTREPLY_FLAG;
     private int pickCandidate = 0;
     private FirebaseAuth auth;
     private DatabaseReference mDatabaseReference;
@@ -69,6 +71,7 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
 
     int contentHit;
     boolean checkUserHitContent = false;
+
 
     FloatingActionButton pollActivity_fab_result;
     TextView pollActivity_textView_title, pollActivity_textView_description,
@@ -95,8 +98,11 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
     EditText pollActivity_editText_reply;
     RecyclerView pollActivity_recyclerView_reply;
     RelativeLayout pollActivity_relativeLayout_reply;
-    TextView pollActivity_textView_reply;
 
+    LinearLayout linearLayout_bestReply0, linearLayout_bestReply1, linearLayout_bestReply2;
+    TextView bestReply_id0, bestReply_id1,bestReply_id2, bestReply_reply0, bestReply_reply1, bestReply_reply2,
+            bestReply_date0, bestReply_date1, bestReply_date2, bestReply_likeCount0, bestReply_likeCount1, bestReply_likeCount2;
+    ImageView bestReply_thumbImg0, bestReply_thumbImg1, bestReply_thumbImg2;
 
     TextView pollActivity_textView_check_1, pollActivity_textView_check_2,
             pollActivity_textView_check_3, pollActivity_textView_check_4,
@@ -184,6 +190,26 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
         pollActivity_imageView_userAddContent_8 = findViewById(R.id.pollActivity_imageView_userAddContent_8);
         pollActivity_imageView_userAddContent_9 = findViewById(R.id.pollActivity_imageView_userAddContent_9);
         pollActivity_imageView_userAddContent_10 = findViewById(R.id.pollActivity_imageView_userAddContent_10);
+
+        linearLayout_bestReply0 = findViewById(R.id.linearLayout_bestReply0);
+        linearLayout_bestReply1 = findViewById(R.id.linearLayout_bestReply1);
+        linearLayout_bestReply2 = findViewById(R.id.linearLayout_bestReply2);
+        bestReply_thumbImg0 = findViewById(R.id.bestReply_thumbImg0);
+        bestReply_thumbImg1 = findViewById(R.id.bestReply_thumbImg1);
+        bestReply_thumbImg2 = findViewById(R.id.bestReply_thumbImg2);
+        bestReply_id0 = findViewById(R.id.bestReply_id0);
+        bestReply_id1 = findViewById(R.id.bestReply_id1);
+        bestReply_id2 = findViewById(R.id.bestReply_id2);
+        bestReply_reply0 = findViewById(R.id.bestReply_reply0);
+        bestReply_reply1 = findViewById(R.id.bestReply_reply1);
+        bestReply_reply2 = findViewById(R.id.bestReply_reply2);
+        bestReply_date0 = findViewById(R.id.bestReply_date0);
+        bestReply_date1 = findViewById(R.id.bestReply_date1);
+        bestReply_date2 = findViewById(R.id.bestReply_date2);
+        bestReply_likeCount0 = findViewById(R.id.bestReply_likeCount0);
+        bestReply_likeCount1 = findViewById(R.id.bestReply_likeCount1);
+        bestReply_likeCount2 = findViewById(R.id.bestReply_likeCount2);
+
         pollActivity_relativeLayout_reply = findViewById(R.id.pollActivity_relativeLayout_reply);
         pollActivity_recyclerView_reply = findViewById(R.id.pollActivity_recyclerView_reply);
         pollActivity_editText_reply = findViewById(R.id.pollActivity_editText_reply);
@@ -246,6 +272,9 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
 
 
 
+
+
+
         //이미투표했는지 여부 확인해서 floating action button 색 넣기
         fabCheck(firebaseDatabase.getReference().child("user_contents").child(contentKey));
 
@@ -297,6 +326,50 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
                     }
                 });
 
+                //댓글의 좋아요 갯수 정렬
+                firebaseDatabase.getReference().child("reply").child(contentKey).addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        ArrayList<ReplyDTO> replyDTOS = new ArrayList<>();
+                        Iterator<DataSnapshot> replyDTOSIterator = dataSnapshot.getChildren().iterator();
+                        while (replyDTOSIterator.hasNext()) {
+                            final ReplyDTO replyDTO_ = replyDTOSIterator.next().getValue(ReplyDTO.class);
+                            replyDTOS.add(replyDTO_);
+                        }
+
+                        Collections.sort(replyDTOS, new Comparator<ReplyDTO>() {
+                            @Override
+                            public int compare(ReplyDTO o1, ReplyDTO o2) {
+
+                                if (o1.getLikeCount() < o2.getLikeCount()) {
+                                    return -1;
+
+                                } else if (o1.getLikeCount() > o2.getLikeCount()) {
+                                    return 1;
+
+                                } else {
+                                    return 0;
+                                }
+                            }
+                        });
+                        Collections.reverse(replyDTOS);//요3개를 댓글 베스트3로 넘겨줌
+//                        Log.d("lkj replyLike0", String.valueOf(replyDTOS.get(0).getLikeCount()));
+//                        Log.d("lkj replyLike1", String.valueOf(replyDTOS.get(1).getLikeCount()));
+//                        Log.d("lkj replyLike2", String.valueOf(replyDTOS.get(2).getLikeCount()));
+
+                        if (replyDTOS.isEmpty()) {
+                            return;
+                        } else {
+                            openBestReply(replyDTOS);
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+
                 firebaseDatabase.getReference().child("reply").child(contentKey).addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -318,8 +391,8 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
         });
 
 
+        //댓글 리사이클러뷰 스크롤은 PollSingleActivity에 포함되도록
         pollActivity_recyclerView_reply.setNestedScrollingEnabled(false);
-
         pollActivity_recyclerView_reply.setLayoutManager(new LinearLayoutManager(this){
             @Override
             public boolean canScrollVertically() {
@@ -707,36 +780,69 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
      */
 
 
-    //직업별 투표 결과
-    private void getStatisticsJob(int j, ArrayList<String> uid) {
-        int statisticsJob;
-        final ArrayList<String> pickerUid = new ArrayList<>();
-        for (int i = 0; i < j; i++) {
-            mDatabaseReferencePicker.child(uid.get(i)).addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
-                    Map<String, Object> user = (Map<String, Object>) dataSnapshot.getValue();
-                    Log.d("lkj job", user.get("job").toString());
+    //베스트댓글 보여주기
+    private void openBestReply(ArrayList<ReplyDTO> replyDTOS) {
+        if (!ACTIVITY_BESTREPLY_FLAG) {
+            //베스트3를 보여주는데 좋아요가 눌린 댓글수가 3개 미만일수도있으니
+            int bestReplyLikeCount = 3;
+            for (int i = 0; i < 3; i++) {
+                if (replyDTOS.get(i).getLikeCount() == 0) {
+                    bestReplyLikeCount --;
                 }
+            }
+            Log.d("lkj replyLikeCount", String.valueOf(bestReplyLikeCount));
+            if (bestReplyLikeCount == 3) {
+                linearLayout_bestReply0.setVisibility(View.VISIBLE);
+                linearLayout_bestReply1.setVisibility(View.VISIBLE);
+                linearLayout_bestReply2.setVisibility(View.VISIBLE);
 
-                @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) {
+                bestReply_id0.setText(replyDTOS.get(0).getId());
+                bestReply_reply0.setText(replyDTOS.get(0).getReply());
+                bestReply_date0.setText(replyDTOS.get(0).getDate());
+                bestReply_likeCount0.setText(String.valueOf(replyDTOS.get(0).getLikeCount()));
+                bestReply_id1.setText(replyDTOS.get(1).getId());
+                bestReply_reply1.setText(replyDTOS.get(1).getReply());
+                bestReply_date1.setText(replyDTOS.get(1).getDate());
+                bestReply_likeCount1.setText(String.valueOf(replyDTOS.get(1).getLikeCount()));
+                bestReply_id2.setText(replyDTOS.get(2).getId());
+                bestReply_reply2.setText(replyDTOS.get(2).getReply());
+                bestReply_date2.setText(replyDTOS.get(2).getDate());
+                bestReply_likeCount2.setText(String.valueOf(replyDTOS.get(2).getLikeCount()));
+            } else if (bestReplyLikeCount == 2) {
+                linearLayout_bestReply0.setVisibility(View.VISIBLE);
+                linearLayout_bestReply1.setVisibility(View.VISIBLE);
+                bestReply_id0.setText(replyDTOS.get(0).getId());
+                bestReply_reply0.setText(replyDTOS.get(0).getReply());
+                bestReply_date0.setText(replyDTOS.get(0).getDate());
+                bestReply_likeCount0.setText(String.valueOf(replyDTOS.get(0).getLikeCount()));
+                bestReply_id1.setText(replyDTOS.get(1).getId());
+                bestReply_reply1.setText(replyDTOS.get(1).getReply());
+                bestReply_date1.setText(replyDTOS.get(1).getDate());
+                bestReply_likeCount1.setText(String.valueOf(replyDTOS.get(1).getLikeCount()));
+            } else if (bestReplyLikeCount == 1) {
+                linearLayout_bestReply0.setVisibility(View.VISIBLE);
+                bestReply_id0.setText(replyDTOS.get(0).getId());
+                bestReply_reply0.setText(replyDTOS.get(0).getReply());
+                bestReply_date0.setText(replyDTOS.get(0).getDate());
+                bestReply_likeCount0.setText(String.valueOf(replyDTOS.get(0).getLikeCount()));
+            }
+            ACTIVITY_BESTREPLY_FLAG = true;
 
-                }
-            });
+        } else {
+            linearLayout_bestReply0.setVisibility(View.GONE);
+            linearLayout_bestReply1.setVisibility(View.GONE);
+            linearLayout_bestReply2.setVisibility(View.GONE);
+            ACTIVITY_BESTREPLY_FLAG = false;
         }
-    }
 
+    }
 
     //댓글펼치기
     private void openReply(int replyCount) {
         if (!ACTIVITY_REPLY_FLAG) {
-
             if (replyCount == 0){
                 pollActivity_editText_reply.setHint("아직 댓글이 없습니다. 댓글을 달아보세요!");
             }
-
             pollActivity_relativeLayout_reply.setFocusableInTouchMode(true);
             pollActivity_relativeLayout_reply.requestFocus();
             pollActivity_recyclerView_reply.setNestedScrollingEnabled(false);
@@ -745,9 +851,6 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
             pollActivity_button_replySend.setVisibility(View.VISIBLE);
             pollActivity_fab_result.setVisibility(View.GONE);
             ACTIVITY_REPLY_FLAG = true;
-
-
-
         } else {
             pollActivity_editText_reply.setText(null);//editText 초기화
             InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE); //키보드 숨기기
