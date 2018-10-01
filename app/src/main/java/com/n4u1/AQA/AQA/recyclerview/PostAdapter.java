@@ -198,6 +198,7 @@ public class PostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 }
 
 
+                //좋아요 버튼 클릭 이벤트
                 ((PostViewHolder) holder).imageView_like.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -277,7 +278,8 @@ public class PostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                         toast.show();
                     }
                 });
-                
+
+                //좋아요 버튼 클릭 이벤트
                 ((PostViewHolder1) holder).imageView_like.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -314,6 +316,12 @@ public class PostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                     }
                 });
 
+                if (contentDTOS.get(position).contentPicker.containsKey(auth.getCurrentUser().getUid())) {
+                    ((PostViewHolder1) holder).imageView_state.setImageResource(R.drawable.q);
+                } else {
+                    ((PostViewHolder1) holder).imageView_state.setImageResource(R.drawable.q_bg_w);
+                }
+
                 if (contentDTOS.get(position).likes.containsKey(auth.getCurrentUser().getUid())) {
                     ((PostViewHolder1) holder).imageView_like.setImageResource(R.drawable.ic_thumb_up_blue);
                     ((PostViewHolder1) holder).textView_likeCount.setText(String.valueOf(contentDTOS.get(position).likeCount));
@@ -336,14 +344,13 @@ public class PostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                     ((PostViewHolder1) holder).textView_userName.setText(contentDTOS.get(position).userID);
                 }
 
-                ((PostViewHolder1) holder).textView_contentType.setText(contentDTOS.get(position).contentType);
-                ((PostViewHolder1) holder).textView_hitCount.setText(String.valueOf(contentDTOS.get(position).contentHit));
+                ((PostViewHolder1)holder).textView_pollMode.setText(contentDTOS.get(position).pollMode + " / " + contentDTOS.get(position).itemViewType);
+                ((PostViewHolder1)holder).textView_contentType.setText(contentDTOS.get(position).contentType);
+                ((PostViewHolder1)holder).textView_hitCount.setText(String.valueOf(contentDTOS.get(position).contentHit));
                 ((PostViewHolder1)holder).textView_replyCount.setText(" [" + String.valueOf(contentDTOS.get(position).replyCount) + "]");
 
                 GlideApp.with(holder.itemView.getContext()).load(contentDTOS.get(position).imageUrl_0).centerCrop().thumbnail(Glide.with(holder.itemView.getContext()).load(R.drawable.loadingicon)).into(((PostViewHolder1) holder).imageView_postImg_0);
                 GlideApp.with(holder.itemView.getContext()).load(contentDTOS.get(position).imageUrl_1).centerCrop().thumbnail(Glide.with(holder.itemView.getContext()).load(R.drawable.loadingicon)).into(((PostViewHolder1) holder).imageView_postImg_1);
-
-
                 break;
 
             case ITEM_VIEW_TYPE_2:
@@ -366,6 +373,7 @@ public class PostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                     }
                 });
 
+                //좋아요 버튼 클릭 이벤트
                 ((PostViewHolder2) holder).imageView_like.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -427,6 +435,12 @@ public class PostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                         toast.show();
                     }
                 });
+
+                if (contentDTOS.get(position).contentPicker.containsKey(auth.getCurrentUser().getUid())) {
+                    ((PostViewHolder2) holder).imageView_state.setImageResource(R.drawable.q);
+                } else {
+                    ((PostViewHolder2) holder).imageView_state.setImageResource(R.drawable.q_bg_w);
+                }
                 if (contentDTOS.get(position).likes.containsKey(auth.getCurrentUser().getUid())) {
                     ((PostViewHolder2) holder).imageView_like.setImageResource(R.drawable.ic_thumb_up_blue);
                     ((PostViewHolder2) holder).textView_likeCount.setText(String.valueOf(contentDTOS.get(position).likeCount));
@@ -446,6 +460,8 @@ public class PostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 } else {
                     ((PostViewHolder2) holder).textView_userName.setText(contentDTOS.get(position).userID);
                 }
+
+                ((PostViewHolder2)holder).textView_pollMode.setText(contentDTOS.get(position).pollMode + " / " + contentDTOS.get(position).itemViewType);
                 ((PostViewHolder2) holder).textView_contentType.setText(contentDTOS.get(position).contentType);
                 ((PostViewHolder2) holder).textView_hitCount.setText(String.valueOf(contentDTOS.get(position).contentHit));
                 ((PostViewHolder2)holder).textView_replyCount.setText(" [" + String.valueOf(contentDTOS.get(position).replyCount) + "]");
@@ -480,6 +496,8 @@ public class PostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                         movePoll(position);
                     }
                 });
+
+                //좋아요 버튼 클릭 이벤트
                 ((PostViewHolder3) holder).imageView_like.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -544,6 +562,12 @@ public class PostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                         toast.show();
                     }
                 });
+
+                if (contentDTOS.get(position).contentPicker.containsKey(auth.getCurrentUser().getUid())) {
+                    ((PostViewHolder3) holder).imageView_state.setImageResource(R.drawable.q);
+                } else {
+                    ((PostViewHolder3) holder).imageView_state.setImageResource(R.drawable.q_bg_w);
+                }
                 if (contentDTOS.get(position).likes.containsKey(auth.getCurrentUser().getUid())) {
                     ((PostViewHolder3) holder).imageView_like.setImageResource(R.drawable.ic_thumb_up_blue);
                     ((PostViewHolder3) holder).textView_likeCount.setText(String.valueOf(contentDTOS.get(position).likeCount));
@@ -563,6 +587,7 @@ public class PostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 } else {
                     ((PostViewHolder3) holder).textView_userName.setText(contentDTOS.get(position).userID);
                 }
+                ((PostViewHolder3)holder).textView_pollMode.setText(contentDTOS.get(position).pollMode + " / " + contentDTOS.get(position).itemViewType);
                 ((PostViewHolder3) holder).textView_contentType.setText(contentDTOS.get(position).contentType);
                 ((PostViewHolder3) holder).textView_hitCount.setText(String.valueOf(contentDTOS.get(position).contentHit));
                 ((PostViewHolder3)holder).textView_replyCount.setText(" [" + String.valueOf(contentDTOS.get(position).replyCount) + "]");

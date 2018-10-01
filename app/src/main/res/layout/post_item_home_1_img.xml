@@ -116,7 +116,7 @@
                 android:textColor="#737373" />
 
             <TextView
-
+                android:id="@+id/textView_pollMode"
                 android:text="단일투표 / 3"
                 android:layout_weight="2"
                 android:layout_width="0dp"

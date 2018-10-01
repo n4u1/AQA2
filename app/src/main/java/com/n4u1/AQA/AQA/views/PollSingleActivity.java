@@ -785,47 +785,60 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
         if (!ACTIVITY_BESTREPLY_FLAG) {
             //베스트3를 보여주는데 좋아요가 눌린 댓글수가 3개 미만일수도있으니
             int bestReplyLikeCount = 3;
-            for (int i = 0; i < 3; i++) {
-                if (replyDTOS.get(i).getLikeCount() == 0) {
-                    bestReplyLikeCount --;
-                }
-            }
-            Log.d("lkj replyLikeCount", String.valueOf(bestReplyLikeCount));
-            if (bestReplyLikeCount == 3) {
-                linearLayout_bestReply0.setVisibility(View.VISIBLE);
-                linearLayout_bestReply1.setVisibility(View.VISIBLE);
-                linearLayout_bestReply2.setVisibility(View.VISIBLE);
+            try {
+                for (int i = 0; i < 3; i++) {
+//                    if (replyDTOS.get(i).getLikeCount() == 0 || replyDTOS.get(i).getLikeCount() == null) {
+                    if (replyDTOS.get(i).getLikeCount() == 0 || String.valueOf(replyDTOS.get(i).getLikeCount()).isEmpty()) {
+                        bestReplyLikeCount --;
+                    }
+                    Log.d("lkj replyLikeCount", String.valueOf(bestReplyLikeCount));
+                    if (bestReplyLikeCount == 3) {
+                        linearLayout_bestReply0.setVisibility(View.VISIBLE);
+                        linearLayout_bestReply1.setVisibility(View.VISIBLE);
+                        linearLayout_bestReply2.setVisibility(View.VISIBLE);
 
-                bestReply_id0.setText(replyDTOS.get(0).getId());
-                bestReply_reply0.setText(replyDTOS.get(0).getReply());
-                bestReply_date0.setText(replyDTOS.get(0).getDate());
-                bestReply_likeCount0.setText(String.valueOf(replyDTOS.get(0).getLikeCount()));
-                bestReply_id1.setText(replyDTOS.get(1).getId());
-                bestReply_reply1.setText(replyDTOS.get(1).getReply());
-                bestReply_date1.setText(replyDTOS.get(1).getDate());
-                bestReply_likeCount1.setText(String.valueOf(replyDTOS.get(1).getLikeCount()));
-                bestReply_id2.setText(replyDTOS.get(2).getId());
-                bestReply_reply2.setText(replyDTOS.get(2).getReply());
-                bestReply_date2.setText(replyDTOS.get(2).getDate());
-                bestReply_likeCount2.setText(String.valueOf(replyDTOS.get(2).getLikeCount()));
-            } else if (bestReplyLikeCount == 2) {
-                linearLayout_bestReply0.setVisibility(View.VISIBLE);
-                linearLayout_bestReply1.setVisibility(View.VISIBLE);
-                bestReply_id0.setText(replyDTOS.get(0).getId());
-                bestReply_reply0.setText(replyDTOS.get(0).getReply());
-                bestReply_date0.setText(replyDTOS.get(0).getDate());
-                bestReply_likeCount0.setText(String.valueOf(replyDTOS.get(0).getLikeCount()));
-                bestReply_id1.setText(replyDTOS.get(1).getId());
-                bestReply_reply1.setText(replyDTOS.get(1).getReply());
-                bestReply_date1.setText(replyDTOS.get(1).getDate());
-                bestReply_likeCount1.setText(String.valueOf(replyDTOS.get(1).getLikeCount()));
-            } else if (bestReplyLikeCount == 1) {
-                linearLayout_bestReply0.setVisibility(View.VISIBLE);
-                bestReply_id0.setText(replyDTOS.get(0).getId());
-                bestReply_reply0.setText(replyDTOS.get(0).getReply());
-                bestReply_date0.setText(replyDTOS.get(0).getDate());
-                bestReply_likeCount0.setText(String.valueOf(replyDTOS.get(0).getLikeCount()));
+                        bestReply_id0.setText(replyDTOS.get(0).getId());
+                        bestReply_reply0.setText(replyDTOS.get(0).getReply());
+                        bestReply_date0.setText(replyDTOS.get(0).getDate());
+                        bestReply_likeCount0.setText(String.valueOf(replyDTOS.get(0).getLikeCount()));
+                        bestReply_id1.setText(replyDTOS.get(1).getId());
+                        bestReply_reply1.setText(replyDTOS.get(1).getReply());
+                        bestReply_date1.setText(replyDTOS.get(1).getDate());
+                        bestReply_likeCount1.setText(String.valueOf(replyDTOS.get(1).getLikeCount()));
+                        bestReply_id2.setText(replyDTOS.get(2).getId());
+                        bestReply_reply2.setText(replyDTOS.get(2).getReply());
+                        bestReply_date2.setText(replyDTOS.get(2).getDate());
+                        bestReply_likeCount2.setText(String.valueOf(replyDTOS.get(2).getLikeCount()));
+                    } else if (bestReplyLikeCount == 2) {
+                        linearLayout_bestReply0.setVisibility(View.VISIBLE);
+                        linearLayout_bestReply1.setVisibility(View.VISIBLE);
+                        bestReply_id0.setText(replyDTOS.get(0).getId());
+                        bestReply_reply0.setText(replyDTOS.get(0).getReply());
+                        bestReply_date0.setText(replyDTOS.get(0).getDate());
+                        bestReply_likeCount0.setText(String.valueOf(replyDTOS.get(0).getLikeCount()));
+                        bestReply_id1.setText(replyDTOS.get(1).getId());
+                        bestReply_reply1.setText(replyDTOS.get(1).getReply());
+                        bestReply_date1.setText(replyDTOS.get(1).getDate());
+                        bestReply_likeCount1.setText(String.valueOf(replyDTOS.get(1).getLikeCount()));
+                    } else if (bestReplyLikeCount == 1) {
+                        linearLayout_bestReply0.setVisibility(View.VISIBLE);
+                        bestReply_id0.setText(replyDTOS.get(0).getId());
+                        bestReply_reply0.setText(replyDTOS.get(0).getReply());
+                        bestReply_date0.setText(replyDTOS.get(0).getDate());
+                        bestReply_likeCount0.setText(String.valueOf(replyDTOS.get(0).getLikeCount()));
+                    } else {
+
+                        linearLayout_bestReply0.setVisibility(View.GONE);
+                        linearLayout_bestReply1.setVisibility(View.GONE);
+                        linearLayout_bestReply2.setVisibility(View.GONE);
+                    }
+                }
+
+            } catch (Exception e) {
+                Log.w("lkj obr exti", e);
+
             }
+
             ACTIVITY_BESTREPLY_FLAG = true;
 
         } else {
