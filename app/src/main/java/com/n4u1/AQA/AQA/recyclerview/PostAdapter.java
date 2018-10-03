@@ -66,9 +66,6 @@ public class PostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                     super.onScrolled(recyclerView, dx, dy);
 
-                    Log.d("lkjRecyclerView1", String.valueOf(linearLayoutManager.getItemCount()));
-                    Log.d("lkjRecyclerView2", String.valueOf(linearLayoutManager.findLastVisibleItemPosition()));
-
                     totalItemCount = linearLayoutManager.getItemCount();
                     lastVisibleItem = linearLayoutManager.findLastVisibleItemPosition();
                     if (!loading && totalItemCount <= (lastVisibleItem + visibleThreshold)) {
@@ -283,7 +280,14 @@ public class PostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 ((PostViewHolder1) holder).imageView_like.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        onLikeClicked(firebaseDatabase.getReference().child("user_contents").child(uidLists.get(position)));
+                        if (contentDTOS.get(position).uid.equals(auth.getCurrentUser().getUid())) {
+                            Toast toast = Toast.makeText(mContext, contentDTOS.get(position).userID + "님의 투표입니다!", Toast.LENGTH_SHORT);
+                                    toast.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL, 0, 0);
+                                    toast.show();
+                        } else {
+                            onLikeClicked(firebaseDatabase.getReference().child("user_contents").child(uidLists.get(position)));
+                        }
+
                         mDatabase.getReference().child("user_contents").addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -330,8 +334,6 @@ public class PostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                     ((PostViewHolder1) holder).textView_likeCount.setText(String.valueOf(contentDTOS.get(position).likeCount));
                 }
 
-                Log.d("lkj...1", contentDTOS.get(position).title);
-                Log.d("lkj...1", contentDTOS.get(position).userID);
 
                 if (contentDTOS.get(position).title.length() >= 15) {
                     ((PostViewHolder1) holder).textView_title.setText(contentDTOS.get(position).title.substring(0,15) + "...");
@@ -377,7 +379,13 @@ public class PostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 ((PostViewHolder2) holder).imageView_like.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        onLikeClicked(firebaseDatabase.getReference().child("user_contents").child(uidLists.get(position)));
+                        if (contentDTOS.get(position).uid.equals(auth.getCurrentUser().getUid())) {
+                            Toast toast = Toast.makeText(mContext, contentDTOS.get(position).userID + "님의 투표입니다!", Toast.LENGTH_SHORT);
+                            toast.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL, 0, 0);
+                            toast.show();
+                        } else {
+                            onLikeClicked(firebaseDatabase.getReference().child("user_contents").child(uidLists.get(position)));
+                        }
                         mDatabase.getReference().child("user_contents").addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -501,7 +509,13 @@ public class PostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 ((PostViewHolder3) holder).imageView_like.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        onLikeClicked(firebaseDatabase.getReference().child("user_contents").child(uidLists.get(position)));
+                        if (contentDTOS.get(position).uid.equals(auth.getCurrentUser().getUid())) {
+                            Toast toast = Toast.makeText(mContext, contentDTOS.get(position).userID + "님의 투표입니다!", Toast.LENGTH_SHORT);
+                            toast.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL, 0, 0);
+                            toast.show();
+                        } else {
+                            onLikeClicked(firebaseDatabase.getReference().child("user_contents").child(uidLists.get(position)));
+                        }
                         mDatabase.getReference().child("user_contents").addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -568,6 +582,7 @@ public class PostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 } else {
                     ((PostViewHolder3) holder).imageView_state.setImageResource(R.drawable.q_bg_w);
                 }
+
                 if (contentDTOS.get(position).likes.containsKey(auth.getCurrentUser().getUid())) {
                     ((PostViewHolder3) holder).imageView_like.setImageResource(R.drawable.ic_thumb_up_blue);
                     ((PostViewHolder3) holder).textView_likeCount.setText(String.valueOf(contentDTOS.get(position).likeCount));

@@ -299,7 +299,28 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
         pollActivity_fab_result.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onResultClicked(firebaseDatabase.getReference().child("user_contents").child(contentKey), currentPick());
+
+                mDatabaseReferencePicker.child(auth.getCurrentUser().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        Map<String, Object> user = (Map<String, Object>) dataSnapshot.getValue();
+                        Object object = user.get("age");
+                        int currentAge = Integer.parseInt(object.toString());
+                        String currentGender = user.get("sex").toString();
+
+                        onResultClicked(firebaseDatabase.getReference().child("user_contents").child(contentKey), currentAge, currentGender);
+//                        String statisticsCodeTmp = addStatistics(contentDTO.statistics_code, currentPick(), currentGender, currentAge);
+////                                contentDTO.statistics_code = addStatistics(contentDTO.statistics_code, currentPick(), currentGender, currentAge);
+//                        mDatabaseReference.child("statistics_code").setValue(statisticsCodeTmp);
+
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+
             }
         });
 
@@ -784,60 +805,36 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
     private void openBestReply(ArrayList<ReplyDTO> replyDTOS) {
         if (!ACTIVITY_BESTREPLY_FLAG) {
             //베스트3를 보여주는데 좋아요가 눌린 댓글수가 3개 미만일수도있으니
-            int bestReplyLikeCount = 3;
+
             try {
-                for (int i = 0; i < 3; i++) {
-//                    if (replyDTOS.get(i).getLikeCount() == 0 || replyDTOS.get(i).getLikeCount() == null) {
-                    if (replyDTOS.get(i).getLikeCount() == 0 || String.valueOf(replyDTOS.get(i).getLikeCount()).isEmpty()) {
-                        bestReplyLikeCount --;
-                    }
-                    Log.d("lkj replyLikeCount", String.valueOf(bestReplyLikeCount));
-                    if (bestReplyLikeCount == 3) {
-                        linearLayout_bestReply0.setVisibility(View.VISIBLE);
-                        linearLayout_bestReply1.setVisibility(View.VISIBLE);
-                        linearLayout_bestReply2.setVisibility(View.VISIBLE);
-
-                        bestReply_id0.setText(replyDTOS.get(0).getId());
-                        bestReply_reply0.setText(replyDTOS.get(0).getReply());
-                        bestReply_date0.setText(replyDTOS.get(0).getDate());
-                        bestReply_likeCount0.setText(String.valueOf(replyDTOS.get(0).getLikeCount()));
-                        bestReply_id1.setText(replyDTOS.get(1).getId());
-                        bestReply_reply1.setText(replyDTOS.get(1).getReply());
-                        bestReply_date1.setText(replyDTOS.get(1).getDate());
-                        bestReply_likeCount1.setText(String.valueOf(replyDTOS.get(1).getLikeCount()));
-                        bestReply_id2.setText(replyDTOS.get(2).getId());
-                        bestReply_reply2.setText(replyDTOS.get(2).getReply());
-                        bestReply_date2.setText(replyDTOS.get(2).getDate());
-                        bestReply_likeCount2.setText(String.valueOf(replyDTOS.get(2).getLikeCount()));
-                    } else if (bestReplyLikeCount == 2) {
-                        linearLayout_bestReply0.setVisibility(View.VISIBLE);
-                        linearLayout_bestReply1.setVisibility(View.VISIBLE);
-                        bestReply_id0.setText(replyDTOS.get(0).getId());
-                        bestReply_reply0.setText(replyDTOS.get(0).getReply());
-                        bestReply_date0.setText(replyDTOS.get(0).getDate());
-                        bestReply_likeCount0.setText(String.valueOf(replyDTOS.get(0).getLikeCount()));
-                        bestReply_id1.setText(replyDTOS.get(1).getId());
-                        bestReply_reply1.setText(replyDTOS.get(1).getReply());
-                        bestReply_date1.setText(replyDTOS.get(1).getDate());
-                        bestReply_likeCount1.setText(String.valueOf(replyDTOS.get(1).getLikeCount()));
-                    } else if (bestReplyLikeCount == 1) {
-                        linearLayout_bestReply0.setVisibility(View.VISIBLE);
-                        bestReply_id0.setText(replyDTOS.get(0).getId());
-                        bestReply_reply0.setText(replyDTOS.get(0).getReply());
-                        bestReply_date0.setText(replyDTOS.get(0).getDate());
-                        bestReply_likeCount0.setText(String.valueOf(replyDTOS.get(0).getLikeCount()));
-                    } else {
-
-                        linearLayout_bestReply0.setVisibility(View.GONE);
-                        linearLayout_bestReply1.setVisibility(View.GONE);
-                        linearLayout_bestReply2.setVisibility(View.GONE);
-                    }
+                if (replyDTOS.get(0) != null && replyDTOS.get(0).likeCount > 0) {
+                    linearLayout_bestReply0.setVisibility(View.VISIBLE);
+                    bestReply_id0.setText(replyDTOS.get(0).getId());
+                    bestReply_reply0.setText(replyDTOS.get(0).getReply());
+                    bestReply_date0.setText(replyDTOS.get(0).getDate());
+                    bestReply_likeCount0.setText(String.valueOf(replyDTOS.get(0).getLikeCount()));
                 }
 
+                if (replyDTOS.get(1) != null && replyDTOS.get(1).likeCount > 0) {
+                    linearLayout_bestReply1.setVisibility(View.VISIBLE);
+                    bestReply_id1.setText(replyDTOS.get(1).getId());
+                    bestReply_reply1.setText(replyDTOS.get(1).getReply());
+                    bestReply_date1.setText(replyDTOS.get(1).getDate());
+                    bestReply_likeCount1.setText(String.valueOf(replyDTOS.get(1).getLikeCount()));
+                }
+
+                if (replyDTOS.get(2) != null && replyDTOS.get(2).likeCount > 0) {
+                    linearLayout_bestReply2.setVisibility(View.VISIBLE);
+                    bestReply_id2.setText(replyDTOS.get(2).getId());
+                    bestReply_reply2.setText(replyDTOS.get(2).getReply());
+                    bestReply_date2.setText(replyDTOS.get(2).getDate());
+                    bestReply_likeCount2.setText(String.valueOf(replyDTOS.get(2).getLikeCount()));
+                }
             } catch (Exception e) {
                 Log.w("lkj obr exti", e);
-
             }
+
+
 
             ACTIVITY_BESTREPLY_FLAG = true;
 
@@ -934,7 +931,7 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
     }
 
 
-    private void onResultClicked(final DatabaseReference postRef, int candidate) {
+    private void onResultClicked(final DatabaseReference postRef, final int currentAge, final String currentGender) {
         final int contentAmount = getIntent().getIntExtra("itemViewType", 0);
         Log.d("lkj contentAmount", String.valueOf(contentAmount));
         postRef.runTransaction(new Transaction.Handler() {
@@ -985,25 +982,27 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
                         if (currentPick() == 9)
                             contentDTO.candidateScore_9 = contentDTO.candidateScore_9 + 1;
 
+                        contentDTO.statistics_code = addStatistics(contentDTO.statistics_code, currentPick(), currentGender, currentAge);
 
 //                        tmp.add(Integer.parseInt(object0.toString()));
-                        mDatabaseReferencePicker.child(auth.getCurrentUser().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                Map<String, Object> user = (Map<String, Object>) dataSnapshot.getValue();
-                                Object object = user.get("age");
-                                int currentAge = Integer.parseInt(object.toString());
-                                String currentGender = user.get("sex").toString();
-                                String statisticsCodeTmp = addStatistics(contentDTO.statistics_code, currentPick(), currentGender, currentAge);
-                                mDatabaseReference.child("statistics_code").setValue(statisticsCodeTmp);
-
-                            }
-
-                            @Override
-                            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                            }
-                        });
+//                        mDatabaseReferencePicker.child(auth.getCurrentUser().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+//                            @Override
+//                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//                                Map<String, Object> user = (Map<String, Object>) dataSnapshot.getValue();
+//                                Object object = user.get("age");
+//                                int currentAge = Integer.parseInt(object.toString());
+//                                String currentGender = user.get("sex").toString();
+//                                String statisticsCodeTmp = addStatistics(contentDTO.statistics_code, currentPick(), currentGender, currentAge);
+////                                contentDTO.statistics_code = addStatistics(contentDTO.statistics_code, currentPick(), currentGender, currentAge);
+//                                mDatabaseReference.child("statistics_code").setValue(statisticsCodeTmp);
+//
+//                            }
+//
+//                            @Override
+//                            public void onCancelled(@NonNull DatabaseError databaseError) {
+//
+//                            }
+//                        });
 
                         //몇변에 투표했는지 users/pickContent:N
                         contentDTO.contentPicker.put(auth.getCurrentUser().getUid(), currentPick());

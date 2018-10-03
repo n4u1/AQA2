@@ -137,19 +137,19 @@
                     android:textSize="14dp" />
             </LinearLayout>
 
-            <!--투표하지 않은 게시물 입니다-->
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="#efefef" />
+            <!--&lt;!&ndash;투표하지 않은 게시물 입니다&ndash;&gt;-->
+            <!--<View-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="1dp"-->
+                <!--android:background="#efefef" />-->
 
-            <TextView
-                android:hint="투표에 참여해보세요!"
-                android:id="@+id/pollActivity_textView_pollState"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:textSize="16dp" />
+            <!--<TextView-->
+                <!--android:hint="투표에 참여해보세요!"-->
+                <!--android:id="@+id/pollActivity_textView_pollState"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_marginTop="8dp"-->
+                <!--android:textSize="16dp" />-->
 
             <!--내용-->
             <View

@@ -295,7 +295,27 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
             @Override
             public void onClick(View v) {
 
-                onResultClicked(firebaseDatabase.getReference().child("user_contents").child(contentKey), currentPick());
+
+                mDatabaseReferencePicker.child(auth.getCurrentUser().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        Map<String, Object> user = (Map<String, Object>) dataSnapshot.getValue();
+                        Object object = user.get("age");
+                        int currentAge = Integer.parseInt(object.toString());
+                        String currentGender = user.get("sex").toString();
+
+                        onResultClicked(firebaseDatabase.getReference().child("user_contents").child(contentKey), currentAge, currentGender);
+//                        String statisticsCodeTmp = addStatistics(contentDTO.statistics_code, currentPick(), currentGender, currentAge);
+////                                contentDTO.statistics_code = addStatistics(contentDTO.statistics_code, currentPick(), currentGender, currentAge);
+//                        mDatabaseReference.child("statistics_code").setValue(statisticsCodeTmp);
+
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
             }
         });
 
@@ -789,66 +809,38 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
      */
 
 
-
     //베스트댓글 보여주기
     private void openBestReply(ArrayList<ReplyDTO> replyDTOS) {
         if (!ACTIVITY_BESTREPLY_FLAG) {
             //베스트3를 보여주는데 좋아요가 눌린 댓글수가 3개 미만일수도있으니
-            int bestReplyLikeCount = 3;
 
             try {
-
-                for (int i = 0; i < 3; i++) {
-                    if (replyDTOS.get(i).getLikeCount() == 0) {
-                        bestReplyLikeCount --;
-                    }
-                    Log.d("lkj replyLikeCount", String.valueOf(bestReplyLikeCount));
-
-                    if (bestReplyLikeCount == 3) {
-                        linearLayout_bestReply0.setVisibility(View.VISIBLE);
-                        linearLayout_bestReply1.setVisibility(View.VISIBLE);
-                        linearLayout_bestReply2.setVisibility(View.VISIBLE);
-
-                        bestReply_id0.setText(replyDTOS.get(0).getId());
-                        bestReply_reply0.setText(replyDTOS.get(0).getReply());
-                        bestReply_date0.setText(replyDTOS.get(0).getDate());
-                        bestReply_likeCount0.setText(String.valueOf(replyDTOS.get(0).getLikeCount()));
-                        bestReply_id1.setText(replyDTOS.get(1).getId());
-                        bestReply_reply1.setText(replyDTOS.get(1).getReply());
-                        bestReply_date1.setText(replyDTOS.get(1).getDate());
-                        bestReply_likeCount1.setText(String.valueOf(replyDTOS.get(1).getLikeCount()));
-                        bestReply_id2.setText(replyDTOS.get(2).getId());
-                        bestReply_reply2.setText(replyDTOS.get(2).getReply());
-                        bestReply_date2.setText(replyDTOS.get(2).getDate());
-                        bestReply_likeCount2.setText(String.valueOf(replyDTOS.get(2).getLikeCount()));
-                    } else if (bestReplyLikeCount == 2) {
-                        linearLayout_bestReply0.setVisibility(View.VISIBLE);
-                        linearLayout_bestReply1.setVisibility(View.VISIBLE);
-                        bestReply_id0.setText(replyDTOS.get(0).getId());
-                        bestReply_reply0.setText(replyDTOS.get(0).getReply());
-                        bestReply_date0.setText(replyDTOS.get(0).getDate());
-                        bestReply_likeCount0.setText(String.valueOf(replyDTOS.get(0).getLikeCount()));
-                        bestReply_id1.setText(replyDTOS.get(1).getId());
-                        bestReply_reply1.setText(replyDTOS.get(1).getReply());
-                        bestReply_date1.setText(replyDTOS.get(1).getDate());
-                        bestReply_likeCount1.setText(String.valueOf(replyDTOS.get(1).getLikeCount()));
-                    } else if (bestReplyLikeCount == 1) {
-                        linearLayout_bestReply0.setVisibility(View.VISIBLE);
-                        bestReply_id0.setText(replyDTOS.get(0).getId());
-                        bestReply_reply0.setText(replyDTOS.get(0).getReply());
-                        bestReply_date0.setText(replyDTOS.get(0).getDate());
-                        bestReply_likeCount0.setText(String.valueOf(replyDTOS.get(0).getLikeCount()));
-                    }
+                if (replyDTOS.get(0) != null && replyDTOS.get(0).likeCount > 0) {
+                    linearLayout_bestReply0.setVisibility(View.VISIBLE);
+                    bestReply_id0.setText(replyDTOS.get(0).getId());
+                    bestReply_reply0.setText(replyDTOS.get(0).getReply());
+                    bestReply_date0.setText(replyDTOS.get(0).getDate());
+                    bestReply_likeCount0.setText(String.valueOf(replyDTOS.get(0).getLikeCount()));
                 }
 
+                if (replyDTOS.get(1) != null && replyDTOS.get(1).likeCount > 0) {
+                    linearLayout_bestReply1.setVisibility(View.VISIBLE);
+                    bestReply_id1.setText(replyDTOS.get(1).getId());
+                    bestReply_reply1.setText(replyDTOS.get(1).getReply());
+                    bestReply_date1.setText(replyDTOS.get(1).getDate());
+                    bestReply_likeCount1.setText(String.valueOf(replyDTOS.get(1).getLikeCount()));
+                }
+
+                if (replyDTOS.get(2) != null && replyDTOS.get(2).likeCount > 0) {
+                    linearLayout_bestReply2.setVisibility(View.VISIBLE);
+                    bestReply_id2.setText(replyDTOS.get(2).getId());
+                    bestReply_reply2.setText(replyDTOS.get(2).getReply());
+                    bestReply_date2.setText(replyDTOS.get(2).getDate());
+                    bestReply_likeCount2.setText(String.valueOf(replyDTOS.get(2).getLikeCount()));
+                }
             } catch (Exception e) {
                 Log.w("lkj obr exti", e);
-
             }
-
-
-
-
 
             ACTIVITY_BESTREPLY_FLAG = true;
 
@@ -927,7 +919,7 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
     }
 
 
-    private void onResultClicked(final DatabaseReference postRef, int candidate) {
+    private void onResultClicked(final DatabaseReference postRef, final int currentAge, final String currentGender) {
         contentAmount = getIntent().getIntExtra("itemViewType", 0);
         Log.d("lkj contentAmount", String.valueOf(contentAmount));
         postRef.runTransaction(new Transaction.Handler() {
@@ -1032,26 +1024,8 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
 
 
 
+                        contentDTO.statistics_code = addStatistics(contentDTO.statistics_code, currentRankingPick(), currentGender, currentAge);
 
-//                        tmp.add(Integer.parseInt(object0.toString()));
-                        mDatabaseReferencePicker.child(auth.getCurrentUser().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                Map<String, Object> user = (Map<String, Object>) dataSnapshot.getValue();
-                                Object object = user.get("age");
-                                int currentAge = Integer.parseInt(object.toString());
-                                String currentGender = user.get("sex").toString();
-                                mDatabaseReference.child("statistics_code").setValue(
-                                        addStatistics(contentDTO.statistics_code, currentPick(), currentGender, currentAge)
-                                );
-
-                            }
-
-                            @Override
-                            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                            }
-                        });
 
                         //몇변에 투표했는지 users/pickContent:100
                         contentDTO.contentPicker.put(auth.getCurrentUser().getUid(), currentPick());
@@ -1898,8 +1872,8 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
         return super.onOptionsItemSelected(item);
     }
 
-    //picker의 현재픽,성별,나이 가져와서 통계항목에 +1
-    private String addStatistics(String statistics_code, int currentPick, String gender, int age) {
+    //picker의 현재픽,성별,나이 가져와서 통계항목에 + n
+    private String addStatistics(String statistics_code, ArrayList<Integer> currentPickScore, String gender, int age) {
         String[] stringArray = null;
         stringArray = statistics_code.split(":");
         int[] tmpStatistics = new int[stringArray.length];
@@ -1908,887 +1882,239 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
         }
 
         if (gender.equals("여")) {
-            switch (currentPick) {
-                case 0:
-                    tmpStatistics[0]++;
-                    break;
-                case 1:
-                    tmpStatistics[1]++;
-                    break;
-                case 2:
-                    tmpStatistics[2]++;
-                    break;
-                case 3:
-                    tmpStatistics[3]++;
-                    break;
-                case 4:
-                    tmpStatistics[4]++;
-                    break;
-                case 5:
-                    tmpStatistics[5]++;
-                    break;
-                case 6:
-                    tmpStatistics[6]++;
-                    break;
-                case 7:
-                    tmpStatistics[7]++;
-                    break;
-                case 8:
-                    tmpStatistics[8]++;
-                    break;
-                case 9:
-                    tmpStatistics[9]++;
-                    break;
+            try {
+                for (int i = 0; i < 10; i++) {
+                    tmpStatistics[i] = tmpStatistics[i] + currentPickScore.get(i);
+                }
+            } catch (Exception e) {
+                Log.w("lkj exception", e);
             }
+
+
         }
         if (gender.equals("남")) {
-            switch (currentPick) {
-                case 0:
-                    tmpStatistics[10]++;
-                    break;
-                case 1:
-                    tmpStatistics[11]++;
-                    break;
-                case 2:
-                    tmpStatistics[12]++;
-                    break;
-                case 3:
-                    tmpStatistics[13]++;
-                    break;
-                case 4:
-                    tmpStatistics[14]++;
-                    break;
-                case 5:
-                    tmpStatistics[15]++;
-                    break;
-                case 6:
-                    tmpStatistics[16]++;
-                    break;
-                case 7:
-                    tmpStatistics[17]++;
-                    break;
-                case 8:
-                    tmpStatistics[18]++;
-                    break;
-                case 9:
-                    tmpStatistics[19]++;
-                    break;
+            try {
+                for (int i = 10; i < 20; i++) {
+                    tmpStatistics[i] = tmpStatistics[i] + currentPickScore.get(i-10);
+                }
+            } catch (Exception e) {
+                Log.w("lkj exception", e);
             }
         }
         if (age == 10 || age == 11 || age == 12) {
-            switch (currentPick) {
-                case 0:
-                    tmpStatistics[20]++;
-                    break;
-                case 1:
-                    tmpStatistics[21]++;
-                    break;
-                case 2:
-                    tmpStatistics[22]++;
-                    break;
-                case 3:
-                    tmpStatistics[23]++;
-                    break;
-                case 4:
-                    tmpStatistics[24]++;
-                    break;
-                case 5:
-                    tmpStatistics[25]++;
-                    break;
-                case 6:
-                    tmpStatistics[26]++;
-                    break;
-                case 7:
-                    tmpStatistics[27]++;
-                    break;
-                case 8:
-                    tmpStatistics[28]++;
-                    break;
-                case 9:
-                    tmpStatistics[29]++;
-                    break;
+            try {
+                for (int i = 20; i < 30; i++) {
+                    tmpStatistics[i] = tmpStatistics[i] + currentPickScore.get(i-20);
+                }
+            } catch (Exception e) {
+                Log.w("lkj exception", e);
             }
         }
         if (age == 13 || age == 14 || age == 15 || age == 16) {
-            switch (currentPick) {
-                case 0:
-                    tmpStatistics[30]++;
-                    break;
-                case 1:
-                    tmpStatistics[31]++;
-                    break;
-                case 2:
-                    tmpStatistics[32]++;
-                    break;
-                case 3:
-                    tmpStatistics[33]++;
-                    break;
-                case 4:
-                    tmpStatistics[34]++;
-                    break;
-                case 5:
-                    tmpStatistics[35]++;
-                    break;
-                case 6:
-                    tmpStatistics[36]++;
-                    break;
-                case 7:
-                    tmpStatistics[37]++;
-                    break;
-                case 8:
-                    tmpStatistics[38]++;
-                    break;
-                case 9:
-                    tmpStatistics[39]++;
-                    break;
+            try {
+                for (int i = 30; i < 40; i++) {
+                    tmpStatistics[i] = tmpStatistics[i] + currentPickScore.get(i-30);
+                }
+            } catch (Exception e) {
+                Log.w("lkj exception", e);
             }
         }
         if (age == 17 || age == 18 || age == 19) {
-            switch (currentPick) {
-                case 0:
-                    tmpStatistics[40]++;
-                    break;
-                case 1:
-                    tmpStatistics[41]++;
-                    break;
-                case 2:
-                    tmpStatistics[42]++;
-                    break;
-                case 3:
-                    tmpStatistics[43]++;
-                    break;
-                case 4:
-                    tmpStatistics[44]++;
-                    break;
-                case 5:
-                    tmpStatistics[45]++;
-                    break;
-                case 6:
-                    tmpStatistics[46]++;
-                    break;
-                case 7:
-                    tmpStatistics[47]++;
-                    break;
-                case 8:
-                    tmpStatistics[48]++;
-                    break;
-                case 9:
-                    tmpStatistics[49]++;
-                    break;
+            try {
+                for (int i = 40; i < 50; i++) {
+                    tmpStatistics[i] = tmpStatistics[i] + currentPickScore.get(i-40);
+                }
+            } catch (Exception e) {
+                Log.w("lkj exception", e);
             }
         }
         if (age == 20 || age == 21 || age == 22) {
-            switch (currentPick) {
-                case 0:
-                    tmpStatistics[50]++;
-                    break;
-                case 1:
-                    tmpStatistics[51]++;
-                    break;
-                case 2:
-                    tmpStatistics[52]++;
-                    break;
-                case 3:
-                    tmpStatistics[53]++;
-                    break;
-                case 4:
-                    tmpStatistics[54]++;
-                    break;
-                case 5:
-                    tmpStatistics[55]++;
-                    break;
-                case 6:
-                    tmpStatistics[56]++;
-                    break;
-                case 7:
-                    tmpStatistics[57]++;
-                    break;
-                case 8:
-                    tmpStatistics[58]++;
-                    break;
-                case 9:
-                    tmpStatistics[59]++;
-                    break;
+            try {
+                for (int i = 50; i < 60; i++) {
+                    tmpStatistics[i] = tmpStatistics[i] + currentPickScore.get(i-50);
+                }
+            } catch (Exception e) {
+                Log.w("lkj exception", e);
             }
         }
         if (age == 23 || age == 24 || age == 25 || age == 26) {
-            switch (currentPick) {
-                case 0:
-                    tmpStatistics[60]++;
-                    break;
-                case 1:
-                    tmpStatistics[61]++;
-                    break;
-                case 2:
-                    tmpStatistics[62]++;
-                    break;
-                case 3:
-                    tmpStatistics[63]++;
-                    break;
-                case 4:
-                    tmpStatistics[64]++;
-                    break;
-                case 5:
-                    tmpStatistics[65]++;
-                    break;
-                case 6:
-                    tmpStatistics[66]++;
-                    break;
-                case 7:
-                    tmpStatistics[67]++;
-                    break;
-                case 8:
-                    tmpStatistics[68]++;
-                    break;
-                case 9:
-                    tmpStatistics[69]++;
-                    break;
+            try {
+                for (int i = 60; i < 70; i++) {
+                    tmpStatistics[i] = tmpStatistics[i] + currentPickScore.get(i-60);
+                }
+            } catch (Exception e) {
+                Log.w("lkj exception", e);
             }
         }
         if (age == 27 || age == 28 || age == 29) {
-            switch (currentPick) {
-                case 0:
-                    tmpStatistics[70]++;
-                    break;
-                case 1:
-                    tmpStatistics[71]++;
-                    break;
-                case 2:
-                    tmpStatistics[72]++;
-                    break;
-                case 3:
-                    tmpStatistics[73]++;
-                    break;
-                case 4:
-                    tmpStatistics[74]++;
-                    break;
-                case 5:
-                    tmpStatistics[75]++;
-                    break;
-                case 6:
-                    tmpStatistics[76]++;
-                    break;
-                case 7:
-                    tmpStatistics[77]++;
-                    break;
-                case 8:
-                    tmpStatistics[78]++;
-                    break;
-                case 9:
-                    tmpStatistics[79]++;
-                    break;
+            try {
+                for (int i = 70; i < 80; i++) {
+                    tmpStatistics[i] = tmpStatistics[i] + currentPickScore.get(i-70);
+                }
+            } catch (Exception e) {
+                Log.w("lkj exception", e);
             }
         }
         if (age == 30 || age == 31 || age == 32) {
-            switch (currentPick) {
-                case 0:
-                    tmpStatistics[80]++;
-                    break;
-                case 1:
-                    tmpStatistics[81]++;
-                    break;
-                case 2:
-                    tmpStatistics[82]++;
-                    break;
-                case 3:
-                    tmpStatistics[83]++;
-                    break;
-                case 4:
-                    tmpStatistics[84]++;
-                    break;
-                case 5:
-                    tmpStatistics[85]++;
-                    break;
-                case 6:
-                    tmpStatistics[86]++;
-                    break;
-                case 7:
-                    tmpStatistics[87]++;
-                    break;
-                case 8:
-                    tmpStatistics[88]++;
-                    break;
-                case 9:
-                    tmpStatistics[89]++;
-                    break;
+            try {
+                for (int i = 80; i < 90; i++) {
+                    tmpStatistics[i] = tmpStatistics[i] + currentPickScore.get(i-80);
+                }
+            } catch (Exception e) {
+                Log.w("lkj exception", e);
             }
         }
         if (age == 33 || age == 34 || age == 35 || age == 36) {
-            switch (currentPick) {
-                case 0:
-                    tmpStatistics[90]++;
-                    break;
-                case 1:
-                    tmpStatistics[91]++;
-                    break;
-                case 2:
-                    tmpStatistics[92]++;
-                    break;
-                case 3:
-                    tmpStatistics[93]++;
-                    break;
-                case 4:
-                    tmpStatistics[94]++;
-                    break;
-                case 5:
-                    tmpStatistics[95]++;
-                    break;
-                case 6:
-                    tmpStatistics[96]++;
-                    break;
-                case 7:
-                    tmpStatistics[97]++;
-                    break;
-                case 8:
-                    tmpStatistics[98]++;
-                    break;
-                case 9:
-                    tmpStatistics[99]++;
-                    break;
+            try {
+                for (int i = 90; i < 100; i++) {
+                    tmpStatistics[i] = tmpStatistics[i] + currentPickScore.get(i-90);
+                }
+            } catch (Exception e) {
+                Log.w("lkj exception", e);
             }
         }
         if (age == 37 || age == 38 || age == 39) {
-            switch (currentPick) {
-                case 0:
-                    tmpStatistics[100]++;
-                    break;
-                case 1:
-                    tmpStatistics[101]++;
-                    break;
-                case 2:
-                    tmpStatistics[102]++;
-                    break;
-                case 3:
-                    tmpStatistics[103]++;
-                    break;
-                case 4:
-                    tmpStatistics[104]++;
-                    break;
-                case 5:
-                    tmpStatistics[105]++;
-                    break;
-                case 6:
-                    tmpStatistics[106]++;
-                    break;
-                case 7:
-                    tmpStatistics[107]++;
-                    break;
-                case 8:
-                    tmpStatistics[108]++;
-                    break;
-                case 9:
-                    tmpStatistics[109]++;
-                    break;
+            try {
+                for (int i = 100; i < 110; i++) {
+                    tmpStatistics[i] = tmpStatistics[i] + currentPickScore.get(i-100);
+                }
+            } catch (Exception e) {
+                Log.w("lkj exception", e);
             }
         }
         if (age == 40 || age == 41 || age == 42) {
-            switch (currentPick) {
-                case 0:
-                    tmpStatistics[110]++;
-                    break;
-                case 1:
-                    tmpStatistics[111]++;
-                    break;
-                case 2:
-                    tmpStatistics[112]++;
-                    break;
-                case 3:
-                    tmpStatistics[113]++;
-                    break;
-                case 4:
-                    tmpStatistics[114]++;
-                    break;
-                case 5:
-                    tmpStatistics[115]++;
-                    break;
-                case 6:
-                    tmpStatistics[116]++;
-                    break;
-                case 7:
-                    tmpStatistics[117]++;
-                    break;
-                case 8:
-                    tmpStatistics[118]++;
-                    break;
-                case 9:
-                    tmpStatistics[119]++;
-                    break;
+            try {
+                for (int i = 110; i < 120; i++) {
+                    tmpStatistics[i] = tmpStatistics[i] + currentPickScore.get(i-110);
+                }
+            } catch (Exception e) {
+                Log.w("lkj exception", e);
             }
         }
         if (age == 43 || age == 44 || age == 45 || age == 46) {
-            switch (currentPick) {
-                case 0:
-                    tmpStatistics[120]++;
-                    break;
-                case 1:
-                    tmpStatistics[121]++;
-                    break;
-                case 2:
-                    tmpStatistics[122]++;
-                    break;
-                case 3:
-                    tmpStatistics[123]++;
-                    break;
-                case 4:
-                    tmpStatistics[124]++;
-                    break;
-                case 5:
-                    tmpStatistics[125]++;
-                    break;
-                case 6:
-                    tmpStatistics[126]++;
-                    break;
-                case 7:
-                    tmpStatistics[127]++;
-                    break;
-                case 8:
-                    tmpStatistics[128]++;
-                    break;
-                case 9:
-                    tmpStatistics[129]++;
-                    break;
+            try {
+                for (int i = 120; i < 130; i++) {
+                    tmpStatistics[i] = tmpStatistics[i] + currentPickScore.get(i-120);
+                }
+            } catch (Exception e) {
+                Log.w("lkj exception", e);
             }
         }
         if (age == 47 || age == 48 || age == 49) {
-            switch (currentPick) {
-                case 0:
-                    tmpStatistics[130]++;
-                    break;
-                case 1:
-                    tmpStatistics[131]++;
-                    break;
-                case 2:
-                    tmpStatistics[132]++;
-                    break;
-                case 3:
-                    tmpStatistics[133]++;
-                    break;
-                case 4:
-                    tmpStatistics[134]++;
-                    break;
-                case 5:
-                    tmpStatistics[135]++;
-                    break;
-                case 6:
-                    tmpStatistics[136]++;
-                    break;
-                case 7:
-                    tmpStatistics[137]++;
-                    break;
-                case 8:
-                    tmpStatistics[138]++;
-                    break;
-                case 9:
-                    tmpStatistics[139]++;
-                    break;
+            try {
+                for (int i = 130; i < 140; i++) {
+                    tmpStatistics[i] = tmpStatistics[i] + currentPickScore.get(i-130);
+                }
+            } catch (Exception e) {
+                Log.w("lkj exception", e);
             }
         }
         if (age == 50 || age == 51 || age == 52) {
-            switch (currentPick) {
-                case 0:
-                    tmpStatistics[140]++;
-                    break;
-                case 1:
-                    tmpStatistics[141]++;
-                    break;
-                case 2:
-                    tmpStatistics[142]++;
-                    break;
-                case 3:
-                    tmpStatistics[143]++;
-                    break;
-                case 4:
-                    tmpStatistics[144]++;
-                    break;
-                case 5:
-                    tmpStatistics[145]++;
-                    break;
-                case 6:
-                    tmpStatistics[146]++;
-                    break;
-                case 7:
-                    tmpStatistics[147]++;
-                    break;
-                case 8:
-                    tmpStatistics[148]++;
-                    break;
-                case 9:
-                    tmpStatistics[149]++;
-                    break;
+            try {
+                for (int i = 140; i < 150; i++) {
+                    tmpStatistics[i] = tmpStatistics[i] + currentPickScore.get(i-140);
+                }
+            } catch (Exception e) {
+                Log.w("lkj exception", e);
             }
         }
         if (age == 53 || age == 54 || age == 55 || age == 56) {
-            switch (currentPick) {
-                case 0:
-                    tmpStatistics[150]++;
-                    break;
-                case 1:
-                    tmpStatistics[151]++;
-                    break;
-                case 2:
-                    tmpStatistics[152]++;
-                    break;
-                case 3:
-                    tmpStatistics[153]++;
-                    break;
-                case 4:
-                    tmpStatistics[154]++;
-                    break;
-                case 5:
-                    tmpStatistics[155]++;
-                    break;
-                case 6:
-                    tmpStatistics[156]++;
-                    break;
-                case 7:
-                    tmpStatistics[157]++;
-                    break;
-                case 8:
-                    tmpStatistics[158]++;
-                    break;
-                case 9:
-                    tmpStatistics[159]++;
-                    break;
+            try {
+                for (int i = 150; i < 160; i++) {
+                    tmpStatistics[i] = tmpStatistics[i] + currentPickScore.get(i-150);
+                }
+            } catch (Exception e) {
+                Log.w("lkj exception", e);
             }
         }
         if (age == 57 || age == 58 || age == 59) {
-            switch (currentPick) {
-                case 0:
-                    tmpStatistics[160]++;
-                    break;
-                case 1:
-                    tmpStatistics[161]++;
-                    break;
-                case 2:
-                    tmpStatistics[162]++;
-                    break;
-                case 3:
-                    tmpStatistics[163]++;
-                    break;
-                case 4:
-                    tmpStatistics[164]++;
-                    break;
-                case 5:
-                    tmpStatistics[165]++;
-                    break;
-                case 6:
-                    tmpStatistics[166]++;
-                    break;
-                case 7:
-                    tmpStatistics[167]++;
-                    break;
-                case 8:
-                    tmpStatistics[168]++;
-                    break;
-                case 9:
-                    tmpStatistics[169]++;
-                    break;
+            try {
+                for (int i = 160; i < 170; i++) {
+                    tmpStatistics[i] = tmpStatistics[i] + currentPickScore.get(i-160);
+                }
+            } catch (Exception e) {
+                Log.w("lkj exception", e);
             }
         }
         if (age == 60 || age == 61 || age == 62) {
-            switch (currentPick) {
-                case 0:
-                    tmpStatistics[170]++;
-                    break;
-                case 1:
-                    tmpStatistics[171]++;
-                    break;
-                case 2:
-                    tmpStatistics[172]++;
-                    break;
-                case 3:
-                    tmpStatistics[173]++;
-                    break;
-                case 4:
-                    tmpStatistics[174]++;
-                    break;
-                case 5:
-                    tmpStatistics[175]++;
-                    break;
-                case 6:
-                    tmpStatistics[176]++;
-                    break;
-                case 7:
-                    tmpStatistics[177]++;
-                    break;
-                case 8:
-                    tmpStatistics[178]++;
-                    break;
-                case 9:
-                    tmpStatistics[179]++;
-                    break;
+            try {
+                for (int i = 170; i < 180; i++) {
+                    tmpStatistics[i] = tmpStatistics[i] + currentPickScore.get(i-170);
+                }
+            } catch (Exception e) {
+                Log.w("lkj exception", e);
             }
         }
         if (age == 63 || age == 64 || age == 65 || age == 66) {
-            switch (currentPick) {
-                case 0:
-                    tmpStatistics[180]++;
-                    break;
-                case 1:
-                    tmpStatistics[181]++;
-                    break;
-                case 2:
-                    tmpStatistics[182]++;
-                    break;
-                case 3:
-                    tmpStatistics[183]++;
-                    break;
-                case 4:
-                    tmpStatistics[184]++;
-                    break;
-                case 5:
-                    tmpStatistics[185]++;
-                    break;
-                case 6:
-                    tmpStatistics[186]++;
-                    break;
-                case 7:
-                    tmpStatistics[187]++;
-                    break;
-                case 8:
-                    tmpStatistics[188]++;
-                    break;
-                case 9:
-                    tmpStatistics[189]++;
-                    break;
+            try {
+                for (int i = 180; i < 190; i++) {
+                    tmpStatistics[i] = tmpStatistics[i] + currentPickScore.get(i-180);
+                }
+            } catch (Exception e) {
+                Log.w("lkj exception", e);
             }
         }
         if (age == 67 || age == 68 || age == 69) {
-            switch (currentPick) {
-                case 0:
-                    tmpStatistics[190]++;
-                    break;
-                case 1:
-                    tmpStatistics[191]++;
-                    break;
-                case 2:
-                    tmpStatistics[192]++;
-                    break;
-                case 3:
-                    tmpStatistics[193]++;
-                    break;
-                case 4:
-                    tmpStatistics[194]++;
-                    break;
-                case 5:
-                    tmpStatistics[195]++;
-                    break;
-                case 6:
-                    tmpStatistics[196]++;
-                    break;
-                case 7:
-                    tmpStatistics[197]++;
-                    break;
-                case 8:
-                    tmpStatistics[198]++;
-                    break;
-                case 9:
-                    tmpStatistics[199]++;
-                    break;
+            try {
+                for (int i = 190; i < 200; i++) {
+                    tmpStatistics[i] = tmpStatistics[i] + currentPickScore.get(i-190);
+                }
+            } catch (Exception e) {
+                Log.w("lkj exception", e);
             }
         }
         if (age == 70 || age == 71 || age == 72) {
-            switch (currentPick) {
-                case 0:
-                    tmpStatistics[200]++;
-                    break;
-                case 1:
-                    tmpStatistics[201]++;
-                    break;
-                case 2:
-                    tmpStatistics[202]++;
-                    break;
-                case 3:
-                    tmpStatistics[203]++;
-                    break;
-                case 4:
-                    tmpStatistics[204]++;
-                    break;
-                case 5:
-                    tmpStatistics[205]++;
-                    break;
-                case 6:
-                    tmpStatistics[206]++;
-                    break;
-                case 7:
-                    tmpStatistics[207]++;
-                    break;
-                case 8:
-                    tmpStatistics[208]++;
-                    break;
-                case 9:
-                    tmpStatistics[209]++;
-                    break;
+            try {
+                for (int i = 200; i < 210; i++) {
+                    tmpStatistics[i] = tmpStatistics[i] + currentPickScore.get(i-200);
+                }
+            } catch (Exception e) {
+                Log.w("lkj exception", e);
             }
         }
         if (age == 73 || age == 74 || age == 75 || age == 76) {
-            switch (currentPick) {
-                case 0:
-                    tmpStatistics[210]++;
-                    break;
-                case 1:
-                    tmpStatistics[211]++;
-                    break;
-                case 2:
-                    tmpStatistics[212]++;
-                    break;
-                case 3:
-                    tmpStatistics[213]++;
-                    break;
-                case 4:
-                    tmpStatistics[214]++;
-                    break;
-                case 5:
-                    tmpStatistics[215]++;
-                    break;
-                case 6:
-                    tmpStatistics[216]++;
-                    break;
-                case 7:
-                    tmpStatistics[217]++;
-                    break;
-                case 8:
-                    tmpStatistics[218]++;
-                    break;
-                case 9:
-                    tmpStatistics[219]++;
-                    break;
+            try {
+                for (int i = 210; i < 220; i++) {
+                    tmpStatistics[i] = tmpStatistics[i] + currentPickScore.get(i-210);
+                }
+            } catch (Exception e) {
+                Log.w("lkj exception", e);
             }
         }
         if (age == 77 || age == 78 || age == 79) {
-            switch (currentPick) {
-                case 0:
-                    tmpStatistics[220]++;
-                    break;
-                case 1:
-                    tmpStatistics[221]++;
-                    break;
-                case 2:
-                    tmpStatistics[222]++;
-                    break;
-                case 3:
-                    tmpStatistics[223]++;
-                    break;
-                case 4:
-                    tmpStatistics[224]++;
-                    break;
-                case 5:
-                    tmpStatistics[225]++;
-                    break;
-                case 6:
-                    tmpStatistics[226]++;
-                    break;
-                case 7:
-                    tmpStatistics[227]++;
-                    break;
-                case 8:
-                    tmpStatistics[228]++;
-                    break;
-                case 9:
-                    tmpStatistics[229]++;
-                    break;
+            try {
+                for (int i = 220; i < 230; i++) {
+                    tmpStatistics[i] = tmpStatistics[i] + currentPickScore.get(i-220);
+                }
+            } catch (Exception e) {
+                Log.w("lkj exception", e);
             }
         }
         if (age == 80 || age == 81 || age == 82) {
-            switch (currentPick) {
-                case 0:
-                    tmpStatistics[230]++;
-                    break;
-                case 1:
-                    tmpStatistics[231]++;
-                    break;
-                case 2:
-                    tmpStatistics[232]++;
-                    break;
-                case 3:
-                    tmpStatistics[233]++;
-                    break;
-                case 4:
-                    tmpStatistics[234]++;
-                    break;
-                case 5:
-                    tmpStatistics[235]++;
-                    break;
-                case 6:
-                    tmpStatistics[236]++;
-                    break;
-                case 7:
-                    tmpStatistics[237]++;
-                    break;
-                case 8:
-                    tmpStatistics[238]++;
-                    break;
-                case 9:
-                    tmpStatistics[239]++;
-                    break;
+            try {
+                for (int i = 230; i < 240; i++) {
+                    tmpStatistics[i] = tmpStatistics[i] + currentPickScore.get(i-230);
+                }
+            } catch (Exception e) {
+                Log.w("lkj exception", e);
             }
         }
         if (age == 83 || age == 84 || age == 85 || age == 86) {
-            switch (currentPick) {
-                case 0:
-                    tmpStatistics[240]++;
-                    break;
-                case 1:
-                    tmpStatistics[241]++;
-                    break;
-                case 2:
-                    tmpStatistics[242]++;
-                    break;
-                case 3:
-                    tmpStatistics[243]++;
-                    break;
-                case 4:
-                    tmpStatistics[244]++;
-                    break;
-                case 5:
-                    tmpStatistics[245]++;
-                    break;
-                case 6:
-                    tmpStatistics[246]++;
-                    break;
-                case 7:
-                    tmpStatistics[247]++;
-                    break;
-                case 8:
-                    tmpStatistics[248]++;
-                    break;
-                case 9:
-                    tmpStatistics[249]++;
-                    break;
+            try {
+                for (int i = 240; i < 250; i++) {
+                    tmpStatistics[i] = tmpStatistics[i] + currentPickScore.get(i-240);
+                }
+            } catch (Exception e) {
+                Log.w("lkj exception", e);
             }
         }
         if (age == 87 || age == 88 || age == 89) {
-            switch (currentPick) {
-                case 0:
-                    tmpStatistics[250]++;
-                    break;
-                case 1:
-                    tmpStatistics[251]++;
-                    break;
-                case 2:
-                    tmpStatistics[252]++;
-                    break;
-                case 3:
-                    tmpStatistics[253]++;
-                    break;
-                case 4:
-                    tmpStatistics[254]++;
-                    break;
-                case 5:
-                    tmpStatistics[255]++;
-                    break;
-                case 6:
-                    tmpStatistics[256]++;
-                    break;
-                case 7:
-                    tmpStatistics[257]++;
-                    break;
-                case 8:
-                    tmpStatistics[258]++;
-                    break;
-                case 9:
-                    tmpStatistics[259]++;
-                    break;
+            try {
+                for (int i = 250; i < 260; i++) {
+                    tmpStatistics[i] = tmpStatistics[i] + currentPickScore.get(i-250);
+                }
+            } catch (Exception e) {
+                Log.w("lkj exception", e);
             }
         }
 
