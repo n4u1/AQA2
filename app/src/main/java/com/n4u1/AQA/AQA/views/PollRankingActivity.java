@@ -48,12 +48,18 @@ import com.google.firebase.database.MutableData;
 import com.google.firebase.database.Transaction;
 import com.google.firebase.database.ValueEventListener;
 
+import net.danlew.android.joda.JodaTimeAndroid;
+
+import org.joda.time.DateTime;
+
+import java.lang.reflect.Array;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Locale;
 import java.util.Map;
@@ -74,6 +80,7 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
 
 
     final ArrayList<ReplyDTO> replyDTOS = new ArrayList<>();
+    private HashMap<String, String> issueMap = new HashMap<>();
 
     boolean checkUserHitContent = false;
     int contentHit;
@@ -125,6 +132,7 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_poll_ranking);
+        JodaTimeAndroid.init(this);
 
         Toolbar myToolbar = findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
@@ -292,10 +300,9 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
 
         //투표하고 결과보기
         pollActivity_fab_result.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View v) {
-
-
                 mDatabaseReferencePicker.child(auth.getCurrentUser().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -316,6 +323,47 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
 
                     }
                 });
+
+                long issueDate = getCurrentDate();
+                Log.d("lkj issueDate_", String.valueOf(issueDate));
+                issueMap.put(String.valueOf(issueDate), contentKey);
+                firebaseDatabase.getReference().child("issueContents").child(String.valueOf(issueDate)).setValue(issueMap);
+                firebaseDatabase.getReference().child("issueContents").addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//                        String temp = dataSnapshot.getChildren().toString();
+//                        Log.d("lkj temp", temp);
+                        ArrayList<String> strings = new ArrayList<>();
+                        ArrayList<String> stringsTemp = new ArrayList<>();
+                        ArrayList<String> stringsTemp_ = new ArrayList<>();
+
+
+                        for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+//                            Log.d("MainActivity", "ValueEventListener : " + snapshot.getValue());
+                            strings.add(String.valueOf(snapshot.getValue()));
+                        }
+                        for (int i = 0; i < dataSnapshot.getChildrenCount(); i++) {
+
+                            stringsTemp_.add(i, strings.get(i).replace("{", ""));
+                            stringsTemp.add(i, stringsTemp_.get(i).replace("}", ""));
+
+                        }
+
+//                        Log.d("lkj strings0", strings.keySet().toString());
+                        Log.d("lkj strings0", stringsTemp.get(0));
+                        Log.d("lkj strings1", stringsTemp.get(1));
+                        Log.d("lkj strings2", stringsTemp.get(2));
+                        Log.d("lkj strings3", stringsTemp.get(3));
+                        Log.d("lkj strings4", stringsTemp.get(4));
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+
+
             }
         });
 
@@ -804,6 +852,7 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
 
     }
 
+
     /**
      * onCreate()
      */
@@ -1084,7 +1133,36 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd kk:mm:ss:SSSS", Locale.KOREAN);
         df.setTimeZone(timeZone);
         String currentDate = df.format(date);
+
         return currentDate;
+    }
+
+
+    private long getCurrentDate() {
+
+
+
+        long a = System.currentTimeMillis();
+        Log.d("lkj a", String.valueOf(a));
+        DateTime aTime = new DateTime(a);
+        String aTime_ = aTime.toString("yyyy년 MM월 dd일 HH:mm:ss");
+        Log.d("lkj aTime", String.valueOf(aTime));
+        Log.d("lkj aTime_", String.valueOf(aTime_));
+
+        long tmp = 1538663001972L;
+        DateTime tmpTime = new DateTime(tmp);
+
+        Log.d("lkj dif_", String.valueOf((a - tmp) / 1000));
+
+//        DateTime currentTime = new DateTime(18, 10, 4, 23, 5);
+        DateTime currentTime = new DateTime();
+
+
+        String currentTime_ = currentTime.toString("yyyy년 MM월 dd일 HH:mm:ss");
+        Log.d("lkj currentTime_", String.valueOf(currentTime_));
+
+        return a;
+
     }
 
     private ArrayList<String> rankingTextChecking() {
