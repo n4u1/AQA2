@@ -61,6 +61,7 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.TimeZone;
@@ -336,6 +337,10 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
                         ArrayList<String> strings = new ArrayList<>();
                         ArrayList<String> stringsTemp = new ArrayList<>();
                         ArrayList<String> stringsTemp_ = new ArrayList<>();
+                        ArrayList<String> issueString = new ArrayList<>();
+                        ArrayList<Long> issueLong = new ArrayList<>();
+                        HashMap<String, String> issueMap = new HashMap<>();
+                        String[] stringsTemp__;
 
 
                         for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
@@ -355,6 +360,34 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
                         Log.d("lkj strings2", stringsTemp.get(2));
                         Log.d("lkj strings3", stringsTemp.get(3));
                         Log.d("lkj strings4", stringsTemp.get(4));
+
+
+                        stringsTemp__ = stringsTemp.get(0).split("=");
+                        Log.d("lkj strings6", stringsTemp__[0]);
+                        Log.d("lkj strings7", stringsTemp__[1]);
+
+                        for (int i = 0; i < dataSnapshot.getChildrenCount(); i++) {
+                            stringsTemp__ = stringsTemp.get(i).split("=");
+                            issueMap.put(stringsTemp__[0], stringsTemp__[1]);
+                            issueString.add(stringsTemp__[0]);
+
+                        }
+
+                        for (int i = 0; i < dataSnapshot.getChildrenCount(); i++) {
+                            issueLong.add(Long.parseLong(issueString.get(i)));
+                        }
+
+                        Log.d("lkj strings6", stringsTemp__[0]);
+                        long issueDate_ = getCurrentDate();
+                        int testInt = 0;
+
+                        for (int i = 0; i < dataSnapshot.getChildrenCount(); i++) {
+                            if (issueLong.get(i) > issueDate_ - 6000000) {
+                                testInt++;
+                            }
+                        }
+                        Log.d("lkj testInt", String.valueOf(testInt));
+
                     }
 
                     @Override
@@ -1139,9 +1172,6 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
 
 
     private long getCurrentDate() {
-
-
-
         long a = System.currentTimeMillis();
         Log.d("lkj a", String.valueOf(a));
         DateTime aTime = new DateTime(a);
