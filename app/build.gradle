@@ -4,7 +4,7 @@ android {
     compileSdkVersion 28
     defaultConfig {
         applicationId "com.n4u1.AQA.AQA"
-        minSdkVersion 20
+        minSdkVersion 24
         targetSdkVersion 28
         versionCode 1
         versionName "1.0"
@@ -46,6 +46,6 @@ dependencies {
     implementation 'com.github.chrisbanes:PhotoView:2.0.0'
     implementation 'pl.droidsonroids.gif:android-gif-drawable:1.2.12'
     implementation 'com.google.android.exoplayer:exoplayer:2.8.1'
-    implementation 'net.danlew:android.joda:2.9.9.3'
+//    implementation 'net.danlew:android.joda:2.9.9.3'
 }
 apply plugin: 'com.google.gms.google-services'
