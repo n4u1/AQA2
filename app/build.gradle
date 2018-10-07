@@ -47,5 +47,6 @@ dependencies {
     implementation 'pl.droidsonroids.gif:android-gif-drawable:1.2.12'
     implementation 'com.google.android.exoplayer:exoplayer:2.8.1'
 //    implementation 'net.danlew:android.joda:2.9.9.3'
+    implementation 'com.tomer:fadingtextview:2.5'
 }
 apply plugin: 'com.google.gms.google-services'

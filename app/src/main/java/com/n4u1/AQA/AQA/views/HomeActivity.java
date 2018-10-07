@@ -1,6 +1,7 @@
 package com.n4u1.AQA.AQA.views;
 
 import android.content.Intent;
+import android.graphics.Paint;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
@@ -14,6 +15,8 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.n4u1.AQA.AQA.R;
 import com.n4u1.AQA.AQA.models.ContentDTO;
@@ -23,19 +26,35 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.tomer.fadingtextview.BuildConfig;
+import com.tomer.fadingtextview.FadingTextView;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Random;
+import java.util.Set;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.concurrent.TimeUnit;
 
 
 public class HomeActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener {
 
     private FirebaseDatabase mDatabase;
+    private FirebaseDatabase firebaseDatabase;
     protected Handler handler;
     private LinearLayoutManager mLayoutManager;
     private RecyclerView recyclerView_home;
     private PostAdapter postAdapter;
     final ArrayList<ContentDTO> contentDTOS = new ArrayList<>();
+    final ArrayList<ContentDTO> issueContentDTOS = new ArrayList<>();
+
+    final ArrayList<String> tempKey = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,26 +71,329 @@ public class HomeActivity extends AppCompatActivity implements SwipeRefreshLayou
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         final SwipeRefreshLayout mSwipeRefreshLayout = findViewById(R.id.swipeRFL);
-
         recyclerView_home = findViewById(R.id.recyclerView_home);
-
         mDatabase = FirebaseDatabase.getInstance();
         handler = new Handler();
         FloatingActionButton fab_addContent = findViewById(R.id.fab_addContent);
-
+//        final TextView testText = findViewById(R.id.testText);
+        final FadingTextView fadingTextView = findViewById(R.id.fadingTextView);
+        firebaseDatabase = FirebaseDatabase.getInstance();
 
         recyclerView_home.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(this);//20180730 전날꺼 보기 getApplicationContext()전에 this,?? 였음
         mLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         mLayoutManager.isSmoothScrollbarEnabled();
         mLayoutManager.setStackFromEnd(true);
-//        mLayoutManager.setReverseLayout(true);
         recyclerView_home.setLayoutManager(mLayoutManager);
         postAdapter = new PostAdapter(this, contentDTOS, recyclerView_home);
-//        final PostAdapter postAdapter = new PostAdapter(getApplication(), contentDTOS); //20180730 전날꺼 보기 getApplication()전에 this,contentDTOS 였음
-
         recyclerView_home.setAdapter(postAdapter);
         postAdapter.notifyDataSetChanged();
+
+        //실시간 투표순위 5개
+        final String[] issueContents = new String[5];
+
+
+        //실시간 투표 계산
+//        Thread thread = new Thread(new Runnable() {
+//            @Override
+//            public void run() {
+//                try {
+//                    handler.post(new Runnable() {
+//                        @Override
+//                        public void run() {
+//
+//                            firebaseDatabase.getReference().child("issueContents").addListenerForSingleValueEvent(new ValueEventListener() {
+//                                @Override
+//                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+////                        String temp = dataSnapshot.getChildren().toString();
+////                        Log.d("lkj temp", temp);
+//                                    ArrayList<String> strings = new ArrayList<>();
+//                                    ArrayList<String> stringsTemp = new ArrayList<>();
+//                                    ArrayList<String> stringsTemp_ = new ArrayList<>();
+//                                    ArrayList<String> issueString = new ArrayList<>();
+//                                    ArrayList<String> filteringIssueString = new ArrayList<>();
+//                                    ArrayList<Long> issueLong = new ArrayList<>();
+//                                    HashMap<String, String> issueMap = new HashMap<>();
+////                        Map<String, String> resultMap = new HashMap<>();
+//                                    LinkedHashMap<String, Integer> resultMap = new LinkedHashMap<>();
+//                                    LinkedHashMap<String, Integer> resultMap_ = new LinkedHashMap<>();
+//
+//                                    String[] stringsTemp__;
+//
+//
+//                                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+////                            Log.d("MainActivity", "ValueEventListener : " + snapshot.getValue());
+//                                        strings.add(String.valueOf(snapshot.getValue()));
+//                                    }
+//                                    for (int i = 0; i < dataSnapshot.getChildrenCount(); i++) {
+//
+//                                        stringsTemp_.add(i, strings.get(i).replace("{", ""));
+//                                        stringsTemp.add(i, stringsTemp_.get(i).replace("}", ""));
+//
+//                                    }
+//
+//                                    stringsTemp__ = stringsTemp.get(0).split("=");
+//
+//                                    for (int i = 0; i < dataSnapshot.getChildrenCount(); i++) {
+//                                        stringsTemp__ = stringsTemp.get(i).split("=");
+//                                        issueMap.put(stringsTemp__[0], stringsTemp__[1]);
+//                                        issueString.add(stringsTemp__[0]);
+//
+//                                    }
+//
+//                                    for (int i = 0; i < dataSnapshot.getChildrenCount(); i++) {
+//                                        issueLong.add(Long.parseLong(issueString.get(i)));
+//                                    }
+//
+//                                    Log.d("lkj strings6", stringsTemp__[0]);
+//                                    long issueDate_ = getCurrentDate();
+//                                    int filteringCount = 0;
+//                                    ArrayList<String> filterIssueDate = new ArrayList<>();
+//
+////                                    6000000 = 600 초 = 10 분
+////                                    60000000 = 6000 초 = 100 분 = 1 시간40분
+////                                    6000000
+////                                    999999999 = 약278시간 = 약11일13시간46분
+//                                    for (int i = 0; i < dataSnapshot.getChildrenCount(); i++) {
+//                                        if (issueLong.get(i) > issueDate_ - 999999999) {
+//                                            filterIssueDate.add(String.valueOf(issueLong.get(i)));
+//                                            filteringCount++;
+//                                        }
+//                                    }
+//
+//                                    for (int i = 0; i < filteringCount; i++) {
+//                                        filteringIssueString.add(filterIssueDate.get(i));
+//                                    }
+//
+//                                    //해당시간안에 컨텐츠당 투표한 인원 구하기
+//                                    for (int i = 0; i < filteringIssueString.size(); i++) {
+//                                        int tmpCount = 0;
+//                                        for (int j = 0; j < filteringIssueString.size(); j++) {
+//                                            if (issueMap.get(filteringIssueString.get(i)).equals(issueMap.get(filteringIssueString.get(j)))) {
+//                                                tmpCount++;
+//                                            }
+//                                        }
+//                                        resultMap.put(issueMap.get(filteringIssueString.get(i)), tmpCount);
+//                                    }
+//                                    resultMap_ = sortHashMapByValues(resultMap);
+//                                    Set key = resultMap_.keySet();
+//
+//                                    //실시간 투표수 최상위 x개 가져오기
+//                                    //resultMap_.size()-n 이면 n-1개 가져옴
+//                                    //resultMap_.size()-3 이면 2개 가져옴
+//                                    //resultMap_.size()-4 이면 3개 가져옴
+//                                    //resultMap_.size()-5 이면 4개 가져옴
+//                                    //tempKey에는 해당 컨텐츠의 key 가 들어감
+//                                    try {
+//                                        for (int i = resultMap_.size() - 1; i > resultMap_.size() - 6; i--) {
+//                                            tempKey.add(key.toArray()[i].toString());
+//                                        }
+//                                    } catch (Exception e) {
+//                                        Log.w("lkj obr exti", e);
+//                                    }
+//
+//                                    //homeActivity 툴바 바로 아래 이슈컨텐츠 제목표시
+//                                    issueContentDTOS.clear();
+//                                    for (int i = 0; i < 5; i++) {
+//                                        final int finalI = i;
+//                                        mDatabase.getReference().child("user_contents").addListenerForSingleValueEvent(new ValueEventListener() {
+//                                            @Override
+//                                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//                                                Iterator<DataSnapshot> contentDTOIterator = dataSnapshot.getChildren().iterator();
+//                                                while (contentDTOIterator.hasNext()) {
+//                                                    ContentDTO contentDTO = contentDTOIterator.next().getValue(ContentDTO.class);
+//                                                    if (contentDTO.contentKey.contains(tempKey.get(finalI))) {
+//                                                        issueContentDTOS.add(contentDTO);
+//                                                        issueContents[finalI] = contentDTO.title;
+//                                                    }
+//                                                }
+//                                            }
+//
+//                                            @Override
+//                                            public void onCancelled(@NonNull DatabaseError databaseError) {
+//
+//                                            }
+//                                        });
+//                                    }
+//
+//                                }
+//
+//                                @Override
+//                                public void onCancelled(@NonNull DatabaseError databaseError) {
+//
+//                                }
+//                            });
+//                        }
+//                    });
+//                    Thread.sleep(10000);
+//                } catch (InterruptedException e) {
+//                    e.printStackTrace();
+//                }
+//
+//            }
+//        });
+//        thread.start();
+
+        //실시간 투표 목록 가져오기
+        firebaseDatabase.getReference().child("issueContents").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//                        String temp = dataSnapshot.getChildren().toString();
+//                        Log.d("lkj temp", temp);
+                ArrayList<String> strings = new ArrayList<>();
+                ArrayList<String> stringsTemp = new ArrayList<>();
+                ArrayList<String> stringsTemp_ = new ArrayList<>();
+                ArrayList<String> issueString = new ArrayList<>();
+                ArrayList<String> filteringIssueString = new ArrayList<>();
+                ArrayList<Long> issueLong = new ArrayList<>();
+                HashMap<String, String> issueMap = new HashMap<>();
+//                        Map<String, String> resultMap = new HashMap<>();
+                LinkedHashMap<String, Integer> resultMap = new LinkedHashMap<>();
+                LinkedHashMap<String, Integer> resultMap_ = new LinkedHashMap<>();
+
+                String[] stringsTemp__;
+
+
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+//                            Log.d("MainActivity", "ValueEventListener : " + snapshot.getValue());
+                    strings.add(String.valueOf(snapshot.getValue()));
+                }
+                for (int i = 0; i < dataSnapshot.getChildrenCount(); i++) {
+
+                    stringsTemp_.add(i, strings.get(i).replace("{", ""));
+                    stringsTemp.add(i, stringsTemp_.get(i).replace("}", ""));
+
+                }
+
+                stringsTemp__ = stringsTemp.get(0).split("=");
+
+                for (int i = 0; i < dataSnapshot.getChildrenCount(); i++) {
+                    stringsTemp__ = stringsTemp.get(i).split("=");
+                    issueMap.put(stringsTemp__[0], stringsTemp__[1]);
+                    issueString.add(stringsTemp__[0]);
+
+                }
+
+                for (int i = 0; i < dataSnapshot.getChildrenCount(); i++) {
+                    issueLong.add(Long.parseLong(issueString.get(i)));
+                }
+
+                Log.d("lkj strings6", stringsTemp__[0]);
+                long issueDate_ = getCurrentDate();
+                int filteringCount = 0;
+                ArrayList<String> filterIssueDate = new ArrayList<>();
+
+//                                    6000000 = 600 초 = 10 분
+//                                    60000000 = 6000 초 = 100 분 = 1 시간40분
+//                                    6000000
+//                                    999999999 = 약278시간 = 약11일13시간46분
+                for (int i = 0; i < dataSnapshot.getChildrenCount(); i++) {
+                    if (issueLong.get(i) > issueDate_ - 999999999) {
+                        filterIssueDate.add(String.valueOf(issueLong.get(i)));
+                        filteringCount++;
+                    }
+                }
+
+                for (int i = 0; i < filteringCount; i++) {
+                    filteringIssueString.add(filterIssueDate.get(i));
+                }
+
+                //해당시간안에 컨텐츠당 투표한 인원 구하기
+                for (int i = 0; i < filteringIssueString.size(); i++) {
+                    int tmpCount = 0;
+                    for (int j = 0; j < filteringIssueString.size(); j++) {
+                        if (issueMap.get(filteringIssueString.get(i)).equals(issueMap.get(filteringIssueString.get(j)))) {
+                            tmpCount++;
+                        }
+                    }
+                    resultMap.put(issueMap.get(filteringIssueString.get(i)), tmpCount);
+                }
+                resultMap_ = sortHashMapByValues(resultMap);
+                Set key = resultMap_.keySet();
+
+                //실시간 투표수 최상위 x개 가져오기
+                //resultMap_.size()-n 이면 n-1개 가져옴
+                //resultMap_.size()-3 이면 2개 가져옴
+                //resultMap_.size()-4 이면 3개 가져옴
+                //resultMap_.size()-5 이면 4개 가져옴
+                //tempKey에는 해당 컨텐츠의 key 가 들어감
+                try {
+                    for (int i = resultMap_.size() - 1; i > resultMap_.size() - 6; i--) {
+                        tempKey.add(key.toArray()[i].toString());
+                    }
+                } catch (Exception e) {
+                    Log.w("lkj obr exti", e);
+                }
+
+                //homeActivity 툴바 바로 아래 이슈컨텐츠 제목표시
+                issueContentDTOS.clear();
+                for (int i = 0; i < 5; i++) {
+                    final int finalI = i;
+                    mDatabase.getReference().child("user_contents").addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            Iterator<DataSnapshot> contentDTOIterator = dataSnapshot.getChildren().iterator();
+                            while (contentDTOIterator.hasNext()) {
+                                ContentDTO contentDTO = contentDTOIterator.next().getValue(ContentDTO.class);
+                                if (contentDTO.contentKey.contains(tempKey.get(finalI))) {
+                                    issueContentDTOS.add(contentDTO);
+                                    issueContents[finalI] = contentDTO.title;
+                                }
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                        }
+                    });
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+        //issueContentsView 실시간 이슈
+        fadingTextView.setTimeout(4, TimeUnit.SECONDS);
+        if (!BuildConfig.DEBUG) {
+            fadingTextView.setTexts(issueContents);
+//            fadingTextView.setPaintFlags(fadingTextView.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG); 밑줄
+        }
+
+
+        //실시간 이슈 클릭시 해당 게시물로 이동
+        fadingTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                for (int i = 0; i < issueContentDTOS.size(); i++) {
+                    if (fadingTextView.getText().equals(issueContentDTOS.get(i).title)) {
+                        //PostAdapter 의 movePoll(int position) 내용만 가져옴
+                        if (issueContentDTOS.get(i).getPollMode().equals("순위 투표")) {
+                            Intent intent = new Intent(getApplicationContext(), PollRankingActivity.class);
+                            Bundle bundle = new Bundle();
+                            bundle.putString("contentKey", issueContentDTOS.get(i).contentKey);
+                            bundle.putInt("itemViewType", issueContentDTOS.get(i).itemViewType);
+                            bundle.putInt("contentHit", issueContentDTOS.get(i).contentHit);
+                            intent.putExtras(bundle);
+                            getApplicationContext().startActivity(intent);
+                        }
+                        if (issueContentDTOS.get(i).getPollMode().equals("단일 투표")) {
+                            Intent intent = new Intent(getApplicationContext(), PollSingleActivity.class);
+                            Bundle bundle = new Bundle();
+                            bundle.putString("contentKey", issueContentDTOS.get(i).contentKey);
+                            bundle.putInt("itemViewType", issueContentDTOS.get(i).itemViewType);
+                            bundle.putInt("contentHit", issueContentDTOS.get(i).contentHit);
+                            intent.putExtras(bundle);
+                            getApplicationContext().startActivity(intent);
+                        }
+                    }
+                }
+            }
+        });
 
 
         //onCreate시 액티비티 최초1회 바인딩
@@ -80,25 +402,16 @@ public class HomeActivity extends AppCompatActivity implements SwipeRefreshLayou
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 contentDTOS.clear();
                 ArrayList<ContentDTO> contentDTOSTemp = new ArrayList<>();
-                int temp = (int) dataSnapshot.getChildrenCount();
 
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     ContentDTO contentDTO = snapshot.getValue(ContentDTO.class);
                     contentDTOSTemp.add(contentDTO);
                 }
-
-//                Collections.reverse(contentDTOSTemp);
-
                 Collections.reverse(contentDTOSTemp);
-
                 for (int i = 0; i < 10; i++) {
                     contentDTOS.add(contentDTOSTemp.get(i));
                 }
 
-//                Collections.reverse(contentDTOS);
-
-
-//                postAdapter.notifyItemInserted(contentDTOS.size());
                 postAdapter.notifyDataSetChanged();
                 recyclerView_home.scrollToPosition(0);
             }
@@ -220,6 +533,7 @@ public class HomeActivity extends AppCompatActivity implements SwipeRefreshLayou
         });
     }
 
+
     //좋아요 클릭후 HomeActivity 새로고침
     public void resetActivity() {
         mDatabase.getReference().child("user_contents").addListenerForSingleValueEvent(new ValueEventListener() {
@@ -251,6 +565,41 @@ public class HomeActivity extends AppCompatActivity implements SwipeRefreshLayou
     }
 
 
+    private long getCurrentDate() {
+        long currentTimeMillis = System.currentTimeMillis();
+        return currentTimeMillis;
+    }
+
+    public LinkedHashMap<String, Integer> sortHashMapByValues(
+            HashMap<String, Integer> passedMap) {
+        List<String> mapKeys = new ArrayList<>(passedMap.keySet());
+        List<Integer> mapValues = new ArrayList<>(passedMap.values());
+        Collections.sort(mapValues);
+        Collections.sort(mapKeys);
+
+        LinkedHashMap<String, Integer> sortedMap =
+                new LinkedHashMap<>();
+
+        Iterator<Integer> valueIt = mapValues.iterator();
+        while (valueIt.hasNext()) {
+            int val = valueIt.next();
+            Iterator<String> keyIt = mapKeys.iterator();
+
+            while (keyIt.hasNext()) {
+                String key = keyIt.next();
+                int comp1 = passedMap.get(key);
+                int comp2 = val;
+
+                if (comp1 == comp2) {
+                    keyIt.remove();
+                    sortedMap.put(key, val);
+                    break;
+                }
+            }
+        }
+        return sortedMap;
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.home_menu, menu);
@@ -276,7 +625,12 @@ public class HomeActivity extends AppCompatActivity implements SwipeRefreshLayou
                 overridePendingTransition(0, 0);
                 break;
             case R.id.menu_home:
-                resetActivity();
+//                resetActivity();
+                finish();
+                overridePendingTransition(0, 0);
+                startActivity(getIntent());
+                overridePendingTransition(0, 0);
+
                 break;
             case R.id.menu_mine:
                 Intent intentMine = new Intent(HomeActivity.this, MineActivity.class);

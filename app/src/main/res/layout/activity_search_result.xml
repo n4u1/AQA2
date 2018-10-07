@@ -10,6 +10,7 @@
     <include layout="@layout/mytoolbar" />
 
     <android.support.v7.widget.RecyclerView
+        android:layout_marginTop="54dp"
         android:id="@+id/recyclerView_result"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>

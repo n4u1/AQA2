@@ -116,7 +116,6 @@ public class PollResultRankingDialog extends DialogFragment {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 selectedDivide = divideList.get(position);
-                Log.d("lkj in gd", selectedDivide);
 //                Log.d("lkj in gd_", ageRange);
                 parsingData(selectedDivide);
             }

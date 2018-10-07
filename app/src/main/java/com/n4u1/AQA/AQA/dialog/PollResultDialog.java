@@ -115,7 +115,6 @@ public class PollResultDialog extends DialogFragment {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 selectedDivide = divideList.get(position);
-                Log.d("lkj in gd", selectedDivide);
 //                Log.d("lkj in gd_", ageRange);
                 parsingData(selectedDivide);
             }
@@ -427,7 +426,6 @@ public class PollResultDialog extends DialogFragment {
 
         if (gR.equals("전 체")) {
             setChartFullData(imageN, contentKey, getView());
-            Log.d("lkj parsingData", "초기상태"); //처음 onCreate에서 차트 만들지 말고 여기서 한번만 만들면 될듯
             //10대전체, 20대전체 만들고 선택시 초중후 합치는 로직으로?
         } else {
             int[] tmpStatistics_divide = new int[30];

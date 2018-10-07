@@ -51,6 +51,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Locale;
 import java.util.Map;
@@ -68,6 +69,7 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
     private String replyKey;
 
     final ArrayList<ReplyDTO> replyDTOS = new ArrayList<>();
+    private HashMap<String, String> issueMap = new HashMap<>();
 
     int contentHit;
     boolean checkUserHitContent = false;
@@ -309,10 +311,11 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
                         String currentGender = user.get("sex").toString();
 
                         onResultClicked(firebaseDatabase.getReference().child("user_contents").child(contentKey), currentAge, currentGender);
-//                        String statisticsCodeTmp = addStatistics(contentDTO.statistics_code, currentPick(), currentGender, currentAge);
-////                                contentDTO.statistics_code = addStatistics(contentDTO.statistics_code, currentPick(), currentGender, currentAge);
-//                        mDatabaseReference.child("statistics_code").setValue(statisticsCodeTmp);
 
+//                        issueContents 테스트 디비 입력용
+                        long issueDate = getCurrentDate();
+                        issueMap.put(String.valueOf(issueDate), contentKey);
+                        firebaseDatabase.getReference().child("issueContents").child(String.valueOf(issueDate)).setValue(issueMap);
                     }
 
                     @Override
@@ -859,7 +862,7 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
             pollActivity_recyclerView_reply.setVisibility(View.VISIBLE);
             pollActivity_editText_reply.setVisibility(View.VISIBLE);
             pollActivity_button_replySend.setVisibility(View.VISIBLE);
-            pollActivity_fab_result.setVisibility(View.GONE);
+            pollActivity_fab_result.hide();
             ACTIVITY_REPLY_FLAG = true;
         } else {
             pollActivity_editText_reply.setText(null);//editText 초기화
@@ -868,7 +871,7 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
             pollActivity_recyclerView_reply.setVisibility(View.GONE);
             pollActivity_editText_reply.setVisibility(View.GONE);
             pollActivity_button_replySend.setVisibility(View.GONE);
-            pollActivity_fab_result.setVisibility(View.VISIBLE);
+            pollActivity_fab_result.show();
             ACTIVITY_REPLY_FLAG = false;
         }
 
@@ -1014,6 +1017,13 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
                                 .child(key)
                                 .setValue(currentPick());
 
+
+                        //투표했을때 DB/issueContents 에 시간 : contentKey 입력
+                        long issueDate = getCurrentDate();
+                        issueMap.put(String.valueOf(issueDate), key);
+                        firebaseDatabase.getReference().child("issueContents").child(String.valueOf(issueDate)).setValue(issueMap);
+
+
                         //투표 완료후 결과 차트 열기
                         PollResultDialog pollResultDialog = new PollResultDialog();
                         Bundle bundle = new Bundle();
@@ -1057,6 +1067,11 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
         return currentDate;
     }
 
+    private long getCurrentDate() {
+        long currentTimeMillis = System.currentTimeMillis();
+        return currentTimeMillis;
+
+    }
 
 
     private void fabCheck(DatabaseReference postRef) {

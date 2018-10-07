@@ -17,7 +17,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -47,12 +46,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.MutableData;
 import com.google.firebase.database.Transaction;
 import com.google.firebase.database.ValueEventListener;
-//
-//import net.danlew.android.joda.JodaTimeAndroid;
-//
-//import org.joda.time.DateTime;
-
-import java.lang.reflect.Array;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -61,12 +54,8 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Set;
 import java.util.TimeZone;
 
 public class PollRankingActivity extends AppCompatActivity implements View.OnClickListener {
@@ -89,9 +78,6 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
     boolean checkUserHitContent = false;
     int contentHit;
 
-
-    private GestureDetector mGestureDetector;
-
     FloatingActionButton pollActivity_fab_result;
     TextView pollActivity_textView_title, pollActivity_textView_description,
             pollActivity_textView_pollMode, pollActivity_textView_contentType, pollActivity_textView_date;
@@ -112,13 +98,10 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
             pollActivity_imageView_around_7, pollActivity_imageView_around_8,
             pollActivity_imageView_around_9, pollActivity_imageView_around_10;
 
-    ImageView pollActivity_imageView_reply_upButton, pollActivity_imageView_reply_downButton;
-    //    Button pollActivity_button_statistic;
     ImageView pollActivity_button_replySend;
     EditText pollActivity_editText_reply;
     RecyclerView pollActivity_recyclerView_reply;
     RelativeLayout pollActivity_relativeLayout_reply;
-    TextView pollActivity_textView_result, pollActivity_textView_reply;
 
     LinearLayout linearLayout_bestReply0, linearLayout_bestReply1, linearLayout_bestReply2;
     TextView bestReply_id0, bestReply_id1,bestReply_id2, bestReply_reply0, bestReply_reply1, bestReply_reply2,
@@ -136,7 +119,6 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_poll_ranking);
-//        JodaTimeAndroid.init(this);
 
         Toolbar myToolbar = findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
@@ -316,9 +298,11 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
                         String currentGender = user.get("sex").toString();
 
                         onResultClicked(firebaseDatabase.getReference().child("user_contents").child(contentKey), currentAge, currentGender);
-//                        String statisticsCodeTmp = addStatistics(contentDTO.statistics_code, currentPick(), currentGender, currentAge);
-////                                contentDTO.statistics_code = addStatistics(contentDTO.statistics_code, currentPick(), currentGender, currentAge);
-//                        mDatabaseReference.child("statistics_code").setValue(statisticsCodeTmp);
+
+//                        issueContents 테스트 디비 입력용
+//                        long issueDate = getCurrentDate();
+//                        issueMap.put(String.valueOf(issueDate), contentKey);
+//                        firebaseDatabase.getReference().child("issueContents").child(String.valueOf(issueDate)).setValue(issueMap);
 
                     }
 
@@ -328,153 +312,7 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
                     }
                 });
 
-                long issueDate = getCurrentDate();
-                Log.d("lkj issueDate_", String.valueOf(issueDate));
-                issueMap.put(String.valueOf(issueDate), contentKey);
-                firebaseDatabase.getReference().child("issueContents").child(String.valueOf(issueDate)).setValue(issueMap);
-                firebaseDatabase.getReference().child("issueContents").addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-//                        String temp = dataSnapshot.getChildren().toString();
-//                        Log.d("lkj temp", temp);
-                        ArrayList<String> strings = new ArrayList<>();
-                        ArrayList<String> stringsTemp = new ArrayList<>();
-                        ArrayList<String> stringsTemp_ = new ArrayList<>();
-                        ArrayList<String> issueString = new ArrayList<>();
-                        ArrayList<String> filteringIssueString = new ArrayList<>();
-                        ArrayList<Long> issueLong = new ArrayList<>();
-                        HashMap<String, String> issueMap = new HashMap<>();
-//                        Map<String, String> resultMap = new HashMap<>();
-                        LinkedHashMap<String, Integer> resultMap = new LinkedHashMap<>();
-                        LinkedHashMap<String, Integer> resultMap_ = new LinkedHashMap<>();
 
-                        String[] stringsTemp__;
-
-
-                        for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-//                            Log.d("MainActivity", "ValueEventListener : " + snapshot.getValue());
-                            strings.add(String.valueOf(snapshot.getValue()));
-                        }
-                        for (int i = 0; i < dataSnapshot.getChildrenCount(); i++) {
-
-                            stringsTemp_.add(i, strings.get(i).replace("{", ""));
-                            stringsTemp.add(i, stringsTemp_.get(i).replace("}", ""));
-
-                        }
-
-//                        Log.d("lkj strings0", strings.keySet().toString());
-//                        Log.d("lkj strings0", stringsTemp.get(0));
-//                        Log.d("lkj strings1", stringsTemp.get(1));
-//                        Log.d("lkj strings2", stringsTemp.get(2));
-//                        Log.d("lkj strings3", stringsTemp.get(3));
-//                        Log.d("lkj strings4", stringsTemp.get(4));
-
-
-                        stringsTemp__ = stringsTemp.get(0).split("=");
-//                        Log.d("lkj strings6", stringsTemp__[0]);
-//                        Log.d("lkj strings7", stringsTemp__[1]);
-
-                        for (int i = 0; i < dataSnapshot.getChildrenCount(); i++) {
-                            stringsTemp__ = stringsTemp.get(i).split("=");
-                            issueMap.put(stringsTemp__[0], stringsTemp__[1]);
-                            issueString.add(stringsTemp__[0]);
-
-                        }
-
-                        for (int i = 0; i < dataSnapshot.getChildrenCount(); i++) {
-                            issueLong.add(Long.parseLong(issueString.get(i)));
-                        }
-
-                        Log.d("lkj strings6", stringsTemp__[0]);
-                        long issueDate_ = getCurrentDate();
-                        int filteringCount = 0;
-                        int overlapCount = 0;
-                        ArrayList<String> filterIssueDate = new ArrayList<>();
-
-//                        6000000 = 600초 = 10분
-//                        60000000 = 6000초 = 100분 = 1시간40분
-//                        6000000
-                        for (int i = 0; i < dataSnapshot.getChildrenCount(); i++) {
-                            if (issueLong.get(i) > issueDate_ - 6000000) {
-                                filterIssueDate.add(String.valueOf(issueLong.get(i)));
-                                filteringCount++;
-                            }
-                        }
-//                        Log.d("lkj testInt", String.valueOf(filteringCount));
-//                        Log.d("lkj testInt0", filterIssueDate.get(0));
-//                        Log.d("lkj testInt1", filterIssueDate.get(1));
-//                        Log.d("lkj testInt2", filterIssueDate.get(2));
-//                        Log.d("lkj testInt3", filterIssueDate.get(3));
-
-                        for (int i = 0; i < filteringCount; i++) {
-                            filteringIssueString.add(filterIssueDate.get(i));
-                        }
-
-                        //해당시간안에 컨텐츠당 투표한 인원 구하기
-                        for (int i = 0; i < filteringIssueString.size(); i++) {
-                            int tmpCount = 0;
-                            for (int j = 0; j < filteringIssueString.size(); j++) {
-                                if (issueMap.get(filteringIssueString.get(i)).equals(issueMap.get(filteringIssueString.get(j)))) {
-                                    tmpCount++;
-                                }
-                            }
-                            resultMap.put(issueMap.get(filteringIssueString.get(i)), tmpCount);
-                        }
-
-
-
-                        resultMap_ = sortHashMapByValues(resultMap);
-
-//
-//                        String temp0 = resultMap_.get(resultMap_.keySet().toArray()[resultMap_.size()-1]);
-//                        String temp1 = resultMap_.get(resultMap_.keySet().toArray()[1]);
-//                        String temp2 = resultMap_.get(resultMap_.keySet().toArray()[2]);
-                        String temp3 = resultMap_.values().toArray()[resultMap_.size()-1].toString();
-                        String temp4;
-
-                        ArrayList<String> tempKey = new ArrayList<>();
-
-                        Set key = resultMap_.keySet();
-
-                        temp4 = key.toArray()[0].toString();
-
-                        //실시간 투표수 최상위 x개 가져오기
-                        //resultMap_.size()-n 이면 n-1개 가져옴
-                        //resultMap_.size()-3 이면 2개 가져옴
-                        //resultMap_.size()-4 이면 3개 가져옴
-                        //resultMap_.size()-5 이면 4개 가져옴
-                        //tempKey에는 해당 컨텐츠의 key 가 들어감
-                        try {
-                            for (int i = resultMap_.size()-1; i > resultMap_.size()-3; i--) {
-                                tempKey.add(key.toArray()[i].toString());
-                            }
-                        } catch (Exception e) {
-                            Log.w("lkj obr exti", e);
-                        }
-
-
-
-
-
-//                        resultMap_.values().toArray()[1]
-
-//                        Log.d("lkj testInt4", String.valueOf(tmpCount));
-//                        Log.d("lkj temp0", temp0);
-//                        Log.d("lkj temp1", temp1);
-//                        Log.d("lkj temp2", temp2);
-//                        Log.d("lkj temp3", temp3);
-//                        Log.d("lkj temp4", temp4);
-
-
-
-
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                    }
-                });
 
 
             }
@@ -970,35 +808,6 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
     /**
      * onCreate()
      */
-    public LinkedHashMap<String, Integer> sortHashMapByValues(
-            HashMap<String, Integer> passedMap) {
-        List<String> mapKeys = new ArrayList<>(passedMap.keySet());
-        List<Integer> mapValues = new ArrayList<>(passedMap.values());
-        Collections.sort(mapValues);
-        Collections.sort(mapKeys);
-
-        LinkedHashMap<String, Integer> sortedMap =
-                new LinkedHashMap<>();
-
-        Iterator<Integer> valueIt = mapValues.iterator();
-        while (valueIt.hasNext()) {
-            int val = valueIt.next();
-            Iterator<String> keyIt = mapKeys.iterator();
-
-            while (keyIt.hasNext()) {
-                String key = keyIt.next();
-                int comp1 = passedMap.get(key);
-                int comp2 = val;
-
-                if (comp1 == comp2) {
-                    keyIt.remove();
-                    sortedMap.put(key, val);
-                    break;
-                }
-            }
-        }
-        return sortedMap;
-    }
 
     //베스트댓글 보여주기
     private void openBestReply(ArrayList<ReplyDTO> replyDTOS) {
@@ -1228,6 +1037,12 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
                                 .child(key)
                                 .setValue("Ranking");
 
+                        //투표했을때 DB/issueContents 에 시간 : contentKey 입력
+                        long issueDate = getCurrentDate();
+                        issueMap.put(String.valueOf(issueDate), key);
+                        firebaseDatabase.getReference().child("issueContents").child(String.valueOf(issueDate)).setValue(issueMap);
+
+
                         PollResultRankingDialog pollResultRankingDialog = new PollResultRankingDialog();
                         Bundle bundle = new Bundle();
                         bundle.putInt("imagePick", currentPick());
@@ -1281,26 +1096,8 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
 
 
     private long getCurrentDate() {
-        long a = System.currentTimeMillis();
-//        Log.d("lkj a", String.valueOf(a));
-//        DateTime aTime = new DateTime(a);
-//        String aTime_ = aTime.toString("yyyy년 MM월 dd일 HH:mm:ss");
-//        Log.d("lkj aTime", String.valueOf(aTime));
-//        Log.d("lkj aTime_", String.valueOf(aTime_));
-//
-//        long tmp = 1538663001972L;
-//        DateTime tmpTime = new DateTime(tmp);
-//
-//        Log.d("lkj dif_", String.valueOf((a - tmp) / 1000));
-//
-//        DateTime currentTime = new DateTime(18, 10, 4, 23, 5);
-//        DateTime currentTime = new DateTime();
-//
-//
-//        String currentTime_ = currentTime.toString("yyyy년 MM월 dd일 HH:mm:ss");
-//        Log.d("lkj currentTime_", String.valueOf(currentTime_));
-
-        return a;
+        long currentTimeMillis = System.currentTimeMillis();
+        return currentTimeMillis;
 
     }
 
