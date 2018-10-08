@@ -12,6 +12,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -66,6 +67,7 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
     private DatabaseReference mDatabaseReference;
     private DatabaseReference mDatabaseReferencePicker;
     private FirebaseDatabase firebaseDatabase;
+    private FirebaseDatabase likeFirebaseDatabase;
     private String replyKey;
 
     final ArrayList<ReplyDTO> replyDTOS = new ArrayList<>();
@@ -102,7 +104,7 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
     RelativeLayout pollActivity_relativeLayout_reply;
 
     LinearLayout linearLayout_bestReply0, linearLayout_bestReply1, linearLayout_bestReply2;
-    TextView bestReply_id0, bestReply_id1,bestReply_id2, bestReply_reply0, bestReply_reply1, bestReply_reply2,
+    TextView bestReply_id0, bestReply_id1, bestReply_id2, bestReply_reply0, bestReply_reply1, bestReply_reply2,
             bestReply_date0, bestReply_date1, bestReply_date2, bestReply_likeCount0, bestReply_likeCount1, bestReply_likeCount2;
     ImageView bestReply_thumbImg0, bestReply_thumbImg1, bestReply_thumbImg2;
 
@@ -111,6 +113,9 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
             pollActivity_textView_check_5, pollActivity_textView_check_6,
             pollActivity_textView_check_7, pollActivity_textView_check_8,
             pollActivity_textView_check_9, pollActivity_textView_check_10;
+
+    TextView pollActivity_textView_hitCount, pollActivity_textView_likeCount;
+    ImageView pollActivity_imageView_state, pollActivity_imageView_like, pollActivity_imageView_share;
 
 
     @Override
@@ -152,7 +157,7 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
 
                         int temp = replyDTOS.size() - position - 1;
 
-                        onLikeClicked(firebaseDatabase.getReference().child("reply").child(contentKey).child(replyDTOTemp.get(temp).getReplyKey()));
+                        onReplyLikeClicked(firebaseDatabase.getReference().child("reply").child(contentKey).child(replyDTOTemp.get(temp).getReplyKey()));
                     }
 
                     @Override
@@ -168,6 +173,7 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
         mDatabaseReferencePicker = FirebaseDatabase.getInstance().getReference("users");
         auth = FirebaseAuth.getInstance();
         firebaseDatabase = FirebaseDatabase.getInstance();
+        likeFirebaseDatabase = FirebaseDatabase.getInstance();
 
 
         pollActivity_imageView_around_1 = findViewById(R.id.pollActivity_imageView_around_1);
@@ -250,6 +256,15 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
         pollActivity_imageView_around_9 = findViewById(R.id.pollActivity_imageView_around_9);
         pollActivity_imageView_around_10 = findViewById(R.id.pollActivity_imageView_around_10);
 
+//        TextView pollActivity_textView_hitCount, pollActivity_textView_likeCount;
+//        ImageView pollActivity_imageView_state, pollActivity_imageView_like, pollActivity_imageView_share;
+
+        pollActivity_textView_hitCount = findViewById(R.id.pollActivity_textView_hitCount);
+        pollActivity_textView_likeCount = findViewById(R.id.pollActivity_textView_likeCount);
+        pollActivity_imageView_state = findViewById(R.id.pollActivity_imageView_state);
+        pollActivity_imageView_like = findViewById(R.id.pollActivity_imageView_like);
+        pollActivity_imageView_share = findViewById(R.id.pollActivity_imageView_share);
+
 
         pollActivity_imageView_userAddContent_1.setOnClickListener(this);
         pollActivity_imageView_userAddContent_2.setOnClickListener(this);
@@ -273,13 +288,8 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
         pollActivity_textView_check_10.setOnClickListener(this);
 
 
-
-
-
-
         //이미투표했는지 여부 확인해서 floating action button 색 넣기
         fabCheck(firebaseDatabase.getReference().child("user_contents").child(contentKey));
-
 
 
         //처음 댓글펼치기 버튼의 setText (리플 갯수 넣기위함)
@@ -326,8 +336,6 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
 
             }
         });
-
-
 
 
         //댓글 펼치기
@@ -415,16 +423,31 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
         });
 
 
+        //따봉버튼 클릭리스너,  좋아요(따봉) 이미지 클릭
+        pollActivity_imageView_like.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                likeClick();
+            }
+        });
+        //따봉버튼 클릭리스너,  숫자 클릭
+        pollActivity_textView_likeCount.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                likeClick();
+            }
+        });
+
+
+
         //댓글 리사이클러뷰 스크롤은 PollSingleActivity에 포함되도록
         pollActivity_recyclerView_reply.setNestedScrollingEnabled(false);
-        pollActivity_recyclerView_reply.setLayoutManager(new LinearLayoutManager(this){
+        pollActivity_recyclerView_reply.setLayoutManager(new LinearLayoutManager(this) {
             @Override
             public boolean canScrollVertically() {
                 return false;
             }
         });
-
-
 
 
         //댓글 리사이클러뷰
@@ -436,7 +459,6 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
         pollActivity_recyclerView_reply.setLayoutManager(mLayoutManager);
 //        final PostAdapter postAdapter = new PostAdapter(getApplication(), contentDTOS); //20180730 전날꺼 보기 getApplication()전에 this,contentDTOS 였음
         pollActivity_recyclerView_reply.setAdapter(replyAdapter);
-
 
 
         //reply button click, 댓글달기버튼
@@ -482,6 +504,8 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
 //        }
 
 
+
+
         //contentDTO init binding
         mDatabaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -492,6 +516,13 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
                 pollActivity_textView_contentType.setText(contentDTO.getContentType());
                 pollActivity_textView_description.setText(contentDTO.getDescription());
                 pollActivity_textView_pollMode.setText(contentDTO.getPollMode());
+                pollActivity_textView_hitCount.setText(String.valueOf(contentDTO.getContentHit()));
+                pollActivity_textView_likeCount.setText(String.valueOf(contentDTO.getLikeCount()));
+                if (contentDTO.likes.containsKey(auth.getCurrentUser().getUid())) {
+                    pollActivity_imageView_like.setImageResource(R.drawable.ic_thumb_up_blue);
+                } else {
+                    pollActivity_imageView_like.setImageResource(R.drawable.ic_outline_thumb_up_24px);
+                }
                 switch (contentDTO.getItemViewType()) {
                     case 1:
                         pollActivity_textView_check_1.setVisibility(View.VISIBLE);
@@ -803,6 +834,47 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
      * onCreate()
      */
 
+    private void likeClick () {
+        final String contentKey = getIntent().getStringExtra("contentKey");
+        firebaseDatabase.getReference().child("user_contents").child(contentKey).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                ContentDTO contentDTO = dataSnapshot.getValue(ContentDTO.class);
+                Log.d("lkj contentdto", contentDTO.description);
+                if (contentDTO.uid.equals(auth.getCurrentUser().getUid())) {
+                    Toast toast = Toast.makeText(getApplicationContext(), contentDTO.userID + "님의 투표입니다!", Toast.LENGTH_SHORT);
+                    toast.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL, 0, 0);
+                    toast.show();
+                } else {
+                    onLikeClicked(firebaseDatabase.getReference().child("user_contents").child(contentKey));
+                }
+
+                likeFirebaseDatabase.getReference().child("user_contents").child(contentKey).addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        ContentDTO contentDTO_ = dataSnapshot.getValue(ContentDTO.class);
+                        if (contentDTO_.likes.containsKey(auth.getCurrentUser().getUid())) {
+                            pollActivity_imageView_like.setImageResource(R.drawable.ic_thumb_up_blue);
+                            pollActivity_textView_likeCount.setText(String.valueOf(contentDTO_.likeCount));
+                        } else {
+                            pollActivity_imageView_like.setImageResource(R.drawable.ic_outline_thumb_up_24px);
+                            pollActivity_textView_likeCount.setText(String.valueOf(contentDTO_.likeCount));
+                        }
+                    }
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
 
     //베스트댓글 보여주기
     private void openBestReply(ArrayList<ReplyDTO> replyDTOS) {
@@ -838,7 +910,6 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
             }
 
 
-
             ACTIVITY_BESTREPLY_FLAG = true;
 
         } else {
@@ -853,7 +924,7 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
     //댓글펼치기
     private void openReply(int replyCount) {
         if (!ACTIVITY_REPLY_FLAG) {
-            if (replyCount == 0){
+            if (replyCount == 0) {
                 pollActivity_editText_reply.setHint("아직 댓글이 없습니다. 댓글을 달아보세요!");
             }
             pollActivity_relativeLayout_reply.setFocusableInTouchMode(true);
@@ -1070,7 +1141,6 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
     private long getCurrentDate() {
         long currentTimeMillis = System.currentTimeMillis();
         return currentTimeMillis;
-
     }
 
 
@@ -1084,13 +1154,16 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
                 }
                 if (contentDTO.contentPicker.containsKey(auth.getCurrentUser().getUid())) {
                     pollActivity_fab_result.setImageResource(R.drawable.q); //fab 파란색
+                    pollActivity_imageView_state.setImageResource(R.drawable.q);
                     checkUserHitContent = true;//투표여부
                 } else {
                     pollActivity_fab_result.setImageResource(R.drawable.q_bg_w); //fab 흰색
+                    pollActivity_imageView_state.setImageResource(R.drawable.q_bg_w);
                     checkUserHitContent = false;//투표여부
                 }
                 return Transaction.success(mutableData);
             }
+
             @Override
             public void onComplete(DatabaseError databaseError, boolean b, DataSnapshot dataSnapshot) {
             }
@@ -1704,7 +1777,6 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
     }
 
 
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.poll_single_menu, menu);
@@ -1804,7 +1876,7 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
                     break;
             }
         }
-        if (age==10 || age==11 || age==12) {
+        if (age == 10 || age == 11 || age == 12) {
             switch (currentPick) {
                 case 0:
                     tmpStatistics[20]++;
@@ -1838,7 +1910,7 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
                     break;
             }
         }
-        if (age==13 || age==14 || age==15 || age==16) {
+        if (age == 13 || age == 14 || age == 15 || age == 16) {
             switch (currentPick) {
                 case 0:
                     tmpStatistics[30]++;
@@ -1872,7 +1944,7 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
                     break;
             }
         }
-        if (age==17 || age==18 || age==19) {
+        if (age == 17 || age == 18 || age == 19) {
             switch (currentPick) {
                 case 0:
                     tmpStatistics[40]++;
@@ -1906,7 +1978,7 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
                     break;
             }
         }
-        if (age==20 || age==21 || age==22) {
+        if (age == 20 || age == 21 || age == 22) {
             switch (currentPick) {
                 case 0:
                     tmpStatistics[50]++;
@@ -1940,7 +2012,7 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
                     break;
             }
         }
-        if (age==23 || age==24 || age==25 || age==26) {
+        if (age == 23 || age == 24 || age == 25 || age == 26) {
             switch (currentPick) {
                 case 0:
                     tmpStatistics[60]++;
@@ -1974,7 +2046,7 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
                     break;
             }
         }
-        if (age==27 || age==28 || age==29) {
+        if (age == 27 || age == 28 || age == 29) {
             switch (currentPick) {
                 case 0:
                     tmpStatistics[70]++;
@@ -2008,7 +2080,7 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
                     break;
             }
         }
-        if (age==30 || age==31 || age==32) {
+        if (age == 30 || age == 31 || age == 32) {
             switch (currentPick) {
                 case 0:
                     tmpStatistics[80]++;
@@ -2042,7 +2114,7 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
                     break;
             }
         }
-        if (age==33 || age==34 || age==35 || age==36) {
+        if (age == 33 || age == 34 || age == 35 || age == 36) {
             switch (currentPick) {
                 case 0:
                     tmpStatistics[90]++;
@@ -2076,7 +2148,7 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
                     break;
             }
         }
-        if (age==37 || age==38 || age==39) {
+        if (age == 37 || age == 38 || age == 39) {
             switch (currentPick) {
                 case 0:
                     tmpStatistics[100]++;
@@ -2110,7 +2182,7 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
                     break;
             }
         }
-        if (age==40 || age==41 || age==42) {
+        if (age == 40 || age == 41 || age == 42) {
             switch (currentPick) {
                 case 0:
                     tmpStatistics[110]++;
@@ -2144,7 +2216,7 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
                     break;
             }
         }
-        if (age==43 || age==44 || age==45 || age==46) {
+        if (age == 43 || age == 44 || age == 45 || age == 46) {
             switch (currentPick) {
                 case 0:
                     tmpStatistics[120]++;
@@ -2178,7 +2250,7 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
                     break;
             }
         }
-        if (age==47 || age==48 || age==49) {
+        if (age == 47 || age == 48 || age == 49) {
             switch (currentPick) {
                 case 0:
                     tmpStatistics[130]++;
@@ -2212,7 +2284,7 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
                     break;
             }
         }
-        if (age==50 || age==51 || age==52) {
+        if (age == 50 || age == 51 || age == 52) {
             switch (currentPick) {
                 case 0:
                     tmpStatistics[140]++;
@@ -2246,7 +2318,7 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
                     break;
             }
         }
-        if (age==53 || age==54 || age==55 || age==56) {
+        if (age == 53 || age == 54 || age == 55 || age == 56) {
             switch (currentPick) {
                 case 0:
                     tmpStatistics[150]++;
@@ -2280,7 +2352,7 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
                     break;
             }
         }
-        if (age==57 || age==58 || age==59) {
+        if (age == 57 || age == 58 || age == 59) {
             switch (currentPick) {
                 case 0:
                     tmpStatistics[160]++;
@@ -2314,7 +2386,7 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
                     break;
             }
         }
-        if (age==60 || age==61 || age==62) {
+        if (age == 60 || age == 61 || age == 62) {
             switch (currentPick) {
                 case 0:
                     tmpStatistics[170]++;
@@ -2348,7 +2420,7 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
                     break;
             }
         }
-        if (age==63 || age==64 || age==65 || age==66) {
+        if (age == 63 || age == 64 || age == 65 || age == 66) {
             switch (currentPick) {
                 case 0:
                     tmpStatistics[180]++;
@@ -2382,7 +2454,7 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
                     break;
             }
         }
-        if (age==67 || age==68 || age==69) {
+        if (age == 67 || age == 68 || age == 69) {
             switch (currentPick) {
                 case 0:
                     tmpStatistics[190]++;
@@ -2416,7 +2488,7 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
                     break;
             }
         }
-        if (age==70 || age==71 || age==72) {
+        if (age == 70 || age == 71 || age == 72) {
             switch (currentPick) {
                 case 0:
                     tmpStatistics[200]++;
@@ -2450,7 +2522,7 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
                     break;
             }
         }
-        if (age==73 || age==74 || age==75 || age==76) {
+        if (age == 73 || age == 74 || age == 75 || age == 76) {
             switch (currentPick) {
                 case 0:
                     tmpStatistics[210]++;
@@ -2484,7 +2556,7 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
                     break;
             }
         }
-        if (age==77 || age==78 || age==79) {
+        if (age == 77 || age == 78 || age == 79) {
             switch (currentPick) {
                 case 0:
                     tmpStatistics[220]++;
@@ -2518,7 +2590,7 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
                     break;
             }
         }
-        if (age==80 || age==81 || age==82) {
+        if (age == 80 || age == 81 || age == 82) {
             switch (currentPick) {
                 case 0:
                     tmpStatistics[230]++;
@@ -2552,7 +2624,7 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
                     break;
             }
         }
-        if (age==83 || age==84 || age==85 || age==86) {
+        if (age == 83 || age == 84 || age == 85 || age == 86) {
             switch (currentPick) {
                 case 0:
                     tmpStatistics[240]++;
@@ -2586,7 +2658,7 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
                     break;
             }
         }
-        if (age==87 || age==88 || age==89) {
+        if (age == 87 || age == 88 || age == 89) {
             switch (currentPick) {
                 case 0:
                     tmpStatistics[250]++;
@@ -2622,15 +2694,15 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
         }
 
         String callbackStatistics = java.util.Arrays.toString(tmpStatistics);
-        callbackStatistics = callbackStatistics.replace(", ",":");
-        callbackStatistics = callbackStatistics.replace("[","");
-        callbackStatistics = callbackStatistics.replace("]","");
+        callbackStatistics = callbackStatistics.replace(", ", ":");
+        callbackStatistics = callbackStatistics.replace("[", "");
+        callbackStatistics = callbackStatistics.replace("]", "");
 
         return callbackStatistics;
     }
 
     //댓글 좋아요 클릭
-    private void onLikeClicked(final DatabaseReference postRef) {
+    private void onReplyLikeClicked(final DatabaseReference postRef) {
 
         postRef.runTransaction(new Transaction.Handler() {
             @Override
@@ -2644,7 +2716,7 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
                 if (replyDTO.likes.containsKey(auth.getCurrentUser().getUid())) {
                     replyDTO.likeCount = replyDTO.likeCount - 1;
                     replyDTO.likes.remove(auth.getCurrentUser().getUid());
-                 //좋아요 누른 이력 없으면 더하고 카운트+1
+                    //좋아요 누른 이력 없으면 더하고 카운트+1
                 } else {
                     replyDTO.likeCount = replyDTO.likeCount + 1;
                     replyDTO.likes.put(auth.getCurrentUser().getUid(), true);
@@ -2660,6 +2732,58 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
                 // Transaction completed
                 Log.d("lkjlkj", "postTransaction:onComplete:" + databaseError);
 
+
+            }
+        });
+    }
+
+    //게시물 좋아요 클릭 (따봉 이미지)
+    private void onLikeClicked(final DatabaseReference postRef) {
+        postRef.runTransaction(new Transaction.Handler() {
+            @Override
+            public Transaction.Result doTransaction(MutableData mutableData) {
+                ContentDTO contentDTO = mutableData.getValue(ContentDTO.class);
+
+                if (contentDTO == null) {
+                    return Transaction.success(mutableData);
+                }
+                //좋아요 누른 이력 있으면 지우고 카운트-1
+                if (contentDTO.likes.containsKey(auth.getCurrentUser().getUid())) {
+                    contentDTO.likeCount = contentDTO.likeCount - 1;
+                    contentDTO.likes.remove(auth.getCurrentUser().getUid());
+
+                    // users/내uid/likeContent/컨텐트key : false      : 좋아요 누른 컨텐츠 리스트 false
+                    firebaseDatabase.getReference()
+                            .child("users")
+                            .child(auth.getCurrentUser().getUid())
+                            .child("likeContent")
+                            .child(contentDTO.getContentKey())
+                            .setValue("false");
+
+                    //좋아요 누른 이력 없으면 더하고 카운트+1
+                } else {
+                    contentDTO.likeCount = contentDTO.likeCount + 1;
+                    contentDTO.likes.put(auth.getCurrentUser().getUid(), true);
+
+                    // users/내uid/likeContent/컨텐트key : trud      : 좋아요 누른 컨텐츠 리스트 true
+                    firebaseDatabase.getReference()
+                            .child("users")
+                            .child(auth.getCurrentUser().getUid())
+                            .child("likeContent")
+                            .child(contentDTO.getContentKey())
+                            .setValue("true");
+
+                }
+
+                // Set value and report transaction success
+                mutableData.setValue(contentDTO);
+                return Transaction.success(mutableData);
+            }
+
+            @Override
+            public void onComplete(DatabaseError databaseError, boolean b, DataSnapshot dataSnapshot) {
+                // Transaction completed
+                Log.d("lkjlkj", "postTransaction:onComplete:" + databaseError);
 
 
             }

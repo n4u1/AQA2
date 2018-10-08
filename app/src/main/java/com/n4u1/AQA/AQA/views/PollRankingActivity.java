@@ -12,7 +12,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.GestureDetector;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -69,6 +69,7 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
     private DatabaseReference mDatabaseReference;
     private DatabaseReference mDatabaseReferencePicker;
     private FirebaseDatabase firebaseDatabase;
+    private FirebaseDatabase likeFirebaseDatabase;
     private String replyKey;
 
 
@@ -114,6 +115,8 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
             pollActivity_textView_check_7, pollActivity_textView_check_8,
             pollActivity_textView_check_9, pollActivity_textView_check_10;
 
+    TextView pollActivity_textView_hitCount, pollActivity_textView_likeCount;
+    ImageView pollActivity_imageView_state, pollActivity_imageView_like, pollActivity_imageView_share;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -151,7 +154,7 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
 
                         int temp = replyDTOS.size() - position - 1;
 
-                        onLikeClicked(firebaseDatabase.getReference().child("reply").child(contentKey).child(replyDTOTemp.get(temp).getReplyKey()));
+                        onReplyLikeClicked(firebaseDatabase.getReference().child("reply").child(contentKey).child(replyDTOTemp.get(temp).getReplyKey()));
                     }
 
                     @Override
@@ -167,6 +170,7 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
         mDatabaseReferencePicker = FirebaseDatabase.getInstance().getReference("users");
         auth = FirebaseAuth.getInstance();
         firebaseDatabase = FirebaseDatabase.getInstance();
+        likeFirebaseDatabase = FirebaseDatabase.getInstance();
 
         pollActivity_imageView_around_1 = findViewById(R.id.pollActivity_imageView_around_1);
 
@@ -253,7 +257,14 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
         pollActivity_imageView_around_9 = findViewById(R.id.pollActivity_imageView_around_9);
         pollActivity_imageView_around_10 = findViewById(R.id.pollActivity_imageView_around_10);
 
-//        pollActivity_button_statistic = findViewById(R.id.pollActivity_button_statistic);
+
+        pollActivity_textView_hitCount = findViewById(R.id.pollActivity_textView_hitCount);
+        pollActivity_textView_likeCount = findViewById(R.id.pollActivity_textView_likeCount);
+        pollActivity_imageView_state = findViewById(R.id.pollActivity_imageView_state);
+        pollActivity_imageView_like = findViewById(R.id.pollActivity_imageView_like);
+        pollActivity_imageView_share = findViewById(R.id.pollActivity_imageView_share);
+
+
 
         pollActivity_imageView_userAddContent_1.setOnClickListener(this);
         pollActivity_imageView_userAddContent_2.setOnClickListener(this);
@@ -286,7 +297,6 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
 
         //투표하고 결과보기
         pollActivity_fab_result.setOnClickListener(new View.OnClickListener() {
-
             @Override
             public void onClick(View v) {
                 mDatabaseReferencePicker.child(auth.getCurrentUser().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
@@ -296,14 +306,11 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
                         Object object = user.get("age");
                         int currentAge = Integer.parseInt(object.toString());
                         String currentGender = user.get("sex").toString();
-
                         onResultClicked(firebaseDatabase.getReference().child("user_contents").child(contentKey), currentAge, currentGender);
-
 //                        issueContents 테스트 디비 입력용
 //                        long issueDate = getCurrentDate();
 //                        issueMap.put(String.valueOf(issueDate), contentKey);
 //                        firebaseDatabase.getReference().child("issueContents").child(String.valueOf(issueDate)).setValue(issueMap);
-
                     }
 
                     @Override
@@ -436,6 +443,25 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
             }
         });
 
+
+
+        //따봉버튼 클릭리스너,  좋아요(따봉) 이미지 클릭
+        pollActivity_imageView_like.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                likeClick();
+            }
+        });
+        //따봉버튼 클릭리스너,  숫자 클릭
+        pollActivity_textView_likeCount.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                likeClick();
+            }
+        });
+
+
+
         //댓글 리사이클러뷰 스크롤은 PollSingleActivity에 포함되도록
         pollActivity_recyclerView_reply.setNestedScrollingEnabled(false);
         pollActivity_recyclerView_reply.setLayoutManager(new LinearLayoutManager(this){
@@ -494,6 +520,13 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
                 pollActivity_textView_contentType.setText(contentDTO.getContentType());
                 pollActivity_textView_description.setText(contentDTO.getDescription());
                 pollActivity_textView_pollMode.setText(contentDTO.getPollMode());
+                pollActivity_textView_hitCount.setText(String.valueOf(contentDTO.getContentHit()));
+                pollActivity_textView_likeCount.setText(String.valueOf(contentDTO.getLikeCount()));
+                if (contentDTO.likes.containsKey(auth.getCurrentUser().getUid())) {
+                    pollActivity_imageView_like.setImageResource(R.drawable.ic_thumb_up_blue);
+                } else {
+                    pollActivity_imageView_like.setImageResource(R.drawable.ic_outline_thumb_up_24px);
+                }
                 switch (contentDTO.getItemViewType()) {
                     case 1:
                         pollActivity_textView_check_1.setVisibility(View.VISIBLE);
@@ -808,6 +841,49 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
     /**
      * onCreate()
      */
+
+
+    private void likeClick () {
+        final String contentKey = getIntent().getStringExtra("contentKey");
+        firebaseDatabase.getReference().child("user_contents").child(contentKey).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                ContentDTO contentDTO = dataSnapshot.getValue(ContentDTO.class);
+                Log.d("lkj contentdto", contentDTO.description);
+                if (contentDTO.uid.equals(auth.getCurrentUser().getUid())) {
+                    Toast toast = Toast.makeText(getApplicationContext(), contentDTO.userID + "님의 투표입니다!", Toast.LENGTH_SHORT);
+                    toast.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL, 0, 0);
+                    toast.show();
+                } else {
+                    onLikeClicked(firebaseDatabase.getReference().child("user_contents").child(contentKey));
+                }
+
+                likeFirebaseDatabase.getReference().child("user_contents").child(contentKey).addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        ContentDTO contentDTO_ = dataSnapshot.getValue(ContentDTO.class);
+                        if (contentDTO_.likes.containsKey(auth.getCurrentUser().getUid())) {
+                            pollActivity_imageView_like.setImageResource(R.drawable.ic_thumb_up_blue);
+                            pollActivity_textView_likeCount.setText(String.valueOf(contentDTO_.likeCount));
+                        } else {
+                            pollActivity_imageView_like.setImageResource(R.drawable.ic_outline_thumb_up_24px);
+                            pollActivity_textView_likeCount.setText(String.valueOf(contentDTO_.likeCount));
+                        }
+                    }
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
 
     //베스트댓글 보여주기
     private void openBestReply(ArrayList<ReplyDTO> replyDTOS) {
@@ -1852,9 +1928,11 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
                 }
                 if (contentDTO.contentPicker.containsKey(auth.getCurrentUser().getUid())) {
                     pollActivity_fab_result.setImageResource(R.drawable.q);//fab 파란색
+                    pollActivity_imageView_state.setImageResource(R.drawable.q);
                     checkUserHitContent = true;//투표여부
                 } else {
                     pollActivity_fab_result.setImageResource(R.drawable.q_bg_w);//fab 흰색
+                    pollActivity_imageView_state.setImageResource(R.drawable.q_bg_w);
                     checkUserHitContent = false;//투표여부
                 }
                 return Transaction.success(mutableData);
@@ -2148,7 +2226,7 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
 
 
     //댓글 좋아요 클릭
-    private void onLikeClicked(final DatabaseReference postRef) {
+    private void onReplyLikeClicked(final DatabaseReference postRef) {
 
         postRef.runTransaction(new Transaction.Handler() {
             @Override
@@ -2178,6 +2256,60 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
                 // Transaction completed
                 Log.d("lkjlkj", "postTransaction:onComplete:" + databaseError);
 
+
+
+            }
+        });
+    }
+
+
+    //게시물 좋아요 클릭 (따봉 이미지)
+    private void onLikeClicked(final DatabaseReference postRef) {
+        postRef.runTransaction(new Transaction.Handler() {
+            @Override
+            public Transaction.Result doTransaction(MutableData mutableData) {
+                ContentDTO contentDTO = mutableData.getValue(ContentDTO.class);
+
+                if (contentDTO == null) {
+                    return Transaction.success(mutableData);
+                }
+                //좋아요 누른 이력 있으면 지우고 카운트-1
+                if (contentDTO.likes.containsKey(auth.getCurrentUser().getUid())) {
+                    contentDTO.likeCount = contentDTO.likeCount - 1;
+                    contentDTO.likes.remove(auth.getCurrentUser().getUid());
+
+                    // users/내uid/likeContent/컨텐트key : false      : 좋아요 누른 컨텐츠 리스트 false
+                    firebaseDatabase.getReference()
+                            .child("users")
+                            .child(auth.getCurrentUser().getUid())
+                            .child("likeContent")
+                            .child(contentDTO.getContentKey())
+                            .setValue("false");
+
+                    //좋아요 누른 이력 없으면 더하고 카운트+1
+                } else {
+                    contentDTO.likeCount = contentDTO.likeCount + 1;
+                    contentDTO.likes.put(auth.getCurrentUser().getUid(), true);
+
+                    // users/내uid/likeContent/컨텐트key : trud      : 좋아요 누른 컨텐츠 리스트 true
+                    firebaseDatabase.getReference()
+                            .child("users")
+                            .child(auth.getCurrentUser().getUid())
+                            .child("likeContent")
+                            .child(contentDTO.getContentKey())
+                            .setValue("true");
+
+                }
+
+                // Set value and report transaction success
+                mutableData.setValue(contentDTO);
+                return Transaction.success(mutableData);
+            }
+
+            @Override
+            public void onComplete(DatabaseError databaseError, boolean b, DataSnapshot dataSnapshot) {
+                // Transaction completed
+                Log.d("lkjlkj", "postTransaction:onComplete:" + databaseError);
 
 
             }

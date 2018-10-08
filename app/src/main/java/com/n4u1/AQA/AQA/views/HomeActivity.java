@@ -53,7 +53,8 @@ public class HomeActivity extends AppCompatActivity implements SwipeRefreshLayou
     private PostAdapter postAdapter;
     final ArrayList<ContentDTO> contentDTOS = new ArrayList<>();
     final ArrayList<ContentDTO> issueContentDTOS = new ArrayList<>();
-
+    private final long FINISH_INTERVAL_TIME = 2000;
+    private long backPressedTime = 0;
     final ArrayList<String> tempKey = new ArrayList<>();
 
     @Override
@@ -598,6 +599,19 @@ public class HomeActivity extends AppCompatActivity implements SwipeRefreshLayou
             }
         }
         return sortedMap;
+    }
+
+    @Override
+    public void onBackPressed() {
+        long tempTime = System.currentTimeMillis();
+        long intervalTime = tempTime - backPressedTime;
+
+        if (0 <= intervalTime && FINISH_INTERVAL_TIME >= intervalTime) {
+            super.onBackPressed();
+        } else {
+            backPressedTime = tempTime;
+            Toast.makeText(this, " '뒤로' 버튼을 한번더 누르시면 종료 됩니다.", Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override

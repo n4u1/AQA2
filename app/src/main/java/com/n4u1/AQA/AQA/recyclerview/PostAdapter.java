@@ -669,7 +669,6 @@ public class PostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
 
     private void onLikeClicked(final DatabaseReference postRef) {
-
         postRef.runTransaction(new Transaction.Handler() {
             @Override
             public Transaction.Result doTransaction(MutableData mutableData) {
@@ -677,7 +676,6 @@ public class PostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 if (contentDTO == null) {
                     return Transaction.success(mutableData);
                 }
-
 
                 if (contentDTO.likes.containsKey(auth.getCurrentUser().getUid())) {
                     // Unstar the post and remove self from stars
