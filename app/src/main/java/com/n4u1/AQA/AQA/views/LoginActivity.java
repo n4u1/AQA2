@@ -98,32 +98,6 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(LoginActivity.this, CreateUserActivity.class);
                 startActivity(intent);
-//
-//                EditText editTextEmail = findViewById(R.id.editText_email);
-//                EditText editTextPassword = findViewById(R.id.editText_password);
-//                final String inputUserEmail = editTextEmail.getText().toString();
-//                final String inputUserPassword = editTextPassword.getText().toString();
-//
-//                if (inputUserEmail.isEmpty() || inputUserPassword.isEmpty()) {
-//                    Toast.makeText(getApplicationContext(), "빈칸이 있어요!", Toast.LENGTH_LONG).show();
-//                    return;
-//                }
-//
-//                if (!checkEmail(inputUserEmail)) {
-//                    Toast.makeText(getApplicationContext(), "이메일 형식으로 입력해주세요!!!!", Toast.LENGTH_LONG).show();
-//                    return;
-//                }
-//
-//                if (inputUserPassword.length() < 6) {
-//                    int test = inputUserPassword.length();
-//                    Toast.makeText(getApplicationContext(), "비밀번호가 너무 짧아요ㅠ_ㅠ (6자 이상)", Toast.LENGTH_LONG).show();
-//                    Toast.makeText(getApplicationContext(), "현재 몇글자??? >>> " + test, Toast.LENGTH_LONG).show();
-//                    return;
-//                }
-//
-//                //email 계정 생성
-//                createUser(editTextEmail.getText().toString(), editTextPassword.getText().toString());
-
             }
         });
 
@@ -215,43 +189,6 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if(requestCode == GALLEY_CODE) {
-
-            StorageReference storageRef = storage.getReferenceFromUrl("gs://test130-1068f.appspot.com");
-
-            Uri file = Uri.fromFile(new File(getPath(data.getData())));
-            StorageReference riversRef = storageRef.child("imagessss/"+file.getLastPathSegment());
-            UploadTask uploadTask = riversRef.putFile(file);
-
-            uploadTask.addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception exception) {
-                    // Handle unsuccessful uploads
-                }
-            }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                @Override
-                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                    // taskSnapshot.getMetadata() contains file metadata such as size, content-type, etc.
-                    // ...
-                }
-            });
-
-        }
-    }
-
-    private String getPath(Uri uri) {
-        String [] proj = {MediaStore.Images.Media.DATA};
-        CursorLoader cursorLoader = new CursorLoader(this,uri,proj,null,null,null);
-
-        Cursor cursor = cursorLoader.loadInBackground();
-        int index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-
-        cursor.moveToFirst();
-
-        return cursor.getString(index);
-    }
 
     //정규표현식으로 이메일 체킹
     private boolean checkEmail(String inputUserEmail) {
@@ -269,47 +206,10 @@ public class LoginActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
-
-                            Toast.makeText(getApplicationContext(), "User Login Success", Toast.LENGTH_LONG).show();
-//
+//                            Toast.makeText(getApplicationContext(), "User Login Success", Toast.LENGTH_LONG).show();//
                             Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
                             finish();
                             startActivity(intent);
-//
-//                            mEmailDatabaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
-//                                @Override
-//                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-//                                    Iterable<DataSnapshot> emailIterable = dataSnapshot.getChildren();
-//                                    Iterator<DataSnapshot> emailIterator = emailIterable.iterator();
-//
-//                                    int userCount = (int)dataSnapshot.getChildrenCount();
-//                                    int loopCount = 0;
-//
-//                                    while (emailIterator.hasNext()) {
-//                                        User user = emailIterator.next().getValue(User.class);
-//                                        if (!user.getEmail().equals(email)) {
-//                                            loopCount++;
-//                                        }
-//                                    }
-//                                    if ( loopCount == userCount) {
-//                                        Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
-//                                        finish();
-//                                        startActivity(intent);
-//                                    } else {
-//                                        Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
-//                                        finish();
-//                                        startActivity(intent);
-//                                    }
-//
-//                                }
-//
-//                                @Override
-//                                public void onCancelled(@NonNull DatabaseError databaseError) {
-//
-//                                }
-//                            });
-
-
                         } else {
                             // If sign in fails, display a message to the user.
                             Toast.makeText(getApplicationContext(), "User Login Fail", Toast.LENGTH_LONG).show();

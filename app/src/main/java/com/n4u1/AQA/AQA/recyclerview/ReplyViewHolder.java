@@ -14,10 +14,11 @@ public class ReplyViewHolder extends RecyclerView.ViewHolder{
 
     public TextView textView_id, textView_reply, textView_date, textView_like;
     public ImageView imageView_like;
-    public RelativeLayout relativeLayout_like;
+    public RelativeLayout relativeLayout_like, relativeLayout_main;
 
     public ReplyViewHolder(View itemView) {
         super(itemView);
+        relativeLayout_main = itemView.findViewById(R.id.relativeLayout_main);
         relativeLayout_like = itemView.findViewById(R.id.relativeLayout_like);
         imageView_like = itemView.findViewById(R.id.imageView_like);
         textView_like = itemView.findViewById(R.id.textView_like);

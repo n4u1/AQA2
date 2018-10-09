@@ -2,6 +2,7 @@ package com.n4u1.AQA.AQA.recyclerview;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
@@ -12,9 +13,20 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.google.android.exoplayer2.ExoPlayerFactory;
+import com.google.android.exoplayer2.source.ExtractorMediaSource;
+import com.google.android.exoplayer2.source.MediaSource;
+import com.google.android.exoplayer2.trackselection.AdaptiveTrackSelection;
+import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
+import com.google.android.exoplayer2.trackselection.TrackSelection;
+import com.google.android.exoplayer2.upstream.DataSource;
+import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
+import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
+import com.google.android.exoplayer2.util.Util;
 import com.n4u1.AQA.AQA.R;
 import com.n4u1.AQA.AQA.models.ContentDTO;
 import com.n4u1.AQA.AQA.util.GlideApp;
@@ -29,6 +41,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.MutableData;
 import com.google.firebase.database.Transaction;
 import com.google.firebase.database.ValueEventListener;
+import com.n4u1.AQA.AQA.views.TestActivity;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -43,6 +56,7 @@ public class PostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private static final int ITEM_VIEW_TYPE_2 = 2;
     private static final int ITEM_VIEW_TYPE_3 = 3;
     private static final int ITEM_VIEW_TYPE_0 = 0;
+    private static final int ITEM_VIEW_TYPE_100 = 100;
     private static final int VIEW_PROG = 10;
     private FirebaseAuth auth;
     private FirebaseDatabase firebaseDatabase;
@@ -97,6 +111,9 @@ public class PostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         } else if (viewType == ITEM_VIEW_TYPE_3) {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.post_item_home_3_img, parent, false);
             return new PostViewHolder3(view);
+        } else if (viewType == ITEM_VIEW_TYPE_100) {
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.post_item_home_vdo, parent, false);
+            return new PostViewHolder100(view);
         } else if (viewType == VIEW_PROG) {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.progressbar_recyclerview, parent, false);
             return new ProgressViewHolder(view);
@@ -134,6 +151,8 @@ public class PostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 return ITEM_VIEW_TYPE_3;
             } else if (contentDTOS.get(position).getItemViewType() == 10) {
                 return ITEM_VIEW_TYPE_3;
+            } else if (contentDTOS.get(position).getItemViewType() == 102) {
+                return ITEM_VIEW_TYPE_100;
             } else return ITEM_VIEW_TYPE_1;
         }
     }
@@ -610,9 +629,149 @@ public class PostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 GlideApp.with(holder.itemView.getContext()).load(contentDTOS.get(position).imageUrl_1).centerCrop().thumbnail(Glide.with(holder.itemView.getContext()).load(R.drawable.loadingicon)).into(((PostViewHolder3) holder).imageView_postImg_1);
                 GlideApp.with(holder.itemView.getContext()).load(contentDTOS.get(position).imageUrl_2).centerCrop().thumbnail(Glide.with(holder.itemView.getContext()).load(R.drawable.loadingicon)).into(((PostViewHolder3) holder).imageView_postImg_2);
                 GlideApp.with(holder.itemView.getContext()).load(contentDTOS.get(position).imageUrl_3).centerCrop().thumbnail(Glide.with(holder.itemView.getContext()).load(R.drawable.loadingicon)).into(((PostViewHolder3) holder).imageView_postImg_3);
+                break;
 
+
+            case ITEM_VIEW_TYPE_100:
+                ((PostViewHolder100) holder).linearLayout_exoPlayer.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        movePoll(position);
+                    }
+                });
+
+                ((PostViewHolder100) holder).imageView_hitCount.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Toast toast = Toast.makeText(mContext, "투표에 참가한 인원 입니다!", Toast.LENGTH_SHORT);
+                        toast.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL, 0, 0);
+                        toast.show();
+                    }
+                });
+
+                ((PostViewHolder100) holder).textView_hitCount.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Toast toast = Toast.makeText(mContext, "투표에 참가한 인원 입니다!", Toast.LENGTH_SHORT);
+                        toast.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL, 0, 0);
+                        toast.show();
+                    }
+                });
+
+                ((PostViewHolder100) holder).imageView_state.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Toast toast = Toast.makeText(mContext, "우와! 투표했더니 파란색이 칠해졌다!", Toast.LENGTH_SHORT);
+                        toast.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL, 0, 0);
+                        toast.show();
+                    }
+                });
+
+                //좋아요 버튼 클릭 이벤트
+                ((PostViewHolder100) holder).imageView_like.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (contentDTOS.get(position).uid.equals(auth.getCurrentUser().getUid())) {
+                            Toast toast = Toast.makeText(mContext, contentDTOS.get(position).userID + "님의 투표입니다!", Toast.LENGTH_SHORT);
+                            toast.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL, 0, 0);
+                            toast.show();
+                        } else {
+                            onLikeClicked(firebaseDatabase.getReference().child("user_contents").child(uidLists.get(position)));
+                        }
+
+                        mDatabase.getReference().child("user_contents").addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                contentDTOS.clear();
+                                ArrayList<ContentDTO> contentDTOSTemp = new ArrayList<>();
+
+                                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                                    ContentDTO contentDTO = snapshot.getValue(ContentDTO.class);
+                                    contentDTOSTemp.add(contentDTO);
+                                }
+
+                                Collections.reverse(contentDTOSTemp);
+                                contentDTOS.addAll(contentDTOSTemp);
+
+                                if (contentDTOS.get(position).likes.containsKey(auth.getCurrentUser().getUid())) {
+                                    ((PostViewHolder100) holder).imageView_like.setImageResource(R.drawable.ic_thumb_up_blue);
+                                    ((PostViewHolder100) holder).textView_likeCount.setText(String.valueOf(contentDTOS.get(position).likeCount));
+                                } else {
+                                    ((PostViewHolder100) holder).imageView_like.setImageResource(R.drawable.ic_outline_thumb_up_24px);
+                                    ((PostViewHolder100) holder).textView_likeCount.setText(String.valueOf(contentDTOS.get(position).likeCount));
+                                }
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                            }
+                        });
+
+                    }
+                });
+
+                //투표여부
+                if (contentDTOS.get(position).contentPicker.containsKey(auth.getCurrentUser().getUid())) {
+                    ((PostViewHolder100) holder).imageView_state.setImageResource(R.drawable.q);
+                } else {
+                    ((PostViewHolder100) holder).imageView_state.setImageResource(R.drawable.q_bg_w);
+                }
+
+                //좋아요, 따봉아이콘
+                if (contentDTOS.get(position).likes.containsKey(auth.getCurrentUser().getUid())) {
+                    ((PostViewHolder100) holder).imageView_like.setImageResource(R.drawable.ic_thumb_up_blue);
+                    ((PostViewHolder100) holder).textView_likeCount.setText(String.valueOf(contentDTOS.get(position).likeCount));
+                } else {
+                    ((PostViewHolder100) holder).imageView_like.setImageResource(R.drawable.ic_outline_thumb_up_24px);
+                    ((PostViewHolder100) holder).textView_likeCount.setText(String.valueOf(contentDTOS.get(position).likeCount));
+                }
+
+                //타이틀은 15자 이상이면 '...'표시
+                if (contentDTOS.get(position).title.length() >= 15) {
+                    ((PostViewHolder100) holder).textView_title.setText(contentDTOS.get(position).title.substring(0,15) + "...");
+                } else {
+                    ((PostViewHolder100) holder).textView_title.setText(contentDTOS.get(position).title);
+                }
+                if (contentDTOS.get(position).userID.length() >= 8) {
+                    ((PostViewHolder100) holder).textView_userName.setText(contentDTOS.get(position).userID.substring(0,8));
+                } else {
+                    ((PostViewHolder100) holder).textView_userName.setText(contentDTOS.get(position).userID);
+                }
+
+                //각 아이템들 삽입
+                ((PostViewHolder100)holder).textView_pollMode.setText(contentDTOS.get(position).pollMode + " / " + contentDTOS.get(position).itemViewType);
+                ((PostViewHolder100)holder).textView_contentType.setText(contentDTOS.get(position).contentType);
+                ((PostViewHolder100)holder).textView_hitCount.setText(String.valueOf(contentDTOS.get(position).contentHit));
+                ((PostViewHolder100)holder).textView_replyCount.setText(" [" + String.valueOf(contentDTOS.get(position).replyCount) + "]");
+
+                try{
+                    DefaultBandwidthMeter bandwidthMeter = new DefaultBandwidthMeter();
+                    TrackSelection.Factory videoTrackSelectionFactory =
+                            new AdaptiveTrackSelection.Factory(null);
+                    DefaultTrackSelector trackSelector =
+                            new DefaultTrackSelector(videoTrackSelectionFactory);
+                    ((PostViewHolder100)holder).exo_play_post_0 = ExoPlayerFactory.newSimpleInstance(mContext, trackSelector);
+                    ((PostViewHolder100)holder).exo_play_post_1 = ExoPlayerFactory.newSimpleInstance(mContext, trackSelector);
+                    DataSource.Factory dataSourceFactory = new DefaultDataSourceFactory(mContext,
+                            Util.getUserAgent(mContext, "AQA"), bandwidthMeter);
+
+                    MediaSource videoSource0 = new ExtractorMediaSource.Factory(dataSourceFactory)
+                            .createMediaSource(Uri.parse(contentDTOS.get(position).getVideoUrl_0()));
+
+                    MediaSource videoSource1 = new ExtractorMediaSource.Factory(dataSourceFactory)
+                            .createMediaSource(Uri.parse(contentDTOS.get(position).getVideoUrl_1()));
+                    // Prepare the player with the source.
+                    ((PostViewHolder100)holder).exo_play_post_0.prepare(videoSource0);
+                    ((PostViewHolder100)holder).exo_play_post_1.prepare(videoSource1);
+                    ((PostViewHolder100)holder).exo_play_postVideo_0.setPlayer(((PostViewHolder100)holder).exo_play_post_0);
+                    ((PostViewHolder100)holder).exo_play_postVideo_1.setPlayer(((PostViewHolder100)holder).exo_play_post_1);
+                } catch (Exception e) {
+                    Log.w("lkj exception", e);
+                }
 
                 break;
+
             default:
                 ((ProgressViewHolder) holder).progressBar.setIndeterminate(true);
                 break;
@@ -633,25 +792,44 @@ public class PostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         String string = contentDTOS.get(position).contentKey;
 
         if (contentDTOS.get(position).getPollMode().equals("순위 투표")) {
-
-            Intent intent = new Intent(mContext, PollRankingActivity.class);
-            Bundle bundle = new Bundle();
-            bundle.putString("contentKey", string);
-            bundle.putInt("itemViewType", contentDTOS.get(position).itemViewType);
-            bundle.putInt("contentHit", contentDTOS.get(position).contentHit);
-            intent.putExtras(bundle);
-            mContext.startActivity(intent);
-
+            if (contentDTOS.get(position).itemViewType == 102) { //video 투표
+                Intent intent = new Intent(mContext, TestActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putString("contentKey", string);
+                bundle.putInt("itemViewType", contentDTOS.get(position).itemViewType);
+                bundle.putInt("contentHit", contentDTOS.get(position).contentHit);
+                intent.putExtras(bundle);
+                mContext.startActivity(intent);
+            } else { //image 투표
+                Intent intent = new Intent(mContext, PollRankingActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putString("contentKey", string);
+                bundle.putInt("itemViewType", contentDTOS.get(position).itemViewType);
+                bundle.putInt("contentHit", contentDTOS.get(position).contentHit);
+                intent.putExtras(bundle);
+                mContext.startActivity(intent);
+            }
         }
-        if (contentDTOS.get(position).getPollMode().equals("단일 투표")) {
 
-            Intent intent = new Intent(mContext, PollSingleActivity.class);
-            Bundle bundle = new Bundle();
-            bundle.putString("contentKey", string);
-            bundle.putInt("itemViewType", contentDTOS.get(position).itemViewType);
-            bundle.putInt("contentHit", contentDTOS.get(position).contentHit);
-            intent.putExtras(bundle);
-            mContext.startActivity(intent);
+        if (contentDTOS.get(position).getPollMode().equals("단일 투표")) {
+            if (contentDTOS.get(position).itemViewType == 102) { //video 투표
+                Intent intent = new Intent(mContext, TestActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putString("contentKey", string);
+                bundle.putInt("itemViewType", contentDTOS.get(position).itemViewType);
+                bundle.putInt("contentHit", contentDTOS.get(position).contentHit);
+                intent.putExtras(bundle);
+                mContext.startActivity(intent);
+            } else { //image 투표
+                Intent intent = new Intent(mContext, PollSingleActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putString("contentKey", string);
+                bundle.putInt("itemViewType", contentDTOS.get(position).itemViewType);
+                bundle.putInt("contentHit", contentDTOS.get(position).contentHit);
+                intent.putExtras(bundle);
+                mContext.startActivity(intent);
+            }
+
 
         }
     }

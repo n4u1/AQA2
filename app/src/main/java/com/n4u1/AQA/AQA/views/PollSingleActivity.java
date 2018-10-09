@@ -137,36 +137,49 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
         contentHit = getIntent().getIntExtra("contentHit", 999999);
 
 
-        //reply item click listener 댓글 좋아요 클릭 리스너
+        //reply item click listener 댓글 클릭 리스너
         final ReplyAdapter replyAdapter = new ReplyAdapter(getApplicationContext(), replyDTOS, new ReplyAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, final int position) {
-                firebaseDatabase.getReference().child("reply").child(contentKey).addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        replyDTOS.clear();
-                        ArrayList<ReplyDTO> replyDTOTemp = new ArrayList<>();
 
-                        for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                            ReplyDTO replyDTO = snapshot.getValue(ReplyDTO.class);
-                            replyDTOTemp.add(replyDTO);
-                        }
-
-                        Collections.reverse(replyDTOTemp);
-                        replyDTOS.addAll(replyDTOTemp);
-
-                        int temp = replyDTOS.size() - position - 1;
-
-                        onReplyLikeClicked(firebaseDatabase.getReference().child("reply").child(contentKey).child(replyDTOTemp.get(temp).getReplyKey()));
+                if (replyDTOS.get(position).getId().equals(auth.getCurrentUser().getEmail())) {
+                    if (view.getTag().equals("replyAdapter_relativeLayout_like")) {
+                        Toast.makeText(getApplicationContext(), auth.getCurrentUser().getEmail() + "님 댓글 입니다.", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(getApplicationContext(), "수정 or 삭제 띄우기", Toast.LENGTH_SHORT).show();
                     }
 
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                } else {
+                    if (view.getTag().equals("replyAdapter_relativeLayout_like")) {
+                        firebaseDatabase.getReference().child("reply").child(contentKey).addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                replyDTOS.clear();
+                                ArrayList<ReplyDTO> replyDTOTemp = new ArrayList<>();
 
+                                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                                    ReplyDTO replyDTO = snapshot.getValue(ReplyDTO.class);
+                                    replyDTOTemp.add(replyDTO);
+                                }
+                                Collections.reverse(replyDTOTemp);
+                                replyDTOS.addAll(replyDTOTemp);
+                                int temp = replyDTOS.size() - position - 1;
+                                onReplyLikeClicked(firebaseDatabase.getReference().child("reply").child(contentKey).child(replyDTOTemp.get(temp).getReplyKey()));
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                            }
+                        });
                     }
-                });
+                }
+
+
+//                Log.d("lkj position", String.valueOf(position));
             }
         });
+
 
 
         mDatabaseReference = FirebaseDatabase.getInstance().getReference("user_contents").child(contentKey);
@@ -1005,6 +1018,7 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
     }
 
 
+    //투표 시작
     private void onResultClicked(final DatabaseReference postRef, final int currentAge, final String currentGender) {
         final int contentAmount = getIntent().getIntExtra("itemViewType", 0);
         Log.d("lkj contentAmount", String.valueOf(contentAmount));

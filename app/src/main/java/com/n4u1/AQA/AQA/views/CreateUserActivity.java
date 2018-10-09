@@ -7,8 +7,12 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.n4u1.AQA.AQA.R;
@@ -32,7 +36,7 @@ public class CreateUserActivity extends AppCompatActivity {
     private DatabaseReference mDatabase;
     private EditText createUser_editText_email, createUser_editText_password, createUser_editText_sex,
             createUser_editText_job, createUser_editText_age;
-    private Button createUser_button_createUser;
+    private ImageView createUser_button_createUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,13 +44,14 @@ public class CreateUserActivity extends AppCompatActivity {
         setContentView(R.layout.activity_create_user);
 
 
-        Toolbar myToolbar = findViewById(R.id.createUser_toolbar);
+        Toolbar myToolbar = findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
-//        if (getSupportActionBar() != null) {
-//            getSupportActionBar().setTitle("  AQA");
-//        }
-        getSupportActionBar().setIcon(R.mipmap.ic_q_custom);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setTitle(" ");
+        }
+        getSupportActionBar().setIcon(R.mipmap.ic_aqa_custom);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
+
 
 
         mAuth = FirebaseAuth.getInstance();
@@ -59,6 +64,8 @@ public class CreateUserActivity extends AppCompatActivity {
         createUser_editText_sex = findViewById(R.id.createUser_editText_sex);
         createUser_editText_job = findViewById(R.id.createUser_editText_job);
         createUser_button_createUser = findViewById(R.id.createUser_button_createUser);
+
+
 
         createUser_button_createUser.setOnClickListener(new View.OnClickListener() {
             @Override

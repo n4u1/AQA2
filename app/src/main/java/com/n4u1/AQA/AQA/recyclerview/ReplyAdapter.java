@@ -41,6 +41,7 @@ public class ReplyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
 
     public ReplyAdapter(Context context, ArrayList<ReplyDTO> listItem, OnItemClickListener onItemClickListener) {
+        super();
         this.mContext = context;
         this.replyDTO = listItem;
         mOnItemClickListener = onItemClickListener; //댓글 좋아요 클릭 리스너 PollSingleActivity, PollRankingActivity
@@ -60,7 +61,16 @@ public class ReplyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         mDatabase = FirebaseDatabase.getInstance();
         auth = FirebaseAuth.getInstance();
 
+        ((ReplyViewHolder)holder).relativeLayout_like.setTag("replyAdapter_relativeLayout_like");
+        ((ReplyViewHolder)holder).relativeLayout_main.setTag("replyAdapter_relativeLayout_main");
+
         ((ReplyViewHolder)holder).relativeLayout_like.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mOnItemClickListener.onItemClick(v, position);
+            }
+        });
+        ((ReplyViewHolder)holder).relativeLayout_main.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mOnItemClickListener.onItemClick(v, position);

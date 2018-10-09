@@ -21,9 +21,7 @@
         </activity>
         <activity android:name="com.n4u1.AQA.AQA.views.LoginActivity" />
         <activity android:name="com.n4u1.AQA.AQA.views.HomeActivity" />
-        <activity android:name="com.n4u1.AQA.AQA.views.RegisterActivity" />
         <activity android:name="com.n4u1.AQA.AQA.views.UserContentsUploadActivity" />
-        <activity android:name="com.n4u1.AQA.AQA.views.ContentTypeListActivity" />
         <activity
             android:name="com.n4u1.AQA.AQA.views.FileChoiceActivity"
             android:label="@string/title_activity_file_choice"

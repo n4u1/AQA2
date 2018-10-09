@@ -18,6 +18,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.n4u1.AQA.AQA.R;
 import com.google.android.exoplayer2.ExoPlayerFactory;
@@ -136,6 +137,7 @@ public class VideoFragment extends Fragment {
         videoView_userAddContent_10 = view.findViewById(R.id.videoView_userAddContent_10);
 
 
+
         ImageView imageView_addVideo = view.findViewById(R.id.imageView_addVideo);
         imageView_addVideo.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -199,6 +201,8 @@ public class VideoFragment extends Fragment {
                             .createMediaSource(Uri.parse(videoPath));
                     // Prepare the player with the source.
                     player0.prepare(videoSource);
+
+
                     videoView_userAddContent_1.setPlayer(player0);
                     fileString[0] = videoPath;
                 }

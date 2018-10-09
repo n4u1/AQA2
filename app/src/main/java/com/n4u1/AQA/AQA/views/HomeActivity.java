@@ -15,6 +15,9 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -235,6 +238,13 @@ public class HomeActivity extends AppCompatActivity implements SwipeRefreshLayou
 //        });
 //        thread.start();
 
+
+        fadingTextView.setTimeout(4, TimeUnit.SECONDS);
+        if (!BuildConfig.DEBUG) {
+            fadingTextView.setTexts(issueContents);
+//            fadingTextView.setPaintFlags(fadingTextView.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG); 밑줄
+        }
+
         //실시간 투표 목록 가져오기
         firebaseDatabase.getReference().child("issueContents").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -359,11 +369,17 @@ public class HomeActivity extends AppCompatActivity implements SwipeRefreshLayou
         });
 
         //issueContentsView 실시간 이슈
-        fadingTextView.setTimeout(4, TimeUnit.SECONDS);
-        if (!BuildConfig.DEBUG) {
-            fadingTextView.setTexts(issueContents);
-//            fadingTextView.setPaintFlags(fadingTextView.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG); 밑줄
-        }
+
+//
+//        ImageView imageView_issue = findViewById(R.id.imageView_issue);
+//        Animation anim_ = new AlphaAnimation(0.0f, 1.0f);
+//        anim_.setDuration(4000); //You can manage the time of the blink with this parameter
+//        anim_.setStartOffset(20);
+//        anim_.setRepeatMode(Animation.REVERSE);
+//        anim_.setRepeatCount(Animation.INFINITE);
+//        imageView_issue.startAnimation(anim_);
+//
+
 
 
         //실시간 이슈 클릭시 해당 게시물로 이동
