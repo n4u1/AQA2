@@ -264,11 +264,11 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
             @Override
             public void onItemClick(View view, final int position) {
 
-                if (replyDTOS.get(position).getId().equals(auth.getCurrentUser().getEmail())) { //본인 댓글,좋아요 클릭시
+                //본인 댓글,좋아요 클릭시
+                if (replyDTOS.get(position).getId().equals(auth.getCurrentUser().getEmail())) {
                     if (view.getTag().equals("replyAdapter_relativeLayout_like")) { //댓글 좋아요 클릭
                         Toast.makeText(getApplicationContext(), auth.getCurrentUser().getEmail() + "님 댓글 입니다.", Toast.LENGTH_SHORT).show();
-                    } else { //댓글 클릭, 삭제or수정
-
+                    } else if (view.getTag().equals("replyAdapter_relativeLayout_main")) { //댓글 클릭, 삭제or수정
                         firebaseDatabase.getReference().child("reply").child(contentKey).addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -279,10 +279,10 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
                                     ReplyDTO replyDTO = snapshot.getValue(ReplyDTO.class);
                                     replyDTOTemp.add(replyDTO);
                                 }
-                                Collections.reverse(replyDTOTemp);
+//                                Collections.reverse(replyDTOTemp);
                                 replyDTOS.addAll(replyDTOTemp);
-                                int temp = replyDTOS.size() - position - 1;
-                                String replyKey = replyDTOTemp.get(temp).getReplyKey();
+//                                int temp = replyDTOS.size() - position - 1;
+                                String replyKey = replyDTOTemp.get(position).getReplyKey();
 
                                 //수정하기, 선택하기 액티비티(다이얼로그)띄우기
                                 Intent intent = new Intent(PollRankingActivity.this, DeleteModificationActivity.class);
@@ -295,11 +295,10 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
 
                             }
                         });
-
-
                     }
-
-                } else { //본인이 아닌 댓글,좋아요 클릭시
+                }
+                //본인이 아닌 댓글,좋아요 클릭시
+                else {
                     if (view.getTag().equals("replyAdapter_relativeLayout_like")) { //댓글 좋아요 클릭
                         firebaseDatabase.getReference().child("reply").child(contentKey).addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
@@ -399,7 +398,7 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
                 });
 
 
-                //댓글의 좋아요 갯수 정렬
+                //(베댓을위한)댓글의 좋아요 갯수 정렬
                 firebaseDatabase.getReference().child("reply").child(contentKey).addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -1203,7 +1202,7 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
         TimeZone timeZone;
         timeZone = TimeZone.getTimeZone("Asia/Seoul");
         Date date = new Date();
-        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd kk:mm:ss:SSSS", Locale.KOREAN);
+        SimpleDateFormat df = new SimpleDateFormat("yyyy.MM.dd kk:mm:ss", Locale.KOREAN);
         df.setTimeZone(timeZone);
         String currentDate = df.format(date);
 
@@ -1916,11 +1915,15 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
                     break;
                 case 10000:
                     if (data.getStringArrayListExtra("resultDelete").get(1).equals("삭제하기")) {
-                        Toast.makeText(getApplicationContext(), "삭제하기", Toast.LENGTH_SHORT).show();
-                    } else {
-                        Toast.makeText(getApplicationContext(), "수정하기", Toast.LENGTH_SHORT).show();
-                    }
+                        String contentKey = getIntent().getStringExtra("contentKey");
+                        String replyKey = data.getStringArrayListExtra("resultDelete").get(0);
 
+                        firebaseDatabase.getReference().child("reply").child(contentKey).child(replyKey).removeValue();
+
+                        Toast.makeText(getApplicationContext(), "삭제하기", Toast.LENGTH_SHORT).show();
+                    } else if (data.getStringArrayListExtra("resultDelete").get(1).equals("수정하기")){
+                        Toast.makeText(getApplicationContext(), "수정하기", Toast.LENGTH_SHORT).show();
+                    } else break;
                     break;
             }
 

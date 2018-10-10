@@ -176,7 +176,7 @@
                     android:layout_width="0dp"
                     android:layout_height="20dp"
                     android:layout_weight="0.2"
-                    android:src="@drawable/ic_poll_black_24dp" />
+                    android:src="@drawable/icons8_poll_24" />
 
                 <TextView
                     android:id="@+id/pollActivity_textView_hitCount"
@@ -187,12 +187,6 @@
                     android:text="3374"
                     android:textColor="#737373" />
 
-                <ImageView
-                    android:id="@+id/pollActivity_imageView_state"
-                    android:layout_width="0dp"
-                    android:layout_height="20dp"
-                    android:layout_weight="1.3"
-                    android:src="@drawable/q_bg_w" />
 
                 <ImageView
                     android:id="@+id/pollActivity_imageView_like"
@@ -209,6 +203,14 @@
                     android:textSize="14dp"
                     android:text="2291"
                     android:textColor="#737373" />
+
+
+                <ImageView
+                    android:id="@+id/pollActivity_imageView_state"
+                    android:layout_width="0dp"
+                    android:layout_height="20dp"
+                    android:layout_weight="1.3"
+                    android:src="@drawable/q_bg_w" />
 
                 <ImageView
                     android:id="@+id/pollActivity_imageView_share"

@@ -22,7 +22,7 @@ public class DeleteModificationActivity extends AppCompatActivity {
         textView_delete = findViewById(R.id.textView_delete);
         textView_modification = findViewById(R.id.textView_modification);
 
-        int contentsCount = getIntent().getIntExtra("contentsCount", 100);
+
         String replyKey = getIntent().getStringExtra("replyKey");
         final ArrayList<String> keyDelete = new ArrayList<>();
         final ArrayList<String> keyModify = new ArrayList<>();

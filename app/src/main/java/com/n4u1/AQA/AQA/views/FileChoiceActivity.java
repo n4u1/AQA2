@@ -468,6 +468,7 @@ public class FileChoiceActivity extends AppCompatActivity
                 });
             }
             mdatabaseRef.child("user_contents").child(key).child("itemViewType").setValue(itemViewTypeCount+100);
+            finish();
 
         }
 
@@ -733,6 +734,7 @@ public class FileChoiceActivity extends AppCompatActivity
                 });
             }
             mdatabaseRef.child("user_contents").child(key).child("itemViewType").setValue(itemViewTypeCount);
+            finish();
 
         }
 /*CameraCameraCameraCameraCameraCameraCameraCameraCameraCameraCameraCameraCameraCameraCameraCameraCameraCameraCameraCameraCameraCameraCameraCameraCameraCamera*/

@@ -27,6 +27,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.n4u1.AQA.AQA.R;
+import com.n4u1.AQA.AQA.dialog.DeleteModificationActivity;
 import com.n4u1.AQA.AQA.dialog.PollResultDialog;
 import com.n4u1.AQA.AQA.models.ContentDTO;
 import com.n4u1.AQA.AQA.models.ReplyDTO;
@@ -142,15 +143,42 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
             @Override
             public void onItemClick(View view, final int position) {
 
+                //본인 댓글,좋아요 클릭시
                 if (replyDTOS.get(position).getId().equals(auth.getCurrentUser().getEmail())) {
-                    if (view.getTag().equals("replyAdapter_relativeLayout_like")) {
+                    if (view.getTag().equals("replyAdapter_relativeLayout_like")) { //댓글 좋아요 클릭
                         Toast.makeText(getApplicationContext(), auth.getCurrentUser().getEmail() + "님 댓글 입니다.", Toast.LENGTH_SHORT).show();
-                    } else {
-                        Toast.makeText(getApplicationContext(), "수정 or 삭제 띄우기", Toast.LENGTH_SHORT).show();
-                    }
+                    } else if (view.getTag().equals("replyAdapter_relativeLayout_main")) { //댓글 클릭, 삭제or수정
+                        firebaseDatabase.getReference().child("reply").child(contentKey).addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                replyDTOS.clear();
+                                ArrayList<ReplyDTO> replyDTOTemp = new ArrayList<>();
 
-                } else {
-                    if (view.getTag().equals("replyAdapter_relativeLayout_like")) {
+                                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                                    ReplyDTO replyDTO = snapshot.getValue(ReplyDTO.class);
+                                    replyDTOTemp.add(replyDTO);
+                                }
+//                                Collections.reverse(replyDTOTemp);
+                                replyDTOS.addAll(replyDTOTemp);
+//                                int temp = replyDTOS.size() - position - 1;
+                                String replyKey = replyDTOTemp.get(position).getReplyKey();
+
+                                //수정하기, 선택하기 액티비티(다이얼로그)띄우기
+                                Intent intent = new Intent(PollSingleActivity.this, DeleteModificationActivity.class);
+                                intent.putExtra("replyKey", replyKey);
+                                startActivityForResult(intent, 10000);
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                            }
+                        });
+                    }
+                }
+                //본인이 아닌 댓글,좋아요 클릭시
+                else {
+                    if (view.getTag().equals("replyAdapter_relativeLayout_like")) { //댓글 좋아요 클릭
                         firebaseDatabase.getReference().child("reply").child(contentKey).addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -174,12 +202,8 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
                         });
                     }
                 }
-
-
-//                Log.d("lkj position", String.valueOf(position));
             }
         });
-
 
 
         mDatabaseReference = FirebaseDatabase.getInstance().getReference("user_contents").child(contentKey);
@@ -1146,7 +1170,7 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
         TimeZone timeZone;
         timeZone = TimeZone.getTimeZone("Asia/Seoul");
         Date date = new Date();
-        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd kk:mm:ss:SSSS", Locale.KOREAN);
+        SimpleDateFormat df = new SimpleDateFormat("yyyy.MM.dd kk:mm:ss", Locale.KOREAN);
         df.setTimeZone(timeZone);
         String currentDate = df.format(date);
         return currentDate;
@@ -1211,6 +1235,27 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode == RESULT_OK) {
+            switch (requestCode) {
+                case 10000:
+                    if (data.getStringArrayListExtra("resultDelete").get(1).equals("삭제하기")) {
+                        String contentKey = getIntent().getStringExtra("contentKey");
+                        String replyKey = data.getStringArrayListExtra("resultDelete").get(0);
+
+                        firebaseDatabase.getReference().child("reply").child(contentKey).child(replyKey).removeValue();
+
+                        Toast.makeText(getApplicationContext(), "삭제하기", Toast.LENGTH_SHORT).show();
+                    } else if (data.getStringArrayListExtra("resultDelete").get(1).equals("수정하기")){
+                        Toast.makeText(getApplicationContext(), "수정하기", Toast.LENGTH_SHORT).show();
+                    } else break;
+                    break;
+            }
+
+
+        }
+
+
+        super.onActivityResult(requestCode, resultCode, data);
 
     }
 

@@ -175,13 +175,6 @@
                 android:textColor="#737373" />
 
 
-            <ImageView
-                android:id="@+id/imageView_state"
-                android:layout_width="0dp"
-                android:layout_height="24dp"
-                android:layout_weight="1"
-                android:src="@drawable/q_bg_w" />
-
 
 
             <ImageView
@@ -199,6 +192,14 @@
                 android:layout_weight="1"
                 android:text="2291"
                 android:textColor="#737373" />
+
+
+            <ImageView
+                android:id="@+id/imageView_state"
+                android:layout_width="0dp"
+                android:layout_height="24dp"
+                android:layout_weight="1"
+                android:src="@drawable/q_bg_w" />
 
 
             <ImageView
