@@ -12,36 +12,39 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name="com.n4u1.AQA.AQA.views.SplashActivity">
+        <activity android:name=".views.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.n4u1.AQA.AQA.views.LoginActivity" />
-        <activity android:name="com.n4u1.AQA.AQA.views.HomeActivity" />
-        <activity android:name="com.n4u1.AQA.AQA.views.UserContentsUploadActivity" />
+        <activity android:name=".views.LoginActivity" />
+        <activity android:name=".views.HomeActivity" />
+        <activity android:name=".views.UserContentsUploadActivity" />
         <activity
-            android:name="com.n4u1.AQA.AQA.views.FileChoiceActivity"
+            android:name=".views.FileChoiceActivity"
             android:label="@string/title_activity_file_choice"
             android:theme="@style/AppTheme" />
-        <activity android:name="com.n4u1.AQA.AQA.views.TestActivity" />
-        <activity android:name="com.n4u1.AQA.AQA.views.PollActivity" />
-        <activity android:name="com.n4u1.AQA.AQA.views.PollRankingActivity" />
-        <activity android:name="com.n4u1.AQA.AQA.views.PollSingleActivity" />
-        <activity android:name="com.n4u1.AQA.AQA.views.CreateUserActivity" />
+        <activity android:name=".views.TestActivity" />
+        <activity android:name=".views.PollActivity" />
+        <activity android:name=".views.PollRankingActivity" />
+        <activity android:name=".views.PollSingleActivity" />
+        <activity android:name=".views.CreateUserActivity" />
         <activity
-            android:name="com.n4u1.AQA.AQA.dialog.RankingChoiceActivity"
+            android:name=".dialog.RankingChoiceActivity"
             android:theme="@style/Theme.RankingChoiceDialog" />
-        <activity android:name="com.n4u1.AQA.AQA.views.SearchHomeActivity" />
-        <activity android:name="com.n4u1.AQA.AQA.views.MineActivity" />
-        <activity android:name="com.n4u1.AQA.AQA.views.MyLikeContentsActivity" />
-        <activity android:name="com.n4u1.AQA.AQA.views.MyReplyContentsActivity" />
-        <activity android:name="com.n4u1.AQA.AQA.views.SearchResultActivity" />
-        <activity android:name="com.n4u1.AQA.AQA.views.MyPollActivity" />
-        <activity android:name="com.n4u1.AQA.AQA.views.MyUploadActivity" />
-        <activity android:name="com.n4u1.AQA.AQA.views.FullImageActivity"></activity>
+        <activity android:name=".views.SearchHomeActivity" />
+        <activity android:name=".views.MineActivity" />
+        <activity android:name=".views.MyLikeContentsActivity" />
+        <activity android:name=".views.MyReplyContentsActivity" />
+        <activity android:name=".views.SearchResultActivity" />
+        <activity android:name=".views.MyPollActivity" />
+        <activity android:name=".views.MyUploadActivity" />
+        <activity android:name=".views.FullImageActivity" />
+        <activity
+            android:name=".dialog.DeleteModificationActivity"
+            android:theme="@style/Theme.RankingChoiceDialog"/>
     </application>
 
 </manifest>

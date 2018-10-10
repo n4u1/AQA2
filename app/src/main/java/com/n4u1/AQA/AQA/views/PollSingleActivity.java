@@ -990,7 +990,7 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
                 if (contentDTO == null) {
                     return Transaction.success(mutableData);
                 }
-                contentDTO.reply.put(date, pollActivity_editText_reply.getText().toString());
+//                contentDTO.reply.put(date, pollActivity_editText_reply.getText().toString());
                 mutableData.setValue(contentDTO);
                 firebaseDatabase.getReference().child("reply").child(postRef.getKey()).addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override

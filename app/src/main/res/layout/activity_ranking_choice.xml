@@ -9,149 +9,158 @@
     <!-- Notice -->
 
     <TextView
-        
-        android:paddingBottom="4dp"
-        android:paddingTop="16dp"
-        android:visibility="gone"
         android:id="@+id/textView_1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="4dp"
         android:alpha="0.87"
         android:gravity="center"
+        android:paddingTop="16dp"
+        android:paddingBottom="4dp"
         android:text="test"
         android:textColor="#000"
-        android:textSize="25dp" />
+        android:textSize="25dp"
+        android:visibility="gone" />
+
     <TextView
-        android:paddingBottom="4dp"
-        android:paddingTop="4dp"
-        android:visibility="gone"
         android:id="@+id/textView_2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="4dp"
         android:alpha="0.87"
         android:gravity="center"
+        android:paddingTop="4dp"
+        android:paddingBottom="4dp"
         android:text="test"
         android:textColor="#000"
-        android:textSize="25dp" />
+        android:textSize="25dp"
+        android:visibility="gone" />
+
     <TextView
-        android:paddingBottom="4dp"
-        android:paddingTop="4dp"
-        android:visibility="gone"
         android:id="@+id/textView_3"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="4dp"
         android:alpha="0.87"
         android:gravity="center"
+        android:paddingTop="4dp"
+        android:paddingBottom="4dp"
         android:text="test"
         android:textColor="#000"
-        android:textSize="25dp" />
+        android:textSize="25dp"
+        android:visibility="gone" />
+
     <TextView
-        android:paddingBottom="4dp"
-        android:paddingTop="4dp"
-        android:visibility="gone"
         android:id="@+id/textView_4"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="4dp"
         android:alpha="0.87"
         android:gravity="center"
+        android:paddingTop="4dp"
+        android:paddingBottom="4dp"
         android:text="test"
         android:textColor="#000"
-        android:textSize="25dp" />
+        android:textSize="25dp"
+        android:visibility="gone" />
+
     <TextView
-        android:paddingBottom="4dp"
-        android:paddingTop="4dp"
-        android:visibility="gone"
         android:id="@+id/textView_5"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="4dp"
         android:alpha="0.87"
         android:gravity="center"
+        android:paddingTop="4dp"
+        android:paddingBottom="4dp"
         android:text="test"
         android:textColor="#000"
-        android:textSize="25dp" />
+        android:textSize="25dp"
+        android:visibility="gone" />
+
     <TextView
-        android:paddingBottom="4dp"
-        android:paddingTop="4dp"
-        android:visibility="gone"
         android:id="@+id/textView_6"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="4dp"
         android:alpha="0.87"
         android:gravity="center"
+        android:paddingTop="4dp"
+        android:paddingBottom="4dp"
         android:text="test"
         android:textColor="#000"
-        android:textSize="25dp" />
+        android:textSize="25dp"
+        android:visibility="gone" />
+
     <TextView
-        android:paddingBottom="4dp"
-        android:paddingTop="4dp"
-        android:visibility="gone"
         android:id="@+id/textView_7"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="4dp"
         android:alpha="0.87"
         android:gravity="center"
+        android:paddingTop="4dp"
+        android:paddingBottom="4dp"
         android:text="test"
         android:textColor="#000"
-        android:textSize="25dp" />
+        android:textSize="25dp"
+        android:visibility="gone" />
+
     <TextView
-        android:paddingBottom="4dp"
-        android:paddingTop="4dp"
-        android:visibility="gone"
         android:id="@+id/textView_8"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="4dp"
         android:alpha="0.87"
         android:gravity="center"
+        android:paddingTop="4dp"
+        android:paddingBottom="4dp"
         android:text="test"
         android:textColor="#000"
-        android:textSize="25dp" />
+        android:textSize="25dp"
+        android:visibility="gone" />
+
     <TextView
-        android:paddingBottom="4dp"
-        android:paddingTop="4dp"
-        android:visibility="gone"
         android:id="@+id/textView_9"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="4dp"
         android:alpha="0.87"
         android:gravity="center"
+        android:paddingTop="4dp"
+        android:paddingBottom="4dp"
         android:text="test"
         android:textColor="#000"
-        android:textSize="25dp" />
+        android:textSize="25dp"
+        android:visibility="gone" />
+
     <TextView
-        android:paddingBottom="4dp"
-        android:paddingTop="4dp"
-        android:visibility="gone"
         android:id="@+id/textView_10"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="4dp"
         android:alpha="0.87"
         android:gravity="center"
+        android:paddingTop="4dp"
+        android:paddingBottom="4dp"
         android:text="test"
         android:textColor="#000"
-        android:textSize="25dp" />
+        android:textSize="25dp"
+        android:visibility="gone" />
+
     <TextView
-        android:paddingBottom="16dp"
-        android:paddingTop="4dp"
-        android:visibility="gone"
         android:id="@+id/textView_11"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="4dp"
         android:alpha="0.87"
         android:gravity="center"
+        android:paddingTop="4dp"
+        android:paddingBottom="16dp"
         android:text="test"
         android:textColor="#000"
-        android:textSize="25dp" />
+        android:textSize="25dp"
+        android:visibility="gone" />
 
     <!-- Notice -->
 

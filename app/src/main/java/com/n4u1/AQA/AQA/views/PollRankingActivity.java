@@ -27,6 +27,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.n4u1.AQA.AQA.R;
+import com.n4u1.AQA.AQA.dialog.DeleteModificationActivity;
 import com.n4u1.AQA.AQA.dialog.PollResultRankingDialog;
 import com.n4u1.AQA.AQA.dialog.RankingChoiceActivity;
 import com.n4u1.AQA.AQA.models.ContentDTO;
@@ -133,49 +134,6 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         final String contentKey = getIntent().getStringExtra("contentKey");
         contentHit = getIntent().getIntExtra("contentHit", 999999);
-
-        //reply item click listener 댓글 클릭 리스너
-        final ReplyAdapter replyAdapter = new ReplyAdapter(getApplicationContext(), replyDTOS, new ReplyAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(View view, final int position) {
-
-                if (replyDTOS.get(position).getId().equals(auth.getCurrentUser().getEmail())) {
-                    if (view.getTag().equals("replyAdapter_relativeLayout_like")) {
-                        Toast.makeText(getApplicationContext(), auth.getCurrentUser().getEmail() + "님 댓글 입니다.", Toast.LENGTH_SHORT).show();
-                    } else {
-                        Toast.makeText(getApplicationContext(), "수정 or 삭제 띄우기", Toast.LENGTH_SHORT).show();
-                    }
-
-                } else {
-                    if (view.getTag().equals("replyAdapter_relativeLayout_like")) {
-                        firebaseDatabase.getReference().child("reply").child(contentKey).addListenerForSingleValueEvent(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                replyDTOS.clear();
-                                ArrayList<ReplyDTO> replyDTOTemp = new ArrayList<>();
-
-                                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                                    ReplyDTO replyDTO = snapshot.getValue(ReplyDTO.class);
-                                    replyDTOTemp.add(replyDTO);
-                                }
-                                Collections.reverse(replyDTOTemp);
-                                replyDTOS.addAll(replyDTOTemp);
-                                int temp = replyDTOS.size() - position - 1;
-                                onReplyLikeClicked(firebaseDatabase.getReference().child("reply").child(contentKey).child(replyDTOTemp.get(temp).getReplyKey()));
-                            }
-
-                            @Override
-                            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                            }
-                        });
-                    }
-                }
-
-
-//                Log.d("lkj position", String.valueOf(position));
-            }
-        });
 
 
         mDatabaseReference = FirebaseDatabase.getInstance().getReference("user_contents").child(contentKey);
@@ -299,6 +257,75 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
         pollActivity_textView_check_9.setOnClickListener(this);
         pollActivity_textView_check_10.setOnClickListener(this);
 
+
+
+        //reply item click listener 댓글 클릭 리스너
+        final ReplyAdapter replyAdapter = new ReplyAdapter(getApplicationContext(), replyDTOS, new ReplyAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, final int position) {
+
+                if (replyDTOS.get(position).getId().equals(auth.getCurrentUser().getEmail())) { //본인 댓글,좋아요 클릭시
+                    if (view.getTag().equals("replyAdapter_relativeLayout_like")) { //댓글 좋아요 클릭
+                        Toast.makeText(getApplicationContext(), auth.getCurrentUser().getEmail() + "님 댓글 입니다.", Toast.LENGTH_SHORT).show();
+                    } else { //댓글 클릭, 삭제or수정
+
+                        firebaseDatabase.getReference().child("reply").child(contentKey).addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                replyDTOS.clear();
+                                ArrayList<ReplyDTO> replyDTOTemp = new ArrayList<>();
+
+                                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                                    ReplyDTO replyDTO = snapshot.getValue(ReplyDTO.class);
+                                    replyDTOTemp.add(replyDTO);
+                                }
+                                Collections.reverse(replyDTOTemp);
+                                replyDTOS.addAll(replyDTOTemp);
+                                int temp = replyDTOS.size() - position - 1;
+                                String replyKey = replyDTOTemp.get(temp).getReplyKey();
+
+                                //수정하기, 선택하기 액티비티(다이얼로그)띄우기
+                                Intent intent = new Intent(PollRankingActivity.this, DeleteModificationActivity.class);
+                                intent.putExtra("replyKey", replyKey);
+                                startActivityForResult(intent, 10000);
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                            }
+                        });
+
+
+                    }
+
+                } else { //본인이 아닌 댓글,좋아요 클릭시
+                    if (view.getTag().equals("replyAdapter_relativeLayout_like")) { //댓글 좋아요 클릭
+                        firebaseDatabase.getReference().child("reply").child(contentKey).addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                replyDTOS.clear();
+                                ArrayList<ReplyDTO> replyDTOTemp = new ArrayList<>();
+
+                                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                                    ReplyDTO replyDTO = snapshot.getValue(ReplyDTO.class);
+                                    replyDTOTemp.add(replyDTO);
+                                }
+                                Collections.reverse(replyDTOTemp);
+                                replyDTOS.addAll(replyDTOTemp);
+                                int temp = replyDTOS.size() - position - 1;
+                                onReplyLikeClicked(firebaseDatabase.getReference().child("reply").child(contentKey).child(replyDTOTemp.get(temp).getReplyKey()));
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                            }
+                        });
+                    }
+                }
+            }
+        });
 
 
 
@@ -979,7 +1006,7 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
                 if (contentDTO == null) {
                     return Transaction.success(mutableData);
                 }
-                contentDTO.reply.put(date, pollActivity_editText_reply.getText().toString());
+//                contentDTO.reply.put(date, pollActivity_editText_reply.getText().toString());
                 mutableData.setValue(contentDTO);
                 firebaseDatabase.getReference().child("reply").child(postRef.getKey()).addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
@@ -1886,6 +1913,14 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
                         pollActivity_textView_check_10.setText(data.getStringExtra("result"));
                         checking_img_10();
                     }
+                    break;
+                case 10000:
+                    if (data.getStringArrayListExtra("resultDelete").get(1).equals("삭제하기")) {
+                        Toast.makeText(getApplicationContext(), "삭제하기", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(getApplicationContext(), "수정하기", Toast.LENGTH_SHORT).show();
+                    }
+
                     break;
             }
 
