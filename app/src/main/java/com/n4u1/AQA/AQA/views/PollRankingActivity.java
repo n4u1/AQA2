@@ -11,6 +11,8 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
@@ -331,7 +333,31 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
         //이미투표했는지 여부 확인해서 floating action button 색 넣기
         fabCheck(firebaseDatabase.getReference().child("user_contents").child(contentKey));
 
+        //투표하고 결과보기
+        pollActivity_imageView_state.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mDatabaseReferencePicker.child(auth.getCurrentUser().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        Map<String, Object> user = (Map<String, Object>) dataSnapshot.getValue();
+                        Object object = user.get("age");
+                        int currentAge = Integer.parseInt(object.toString());
+                        String currentGender = user.get("sex").toString();
+                        onResultClicked(firebaseDatabase.getReference().child("user_contents").child(contentKey), currentAge, currentGender);
+//                        issueContents 테스트 디비 입력용
+//                        long issueDate = getCurrentDate();
+//                        issueMap.put(String.valueOf(issueDate), contentKey);
+//                        firebaseDatabase.getReference().child("issueContents").child(String.valueOf(issueDate)).setValue(issueMap);
+                    }
 
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+            }
+        });
 
         //투표하고 결과보기
         pollActivity_fab_result.setOnClickListener(new View.OnClickListener() {
@@ -356,28 +382,30 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
 
                     }
                 });
-
-
-
-
             }
         });
 
+        //댓글 등록 버튼 색 변경
+        pollActivity_editText_reply.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
-        //처음 댓글펼치기 버튼의 setText (리플 갯수 넣기위함)
-//        firebaseDatabase.getReference().child("user_contents").child(contentKey).addListenerForSingleValueEvent(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-//                ContentDTO contentDTO = dataSnapshot.getValue(ContentDTO.class);
-//                int replyCount = contentDTO.getReplyCount();
-//                pollActivity_textView_reply.setText("댓글 펼치기(" + replyCount + ")");
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError databaseError) {
-//
-//            }
-//        });
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (s.toString().trim().length() > 0) {
+                    pollActivity_button_replySend.setImageResource(R.drawable.ic_play_triangle_2);
+                } else {
+                    pollActivity_button_replySend.setImageResource(R.drawable.ic_play_triangle_1);
+                }
+            }
+        });
 
 
         //댓글 펼치기
@@ -2000,6 +2028,8 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
         return true;
     }
 
+
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int curId = item.getItemId();
@@ -2010,10 +2040,18 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
                 startActivity(getIntent());
                 overridePendingTransition(0, 0);
                 break;
+            case R.id.menu_goHome:
+                Intent intent = new Intent(PollRankingActivity.this, HomeActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.menu_back:
+                this.onBackPressed();
+                break;
+
         }
-//        onBackPressed();
         return super.onOptionsItemSelected(item);
     }
+
 
     //picker의 현재픽,성별,나이 가져와서 통계항목에 + n
     private String addStatistics(String statistics_code, ArrayList<Integer> currentPickScore, String gender, int age) {

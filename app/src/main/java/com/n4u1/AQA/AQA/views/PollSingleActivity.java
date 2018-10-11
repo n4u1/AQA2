@@ -11,6 +11,9 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
@@ -345,6 +348,32 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
 //        });
 
         //투표하고 결과보기
+        pollActivity_imageView_state.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mDatabaseReferencePicker.child(auth.getCurrentUser().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        Map<String, Object> user = (Map<String, Object>) dataSnapshot.getValue();
+                        Object object = user.get("age");
+                        int currentAge = Integer.parseInt(object.toString());
+                        String currentGender = user.get("sex").toString();
+                        onResultClicked(firebaseDatabase.getReference().child("user_contents").child(contentKey), currentAge, currentGender);
+//                        issueContents 테스트 디비 입력용
+//                        long issueDate = getCurrentDate();
+//                        issueMap.put(String.valueOf(issueDate), contentKey);
+//                        firebaseDatabase.getReference().child("issueContents").child(String.valueOf(issueDate)).setValue(issueMap);
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+            }
+        });
+
+        //투표하고 결과보기
         pollActivity_fab_result.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -360,6 +389,9 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
                         onResultClicked(firebaseDatabase.getReference().child("user_contents").child(contentKey), currentAge, currentGender);
 
 //                        issueContents 테스트 디비 입력용
+//                        long issueDate = getCurrentDate();
+//                        issueMap.put(String.valueOf(issueDate), contentKey);
+//                        firebaseDatabase.getReference().child("issueContents").child(String.valueOf(issueDate)).setValue(issueMap);
                         long issueDate = getCurrentDate();
                         issueMap.put(String.valueOf(issueDate), contentKey);
                         firebaseDatabase.getReference().child("issueContents").child(String.valueOf(issueDate)).setValue(issueMap);
@@ -371,6 +403,30 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
                     }
                 });
 
+            }
+        });
+
+
+
+        //댓글 등록 버튼 색 변경
+        pollActivity_editText_reply.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (s.toString().trim().length() > 0) {
+                    pollActivity_button_replySend.setImageResource(R.drawable.ic_play_triangle_2);
+                } else {
+                    pollActivity_button_replySend.setImageResource(R.drawable.ic_play_triangle_1);
+                }
             }
         });
 
@@ -522,6 +578,11 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
 
             }
         });
+
+
+
+
+
 
 
         //이미지 크게보기
@@ -1852,8 +1913,14 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
                 startActivity(getIntent());
                 overridePendingTransition(0, 0);
                 break;
+            case R.id.menu_goHome:
+                Intent intent = new Intent(PollSingleActivity.this, HomeActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.menu_back:
+                this.onBackPressed();
+                break;
         }
-//        onBackPressed();
         return super.onOptionsItemSelected(item);
     }
 

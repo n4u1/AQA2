@@ -5,9 +5,24 @@
 
 
     <item
-        android:title="Refresh"
+        android:title="새로고침"
         android:id="@+id/menu_refresh"
         android:icon="@drawable/ic_refresh_black_24dp"
+        app:showAsAction="always"/>
+
+
+
+    <item
+        android:title="홈으로"
+        android:id="@+id/menu_goHome"
+        android:icon="@drawable/ic_outline_home_24px"
+        app:showAsAction="always"/>
+
+
+    <item
+        android:title="뒤로"
+        android:id="@+id/menu_back"
+        android:icon="@drawable/ic_arrow_back_black_24dp"
         app:showAsAction="always"/>
 
 

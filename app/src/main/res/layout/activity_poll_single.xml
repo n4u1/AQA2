@@ -144,17 +144,17 @@
 
             <!--&lt;!&ndash;투표하지 않은 게시물 입니다&ndash;&gt;-->
             <!--<View-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="1dp"-->
-                <!--android:background="#efefef" />-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="1dp"-->
+            <!--android:background="#efefef" />-->
 
             <!--<TextView-->
-                <!--android:id="@+id/pollActivity_textView_pollState"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_marginTop="8dp"-->
-                <!--android:hint="투표에 참여해보세요!"-->
-                <!--android:textSize="16dp" />-->
+            <!--android:id="@+id/pollActivity_textView_pollState"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_marginTop="8dp"-->
+            <!--android:hint="투표에 참여해보세요!"-->
+            <!--android:textSize="16dp" />-->
 
 
             <View
@@ -165,10 +165,10 @@
             <!--좋아요, 투표수, 공유-->
 
             <LinearLayout
-                android:layout_marginTop="4dp"
-                android:layout_marginBottom="4dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="4dp"
                 android:orientation="horizontal">
 
                 <ImageView
@@ -183,9 +183,9 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.7"
-                    android:textSize="14dp"
                     android:text="3374"
-                    android:textColor="#737373" />
+                    android:textColor="#737373"
+                    android:textSize="14dp" />
 
 
                 <ImageView
@@ -200,9 +200,9 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.7"
-                    android:textSize="14dp"
                     android:text="2291"
-                    android:textColor="#737373" />
+                    android:textColor="#737373"
+                    android:textSize="14dp" />
 
 
                 <ImageView
@@ -238,7 +238,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="#efefef" />
-
 
 
             <View
@@ -763,11 +762,11 @@
 
             <!--댓글 리스트 중 베스트 댓글 0-->
             <LinearLayout
-                android:layout_marginBottom="4dp"
-                android:background="#ececec"
                 android:id="@+id/linearLayout_bestReply0"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="4dp"
+                android:background="#ececec"
                 android:orientation="horizontal"
                 android:visibility="gone">
 
@@ -843,11 +842,11 @@
 
             <!--댓글 리스트 중 베스트 댓글 1-->
             <LinearLayout
-                android:layout_marginBottom="4dp"
-                android:background="#ececec"
                 android:id="@+id/linearLayout_bestReply1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="4dp"
+                android:background="#ececec"
                 android:orientation="horizontal"
                 android:visibility="gone">
 
@@ -921,14 +920,13 @@
             </LinearLayout>
 
 
-
             <!--댓글 리스트 중 베스트 댓글 2-->
             <LinearLayout
-                android:layout_marginBottom="4dp"
-                android:background="#ececec"
                 android:id="@+id/linearLayout_bestReply2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="4dp"
+                android:background="#ececec"
                 android:orientation="horizontal"
                 android:visibility="gone">
 
@@ -1017,6 +1015,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
+                android:paddingTop="4dp"
                 android:paddingBottom="60dp">
 
                 <EditText
@@ -1031,9 +1030,9 @@
                 <ImageView
                     android:id="@+id/pollActivity_button_replySend"
                     android:layout_width="match_parent"
-                    android:layout_height="50dp"
+                    android:layout_height="40dp"
                     android:layout_weight="9"
-                    android:src="@drawable/ic_arrow_forward_black_24dp"
+                    android:src="@drawable/ic_play_triangle_1"
                     android:text="전송"
                     android:textSize="12dp"
                     android:visibility="gone" />

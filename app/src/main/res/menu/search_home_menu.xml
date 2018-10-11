@@ -9,10 +9,10 @@
 
 
     <item
-        android:title="Home"
         android:id="@+id/menu_home"
         android:icon="@drawable/ic_outline_home_24px"
-        app:showAsAction="always"/>
+        android:title="Home"
+        app:showAsAction="always" />
 
 
 </menu>

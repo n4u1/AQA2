@@ -1,8 +1,6 @@
 <resources>
 
-    <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
-        <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
@@ -30,12 +28,10 @@
 
 
     <style name="TextLabel" parent="TextAppearance.AppCompat">
-        <!-- Hint color and label color in FALSE state -->
         <item name="android:textColorHighlight">@color/colorAccent</item>
         <item name="android:textColorLink">@color/colorPrimary</item>
         <item name="android:textColorHint">#8e9397</item>
         <item name="android:textSize">20sp</item>
-        <!-- Label color in TRUE state and bar color FALSE and TRUE State -->
         <item name="colorAccent">#000000</item>
         <item name="colorControlNormal">#000000</item>
         <item name="colorControlActivated">#000000</item>
@@ -46,10 +42,6 @@
         <item name="android:windowBackground">@drawable/background_splash</item>
     </style>
 
-
-    <!--<style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />-->
-
-    <!--<style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />-->
 
 
     <style name="Theme.RankingChoiceDialog" parent="Theme.AppCompat.Light.Dialog">

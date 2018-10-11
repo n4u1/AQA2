@@ -15,10 +15,10 @@
         android:id="@+id/pollActivity_fab_result"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
-        android:layout_marginBottom="24dp"
+        android:layout_alignParentBottom="true"
         android:layout_marginRight="24dp"
+        android:layout_marginBottom="24dp"
         android:src="@drawable/q"
         app:backgroundTint="#ffffff" />
 
@@ -149,10 +149,10 @@
             <!--좋아요, 투표수, 공유-->
 
             <LinearLayout
-                android:layout_marginTop="4dp"
-                android:layout_marginBottom="4dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="4dp"
                 android:orientation="horizontal">
 
                 <ImageView
@@ -166,9 +166,9 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.7"
-                    android:textSize="14dp"
                     android:text="3374"
-                    android:textColor="#737373" />
+                    android:textColor="#737373"
+                    android:textSize="14dp" />
 
 
                 <ImageView
@@ -183,9 +183,9 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.7"
-                    android:textSize="14dp"
                     android:text="2291"
-                    android:textColor="#737373" />
+                    android:textColor="#737373"
+                    android:textSize="14dp" />
 
 
                 <ImageView
@@ -205,17 +205,17 @@
 
             <!--&lt;!&ndash;투표하지 않은 게시물 입니다&ndash;&gt;-->
             <!--<View-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="1dp"-->
-                <!--android:background="#efefef" />-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="1dp"-->
+            <!--android:background="#efefef" />-->
 
             <!--<TextView-->
-                <!--android:hint="투표에 참여해보세요!"-->
-                <!--android:id="@+id/pollActivity_textView_pollState"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_marginTop="8dp"-->
-                <!--android:textSize="16dp" />-->
+            <!--android:hint="투표에 참여해보세요!"-->
+            <!--android:id="@+id/pollActivity_textView_pollState"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_marginTop="8dp"-->
+            <!--android:textSize="16dp" />-->
 
             <!--내용-->
             <View
@@ -254,10 +254,10 @@
                     android:id="@+id/pollActivity_textView_check_1"
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
-                    android:layout_alignBottom="@+id/pollActivity_imageView_choice_1"
                     android:layout_alignLeft="@+id/pollActivity_imageView_choice_1"
-                    android:layout_alignRight="@+id/pollActivity_imageView_choice_1"
                     android:layout_alignTop="@+id/pollActivity_imageView_choice_1"
+                    android:layout_alignRight="@+id/pollActivity_imageView_choice_1"
+                    android:layout_alignBottom="@+id/pollActivity_imageView_choice_1"
                     android:gravity="center"
                     android:text="1 선택"
                     android:textColor="#000000"
@@ -277,12 +277,12 @@
                     android:layout_width="match_parent"
                     android:layout_height="392dp"
                     android:layout_below="@id/pollActivity_textView_check_1"
-                    android:layout_marginBottom="16dp"
-                    android:layout_marginEnd="4dp"
-                    android:layout_marginLeft="4dp"
-                    android:layout_marginRight="4dp"
                     android:layout_marginStart="4dp"
+                    android:layout_marginLeft="4dp"
                     android:layout_marginTop="4dp"
+                    android:layout_marginEnd="4dp"
+                    android:layout_marginRight="4dp"
+                    android:layout_marginBottom="16dp"
                     android:scaleType="center"
                     android:visibility="gone" />
 
@@ -299,10 +299,10 @@
                     android:id="@+id/pollActivity_textView_check_2"
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
-                    android:layout_alignBottom="@+id/pollActivity_imageView_choice_2"
                     android:layout_alignLeft="@+id/pollActivity_imageView_choice_2"
-                    android:layout_alignRight="@+id/pollActivity_imageView_choice_2"
                     android:layout_alignTop="@+id/pollActivity_imageView_choice_2"
+                    android:layout_alignRight="@+id/pollActivity_imageView_choice_2"
+                    android:layout_alignBottom="@+id/pollActivity_imageView_choice_2"
                     android:gravity="center"
                     android:text="2 선택"
                     android:textColor="#000000"
@@ -322,12 +322,12 @@
                     android:layout_width="match_parent"
                     android:layout_height="392dp"
                     android:layout_below="@id/pollActivity_textView_check_2"
-                    android:layout_marginBottom="16dp"
-                    android:layout_marginEnd="4dp"
-                    android:layout_marginLeft="4dp"
-                    android:layout_marginRight="4dp"
                     android:layout_marginStart="4dp"
+                    android:layout_marginLeft="4dp"
                     android:layout_marginTop="4dp"
+                    android:layout_marginEnd="4dp"
+                    android:layout_marginRight="4dp"
+                    android:layout_marginBottom="16dp"
                     android:scaleType="center"
                     android:visibility="gone" />
 
@@ -344,10 +344,10 @@
                     android:id="@+id/pollActivity_textView_check_3"
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
-                    android:layout_alignBottom="@+id/pollActivity_imageView_choice_3"
                     android:layout_alignLeft="@+id/pollActivity_imageView_choice_3"
-                    android:layout_alignRight="@+id/pollActivity_imageView_choice_3"
                     android:layout_alignTop="@+id/pollActivity_imageView_choice_3"
+                    android:layout_alignRight="@+id/pollActivity_imageView_choice_3"
+                    android:layout_alignBottom="@+id/pollActivity_imageView_choice_3"
                     android:gravity="center"
                     android:text="3 선택"
                     android:textColor="#000000"
@@ -367,12 +367,12 @@
                     android:layout_width="match_parent"
                     android:layout_height="392dp"
                     android:layout_below="@id/pollActivity_textView_check_3"
-                    android:layout_marginBottom="16dp"
-                    android:layout_marginEnd="4dp"
-                    android:layout_marginLeft="4dp"
-                    android:layout_marginRight="4dp"
                     android:layout_marginStart="4dp"
+                    android:layout_marginLeft="4dp"
                     android:layout_marginTop="4dp"
+                    android:layout_marginEnd="4dp"
+                    android:layout_marginRight="4dp"
+                    android:layout_marginBottom="16dp"
                     android:scaleType="center"
                     android:visibility="gone" />
 
@@ -389,10 +389,10 @@
                     android:id="@+id/pollActivity_textView_check_4"
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
-                    android:layout_alignBottom="@+id/pollActivity_imageView_choice_4"
                     android:layout_alignLeft="@+id/pollActivity_imageView_choice_4"
-                    android:layout_alignRight="@+id/pollActivity_imageView_choice_4"
                     android:layout_alignTop="@+id/pollActivity_imageView_choice_4"
+                    android:layout_alignRight="@+id/pollActivity_imageView_choice_4"
+                    android:layout_alignBottom="@+id/pollActivity_imageView_choice_4"
                     android:gravity="center"
                     android:text="4 선택"
                     android:textColor="#000000"
@@ -412,12 +412,12 @@
                     android:layout_width="match_parent"
                     android:layout_height="392dp"
                     android:layout_below="@id/pollActivity_textView_check_4"
-                    android:layout_marginBottom="16dp"
-                    android:layout_marginEnd="4dp"
-                    android:layout_marginLeft="4dp"
-                    android:layout_marginRight="4dp"
                     android:layout_marginStart="4dp"
+                    android:layout_marginLeft="4dp"
                     android:layout_marginTop="4dp"
+                    android:layout_marginEnd="4dp"
+                    android:layout_marginRight="4dp"
+                    android:layout_marginBottom="16dp"
                     android:scaleType="center"
                     android:visibility="gone" />
 
@@ -434,10 +434,10 @@
                     android:id="@+id/pollActivity_textView_check_5"
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
-                    android:layout_alignBottom="@+id/pollActivity_imageView_choice_5"
                     android:layout_alignLeft="@+id/pollActivity_imageView_choice_5"
-                    android:layout_alignRight="@+id/pollActivity_imageView_choice_5"
                     android:layout_alignTop="@+id/pollActivity_imageView_choice_5"
+                    android:layout_alignRight="@+id/pollActivity_imageView_choice_5"
+                    android:layout_alignBottom="@+id/pollActivity_imageView_choice_5"
                     android:gravity="center"
                     android:text="5 선택"
                     android:textColor="#000000"
@@ -457,12 +457,12 @@
                     android:layout_width="match_parent"
                     android:layout_height="392dp"
                     android:layout_below="@id/pollActivity_textView_check_5"
-                    android:layout_marginBottom="16dp"
-                    android:layout_marginEnd="4dp"
-                    android:layout_marginLeft="4dp"
-                    android:layout_marginRight="4dp"
                     android:layout_marginStart="4dp"
+                    android:layout_marginLeft="4dp"
                     android:layout_marginTop="4dp"
+                    android:layout_marginEnd="4dp"
+                    android:layout_marginRight="4dp"
+                    android:layout_marginBottom="16dp"
                     android:scaleType="center"
                     android:visibility="gone" />
 
@@ -479,10 +479,10 @@
                     android:id="@+id/pollActivity_textView_check_6"
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
-                    android:layout_alignBottom="@+id/pollActivity_imageView_choice_6"
                     android:layout_alignLeft="@+id/pollActivity_imageView_choice_6"
-                    android:layout_alignRight="@+id/pollActivity_imageView_choice_6"
                     android:layout_alignTop="@+id/pollActivity_imageView_choice_6"
+                    android:layout_alignRight="@+id/pollActivity_imageView_choice_6"
+                    android:layout_alignBottom="@+id/pollActivity_imageView_choice_6"
                     android:gravity="center"
                     android:text="6 선택"
                     android:textColor="#000000"
@@ -502,12 +502,12 @@
                     android:layout_width="match_parent"
                     android:layout_height="392dp"
                     android:layout_below="@id/pollActivity_textView_check_6"
-                    android:layout_marginBottom="16dp"
-                    android:layout_marginEnd="4dp"
-                    android:layout_marginLeft="4dp"
-                    android:layout_marginRight="4dp"
                     android:layout_marginStart="4dp"
+                    android:layout_marginLeft="4dp"
                     android:layout_marginTop="4dp"
+                    android:layout_marginEnd="4dp"
+                    android:layout_marginRight="4dp"
+                    android:layout_marginBottom="16dp"
                     android:scaleType="center"
                     android:visibility="gone" />
 
@@ -524,10 +524,10 @@
                     android:id="@+id/pollActivity_textView_check_7"
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
-                    android:layout_alignBottom="@+id/pollActivity_imageView_choice_7"
                     android:layout_alignLeft="@+id/pollActivity_imageView_choice_7"
-                    android:layout_alignRight="@+id/pollActivity_imageView_choice_7"
                     android:layout_alignTop="@+id/pollActivity_imageView_choice_7"
+                    android:layout_alignRight="@+id/pollActivity_imageView_choice_7"
+                    android:layout_alignBottom="@+id/pollActivity_imageView_choice_7"
                     android:gravity="center"
                     android:text="7 선택"
                     android:textColor="#000000"
@@ -547,12 +547,12 @@
                     android:layout_width="match_parent"
                     android:layout_height="392dp"
                     android:layout_below="@id/pollActivity_textView_check_7"
-                    android:layout_marginBottom="16dp"
-                    android:layout_marginEnd="4dp"
-                    android:layout_marginLeft="4dp"
-                    android:layout_marginRight="4dp"
                     android:layout_marginStart="4dp"
+                    android:layout_marginLeft="4dp"
                     android:layout_marginTop="4dp"
+                    android:layout_marginEnd="4dp"
+                    android:layout_marginRight="4dp"
+                    android:layout_marginBottom="16dp"
                     android:scaleType="center"
                     android:visibility="gone" />
 
@@ -569,10 +569,10 @@
                     android:id="@+id/pollActivity_textView_check_8"
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
-                    android:layout_alignBottom="@+id/pollActivity_imageView_choice_8"
                     android:layout_alignLeft="@+id/pollActivity_imageView_choice_8"
-                    android:layout_alignRight="@+id/pollActivity_imageView_choice_8"
                     android:layout_alignTop="@+id/pollActivity_imageView_choice_8"
+                    android:layout_alignRight="@+id/pollActivity_imageView_choice_8"
+                    android:layout_alignBottom="@+id/pollActivity_imageView_choice_8"
                     android:gravity="center"
                     android:text="8 선택"
                     android:textColor="#000000"
@@ -592,12 +592,12 @@
                     android:layout_width="match_parent"
                     android:layout_height="392dp"
                     android:layout_below="@id/pollActivity_textView_check_8"
-                    android:layout_marginBottom="16dp"
-                    android:layout_marginEnd="4dp"
-                    android:layout_marginLeft="4dp"
-                    android:layout_marginRight="4dp"
                     android:layout_marginStart="4dp"
+                    android:layout_marginLeft="4dp"
                     android:layout_marginTop="4dp"
+                    android:layout_marginEnd="4dp"
+                    android:layout_marginRight="4dp"
+                    android:layout_marginBottom="16dp"
                     android:scaleType="center"
                     android:visibility="gone" />
 
@@ -614,10 +614,10 @@
                     android:id="@+id/pollActivity_textView_check_9"
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
-                    android:layout_alignBottom="@+id/pollActivity_imageView_choice_9"
                     android:layout_alignLeft="@+id/pollActivity_imageView_choice_9"
-                    android:layout_alignRight="@+id/pollActivity_imageView_choice_9"
                     android:layout_alignTop="@+id/pollActivity_imageView_choice_9"
+                    android:layout_alignRight="@+id/pollActivity_imageView_choice_9"
+                    android:layout_alignBottom="@+id/pollActivity_imageView_choice_9"
                     android:gravity="center"
                     android:text="9 선택"
                     android:textColor="#000000"
@@ -637,12 +637,12 @@
                     android:layout_width="match_parent"
                     android:layout_height="392dp"
                     android:layout_below="@id/pollActivity_textView_check_9"
-                    android:layout_marginBottom="16dp"
-                    android:layout_marginEnd="4dp"
-                    android:layout_marginLeft="4dp"
-                    android:layout_marginRight="4dp"
                     android:layout_marginStart="4dp"
+                    android:layout_marginLeft="4dp"
                     android:layout_marginTop="4dp"
+                    android:layout_marginEnd="4dp"
+                    android:layout_marginRight="4dp"
+                    android:layout_marginBottom="16dp"
                     android:scaleType="center"
                     android:visibility="gone" />
 
@@ -659,10 +659,10 @@
                     android:id="@+id/pollActivity_textView_check_10"
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
-                    android:layout_alignBottom="@+id/pollActivity_imageView_choice_10"
                     android:layout_alignLeft="@+id/pollActivity_imageView_choice_10"
-                    android:layout_alignRight="@+id/pollActivity_imageView_choice_10"
                     android:layout_alignTop="@+id/pollActivity_imageView_choice_10"
+                    android:layout_alignRight="@+id/pollActivity_imageView_choice_10"
+                    android:layout_alignBottom="@+id/pollActivity_imageView_choice_10"
                     android:gravity="center"
                     android:text="10 선택"
                     android:textColor="#000000"
@@ -682,12 +682,12 @@
                     android:layout_width="match_parent"
                     android:layout_height="392dp"
                     android:layout_below="@id/pollActivity_textView_check_10"
-                    android:layout_marginBottom="16dp"
-                    android:layout_marginEnd="4dp"
-                    android:layout_marginLeft="4dp"
-                    android:layout_marginRight="4dp"
                     android:layout_marginStart="4dp"
+                    android:layout_marginLeft="4dp"
                     android:layout_marginTop="4dp"
+                    android:layout_marginEnd="4dp"
+                    android:layout_marginRight="4dp"
+                    android:layout_marginBottom="16dp"
                     android:scaleType="center"
                     android:visibility="gone" />
 
@@ -708,21 +708,20 @@
                 android:layout_height="wrap_content">
 
                 <ImageView
-                    android:layout_centerHorizontal="true"
-                    android:src="@drawable/ic_hambugger"
                     android:layout_width="50dp"
-                    android:layout_height="50dp" />
+                    android:layout_height="50dp"
+                    android:layout_centerHorizontal="true"
+                    android:src="@drawable/ic_hambugger" />
             </RelativeLayout>
-
 
 
             <!--댓글 리스트 중 베스트 댓글 0-->
             <LinearLayout
-                android:layout_marginBottom="4dp"
-                android:background="#ececec"
                 android:id="@+id/linearLayout_bestReply0"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="4dp"
+                android:background="#ececec"
                 android:orientation="horizontal"
                 android:visibility="gone">
 
@@ -798,11 +797,11 @@
 
             <!--댓글 리스트 중 베스트 댓글 1-->
             <LinearLayout
-                android:layout_marginBottom="4dp"
-                android:background="#ececec"
                 android:id="@+id/linearLayout_bestReply1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="4dp"
+                android:background="#ececec"
                 android:orientation="horizontal"
                 android:visibility="gone">
 
@@ -876,14 +875,13 @@
             </LinearLayout>
 
 
-
             <!--댓글 리스트 중 베스트 댓글 2-->
             <LinearLayout
-                android:layout_marginBottom="4dp"
-                android:background="#ececec"
                 android:id="@+id/linearLayout_bestReply2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="4dp"
+                android:background="#ececec"
                 android:orientation="horizontal"
                 android:visibility="gone">
 
@@ -960,8 +958,7 @@
                 android:id="@+id/pollActivity_recyclerView_reply"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:visibility="gone"/>
-
+                android:visibility="gone" />
 
 
             <!--댓글 달기-->
@@ -969,6 +966,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
+                android:paddingTop="4dp"
                 android:paddingBottom="60dp">
 
                 <EditText
@@ -983,9 +981,9 @@
                 <ImageView
                     android:id="@+id/pollActivity_button_replySend"
                     android:layout_width="match_parent"
-                    android:layout_height="50dp"
+                    android:layout_height="40dp"
                     android:layout_weight="9"
-                    android:src="@drawable/ic_arrow_forward_black_24dp"
+                    android:src="@drawable/ic_play_triangle_1"
                     android:text="전송"
                     android:textSize="12dp"
                     android:visibility="gone" />
