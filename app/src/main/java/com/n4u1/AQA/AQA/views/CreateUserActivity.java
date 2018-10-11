@@ -62,10 +62,11 @@ public class CreateUserActivity extends AppCompatActivity {
         createUser_editText_password = findViewById(R.id.createUser_editText_password);
         createUser_editText_age = findViewById(R.id.createUser_editText_age);
         createUser_editText_sex = findViewById(R.id.createUser_editText_sex);
-        createUser_editText_job = findViewById(R.id.createUser_editText_job);
+//        createUser_editText_job = findViewById(R.id.createUser_editText_job);
         createUser_button_createUser = findViewById(R.id.createUser_button_createUser);
 
 
+        createUser_editText_email.setPrivateImeOptions("defaultInputmode=english;");
 
         createUser_button_createUser.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -86,11 +87,11 @@ public class CreateUserActivity extends AppCompatActivity {
                             // Sign in success, update UI with the signed-in user's information
                             Toast.makeText(getApplicationContext(), "User Create Success", Toast.LENGTH_LONG).show();
                             String sex = createUser_editText_sex.getText().toString();
-                            String job = createUser_editText_job.getText().toString();
+//                            String job = createUser_editText_job.getText().toString();
                             String email = mAuth.getCurrentUser().getEmail();
                             String uid = mAuth.getCurrentUser().getUid();
                             int age = Integer.parseInt(createUser_editText_age.getText().toString());
-                            writeNewUser(null, sex, job, uid, email, age);
+                            writeNewUser(null, sex, uid, email, age);
                         } else {
                             // If sign in fails, display a message to the user.
                             Toast.makeText(getApplicationContext(), "User Create Fail : " + task.getException(), Toast.LENGTH_LONG).show();
@@ -134,11 +135,11 @@ public class CreateUserActivity extends AppCompatActivity {
         return true;
     }
 
-    private void writeNewUser(String deviceName, String sex, String job, String uid, String email, int age) {
+    private void writeNewUser(String deviceName, String sex, String uid, String email, int age) {
         User user = new User();
         user.setAge(age);
         user.setSex(sex);
-        user.setJob(job);
+//        user.setJob(job);
         user.setUid(uid);
         user.setEmail(email);
         mDatabase.child("users").child(uid).setValue(user);
@@ -154,5 +155,7 @@ public class CreateUserActivity extends AppCompatActivity {
         boolean isNormal = m.matches();
         return isNormal;
     }
+
+
 
 }

@@ -13,7 +13,7 @@
         android:gravity="center"
         android:theme="@style/TextLabel"
         android:orientation="vertical"
-        android:layout_marginTop="54dp"
+        android:layout_marginTop="74dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -29,6 +29,7 @@
             android:theme="@style/TextLabel">
 
             <android.support.design.widget.TextInputEditText
+                android:digits="abcdefghijklmnopqrstuvwxyz1234567890"
                 android:id="@+id/createUser_editText_email"
                 android:layout_width="232dp"
                 android:layout_height="wrap_content"
@@ -39,8 +40,8 @@
                 android:layout_marginRight="8dp"
                 android:layout_marginBottom="8dp"
                 android:ems="10"
-                android:hint="Email"
-                android:inputType="textEmailAddress"
+                android:hint="ID"
+                android:inputType="textVisiblePassword"
                 android:theme="@style/TextLabel"/>
         </android.support.design.widget.TextInputLayout>
 
@@ -67,7 +68,7 @@
                 android:layout_marginBottom="8dp"
                 android:ems="10"
                 android:hint="PASSWORD"
-                android:inputType="textEmailAddress"
+                android:inputType="textVisiblePassword"
                 android:theme="@style/TextLabel" />
         </android.support.design.widget.TextInputLayout>
 
@@ -94,36 +95,36 @@
                 android:layout_marginBottom="8dp"
                 android:ems="10"
                 android:hint="age"
-                android:inputType="textEmailAddress"
+                android:inputType="number"
                 android:theme="@style/TextLabel"/>
         </android.support.design.widget.TextInputLayout>
 
 
-        <android.support.design.widget.TextInputLayout
-            android:layout_width="305dp"
-            android:layout_height="70dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginBottom="8dp"
-            android:gravity="center"
-            android:theme="@style/TextLabel">
+        <!--<android.support.design.widget.TextInputLayout-->
+            <!--android:layout_width="305dp"-->
+            <!--android:layout_height="70dp"-->
+            <!--android:layout_marginStart="8dp"-->
+            <!--android:layout_marginTop="8dp"-->
+            <!--android:layout_marginEnd="8dp"-->
+            <!--android:layout_marginBottom="8dp"-->
+            <!--android:gravity="center"-->
+            <!--android:theme="@style/TextLabel">-->
 
-            <android.support.design.widget.TextInputEditText
-                android:id="@+id/createUser_editText_job"
-                android:layout_width="232dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginLeft="8dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginRight="8dp"
-                android:layout_marginBottom="8dp"
-                android:ems="10"
-                android:hint="job"
-                android:inputType="textEmailAddress"
-                android:theme="@style/TextLabel" />
-        </android.support.design.widget.TextInputLayout>
+            <!--<android.support.design.widget.TextInputEditText-->
+                <!--android:id="@+id/createUser_editText_job"-->
+                <!--android:layout_width="232dp"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_marginStart="8dp"-->
+                <!--android:layout_marginLeft="8dp"-->
+                <!--android:layout_marginTop="16dp"-->
+                <!--android:layout_marginEnd="8dp"-->
+                <!--android:layout_marginRight="8dp"-->
+                <!--android:layout_marginBottom="8dp"-->
+                <!--android:ems="10"-->
+                <!--android:hint="job"-->
+                <!--android:inputType="textEmailAddress"-->
+                <!--android:theme="@style/TextLabel" />-->
+        <!--</android.support.design.widget.TextInputLayout>-->
 
 
         <android.support.design.widget.TextInputLayout
