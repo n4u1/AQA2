@@ -155,7 +155,6 @@
         <item>청소 및 경비 관련 단순 노무직</item>
         <item>가사ㆍ음식 및 판매 관련 단순 노무직</item>
         <item>농림ㆍ어업 및 기타 서비스 단순 노무직</item>
-
     </string-array>
 
 
@@ -201,8 +200,9 @@
         <item>8위로 선택하기</item>
         <item>9위로 선택하기</item>
         <item>10위로 선택하기</item>
-
     </string-array>
+
+    <string name="editText_hint"><font size="15">Hint here!</font></string>
 
 
 </resources>

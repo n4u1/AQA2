@@ -68,7 +68,7 @@ public class ContentChoiceDialog extends DialogFragment {
                         // User clicked OK, so save the mSelectedItems results somewhere
                         // or return them to the component that opened the dialog
                         ArrayList mSelectedItemsResult = new ArrayList();
-                        for (int i = 0; i < 12; i++) {
+                        for (int i = 0; i < 69; i++) {
                             if (mSelectedItems.contains(i)) {
                                 switch (i) {
                                     case 0 : mSelectedItemsResult.add("개그"); break;

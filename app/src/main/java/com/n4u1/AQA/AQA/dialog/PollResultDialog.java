@@ -611,7 +611,7 @@ public class PollResultDialog extends DialogFragment {
 
         @Override
         public String getFormattedValue(float value, Entry entry, int dataSetIndex, ViewPortHandler viewPortHandler) {
-            return mFormat.format(value) + "표";
+            return mFormat.format(value);
         }
     }
 

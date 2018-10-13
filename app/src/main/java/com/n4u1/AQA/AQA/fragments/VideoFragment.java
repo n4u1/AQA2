@@ -137,16 +137,16 @@ public class VideoFragment extends Fragment {
         videoView_userAddContent_10 = view.findViewById(R.id.videoView_userAddContent_10);
 
 
-
-        ImageView imageView_addVideo = view.findViewById(R.id.imageView_addVideo);
-        imageView_addVideo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(Intent.ACTION_PICK);
-                intent.setType("video/*");                
-                startActivityForResult(intent, GALLEY_CODE);
-            }
-        });
+//
+//        ImageView imageView_addVideo = view.findViewById(R.id.imageView_addVideo);
+//        imageView_addVideo.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent intent = new Intent(Intent.ACTION_PICK);
+//                intent.setType("video/*");
+//                startActivityForResult(intent, GALLEY_CODE);
+//            }
+//        });
         return view;
     }
 

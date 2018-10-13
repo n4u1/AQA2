@@ -68,11 +68,6 @@ public class LoginActivity extends AppCompatActivity {
 
 
 
-        //파일업로드용 기기 저장소 접근 권한 요청
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},0);
-        }
-
         Button button_CreateUser = findViewById(R.id.button_createUser);
         Button button_Login = findViewById(R.id.button_login);
         Button button_aLogin = findViewById(R.id.button_aLogin);
@@ -104,9 +99,11 @@ public class LoginActivity extends AppCompatActivity {
         button_Login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                String userId;
                 EditText editTextEmail = findViewById(R.id.editText_email);
                 EditText editTextPassword = findViewById(R.id.editText_password);
-                loginUser(editTextEmail.getText().toString(), editTextPassword.getText().toString());
+                userId = editTextEmail.getText().toString() + "@aqa.com";
+                loginUser(userId, editTextPassword.getText().toString());
 
             }
         });
@@ -189,15 +186,15 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
-
-    //정규표현식으로 이메일 체킹
-    private boolean checkEmail(String inputUserEmail) {
-        String regex = "^[_a-zA-Z0-9-\\.]+@[\\.a-zA-Z0-9-]+\\.[a-zA-Z]+$";
-        Pattern p = Pattern.compile(regex);
-        Matcher m = p.matcher(inputUserEmail);
-        boolean isNormal = m.matches();
-        return isNormal;
-    }
+//
+//    //정규표현식으로 이메일 체킹
+//    private boolean checkEmail(String inputUserEmail) {
+//        String regex = "^[_a-zA-Z0-9-\\.]+@[\\.a-zA-Z0-9-]+\\.[a-zA-Z]+$";
+//        Pattern p = Pattern.compile(regex);
+//        Matcher m = p.matcher(inputUserEmail);
+//        boolean isNormal = m.matches();
+//        return isNormal;
+//    }
 
     private void loginUser(final String email, String password) {
         mAuth.signInWithEmailAndPassword(email, password)

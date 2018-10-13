@@ -141,6 +141,22 @@
             </LinearLayout>
 
 
+
+            <!--내용-->
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#efefef" />
+
+            <TextView
+                android:id="@+id/pollActivity_textView_description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="4dp"
+                android:textSize="16dp" />
+
+
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
@@ -217,19 +233,6 @@
             <!--android:layout_marginTop="8dp"-->
             <!--android:textSize="16dp" />-->
 
-            <!--내용-->
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="#efefef" />
-
-            <TextView
-                android:id="@+id/pollActivity_textView_description"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:layout_marginBottom="4dp"
-                android:textSize="16dp" />
 
             <View
                 android:layout_width="match_parent"
@@ -975,17 +978,15 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:hint="댓글..."
-                    android:textSize="20dp"
+                    android:textSize="16dp"
                     android:visibility="gone" />
 
                 <ImageView
                     android:id="@+id/pollActivity_button_replySend"
                     android:layout_width="match_parent"
-                    android:layout_height="40dp"
+                    android:layout_height="32dp"
                     android:layout_weight="9"
                     android:src="@drawable/ic_play_triangle_1"
-                    android:text="전송"
-                    android:textSize="12dp"
                     android:visibility="gone" />
 
             </LinearLayout>

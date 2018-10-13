@@ -66,13 +66,15 @@ public class CreateUserActivity extends AppCompatActivity {
         createUser_button_createUser = findViewById(R.id.createUser_button_createUser);
 
 
-        createUser_editText_email.setPrivateImeOptions("defaultInputmode=english;");
 
+        //사용자에게 입력은 아이디만 받고 내부적으로 "aqa.com을 붙여서 이메일 형식으로 로그인
+        //사용자는 그냥 아이디로 로그인
         createUser_button_createUser.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (checkingCreateUser()) {
-                    createUser(createUser_editText_email.getText().toString(), createUser_editText_password.getText().toString());
+                    String userId = createUser_editText_email.getText().toString() + "@aqa.com";
+                    createUser(userId, createUser_editText_password.getText().toString());
                 }
             }
         });
@@ -112,21 +114,21 @@ public class CreateUserActivity extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), "나이를 입력해주세요!", Toast.LENGTH_LONG).show();
             return false;
         }
-
-        if (createUser_editText_job.getText().toString().isEmpty()) {
-            Toast.makeText(getApplicationContext(), "직업을 입력해주세요!", Toast.LENGTH_LONG).show();
-            return false;
-        }
+//
+//        if (createUser_editText_job.getText().toString().isEmpty()) {
+//            Toast.makeText(getApplicationContext(), "직업을 입력해주세요!", Toast.LENGTH_LONG).show();
+//            return false;
+//        }
 
         if (createUser_editText_sex.getText().toString().isEmpty()) {
             Toast.makeText(getApplicationContext(), "성별을 입력해주세요!", Toast.LENGTH_LONG).show();
             return false;
         }
-
-        if (!checkEmail(createUser_editText_email.getText().toString())) {
-            Toast.makeText(getApplicationContext(), "이메일 형식으로 입력해주세요!!!!", Toast.LENGTH_LONG).show();
-            return false;
-        }
+//
+//        if (!checkEmail(createUser_editText_email.getText().toString())) {
+//            Toast.makeText(getApplicationContext(), "이메일 형식으로 입력해주세요!!!!", Toast.LENGTH_LONG).show();
+//            return false;
+//        }
 
         if (createUser_editText_password.getText().toString().length() < 6) {
             Toast.makeText(getApplicationContext(), "비밀번호가 너무 짧아요ㅠ_ㅠ (6자 이상)", Toast.LENGTH_LONG).show();

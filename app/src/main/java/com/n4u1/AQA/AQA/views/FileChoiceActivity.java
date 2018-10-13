@@ -218,7 +218,7 @@ public class FileChoiceActivity extends AppCompatActivity
 
             //content input start into fireBase "user_contents"
             ContentDTO contentDTO = new ContentDTO();
-            contentDTO.uploadDate = doYearMonthDay();
+            contentDTO.uploadDate = getDate();
             contentDTO.contentKey = key;
             contentDTO.title = userInputContents.get(0);
             contentDTO.contentType = userInputContents.get(1);
@@ -483,14 +483,15 @@ public class FileChoiceActivity extends AppCompatActivity
 
             //content input start into fireBase "user_contents"
             ContentDTO contentDTO = new ContentDTO();
-            contentDTO.uploadDate = doYearMonthDay();
+            contentDTO.uploadDate = getDate();
             contentDTO.contentKey = key;
             contentDTO.title = userInputContents.get(0);
             contentDTO.contentType = userInputContents.get(1);
             contentDTO.pollMode = userInputContents.get(2);
             contentDTO.description = userInputContents.get(3);
             contentDTO.uid = auth.getCurrentUser().getUid();
-            contentDTO.userID = auth.getCurrentUser().getEmail();
+            String[] tempId = auth.getCurrentUser().getEmail().split("@");
+            contentDTO.userID = tempId[0];
             mdatabaseRef.child("user_contents").child(key).setValue(contentDTO);
             mdatabaseRef.child("users").child(auth.getCurrentUser().getUid()).child("uploadContent").child(key).setValue("true");
 
@@ -763,11 +764,11 @@ public class FileChoiceActivity extends AppCompatActivity
         return cursor.getString(index);
     }
 
-    public String doYearMonthDay() {
+    public String getDate() {
         TimeZone timeZone;
         timeZone = TimeZone.getTimeZone("Asia/Seoul");
         Date date = new Date();
-        SimpleDateFormat df = new SimpleDateFormat("yyyy.MM.dd.(E)HH:mm", Locale.KOREAN);
+        SimpleDateFormat df = new SimpleDateFormat("yyyy.MM.dd(E)HH:mm:ss", Locale.KOREAN);
         df.setTimeZone(timeZone);
         String currentDate = df.format(date);
         return currentDate;

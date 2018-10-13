@@ -26,7 +26,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_margin="24dp"
-                android:padding="8dp"
+                android:padding="4dp"
                 android:theme="@style/TextLabel">
 
                 <android.support.design.widget.TextInputEditText
@@ -49,7 +49,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_margin="24dp"
-                android:padding="8dp"
+                android:padding="4dp"
                 android:theme="@style/TextLabel">
 
                 <android.support.design.widget.TextInputEditText
@@ -70,7 +70,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_margin="24dp"
-                android:padding="8dp"
+                android:padding="4dp"
                 android:theme="@style/TextLabel">
 
                 <android.support.design.widget.TextInputEditText
@@ -91,7 +91,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_margin="24dp"
-                android:padding="8dp"
+                android:padding="4dp"
                 android:theme="@style/TextLabel">
 
                 <android.support.design.widget.TextInputEditText
@@ -101,85 +101,48 @@
                     android:hint="내용  예)둘중 하나 골라주세요." />
             </android.support.design.widget.TextInputLayout>
 
-
-            <!--<LinearLayout-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_gravity="center"-->
-            <!--android:layout_margin="16dp"-->
-            <!--android:orientation="vertical">-->
-
-            <!--<RadioGroup-->
-            <!--android:id="@+id/radioGroup_rs"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_gravity="center_vertical"-->
-            <!--android:orientation="horizontal">-->
-
-            <!--<android.support.v7.widget.AppCompatRadioButton-->
-            <!--android:id="@+id/radioButton_ranking"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_marginRight="40dp"-->
-            <!--android:text="순위투표"-->
-            <!--android:textColor="#4485c9"-->
-            <!--android:theme="@style/AppThemeMyLight" />-->
-
-            <!--<android.support.v7.widget.AppCompatRadioButton-->
-            <!--android:id="@+id/radioButton_single"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:text="단일투표"-->
-            <!--android:textColor="#4485c9"-->
-            <!--android:theme="@style/AppThemeMyLight" />-->
-            <!--</RadioGroup>-->
-            <!--</LinearLayout>-->
-
-
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="#efefef" />
 
+            <!--<RelativeLayout                -->
+                <!--android:gravity="center"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content">-->
 
-            <!--사진or동영상 추가 버튼(이미지뷰)-->
+                <!--<ImageView-->
+                    <!--android:id="@+id/createUser_button_createUser"-->
+                    <!--android:layout_width="300dp"-->
+                    <!--android:layout_height="70dp"-->
+                    <!--android:layout_alignParentStart="true"-->
+                    <!--android:layout_alignParentTop="true"-->
+                    <!--android:layout_marginStart="8dp"-->
+                    <!--android:layout_marginTop="8dp"-->
+                    <!--android:layout_marginEnd="8dp"-->
+                    <!--android:layout_marginBottom="8dp"-->
+                    <!--android:src="@drawable/ic_rounded_rectangle" />-->
 
-            <!--<FrameLayout-->
-            <!--android:id="@+id/frameLayout_addContent"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="250dp"-->
-            <!--android:layout_marginBottom="6dp"-->
-            <!--android:padding="10dp">-->
-            <!--</FrameLayout>-->
+                <!--<TextView-->
+                    <!--android:id="@+id/textView"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_alignLeft="@id/createUser_button_createUser"-->
+                    <!--android:layout_alignTop="@id/createUser_button_createUser"-->
+                    <!--android:layout_alignRight="@id/createUser_button_createUser"-->
+                    <!--android:layout_alignBottom="@id/createUser_button_createUser"-->
+                    <!--android:layout_centerHorizontal="true"-->
+                    <!--android:layout_marginTop="8dp"-->
+                    <!--android:layout_marginBottom="8dp"-->
+                    <!--android:gravity="center"-->
+                    <!--android:text="후보선택" />-->
+
+            <!--</RelativeLayout>-->
 
 
-            <!--         추가된 사진(이미지뷰), 사용자 업로드 사진      -->
-            <!--<android.support.v7.widget.AppCompatImageView-->
-            <!--android:id="@+id/imageView_userAddContent_1"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="200dp"-->
-            <!--android:layout_margin="8dp"-->
-            <!--android:scaleType="centerCrop"-->
-            <!--android:visibility="gone" />-->
 
 
-            <!--<android.support.v7.widget.AppCompatImageView-->
-            <!--android:id="@+id/imageView_userAddContent_2"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="200dp"-->
-            <!--android:layout_margin="8dp"-->
-            <!--android:scaleType="centerCrop"-->
-            <!--android:visibility="gone" />-->
 
-
-            <!--<android.support.v7.widget.AppCompatImageView-->
-            <!--android:id="@+id/imageView_userAddContent_3"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="200dp"-->
-            <!--android:layout_margin="8dp"-->
-            <!--android:scaleType="centerCrop"-->
-            <!--android:visibility="gone" />-->
-            <!--         추가된 사진(이미지뷰), 사용자 업로드 사진      -->
 
 
         </LinearLayout>

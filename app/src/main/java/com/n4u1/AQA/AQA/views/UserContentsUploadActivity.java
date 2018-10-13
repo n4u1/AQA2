@@ -1,14 +1,19 @@
 package com.n4u1.AQA.AQA.views;
 
+import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.provider.MediaStore;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.text.InputType;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -67,12 +72,16 @@ public class UserContentsUploadActivity extends AppCompatActivity implements Con
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
 
+        //파일업로드용 기기 저장소 접근 권한 요청
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},0);
+        }
+
+
         storage = FirebaseStorage.getInstance();
         database = FirebaseDatabase.getInstance();
         auth = FirebaseAuth.getInstance();
         pollMode = "";
-
-
         editText_title = findViewById(R.id.editText_title);
         editText_description = findViewById(R.id.editText_description);
 

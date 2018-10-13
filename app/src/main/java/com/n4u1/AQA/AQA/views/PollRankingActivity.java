@@ -267,9 +267,10 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
             public void onItemClick(View view, final int position) {
 
                 //본인 댓글,좋아요 클릭시
-                if (replyDTOS.get(position).getId().equals(auth.getCurrentUser().getEmail())) {
+                String tempId[] = auth.getCurrentUser().getEmail().split("@");
+                if (replyDTOS.get(position).getId().equals(tempId[0])) {
                     if (view.getTag().equals("replyAdapter_relativeLayout_like")) { //댓글 좋아요 클릭
-                        Toast.makeText(getApplicationContext(), auth.getCurrentUser().getEmail() + "님 댓글 입니다.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), tempId[0] + "님 댓글 입니다.", Toast.LENGTH_SHORT).show();
                     } else if (view.getTag().equals("replyAdapter_relativeLayout_main")) { //댓글 클릭, 삭제or수정
                         firebaseDatabase.getReference().child("reply").child(contentKey).addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
@@ -554,22 +555,24 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
         pollActivity_button_replySend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String date = getDate();
-                onReplyClicked(firebaseDatabase.getReference().child("user_contents").child(contentKey));
-                replyKey = firebaseDatabase.getReference().child("reply").push().getKey();
-                ReplyDTO replyDTO = new ReplyDTO();
-                replyDTO.setReplyKey(replyKey);
-                replyDTO.setDate(date);
-                replyDTO.setId(auth.getCurrentUser().getEmail());
-                replyDTO.setReply(pollActivity_editText_reply.getText().toString());
-                replyDTO.setContentKey(contentKey);
-                firebaseDatabase.getReference().child("reply").child(contentKey).child(replyKey).setValue(replyDTO);
-                firebaseDatabase.getReference().child("users").child(auth.getCurrentUser().getUid()).child("reply").child(contentKey).push().setValue(replyDTO);
-                pollActivity_editText_reply.setText(null);//editText 초기화
-                pollActivity_editText_reply.setHint("댓글...");
-                InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE); //키보드 숨기기
-                inputMethodManager.hideSoftInputFromWindow(pollActivity_editText_reply.getWindowToken(), 0); //키보드 숨기기
-
+                if (pollActivity_editText_reply.getText().length() > 0) {
+                    String date = getDate();
+                    onReplyClicked(firebaseDatabase.getReference().child("user_contents").child(contentKey));
+                    replyKey = firebaseDatabase.getReference().child("reply").push().getKey();
+                    ReplyDTO replyDTO = new ReplyDTO();
+                    replyDTO.setReplyKey(replyKey);
+                    replyDTO.setDate(date);
+                    String tempId[] = auth.getCurrentUser().getEmail().split("@");
+                    replyDTO.setId(tempId[0]);
+                    replyDTO.setReply(pollActivity_editText_reply.getText().toString());
+                    replyDTO.setContentKey(contentKey);
+                    firebaseDatabase.getReference().child("reply").child(contentKey).child(replyKey).setValue(replyDTO);
+                    firebaseDatabase.getReference().child("users").child(auth.getCurrentUser().getUid()).child("reply").child(contentKey).push().setValue(replyDTO);
+                    pollActivity_editText_reply.setText(null);//editText 초기화
+                    pollActivity_editText_reply.setHint("댓글...");
+                    InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE); //키보드 숨기기
+                    inputMethodManager.hideSoftInputFromWindow(pollActivity_editText_reply.getWindowToken(), 0); //키보드 숨기기
+                }
             }
         });
 
@@ -1230,7 +1233,7 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
         TimeZone timeZone;
         timeZone = TimeZone.getTimeZone("Asia/Seoul");
         Date date = new Date();
-        SimpleDateFormat df = new SimpleDateFormat("yyyy.MM.dd kk:mm:ss", Locale.KOREAN);
+        SimpleDateFormat df = new SimpleDateFormat("yyyy.MM.dd(E)HH:mm:ss", Locale.KOREAN);
         df.setTimeZone(timeZone);
         String currentDate = df.format(date);
 

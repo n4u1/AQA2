@@ -68,7 +68,7 @@
                 android:layout_marginBottom="8dp"
                 android:ems="10"
                 android:hint="PASSWORD"
-                android:inputType="textVisiblePassword"
+                android:inputType="textPassword"
                 android:theme="@style/TextLabel" />
         </android.support.design.widget.TextInputLayout>
 
@@ -172,7 +172,6 @@
                 android:src="@drawable/ic_rounded_rectangle" />
 
             <TextView
-
                 android:id="@+id/textView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

@@ -56,8 +56,9 @@ public class MineActivity extends AppCompatActivity {
         TextView mineActivity_textView_upload = findViewById(R.id.mineActivity_textView_upload);
         TextView mineActivity_textView_upload_ = findViewById(R.id.mineActivity_textView_upload_);
 
-        //이메일 가져오기
-        mineActivity_textView_account.setText(mFireBaseUser.getEmail());
+        //아이디 가져오기
+        String tempId[] = mFireBaseUser.getEmail().split("@");
+        mineActivity_textView_account.setText(tempId[0]);
 
         //성별 가져오기
         mDatabaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
