@@ -3,6 +3,8 @@ package com.n4u1.AQA.AQA.views;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.graphics.drawable.ColorDrawable;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
@@ -57,6 +59,7 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.TimeZone;
@@ -128,12 +131,13 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
 
         Toolbar myToolbar = findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
-
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setTitle(" ");
-        }
-        getSupportActionBar().setIcon(R.mipmap.ic_q_custom);
+        getSupportActionBar().setHomeAsUpIndicator(R.mipmap.ic_aqa_custom);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
+        if (getSupportActionBar() != null){
+            getSupportActionBar().setTitle("");
+        }
+
         final String contentKey = getIntent().getStringExtra("contentKey");
         contentHit = getIntent().getIntExtra("contentHit", 999999);
 
@@ -238,6 +242,7 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
 
 
 
+        pollActivity_imageView_share.setOnClickListener(this);
         pollActivity_imageView_userAddContent_1.setOnClickListener(this);
         pollActivity_imageView_userAddContent_2.setOnClickListener(this);
         pollActivity_imageView_userAddContent_3.setOnClickListener(this);
@@ -1736,6 +1741,9 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
                 });
                 break;
 
+            case R.id.pollActivity_imageView_share:
+                aqaShare();
+                break;
 
             case R.id.pollActivity_textView_check_1:
                 if (checkUserHitContent) {
@@ -1828,6 +1836,46 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
                 }
                 break;
         }
+    }
+
+    private void aqaShare() {
+//        Intent intent = new Intent();
+//        intent.setAction(Intent.ACTION_SEND);
+//        intent.setType("text/plain");
+//        intent.putExtra(Intent.EXTRA_SUBJECT, "aqa111");
+//        intent.putExtra(Intent.EXTRA_TEXT, "aqa222");
+//
+//        Intent chooser = Intent.createChooser(intent, "공유");
+//        startActivity(chooser);
+
+
+        Intent intent = new Intent();
+        intent.setAction(Intent.ACTION_SEND);
+        intent.setType("text/plain");
+        intent.putExtra(Intent.EXTRA_SUBJECT, "aqa111");
+        intent.putExtra(Intent.EXTRA_TEXT, "aqa222");
+
+        PackageManager packManager = getApplicationContext().getPackageManager();
+        List<ResolveInfo> resolvedInfoList = packManager.queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY);
+
+        boolean resolved = false;
+        for(ResolveInfo resolveInfo: resolvedInfoList) {
+            if(resolveInfo.activityInfo.packageName.startsWith("com.facebook.katana")){
+                intent.setClassName(
+                        resolveInfo.activityInfo.packageName,
+                        resolveInfo.activityInfo.name );
+                resolved = true;
+                break;
+            }
+        }
+
+        if(resolved) {
+            startActivity(intent);
+
+        } else {
+            Toast.makeText(PollRankingActivity.this, "페이스북 앱이 없습니다.", Toast.LENGTH_SHORT).show();
+        }
+
     }
 
     @Override
@@ -2050,7 +2098,10 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
             case R.id.menu_back:
                 this.onBackPressed();
                 break;
-
+            case android.R.id.home:
+                Intent intentAqa = new Intent(PollRankingActivity.this, HomeActivity.class);
+                intentAqa.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intentAqa);
         }
         return super.onOptionsItemSelected(item);
     }

@@ -34,12 +34,12 @@ public class MineActivity extends AppCompatActivity {
 
         Toolbar myToolbar = findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
-
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setTitle(" ");
-        }
-        getSupportActionBar().setIcon(R.mipmap.ic_q_custom);
+        getSupportActionBar().setHomeAsUpIndicator(R.mipmap.ic_aqa_custom);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
+        if (getSupportActionBar() != null){
+            getSupportActionBar().setTitle("");
+        }
 
         mFireBaseUser = FirebaseAuth.getInstance().getCurrentUser();
         mDatabaseReference = FirebaseDatabase.getInstance().getReference("users").child(mFireBaseUser.getUid());
@@ -161,6 +161,13 @@ public class MineActivity extends AppCompatActivity {
                 Intent intentHome = new Intent(MineActivity.this, HomeActivity.class);
                 startActivity(intentHome);
                 break;
+
+
+            case android.R.id.home:
+                Intent intentAqa = new Intent(MineActivity.this, HomeActivity.class);
+                intentAqa.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intentAqa);
+
 
         }
         return super.onOptionsItemSelected(item);

@@ -41,13 +41,15 @@ public class MyUploadActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_upload);
 
+
         Toolbar myToolbar = findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setTitle(" ");
-        }
-        getSupportActionBar().setIcon(R.mipmap.ic_q_custom);
+        getSupportActionBar().setHomeAsUpIndicator(R.mipmap.ic_aqa_custom);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
+        if (getSupportActionBar() != null){
+            getSupportActionBar().setTitle("");
+        }
 
         mDatabase = FirebaseDatabase.getInstance();
         mDatabaseUser = FirebaseDatabase.getInstance();
@@ -144,7 +146,10 @@ public class MyUploadActivity extends AppCompatActivity {
             case R.id.menu_back:
                 break;
 
-
+            case android.R.id.home:
+                Intent intentAqa = new Intent(MyUploadActivity.this, HomeActivity.class);
+                intentAqa.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intentAqa);
         }
 //        onBackPressed();
         return super.onOptionsItemSelected(item);

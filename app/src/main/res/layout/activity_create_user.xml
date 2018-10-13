@@ -67,7 +67,7 @@
                 android:layout_marginRight="8dp"
                 android:layout_marginBottom="8dp"
                 android:ems="10"
-                android:hint="PASSWORD"
+                android:hint="Password"
                 android:inputType="textPassword"
                 android:theme="@style/TextLabel" />
         </android.support.design.widget.TextInputLayout>
@@ -94,7 +94,7 @@
                 android:layout_marginRight="8dp"
                 android:layout_marginBottom="8dp"
                 android:ems="10"
-                android:hint="age"
+                android:hint="Age"
                 android:inputType="number"
                 android:theme="@style/TextLabel"/>
         </android.support.design.widget.TextInputLayout>
@@ -149,7 +149,7 @@
                 android:layout_marginRight="8dp"
                 android:layout_marginBottom="8dp"
                 android:ems="10"
-                android:hint="sex"
+                android:hint="Gender"
                 android:inputType="textEmailAddress"
                 android:theme="@style/TextLabel" />
         </android.support.design.widget.TextInputLayout>

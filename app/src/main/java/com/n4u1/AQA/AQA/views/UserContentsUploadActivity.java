@@ -63,13 +63,16 @@ public class UserContentsUploadActivity extends AppCompatActivity implements Con
         setContentView(R.layout.activity_user_contents_upload);
 
 
+
         Toolbar myToolbar = findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
-        if (getSupportActionBar() != null){
-            getSupportActionBar().setTitle(" ");
-        }
-        getSupportActionBar().setIcon(R.mipmap.ic_q_custom);
+        getSupportActionBar().setHomeAsUpIndicator(R.mipmap.ic_aqa_custom);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
+        if (getSupportActionBar() != null){
+            getSupportActionBar().setTitle("");
+        }
+
 
 
         //파일업로드용 기기 저장소 접근 권한 요청
@@ -154,11 +157,16 @@ public class UserContentsUploadActivity extends AppCompatActivity implements Con
                 }
                 break;
             case R.id.menu_home:
-
-                Intent intent = new Intent(UserContentsUploadActivity.this, HomeActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intent);
+                Intent intentHome = new Intent(UserContentsUploadActivity.this, HomeActivity.class);
+                intentHome.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intentHome);
                 break;
+
+            case android.R.id.home:
+                Intent intentAqa = new Intent(UserContentsUploadActivity.this, HomeActivity.class);
+                intentAqa.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intentAqa);
+
         }
 
         return super.onOptionsItemSelected(item);

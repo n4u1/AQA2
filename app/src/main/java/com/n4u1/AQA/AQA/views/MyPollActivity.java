@@ -45,11 +45,13 @@ public class MyPollActivity extends AppCompatActivity {
 
         Toolbar myToolbar = findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setTitle(" ");
-        }
-        getSupportActionBar().setIcon(R.mipmap.ic_q_custom);
+        getSupportActionBar().setHomeAsUpIndicator(R.mipmap.ic_aqa_custom);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
+        if (getSupportActionBar() != null){
+            getSupportActionBar().setTitle("");
+        }
+
 
         mDatabase = FirebaseDatabase.getInstance();
         mDatabaseUser = FirebaseDatabase.getInstance();
@@ -139,8 +141,10 @@ public class MyPollActivity extends AppCompatActivity {
                 break;
             case R.id.menu_back:
                 break;
-
-
+            case android.R.id.home:
+                Intent intentAqa = new Intent(MyPollActivity.this, HomeActivity.class);
+                intentAqa.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intentAqa);
         }
 //        onBackPressed();
         return super.onOptionsItemSelected(item);

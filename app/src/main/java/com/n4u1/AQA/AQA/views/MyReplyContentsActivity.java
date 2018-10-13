@@ -38,13 +38,15 @@ public class MyReplyContentsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_reply_contents);
 
+
         Toolbar myToolbar = findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setTitle(" ");
-        }
-        getSupportActionBar().setIcon(R.mipmap.ic_q_custom);
+        getSupportActionBar().setHomeAsUpIndicator(R.mipmap.ic_aqa_custom);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
+        if (getSupportActionBar() != null){
+            getSupportActionBar().setTitle("");
+        }
 
         mDatabase = FirebaseDatabase.getInstance();
         mDatabaseUser = FirebaseDatabase.getInstance();
@@ -127,6 +129,10 @@ public class MyReplyContentsActivity extends AppCompatActivity {
                 break;
             case R.id.menu_back:
                 break;
+            case android.R.id.home:
+                Intent intentAqa = new Intent(MyReplyContentsActivity.this, HomeActivity.class);
+                intentAqa.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intentAqa);
 
 
         }

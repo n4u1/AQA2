@@ -67,11 +67,12 @@ public class FileChoiceActivity extends AppCompatActivity
 
         Toolbar myToolbar = findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setTitle(" ");
-        }
-        getSupportActionBar().setIcon(R.mipmap.ic_q_custom);
+        getSupportActionBar().setHomeAsUpIndicator(R.mipmap.ic_aqa_custom);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
+        if (getSupportActionBar() != null){
+            getSupportActionBar().setTitle("");
+        }
 
         TabLayout tabLayout = findViewById(R.id.tabLayout);
 
@@ -163,13 +164,16 @@ public class FileChoiceActivity extends AppCompatActivity
         int curId = item.getItemId();
         switch (curId) {
             case R.id.menu_confirm:
-//                Fragment page = getSupportFragmentManager().findFragmentByTag("android:switcher:" + R.id.viewPager + ":" + viewPager.getCurrentItem());
-
-//                Toast toast = Toast.makeText(getApplicationContext(), "투표가 시작 되었습니다!", Toast.LENGTH_LONG);
-//                toast.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL, 0, 0);
-//                toast.show();
                 upload(imgStrings);
                 break;
+
+
+            case android.R.id.home:
+                Intent intentAqa = new Intent(FileChoiceActivity.this, HomeActivity.class);
+                intentAqa.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intentAqa);
+
+
         }
 
         Intent intent = new Intent(FileChoiceActivity.this, HomeActivity.class);
@@ -735,7 +739,12 @@ public class FileChoiceActivity extends AppCompatActivity
                 });
             }
             mdatabaseRef.child("user_contents").child(key).child("itemViewType").setValue(itemViewTypeCount);
-            finish();
+
+
+            Intent intent = new Intent(getApplicationContext(),HomeActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
+
 
         }
 /*CameraCameraCameraCameraCameraCameraCameraCameraCameraCameraCameraCameraCameraCameraCameraCameraCameraCameraCameraCameraCameraCameraCameraCameraCameraCamera*/

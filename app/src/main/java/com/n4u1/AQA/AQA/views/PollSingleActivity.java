@@ -127,14 +127,15 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_poll_single);
 
+
         Toolbar myToolbar = findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
-
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setTitle(" ");
-        }
-        getSupportActionBar().setIcon(R.mipmap.ic_q_custom);
+        getSupportActionBar().setHomeAsUpIndicator(R.mipmap.ic_aqa_custom);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
+        if (getSupportActionBar() != null){
+            getSupportActionBar().setTitle("");
+        }
 
 
         final String contentKey = getIntent().getStringExtra("contentKey");
@@ -1921,6 +1922,12 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
             case R.id.menu_back:
                 this.onBackPressed();
                 break;
+
+            case android.R.id.home:
+                Intent intentAqa = new Intent(PollSingleActivity.this, HomeActivity.class);
+                intentAqa.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intentAqa);
+
         }
         return super.onOptionsItemSelected(item);
     }

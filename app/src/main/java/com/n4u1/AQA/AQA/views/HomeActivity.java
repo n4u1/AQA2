@@ -68,11 +68,12 @@ public class HomeActivity extends AppCompatActivity implements SwipeRefreshLayou
 
         Toolbar myToolbar = findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setTitle(" ");
-        }
-        getSupportActionBar().setIcon(R.mipmap.ic_aqa_custom);
+        getSupportActionBar().setHomeAsUpIndicator(R.mipmap.ic_aqa_custom);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
+        if (getSupportActionBar() != null){
+            getSupportActionBar().setTitle("");
+        }
 
         final SwipeRefreshLayout mSwipeRefreshLayout = findViewById(R.id.swipeRFL);
         recyclerView_home = findViewById(R.id.recyclerView_home);
@@ -666,6 +667,14 @@ public class HomeActivity extends AppCompatActivity implements SwipeRefreshLayou
                 Intent intentMine = new Intent(HomeActivity.this, MineActivity.class);
                 startActivity(intentMine);
                 break;
+
+
+            case android.R.id.home:
+                Intent intentAqa = new Intent(HomeActivity.this, HomeActivity.class);
+                overridePendingTransition(0, 0);
+                intentAqa.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                overridePendingTransition(0, 0);
+                startActivity(intentAqa);
 
 
         }

@@ -15,13 +15,6 @@ public class TestActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_test);
 
-        PhotoView photoView = findViewById(R.id.photoView);
-
-        String imgUrl = getIntent().getStringExtra("imgUrl");
-
-        Glide.with(this).load(imgUrl).into(photoView);
-
-
 
     }
 }

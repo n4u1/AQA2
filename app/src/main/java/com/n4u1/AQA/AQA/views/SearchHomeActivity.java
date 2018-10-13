@@ -51,14 +51,15 @@ public class SearchHomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_home);
 
+
         Toolbar myToolbar = findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
-
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setTitle(" ");
-        }
-        getSupportActionBar().setIcon(R.mipmap.ic_q_custom);
+        getSupportActionBar().setHomeAsUpIndicator(R.mipmap.ic_aqa_custom);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
+        if (getSupportActionBar() != null){
+            getSupportActionBar().setTitle("");
+        }
 
         listViewCategory = findViewById(R.id.searchHomeActivity_listView_category);
         listViewTitle = findViewById(R.id.searchHomeActivity_listView_title);
@@ -260,7 +261,10 @@ public class SearchHomeActivity extends AppCompatActivity {
 //                overridePendingTransition(0, 0);
                 break;
 
-
+            case android.R.id.home:
+                Intent intentAqa = new Intent(SearchHomeActivity.this, HomeActivity.class);
+                intentAqa.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intentAqa);
         }
         return super.onOptionsItemSelected(item);
     }
