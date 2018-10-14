@@ -9,7 +9,9 @@ import android.graphics.BitmapFactory;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Handler;
 import android.support.v4.app.NotificationCompat;
+import android.util.Log;
 
 import com.firebase.jobdispatcher.JobParameters;
 import com.firebase.jobdispatcher.JobService;
@@ -18,19 +20,27 @@ import com.n4u1.AQA.AQA.views.HomeActivity;
 
 public class NotificationJobService extends JobService {
 
-
     @Override
     public boolean onStartJob(JobParameters job) {
-        notificationShow();
-        jobFinished(job,false);
-        return true;
+        // Do some work here
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Log.d("lkjJobTest", "JOBTESTTTTTTTTTTTTTTTT");
+            }
+        }).start();
+//        Log.d("lkjJobTest", "JOBTESTTTTTTTTTTTTTTTT");
+//        notificationShow();
+
+        return true; // Answers the question: "Is there still work going on?"
     }
 
     @Override
     public boolean onStopJob(JobParameters job) {
-        return false;
+        Log.d("lkjJobTest", "JOBTES_endendend");
+        return true; // Answers the question: "Should this job be retried?"
     }
-
 
 
     private void notificationShow() {
@@ -60,4 +70,6 @@ public class NotificationJobService extends JobService {
 
 
     }
+
+
 }

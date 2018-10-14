@@ -20,8 +20,12 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.firebase.jobdispatcher.Constraint;
 import com.firebase.jobdispatcher.FirebaseJobDispatcher;
 import com.firebase.jobdispatcher.GooglePlayDriver;
+import com.firebase.jobdispatcher.Job;
+import com.firebase.jobdispatcher.Lifetime;
+import com.firebase.jobdispatcher.RetryStrategy;
 import com.firebase.jobdispatcher.Trigger;
 import com.n4u1.AQA.AQA.R;
 import com.google.firebase.auth.FirebaseAuth;
@@ -75,16 +79,6 @@ public class MineActivity extends AppCompatActivity {
         String tempId[] = mFireBaseUser.getEmail().split("@");
         mineActivity_textView_account.setText(tempId[0]);
 
-        //백그라운드 노티 확인
-        FirebaseJobDispatcher dispatcher = new FirebaseJobDispatcher(new GooglePlayDriver(MineActivity.this));
-        dispatcher.mustSchedule(
-                dispatcher.newJobBuilder()
-                        .setService(NotificationJobService.class)
-                        .setTag("NotificationJobService")
-                        .setRecurring(true)
-                        .setTrigger(Trigger.executionWindow(5, 30))
-                        .build()
-        );
 
         //성별 가져오기
         mDatabaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -104,7 +98,8 @@ public class MineActivity extends AppCompatActivity {
         mineActivity_linearLayout8.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                notificationShow();
+                backgroundNotify();
+
             }
 
         });
@@ -175,6 +170,33 @@ public class MineActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    private void backgroundNotify() {
+        FirebaseJobDispatcher dispatcher = new FirebaseJobDispatcher(new GooglePlayDriver(this));
+
+
+        Job myJob = dispatcher.newJobBuilder()
+                // the JobService that will be called
+                .setService(NotificationJobService.class)
+                // uniquely identifies the job
+                .setTag("NotificationJobService")
+                // one-off job
+                .setRecurring(true)
+                // don't persist past a device reboot
+                .setLifetime(Lifetime.FOREVER)
+                // start between 0 and 60 seconds from now
+                .setTrigger(Trigger.executionWindow(30, 60))
+                // don't overwrite an existing job with the same tag
+                .setReplaceCurrent(true)
+                // retry with exponential backoff
+                .setRetryStrategy(RetryStrategy.DEFAULT_LINEAR)
+                // constraints that need to be satisfied for the job to run
+
+
+                .build();
+
+        dispatcher.mustSchedule(myJob);
     }
 
     private void notificationShow() {
