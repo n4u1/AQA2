@@ -93,9 +93,9 @@ public class HomeActivity extends AppCompatActivity implements SwipeRefreshLayou
         postAdapter = new PostAdapter(this, contentDTOS, recyclerView_home);
         recyclerView_home.setAdapter(postAdapter);
         postAdapter.notifyDataSetChanged();
+        final String[] issueContents = new String[5];//실시간 투표순위 5개
 
-        //실시간 투표순위 5개
-        final String[] issueContents = new String[5];
+        
 
 
         //실시간 투표 계산

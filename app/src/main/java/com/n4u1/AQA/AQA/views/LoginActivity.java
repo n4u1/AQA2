@@ -8,13 +8,16 @@ import android.net.Uri;
 import android.os.Build;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 //
 
@@ -39,8 +42,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 
-
-
 public class LoginActivity extends AppCompatActivity {
     private static final int GALLEY_CODE = 10;
     private FirebaseAuth mAuth;
@@ -59,7 +60,7 @@ public class LoginActivity extends AppCompatActivity {
 
         Toolbar myToolbar = findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
-        if (getSupportActionBar() != null){
+        if (getSupportActionBar() != null) {
             getSupportActionBar().setTitle(" ");
         }
 //        getSupportActionBar().setIcon(R.drawable.q);
@@ -67,18 +68,18 @@ public class LoginActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
 
-
-        Button button_CreateUser = findViewById(R.id.button_createUser);
-        Button button_Login = findViewById(R.id.button_login);
+        ImageView imageView_createUser = findViewById(R.id.imageView_createUser);
+        ImageView imageView_loginUser = findViewById(R.id.imageView_loginUser);
+//        Button button_Login = findViewById(R.id.button_login);
         Button button_aLogin = findViewById(R.id.button_aLogin);
         Button button_bLogin = findViewById(R.id.button_bLogin);
         Button button_cLogin = findViewById(R.id.button_cLogin);
         Button button_dLogin = findViewById(R.id.button_dLogin);
-        Button button_eLogin = findViewById(R.id.button_eLogin);
-        Button button_fLogin = findViewById(R.id.button_fLogin);
-        Button button_gLogin = findViewById(R.id.button_gLogin);
-        Button button_hLogin = findViewById(R.id.button_hLogin);
-        Button button_uploadTest = findViewById(R.id.button_uploadTest);
+//        Button button_eLogin = findViewById(R.id.button_eLogin);
+//        Button button_fLogin = findViewById(R.id.button_fLogin);
+//        Button button_gLogin = findViewById(R.id.button_gLogin);
+//        Button button_hLogin = findViewById(R.id.button_hLogin);
+//        Button button_uploadTest = findViewById(R.id.button_uploadTest);
 
         mAuth = FirebaseAuth.getInstance();
         mFirebaseUser = mAuth.getCurrentUser();
@@ -87,8 +88,7 @@ public class LoginActivity extends AppCompatActivity {
         storage = FirebaseStorage.getInstance();
 
 
-
-        button_CreateUser.setOnClickListener(new View.OnClickListener() {
+        imageView_createUser.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(LoginActivity.this, CreateUserActivity.class);
@@ -96,14 +96,22 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-        button_Login.setOnClickListener(new View.OnClickListener() {
+        imageView_loginUser.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String userId;
                 EditText editTextEmail = findViewById(R.id.editText_email);
                 EditText editTextPassword = findViewById(R.id.editText_password);
                 userId = editTextEmail.getText().toString() + "@aqa.com";
-                loginUser(userId, editTextPassword.getText().toString());
+                if (editTextEmail.getText().toString().equals("") || editTextPassword.getText().toString().equals("")) {
+                    Toast toast = Toast.makeText(getApplicationContext(), "빈 칸이 있어요 ㅠ_ㅠ", Toast.LENGTH_SHORT);
+                    toast.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL, 0, 0);
+                    toast.show();
+//                    Snackbar.make(v, "빈 칸이 있습니다ㅠ_ㅠ", Snackbar.LENGTH_SHORT).show();
+                } else {
+                    loginUser(userId, editTextPassword.getText().toString());
+                }
+
 
             }
         });
@@ -135,54 +143,54 @@ public class LoginActivity extends AppCompatActivity {
                 loginUser("d@d.com", "dddddd");
             }
         });
-
-        button_eLogin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                loginUser("e@e.com", "eeeeee");
-            }
-        });
-
-        button_fLogin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                loginUser("f@f.com", "ffffff");
-            }
-        });
-
-        button_gLogin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                loginUser("g@g.com", "gggggg");
-            }
-        });
-
-        button_hLogin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                loginUser("h@h.com", "hhhhhh");
-            }
-        });
-
-        button_uploadTest.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                Intent intent = new Intent(Intent.ACTION_PICK);
-                intent.setType(MediaStore.Images.Media.CONTENT_TYPE);
-                startActivityForResult(intent, GALLEY_CODE);
-
-            }
-        });
-
-        findViewById(R.id.button_uploadTestActivity).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(LoginActivity.this, TestActivity.class);
-                startActivity(intent);
-
-            }
-        });
+//
+//        button_eLogin.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                loginUser("e@e.com", "eeeeee");
+//            }
+//        });
+//
+//        button_fLogin.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                loginUser("f@f.com", "ffffff");
+//            }
+//        });
+//
+//        button_gLogin.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                loginUser("g@g.com", "gggggg");
+//            }
+//        });
+//
+//        button_hLogin.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                loginUser("h@h.com", "hhhhhh");
+//            }
+//        });
+//
+//        button_uploadTest.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//
+//                Intent intent = new Intent(Intent.ACTION_PICK);
+//                intent.setType(MediaStore.Images.Media.CONTENT_TYPE);
+//                startActivityForResult(intent, GALLEY_CODE);
+//
+//            }
+//        });
+//
+//        findViewById(R.id.button_uploadTestActivity).setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Intent intent = new Intent(LoginActivity.this, TestActivity.class);
+//                startActivity(intent);
+//
+//            }
+//        });
 
     }
 
