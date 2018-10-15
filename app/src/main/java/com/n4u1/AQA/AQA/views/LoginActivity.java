@@ -58,16 +58,6 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-//        Toolbar myToolbar = findViewById(R.id.my_toolbar);
-//        setSupportActionBar(myToolbar);
-//        if (getSupportActionBar() != null) {
-//            getSupportActionBar().setTitle(" ");
-//        }
-////        getSupportActionBar().setIcon(R.drawable.q);
-//        getSupportActionBar().setIcon(R.mipmap.ic_aqa_custom);
-//        getSupportActionBar().setDisplayShowHomeEnabled(true);
-
-
         ImageView imageView_createUser = findViewById(R.id.imageView_createUser);
         ImageView imageView_loginUser = findViewById(R.id.imageView_loginUser);
 //        Button button_Login = findViewById(R.id.button_login);
@@ -75,10 +65,10 @@ public class LoginActivity extends AppCompatActivity {
         Button button_bLogin = findViewById(R.id.button_bLogin);
         Button button_cLogin = findViewById(R.id.button_cLogin);
         Button button_dLogin = findViewById(R.id.button_dLogin);
-//        Button button_eLogin = findViewById(R.id.button_eLogin);
-//        Button button_fLogin = findViewById(R.id.button_fLogin);
-//        Button button_gLogin = findViewById(R.id.button_gLogin);
-//        Button button_hLogin = findViewById(R.id.button_hLogin);
+        Button button_eLogin = findViewById(R.id.button_eLogin);
+        Button button_fLogin = findViewById(R.id.button_fLogin);
+        Button button_gLogin = findViewById(R.id.button_gLogin);
+        Button button_hLogin = findViewById(R.id.button_hLogin);
 //        Button button_uploadTest = findViewById(R.id.button_uploadTest);
 
         mAuth = FirebaseAuth.getInstance();
@@ -143,34 +133,34 @@ public class LoginActivity extends AppCompatActivity {
                 loginUser("d@d.com", "dddddd");
             }
         });
-//
-//        button_eLogin.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                loginUser("e@e.com", "eeeeee");
-//            }
-//        });
-//
-//        button_fLogin.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                loginUser("f@f.com", "ffffff");
-//            }
-//        });
-//
-//        button_gLogin.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                loginUser("g@g.com", "gggggg");
-//            }
-//        });
-//
-//        button_hLogin.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                loginUser("h@h.com", "hhhhhh");
-//            }
-//        });
+
+        button_eLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                loginUser("e@e.com", "eeeeee");
+            }
+        });
+
+        button_fLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                loginUser("f@f.com", "ffffff");
+            }
+        });
+
+        button_gLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                loginUser("g@g.com", "gggggg");
+            }
+        });
+
+        button_hLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                loginUser("h@h.com", "hhhhhh");
+            }
+        });
 //
 //        button_uploadTest.setOnClickListener(new View.OnClickListener() {
 //            @Override

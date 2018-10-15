@@ -163,7 +163,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="120dp"
         android:text="a로그인"
-        android:visibility="gone"
+        android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.028"
@@ -180,7 +180,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="120dp"
         android:text="b로그인"
-        android:visibility="gone"
+        android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.342"
@@ -197,7 +197,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="120dp"
         android:text="c로그인"
-        android:visibility="gone"
+        android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.657"
@@ -214,7 +214,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="120dp"
         android:text="d로그인"
-        android:visibility="gone"
+        android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.971"
@@ -223,69 +223,69 @@
         app:layout_constraintVertical_bias="0.0" />
 
 
-    <!--<Button-->
-    <!--android:id="@+id/button_eLogin"-->
-    <!--android:layout_width="wrap_content"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:layout_marginStart="8dp"-->
-    <!--android:layout_marginTop="8dp"-->
-    <!--android:layout_marginEnd="8dp"-->
-    <!--android:layout_marginBottom="8dp"-->
-    <!--android:text="e로그인"-->
-    <!--app:layout_constraintBottom_toBottomOf="parent"-->
-    <!--app:layout_constraintEnd_toEndOf="parent"-->
-    <!--app:layout_constraintHorizontal_bias="0.028"-->
-    <!--app:layout_constraintStart_toStartOf="parent"-->
-    <!--app:layout_constraintTop_toBottomOf="@+id/imageView_createUser"-->
-    <!--app:layout_constraintVertical_bias="0.709" />-->
+    <Button
+        android:id="@+id/button_eLogin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:text="e로그인"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.028"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView_createUser"
+        app:layout_constraintVertical_bias="0.199" />
 
-    <!--<Button-->
-    <!--android:id="@+id/button_fLogin"-->
-    <!--android:layout_width="wrap_content"-->
-    <!--android:layout_height="46dp"-->
-    <!--android:layout_marginStart="8dp"-->
-    <!--android:layout_marginTop="8dp"-->
-    <!--android:layout_marginEnd="8dp"-->
-    <!--android:layout_marginBottom="8dp"-->
-    <!--android:text="f로그인"-->
-    <!--app:layout_constraintBottom_toBottomOf="parent"-->
-    <!--app:layout_constraintEnd_toEndOf="parent"-->
-    <!--app:layout_constraintHorizontal_bias="0.325"-->
-    <!--app:layout_constraintStart_toStartOf="parent"-->
-    <!--app:layout_constraintTop_toBottomOf="@+id/imageView_createUser"-->
-    <!--app:layout_constraintVertical_bias="0.711" />-->
+    <Button
+        android:id="@+id/button_fLogin"
+        android:layout_width="wrap_content"
+        android:layout_height="46dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:text="f로그인"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.342"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView_createUser"
+        app:layout_constraintVertical_bias="0.205" />
 
-    <!--<Button-->
-    <!--android:id="@+id/button_gLogin"-->
-    <!--android:layout_width="wrap_content"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:layout_marginStart="8dp"-->
-    <!--android:layout_marginTop="8dp"-->
-    <!--android:layout_marginEnd="8dp"-->
-    <!--android:layout_marginBottom="8dp"-->
-    <!--android:text="g로그인"-->
-    <!--app:layout_constraintBottom_toBottomOf="parent"-->
-    <!--app:layout_constraintEnd_toEndOf="parent"-->
-    <!--app:layout_constraintHorizontal_bias="0.639"-->
-    <!--app:layout_constraintStart_toStartOf="parent"-->
-    <!--app:layout_constraintTop_toBottomOf="@+id/imageView_loginUser"-->
-    <!--app:layout_constraintVertical_bias="0.709" />-->
+    <Button
+        android:id="@+id/button_gLogin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:text="g로그인"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.657"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView_loginUser"
+        app:layout_constraintVertical_bias="0.206" />
 
-    <!--<Button-->
-    <!--android:id="@+id/button_hLogin"-->
-    <!--android:layout_width="wrap_content"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:layout_marginStart="8dp"-->
-    <!--android:layout_marginTop="8dp"-->
-    <!--android:layout_marginEnd="8dp"-->
-    <!--android:layout_marginBottom="8dp"-->
-    <!--android:text="h로그인"-->
-    <!--app:layout_constraintBottom_toBottomOf="parent"-->
-    <!--app:layout_constraintEnd_toEndOf="parent"-->
-    <!--app:layout_constraintHorizontal_bias="0.971"-->
-    <!--app:layout_constraintStart_toStartOf="parent"-->
-    <!--app:layout_constraintTop_toBottomOf="@+id/imageView_loginUser"-->
-    <!--app:layout_constraintVertical_bias="0.709" />-->
+    <Button
+        android:id="@+id/button_hLogin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:text="h로그인"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.971"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView_loginUser"
+        app:layout_constraintVertical_bias="0.206" />
 
     <!--<Button-->
     <!--android:id="@+id/button_uploadTest"-->
@@ -321,7 +321,7 @@
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="125dp"
+        android:layout_width="106dp"
         android:layout_height="80dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="168dp"
