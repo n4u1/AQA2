@@ -18,6 +18,7 @@ import android.view.View;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -59,6 +60,10 @@ public class HomeActivity extends AppCompatActivity implements SwipeRefreshLayou
     private final long FINISH_INTERVAL_TIME = 2000;
     private long backPressedTime = 0;
     final ArrayList<String> tempKey = new ArrayList<>();
+    final ArrayList<String> issueContents_ = new ArrayList<>();
+    String[] issueContents = new String[5];
+
+    RelativeLayout relativeLayout_issue;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,18 +76,20 @@ public class HomeActivity extends AppCompatActivity implements SwipeRefreshLayou
         getSupportActionBar().setHomeAsUpIndicator(R.mipmap.ic_aqa_custom);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
-        if (getSupportActionBar() != null){
+        if (getSupportActionBar() != null) {
             getSupportActionBar().setTitle("");
         }
 
         final SwipeRefreshLayout mSwipeRefreshLayout = findViewById(R.id.swipeRFL);
         recyclerView_home = findViewById(R.id.recyclerView_home);
+        relativeLayout_issue = findViewById(R.id.relativeLayout_issue);
         mDatabase = FirebaseDatabase.getInstance();
-        handler = new Handler();
+
         FloatingActionButton fab_addContent = findViewById(R.id.fab_addContent);
 //        final TextView testText = findViewById(R.id.testText);
         final FadingTextView fadingTextView = findViewById(R.id.fadingTextView);
         firebaseDatabase = FirebaseDatabase.getInstance();
+
 
         recyclerView_home.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(this);//20180730 전날꺼 보기 getApplicationContext()전에 this,?? 였음
@@ -93,12 +100,12 @@ public class HomeActivity extends AppCompatActivity implements SwipeRefreshLayou
         postAdapter = new PostAdapter(this, contentDTOS, recyclerView_home);
         recyclerView_home.setAdapter(postAdapter);
         postAdapter.notifyDataSetChanged();
-        final String[] issueContents = new String[5];//실시간 투표순위 5개
-
-        
+        //실시간 투표순위 5개
 
 
-        //실시간 투표 계산
+//
+//
+//        실시간 투표 계산
 //        Thread thread = new Thread(new Runnable() {
 //            @Override
 //            public void run() {
@@ -240,12 +247,6 @@ public class HomeActivity extends AppCompatActivity implements SwipeRefreshLayou
 //        thread.start();
 
 
-        fadingTextView.setTimeout(4, TimeUnit.SECONDS);
-        if (!BuildConfig.DEBUG) {
-            fadingTextView.setTexts(issueContents);
-//            fadingTextView.setPaintFlags(fadingTextView.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG); 밑줄
-        }
-
         //실시간 투표 목록 가져오기
         firebaseDatabase.getReference().child("issueContents").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -290,7 +291,7 @@ public class HomeActivity extends AppCompatActivity implements SwipeRefreshLayou
                     issueLong.add(Long.parseLong(issueString.get(i)));
                 }
 
-                Log.d("lkj strings6", stringsTemp__[0]);
+                Log.d("lkjIssue", "1");
                 long issueDate_ = getCurrentDate();
                 int filteringCount = 0;
                 ArrayList<String> filterIssueDate = new ArrayList<>();
@@ -308,6 +309,7 @@ public class HomeActivity extends AppCompatActivity implements SwipeRefreshLayou
 
                 for (int i = 0; i < filteringCount; i++) {
                     filteringIssueString.add(filterIssueDate.get(i));
+                    Log.d("lkjIssue", "2");
                 }
 
                 //해당시간안에 컨텐츠당 투표한 인원 구하기
@@ -319,6 +321,7 @@ public class HomeActivity extends AppCompatActivity implements SwipeRefreshLayou
                         }
                     }
                     resultMap.put(issueMap.get(filteringIssueString.get(i)), tmpCount);
+                    Log.d("lkjIssue", "3");
                 }
                 resultMap_ = sortHashMapByValues(resultMap);
                 Set key = resultMap_.keySet();
@@ -332,6 +335,7 @@ public class HomeActivity extends AppCompatActivity implements SwipeRefreshLayou
                 try {
                     for (int i = resultMap_.size() - 1; i > resultMap_.size() - 6; i--) {
                         tempKey.add(key.toArray()[i].toString());
+                        Log.d("lkjIssue", "4");
                     }
                 } catch (Exception e) {
                     Log.w("lkj obr exti", e);
@@ -339,27 +343,51 @@ public class HomeActivity extends AppCompatActivity implements SwipeRefreshLayou
 
                 //homeActivity 툴바 바로 아래 이슈컨텐츠 제목표시
                 issueContentDTOS.clear();
-                for (int i = 0; i < 5; i++) {
-                    final int finalI = i;
-                    mDatabase.getReference().child("user_contents").addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                            Iterator<DataSnapshot> contentDTOIterator = dataSnapshot.getChildren().iterator();
-                            while (contentDTOIterator.hasNext()) {
-                                ContentDTO contentDTO = contentDTOIterator.next().getValue(ContentDTO.class);
-                                if (contentDTO.contentKey.contains(tempKey.get(finalI))) {
-                                    issueContentDTOS.add(contentDTO);
-                                    issueContents[finalI] = contentDTO.title;
-                                }
+
+                mDatabase.getReference().child("user_contents").addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        Iterator<DataSnapshot> contentDTOIterator = dataSnapshot.getChildren().iterator();
+                        while (contentDTOIterator.hasNext()) {
+                            ContentDTO contentDTO = contentDTOIterator.next().getValue(ContentDTO.class);
+                            if (contentDTO.contentKey.contains(tempKey.get(0))) {
+                                issueContentDTOS.add(contentDTO);
+                                issueContents_.add(contentDTO.title);
+                                Log.d("lkjIssue", "5");
+                            }
+                            if (contentDTO.contentKey.contains(tempKey.get(1))) {
+                                issueContentDTOS.add(contentDTO);
+                                issueContents_.add(contentDTO.title);
+                                Log.d("lkjIssue", "5");
+                            }
+                            if (contentDTO.contentKey.contains(tempKey.get(2))) {
+                                issueContentDTOS.add(contentDTO);
+                                issueContents_.add(contentDTO.title);
+                                Log.d("lkjIssue", "5");
+                            }
+                            if (contentDTO.contentKey.contains(tempKey.get(3))) {
+                                issueContentDTOS.add(contentDTO);
+                                issueContents_.add(contentDTO.title);
+                                Log.d("lkjIssue", "5");
+                            }
+                            if (contentDTO.contentKey.contains(tempKey.get(4))) {
+                                issueContentDTOS.add(contentDTO);
+                                issueContents_.add(contentDTO.title);
+                                Log.d("lkjIssue", "5");
                             }
                         }
+                        issueContents = issueContents_.toArray(new String[issueContents_.size()]);
+                        Log.d("lkjIssue", "6");
 
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError databaseError) {
+//                        }
+                    }
 
-                        }
-                    });
-                }
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+
 
             }
 
@@ -379,10 +407,49 @@ public class HomeActivity extends AppCompatActivity implements SwipeRefreshLayou
 //        anim_.setRepeatMode(Animation.REVERSE);
 //        anim_.setRepeatCount(Animation.INFINITE);
 //        imageView_issue.startAnimation(anim_);
+
+//                        fadingTextView.setTimeout(4, TimeUnit.SECONDS);
+//                        if (!BuildConfig.DEBUG) {
+//                            Log.d("lkjIssue", "7");
+//                            fadingTextView.setTexts(issueContents);
+
 //
+        //실시간이슈 세팅
+        fadingTextView.bringToFront();
+        String[] tempString = {"클릭하시면 실시간 이슈를 보실수 있습니다.", "클릭하시면 실시간 이슈를 보실수 있습니다.",
+                "클릭하시면 실시간 이슈를 보실수 있습니다.",
+                "클릭하시면 실시간 이슈를 보실수 있습니다.",
+                "클릭하시면 실시간 이슈를 보실수 있습니다."};
+        fadingTextView.setTimeout(4, TimeUnit.SECONDS);
+        if (!BuildConfig.DEBUG) {
+            Log.d("lkjIssue", "7");
+            fadingTextView.setTexts(tempString);
+        }
+//
+//
+//        relativeLayout_issue.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                fadingTextView.setTimeout(4, TimeUnit.SECONDS);
+//                if (!BuildConfig.DEBUG) {
+//                    Log.d("lkjIssue", "7");
+//                    fadingTextView.setTexts(issueContents);
+//                }
+//            }
+//        });
 
+//
+//
+//        new Handler().postDelayed(new Runnable()
+//        {
+//            @Override
+//            public void run()
+//            {
+//
+//            }
+//        }, 2000);
 
-
+//
         //실시간 이슈 클릭시 해당 게시물로 이동
         fadingTextView.setOnClickListener(new View.OnClickListener() {
             @Override

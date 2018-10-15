@@ -6,28 +6,26 @@
     android:layout_height="match_parent"
     tools:context=".views.LoginActivity">
 
-    <include layout="@layout/mytoolbar" />
 
     <android.support.design.widget.TextInputLayout
         android:id="@+id/textInputLayout"
-        android:layout_width="305dp"
+        android:layout_width="333dp"
         android:layout_height="73dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginBottom="296dp"
+        android:layout_marginBottom="464dp"
         android:gravity="center"
         android:theme="@style/TextLabel"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.507"
+        app:layout_constraintHorizontal_bias="0.485"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/my_toolbar">
+        app:layout_constraintTop_toTopOf="parent">
 
         <android.support.design.widget.TextInputEditText
-            android:digits="abcdefghijklmnopqrstuvwxyz1234567890"
             android:id="@+id/editText_email"
-            android:layout_width="232dp"
+            android:layout_width="300dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginLeft="8dp"
@@ -35,6 +33,7 @@
             android:layout_marginEnd="8dp"
             android:layout_marginRight="8dp"
             android:layout_marginBottom="8dp"
+            android:digits="abcdefghijklmnopqrstuvwxyz1234567890"
             android:ems="10"
             android:hint="ID"
             android:inputType="textVisiblePassword"
@@ -50,7 +49,7 @@
 
     <android.support.design.widget.TextInputLayout
         android:id="@+id/textInputLayout2"
-        android:layout_width="305dp"
+        android:layout_width="330dp"
         android:layout_height="73dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
@@ -67,7 +66,7 @@
 
         <android.support.design.widget.TextInputEditText
             android:id="@+id/editText_password"
-            android:layout_width="231dp"
+            android:layout_width="300dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginLeft="8dp"
@@ -114,14 +113,14 @@
         android:layout_width="35dp"
         android:layout_height="35dp"
         android:layout_marginTop="8dp"
-        android:layout_marginEnd="28dp"
+        android:layout_marginEnd="32dp"
         android:layout_marginBottom="8dp"
         android:src="@drawable/ic_createuser"
         android:text="create user"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/imageView_forgetUser"
         app:layout_constraintTop_toBottomOf="@+id/textInputLayout2"
-        app:layout_constraintVertical_bias="0.142" />
+        app:layout_constraintVertical_bias="0.03" />
 
 
     <ImageView
@@ -131,29 +130,29 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
-        android:src="@drawable/ic_createuser"
+        android:src="@drawable/ic_usersearch"
         android:text="Login"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.513"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textInputLayout2"
-        app:layout_constraintVertical_bias="0.142" />
+        app:layout_constraintVertical_bias="0.03" />
 
 
     <ImageView
         android:id="@+id/imageView_loginUser"
         android:layout_width="35dp"
         android:layout_height="35dp"
-        android:layout_marginStart="28dp"
+        android:layout_marginStart="32dp"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
-        android:src="@drawable/ic_createuser"
+        android:src="@drawable/ic_userlogin"
         android:text="Login"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/imageView_forgetUser"
         app:layout_constraintTop_toBottomOf="@+id/textInputLayout2"
-        app:layout_constraintVertical_bias="0.142" />
+        app:layout_constraintVertical_bias="0.03" />
 
     <Button
         android:id="@+id/button_aLogin"
@@ -164,11 +163,13 @@
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="120dp"
         android:text="a로그인"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.028"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView_createUser" />
+        app:layout_constraintTop_toBottomOf="@+id/imageView_createUser"
+        app:layout_constraintVertical_bias="0.0" />
 
     <Button
         android:id="@+id/button_bLogin"
@@ -179,11 +180,13 @@
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="120dp"
         android:text="b로그인"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.342"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView_createUser" />
+        app:layout_constraintTop_toBottomOf="@+id/imageView_createUser"
+        app:layout_constraintVertical_bias="0.0" />
 
     <Button
         android:id="@+id/button_cLogin"
@@ -194,11 +197,13 @@
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="120dp"
         android:text="c로그인"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.657"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView_loginUser" />
+        app:layout_constraintTop_toBottomOf="@+id/imageView_loginUser"
+        app:layout_constraintVertical_bias="0.0" />
 
     <Button
         android:id="@+id/button_dLogin"
@@ -209,131 +214,134 @@
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="120dp"
         android:text="d로그인"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.971"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView_loginUser" />
+        app:layout_constraintTop_toBottomOf="@+id/imageView_loginUser"
+        app:layout_constraintVertical_bias="0.0" />
 
 
     <!--<Button-->
-        <!--android:id="@+id/button_eLogin"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_marginStart="8dp"-->
-        <!--android:layout_marginTop="8dp"-->
-        <!--android:layout_marginEnd="8dp"-->
-        <!--android:layout_marginBottom="8dp"-->
-        <!--android:text="e로그인"-->
-        <!--app:layout_constraintBottom_toBottomOf="parent"-->
-        <!--app:layout_constraintEnd_toEndOf="parent"-->
-        <!--app:layout_constraintHorizontal_bias="0.028"-->
-        <!--app:layout_constraintStart_toStartOf="parent"-->
-        <!--app:layout_constraintTop_toBottomOf="@+id/imageView_createUser"-->
-        <!--app:layout_constraintVertical_bias="0.709" />-->
+    <!--android:id="@+id/button_eLogin"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_marginStart="8dp"-->
+    <!--android:layout_marginTop="8dp"-->
+    <!--android:layout_marginEnd="8dp"-->
+    <!--android:layout_marginBottom="8dp"-->
+    <!--android:text="e로그인"-->
+    <!--app:layout_constraintBottom_toBottomOf="parent"-->
+    <!--app:layout_constraintEnd_toEndOf="parent"-->
+    <!--app:layout_constraintHorizontal_bias="0.028"-->
+    <!--app:layout_constraintStart_toStartOf="parent"-->
+    <!--app:layout_constraintTop_toBottomOf="@+id/imageView_createUser"-->
+    <!--app:layout_constraintVertical_bias="0.709" />-->
 
     <!--<Button-->
-        <!--android:id="@+id/button_fLogin"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="46dp"-->
-        <!--android:layout_marginStart="8dp"-->
-        <!--android:layout_marginTop="8dp"-->
-        <!--android:layout_marginEnd="8dp"-->
-        <!--android:layout_marginBottom="8dp"-->
-        <!--android:text="f로그인"-->
-        <!--app:layout_constraintBottom_toBottomOf="parent"-->
-        <!--app:layout_constraintEnd_toEndOf="parent"-->
-        <!--app:layout_constraintHorizontal_bias="0.325"-->
-        <!--app:layout_constraintStart_toStartOf="parent"-->
-        <!--app:layout_constraintTop_toBottomOf="@+id/imageView_createUser"-->
-        <!--app:layout_constraintVertical_bias="0.711" />-->
+    <!--android:id="@+id/button_fLogin"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="46dp"-->
+    <!--android:layout_marginStart="8dp"-->
+    <!--android:layout_marginTop="8dp"-->
+    <!--android:layout_marginEnd="8dp"-->
+    <!--android:layout_marginBottom="8dp"-->
+    <!--android:text="f로그인"-->
+    <!--app:layout_constraintBottom_toBottomOf="parent"-->
+    <!--app:layout_constraintEnd_toEndOf="parent"-->
+    <!--app:layout_constraintHorizontal_bias="0.325"-->
+    <!--app:layout_constraintStart_toStartOf="parent"-->
+    <!--app:layout_constraintTop_toBottomOf="@+id/imageView_createUser"-->
+    <!--app:layout_constraintVertical_bias="0.711" />-->
 
     <!--<Button-->
-        <!--android:id="@+id/button_gLogin"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_marginStart="8dp"-->
-        <!--android:layout_marginTop="8dp"-->
-        <!--android:layout_marginEnd="8dp"-->
-        <!--android:layout_marginBottom="8dp"-->
-        <!--android:text="g로그인"-->
-        <!--app:layout_constraintBottom_toBottomOf="parent"-->
-        <!--app:layout_constraintEnd_toEndOf="parent"-->
-        <!--app:layout_constraintHorizontal_bias="0.639"-->
-        <!--app:layout_constraintStart_toStartOf="parent"-->
-        <!--app:layout_constraintTop_toBottomOf="@+id/imageView_loginUser"-->
-        <!--app:layout_constraintVertical_bias="0.709" />-->
+    <!--android:id="@+id/button_gLogin"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_marginStart="8dp"-->
+    <!--android:layout_marginTop="8dp"-->
+    <!--android:layout_marginEnd="8dp"-->
+    <!--android:layout_marginBottom="8dp"-->
+    <!--android:text="g로그인"-->
+    <!--app:layout_constraintBottom_toBottomOf="parent"-->
+    <!--app:layout_constraintEnd_toEndOf="parent"-->
+    <!--app:layout_constraintHorizontal_bias="0.639"-->
+    <!--app:layout_constraintStart_toStartOf="parent"-->
+    <!--app:layout_constraintTop_toBottomOf="@+id/imageView_loginUser"-->
+    <!--app:layout_constraintVertical_bias="0.709" />-->
 
     <!--<Button-->
-        <!--android:id="@+id/button_hLogin"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_marginStart="8dp"-->
-        <!--android:layout_marginTop="8dp"-->
-        <!--android:layout_marginEnd="8dp"-->
-        <!--android:layout_marginBottom="8dp"-->
-        <!--android:text="h로그인"-->
-        <!--app:layout_constraintBottom_toBottomOf="parent"-->
-        <!--app:layout_constraintEnd_toEndOf="parent"-->
-        <!--app:layout_constraintHorizontal_bias="0.971"-->
-        <!--app:layout_constraintStart_toStartOf="parent"-->
-        <!--app:layout_constraintTop_toBottomOf="@+id/imageView_loginUser"-->
-        <!--app:layout_constraintVertical_bias="0.709" />-->
+    <!--android:id="@+id/button_hLogin"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_marginStart="8dp"-->
+    <!--android:layout_marginTop="8dp"-->
+    <!--android:layout_marginEnd="8dp"-->
+    <!--android:layout_marginBottom="8dp"-->
+    <!--android:text="h로그인"-->
+    <!--app:layout_constraintBottom_toBottomOf="parent"-->
+    <!--app:layout_constraintEnd_toEndOf="parent"-->
+    <!--app:layout_constraintHorizontal_bias="0.971"-->
+    <!--app:layout_constraintStart_toStartOf="parent"-->
+    <!--app:layout_constraintTop_toBottomOf="@+id/imageView_loginUser"-->
+    <!--app:layout_constraintVertical_bias="0.709" />-->
 
     <!--<Button-->
-        <!--android:id="@+id/button_uploadTest"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_marginStart="8dp"-->
-        <!--android:layout_marginTop="8dp"-->
-        <!--android:layout_marginEnd="8dp"-->
-        <!--android:layout_marginBottom="8dp"-->
-        <!--android:text="register"-->
-        <!--app:layout_constraintBottom_toBottomOf="parent"-->
-        <!--app:layout_constraintEnd_toEndOf="parent"-->
-        <!--app:layout_constraintHorizontal_bias="0.278"-->
-        <!--app:layout_constraintStart_toStartOf="parent"-->
-        <!--app:layout_constraintTop_toBottomOf="@+id/button_bLogin"-->
-        <!--app:layout_constraintVertical_bias="0.872" />-->
+    <!--android:id="@+id/button_uploadTest"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_marginStart="8dp"-->
+    <!--android:layout_marginTop="8dp"-->
+    <!--android:layout_marginEnd="8dp"-->
+    <!--android:layout_marginBottom="8dp"-->
+    <!--android:text="register"-->
+    <!--app:layout_constraintBottom_toBottomOf="parent"-->
+    <!--app:layout_constraintEnd_toEndOf="parent"-->
+    <!--app:layout_constraintHorizontal_bias="0.278"-->
+    <!--app:layout_constraintStart_toStartOf="parent"-->
+    <!--app:layout_constraintTop_toBottomOf="@+id/button_bLogin"-->
+    <!--app:layout_constraintVertical_bias="0.872" />-->
 
     <!--<Button-->
-        <!--android:id="@+id/button_uploadTestActivity"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_marginStart="8dp"-->
-        <!--android:layout_marginTop="8dp"-->
-        <!--android:layout_marginEnd="8dp"-->
-        <!--android:layout_marginBottom="8dp"-->
-        <!--android:text="testActivity"-->
-        <!--app:layout_constraintBottom_toBottomOf="parent"-->
-        <!--app:layout_constraintEnd_toEndOf="parent"-->
-        <!--app:layout_constraintHorizontal_bias="0.685"-->
-        <!--app:layout_constraintStart_toStartOf="parent"-->
-        <!--app:layout_constraintTop_toBottomOf="@+id/button_cLogin"-->
-        <!--app:layout_constraintVertical_bias="0.87" />-->
+    <!--android:id="@+id/button_uploadTestActivity"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_marginStart="8dp"-->
+    <!--android:layout_marginTop="8dp"-->
+    <!--android:layout_marginEnd="8dp"-->
+    <!--android:layout_marginBottom="8dp"-->
+    <!--android:text="testActivity"-->
+    <!--app:layout_constraintBottom_toBottomOf="parent"-->
+    <!--app:layout_constraintEnd_toEndOf="parent"-->
+    <!--app:layout_constraintHorizontal_bias="0.685"-->
+    <!--app:layout_constraintStart_toStartOf="parent"-->
+    <!--app:layout_constraintTop_toBottomOf="@+id/button_cLogin"-->
+    <!--app:layout_constraintVertical_bias="0.87" />-->
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="117dp"
-        android:layout_height="87dp"
+        android:layout_width="125dp"
+        android:layout_height="80dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="168dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toBottomOf="@+id/textView2"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.501"
+        app:layout_constraintHorizontal_bias="0.493"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textInputLayout2"
-        app:layout_constraintVertical_bias="0.898"
-        app:srcCompat="@mipmap/ic_aqa_custom" />
+        app:layout_constraintTop_toBottomOf="@+id/imageView_forgetUser"
+        app:layout_constraintVertical_bias="0.812"
+        app:srcCompat="@drawable/aqacustom2" />
 
     <TextView
+        android:id="@+id/textView2"
         android:layout_width="346dp"
         android:layout_height="23dp"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginBottom="28dp"
+        android:layout_marginBottom="4dp"
         android:gravity="center"
         android:text="http://www.aqa.company"
         android:textSize="10dp"

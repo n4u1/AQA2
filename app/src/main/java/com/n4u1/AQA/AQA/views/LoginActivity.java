@@ -58,14 +58,14 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        Toolbar myToolbar = findViewById(R.id.my_toolbar);
-        setSupportActionBar(myToolbar);
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setTitle(" ");
-        }
-//        getSupportActionBar().setIcon(R.drawable.q);
-        getSupportActionBar().setIcon(R.mipmap.ic_aqa_custom);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
+//        Toolbar myToolbar = findViewById(R.id.my_toolbar);
+//        setSupportActionBar(myToolbar);
+//        if (getSupportActionBar() != null) {
+//            getSupportActionBar().setTitle(" ");
+//        }
+////        getSupportActionBar().setIcon(R.drawable.q);
+//        getSupportActionBar().setIcon(R.mipmap.ic_aqa_custom);
+//        getSupportActionBar().setDisplayShowHomeEnabled(true);
 
 
         ImageView imageView_createUser = findViewById(R.id.imageView_createUser);
