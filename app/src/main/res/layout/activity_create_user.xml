@@ -38,13 +38,13 @@
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginRight="8dp"
-                android:digits="abcdefghijklmnopqrstuvwxyz1234567890"
+
                 android:ems="10"
                 android:hint="ID"
                 android:inputType="textVisiblePassword"
                 android:theme="@style/TextLabel" />
         </android.support.design.widget.TextInputLayout>
-
+<!--android:digits="abcdefghijklmnopqrstuvwxyz1234567890"-->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

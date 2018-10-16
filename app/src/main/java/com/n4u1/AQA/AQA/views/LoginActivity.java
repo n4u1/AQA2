@@ -92,7 +92,8 @@ public class LoginActivity extends AppCompatActivity {
                 String userId;
                 EditText editTextEmail = findViewById(R.id.editText_email);
                 EditText editTextPassword = findViewById(R.id.editText_password);
-                userId = editTextEmail.getText().toString() + "@aqa.com";
+                userId = editTextEmail.getText().toString();
+//                userId = editTextEmail.getText().toString() + "@aqa.com";
                 if (editTextEmail.getText().toString().equals("") || editTextPassword.getText().toString().equals("")) {
                     Toast toast = Toast.makeText(getApplicationContext(), "빈 칸이 있어요 ㅠ_ㅠ", Toast.LENGTH_SHORT);
                     toast.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL, 0, 0);

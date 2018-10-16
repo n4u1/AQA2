@@ -78,7 +78,8 @@ public class CreateUserActivity extends AppCompatActivity implements CreateUserA
             @Override
             public void onClick(View v) {
                 if (checkingCreateUser()) {
-                    String userId = createUser_editText_email.getText().toString() + "@aqa.com";
+                    String userId = createUser_editText_email.getText().toString();
+//                    String userId = createUser_editText_email.getText().toString() + "@aqa.com";
                     createUser(userId, createUser_editText_password.getText().toString());
                 }
             }
@@ -97,7 +98,8 @@ public class CreateUserActivity extends AppCompatActivity implements CreateUserA
 //                            String job = createUser_editText_job.getText().toString();
                             String email = mAuth.getCurrentUser().getEmail();
                             String uid = mAuth.getCurrentUser().getUid();
-                            int age = Integer.parseInt(createUser_editText_age.getText().toString());
+                            int ageTemp = Integer.parseInt(createUser_editText_age.getText().toString());
+                            int age = 2018 + 1 - ageTemp;
                             writeNewUser(null, sex, uid, email, age);
                         } else {
                             // If sign in fails, display a message to the user.

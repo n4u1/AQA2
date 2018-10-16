@@ -14,6 +14,7 @@ import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -27,6 +28,8 @@ import com.firebase.jobdispatcher.Job;
 import com.firebase.jobdispatcher.Lifetime;
 import com.firebase.jobdispatcher.RetryStrategy;
 import com.firebase.jobdispatcher.Trigger;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.n4u1.AQA.AQA.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -74,6 +77,7 @@ public class MineActivity extends AppCompatActivity {
         TextView mineActivity_textView_upload = findViewById(R.id.mineActivity_textView_upload);
         TextView mineActivity_textView_upload_ = findViewById(R.id.mineActivity_textView_upload_);
         LinearLayout mineActivity_linearLayout8 = findViewById(R.id.mineActivity_linearLayout8);
+        LinearLayout mineActivity_linearLayout_password = findViewById(R.id.mineActivity_linearLayout_password);
 
         //아이디 가져오기
         String tempId[] = mFireBaseUser.getEmail().split("@");
@@ -104,6 +108,27 @@ public class MineActivity extends AppCompatActivity {
 
         });
 
+        //비밀번호 변경하기
+        mineActivity_linearLayout_password.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FirebaseAuth auth = FirebaseAuth.getInstance();
+                String emailAddress = "lkj840211@gmail.com";
+
+                auth.sendPasswordResetEmail(emailAddress)
+                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                if (task.isSuccessful()) {
+                                    Log.d("lkjpassword", "lkjpassword Success");
+                                } else {
+                                    Log.d("lkjpassword", "lkjpassword Fail");
+                                }
+                            }
+                        });
+
+            }
+        });
 
 
         //좋아요 누른 게시물 모아보기
