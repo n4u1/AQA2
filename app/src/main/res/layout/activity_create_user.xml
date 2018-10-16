@@ -6,30 +6,32 @@
     tools:context=".views.CreateUserActivity">
 
 
-    <include layout="@layout/mytoolbar" />
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="74dp"
         android:gravity="center"
         android:orientation="vertical"
         android:theme="@style/TextLabel">
+
+        <ImageView
+            android:layout_width="80dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="18dp"
+            android:src="@drawable/aqacustom2" />
 
 
         <android.support.design.widget.TextInputLayout
             android:layout_width="305dp"
             android:layout_height="70dp"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="30dp"
             android:layout_marginEnd="8dp"
-
             android:gravity="center"
             android:theme="@style/TextLabel">
 
             <android.support.design.widget.TextInputEditText
                 android:id="@+id/createUser_editText_email"
-                android:layout_width="232dp"
+                android:layout_width="282dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginLeft="8dp"
@@ -61,8 +63,8 @@
                 android:layout_gravity="top"
                 android:layout_weight="2"
                 android:gravity="top"
-                android:text="※영어와 숫자만 가능합니다."
-                android:textSize="10dp" />
+                android:text="※영어(소문자)와 숫자만 가능합니다."
+                android:textSize="12dp" />
 
             <TextView
                 android:layout_width="0dp"
@@ -75,14 +77,14 @@
             android:layout_width="305dp"
             android:layout_height="70dp"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="16dp"
             android:layout_marginEnd="8dp"
             android:gravity="center"
             android:theme="@style/TextLabel">
 
             <android.support.design.widget.TextInputEditText
                 android:id="@+id/createUser_editText_password"
-                android:layout_width="232dp"
+                android:layout_width="282dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginLeft="8dp"
@@ -114,7 +116,7 @@
                 android:layout_weight="2"
                 android:gravity="top"
                 android:text="※6자 이상입니다."
-                android:textSize="10dp" />
+                android:textSize="12dp" />
 
             <TextView
                 android:layout_width="0dp"
@@ -127,7 +129,7 @@
             android:layout_width="305dp"
             android:layout_height="70dp"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="16dp"
             android:layout_marginEnd="8dp"
             android:layout_marginBottom="8dp"
             android:gravity="center"
@@ -135,7 +137,7 @@
 
             <android.support.design.widget.TextInputEditText
                 android:id="@+id/createUser_editText_age"
-                android:layout_width="232dp"
+                android:layout_width="282dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginLeft="8dp"
@@ -144,7 +146,7 @@
                 android:layout_marginRight="8dp"
                 android:layout_marginBottom="8dp"
                 android:ems="10"
-                android:hint="Age"
+                android:hint="Birth"
                 android:inputType="number"
                 android:theme="@style/TextLabel" />
         </android.support.design.widget.TextInputLayout>
@@ -182,7 +184,7 @@
             android:layout_width="305dp"
             android:layout_height="70dp"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="16dp"
             android:layout_marginEnd="8dp"
             android:layout_marginBottom="8dp"
             android:gravity="center"
@@ -190,7 +192,7 @@
 
             <android.support.design.widget.TextInputEditText
                 android:id="@+id/createUser_editText_sex"
-                android:layout_width="232dp"
+                android:layout_width="282dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginLeft="8dp"
@@ -206,20 +208,22 @@
 
 
         <RelativeLayout
+            android:layout_marginTop="20dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
 
             <ImageView
                 android:id="@+id/createUser_button_createUser"
-                android:layout_width="271dp"
-                android:layout_height="58dp"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentTop="true"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginBottom="8dp"
-                android:src="@drawable/ic_rounded_rectangle" />
+                android:src="@drawable/ic_userlogin"
+                 />
 
             <TextView
                 android:id="@+id/textView"
@@ -233,7 +237,8 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="8dp"
                 android:gravity="center"
-                android:text="GO" />
+                android:textSize="16dp"
+                android:hint=""/>
 
         </RelativeLayout>
     </LinearLayout>

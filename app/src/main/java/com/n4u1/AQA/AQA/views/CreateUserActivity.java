@@ -4,67 +4,72 @@ import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
-import android.view.animation.AlphaAnimation;
-import android.view.animation.Animation;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.n4u1.AQA.AQA.R;
+import com.n4u1.AQA.AQA.dialog.CreateUserAgeDialog;
+import com.n4u1.AQA.AQA.dialog.CreateUserGenderDialog;
 import com.n4u1.AQA.AQA.models.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class CreateUserActivity extends AppCompatActivity {
+public class CreateUserActivity extends AppCompatActivity implements CreateUserAgeDialog.CreateUserAgeDialogListener,
+        CreateUserGenderDialog.CreateUserGenderDialogListener {
 
-
-    private FirebaseUser mUser;
     private FirebaseAuth mAuth;
     private DatabaseReference mDatabase;
-    private EditText createUser_editText_email, createUser_editText_password, createUser_editText_sex,
-            createUser_editText_job, createUser_editText_age;
-    private ImageView createUser_button_createUser;
+    private EditText createUser_editText_email, createUser_editText_password,
+            createUser_editText_sex, createUser_editText_age;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_user);
 
-
-        Toolbar myToolbar = findViewById(R.id.my_toolbar);
-        setSupportActionBar(myToolbar);
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setTitle(" ");
-        }
-        getSupportActionBar().setIcon(R.mipmap.ic_aqa_custom);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
-
-
-
+        ImageView createUser_button_createUser;
         mAuth = FirebaseAuth.getInstance();
-        mUser = mAuth.getCurrentUser();
+
         mDatabase = FirebaseDatabase.getInstance().getReference();
 
         createUser_editText_email = findViewById(R.id.createUser_editText_email);
         createUser_editText_password = findViewById(R.id.createUser_editText_password);
         createUser_editText_age = findViewById(R.id.createUser_editText_age);
         createUser_editText_sex = findViewById(R.id.createUser_editText_sex);
-//        createUser_editText_job = findViewById(R.id.createUser_editText_job);
         createUser_button_createUser = findViewById(R.id.createUser_button_createUser);
 
+
+        //나이 선택
+        createUser_editText_age.setFocusable(false);
+        createUser_editText_age.setClickable(false);
+        createUser_editText_age.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                CreateUserAgeDialog createUserAgeDialog = new CreateUserAgeDialog();
+                createUserAgeDialog.show(getSupportFragmentManager(), "createUserAgeDialog");
+            }
+        });
+
+        //성별 선택
+        createUser_editText_sex.setFocusable(false);
+        createUser_editText_sex.setClickable(false);
+        createUser_editText_sex.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                CreateUserGenderDialog createUserGenderDialog = new CreateUserGenderDialog();
+                createUserGenderDialog.show(getSupportFragmentManager(), "createUserGenderDialog");
+            }
+        });
 
 
         //사용자에게 입력은 아이디만 받고 내부적으로 "aqa.com을 붙여서 이메일 형식으로 로그인
@@ -147,6 +152,7 @@ public class CreateUserActivity extends AppCompatActivity {
         mDatabase.child("users").child(uid).setValue(user);
         Intent intent = new Intent(CreateUserActivity.this, HomeActivity.class);
         startActivity(intent);
+        finish();
 
     }
 
@@ -159,5 +165,14 @@ public class CreateUserActivity extends AppCompatActivity {
     }
 
 
+    //ContentTypeDialog choiceItemCallback
+    @Override
+    public void choiceItemCallback(String string) {
+        createUser_editText_age.setText(string);
+    }
 
+    @Override
+    public void choiceItemCallbackGender(String string) {
+        createUser_editText_sex.setText(string);
+    }
 }

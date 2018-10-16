@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.TextView;
 
 import com.n4u1.AQA.AQA.R;
 import com.github.mikephil.charting.charts.HorizontalBarChart;
@@ -30,6 +31,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.n4u1.AQA.AQA.views.PollSingleActivity;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -51,8 +53,7 @@ public class PollResultDialog extends DialogFragment {
     String selectedDivide = "전 체";
     //    String ageRange = "전 체";
     AppCompatSpinner pollResultDialog_spinner_divide;
-
-    //    List<String> ageRangeList = new ArrayList<>();
+    TextView pollResultDialog_close;
     List<String> divideList = new ArrayList<>();
 
 
@@ -63,6 +64,8 @@ public class PollResultDialog extends DialogFragment {
         HorizontalBarChart pollActivity_horizontalBarChart_result = view.findViewById(R.id.pollActivity_horizontalBarChart_result);
 //        pollResultDialog_spinner_age = view.findViewById(R.id.pollResultDialog_spinner_age);
         pollResultDialog_spinner_divide = view.findViewById(R.id.pollResultDialog_spinner_divide);
+        pollResultDialog_close = view.findViewById(R.id.pollResultDialog_close);
+
         divideList.add("전 체");
         divideList.add("여 자");
         divideList.add("남 자");
@@ -145,6 +148,18 @@ public class PollResultDialog extends DialogFragment {
         pollActivity_horizontalBarChart_result.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+//                PollRankingActivity pollRankingActivity = (PollRankingActivity)getActivity();
+//                pollRankingActivity.refreshActivity();
+                PollSingleActivity pollSingleActivity = (PollSingleActivity)getActivity();
+                pollSingleActivity.refreshActivity();
+                dismiss();
+            }
+        });
+        pollResultDialog_close.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                PollSingleActivity pollSingleActivity = (PollSingleActivity)getActivity();
+                pollSingleActivity.refreshActivity();
                 dismiss();
             }
         });

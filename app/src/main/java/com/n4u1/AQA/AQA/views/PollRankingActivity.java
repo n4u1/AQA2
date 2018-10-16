@@ -1884,10 +1884,7 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
             switch (requestCode) {
                 case 100:
                     if (data.getStringExtra("result").equals("refresh")) {
-                        finish();
-                        overridePendingTransition(0, 0);
-                        startActivity(getIntent());
-                        overridePendingTransition(0, 0);
+                        refreshActivity();
                     } else {
                         pollActivity_textView_check_1.setText(data.getStringExtra("result"));
                         checking_img_1();
@@ -1895,10 +1892,7 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
                     break;
                 case 200:
                     if (data.getStringExtra("result").equals("refresh")) {
-                        finish();
-                        overridePendingTransition(0, 0);
-                        startActivity(getIntent());
-                        overridePendingTransition(0, 0);
+                        refreshActivity();
                     } else {
                         pollActivity_textView_check_2.setText(data.getStringExtra("result"));
                         checking_img_2();
@@ -1906,10 +1900,7 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
                     break;
                 case 300:
                     if (data.getStringExtra("result").equals("refresh")) {
-                        finish();
-                        overridePendingTransition(0, 0);
-                        startActivity(getIntent());
-                        overridePendingTransition(0, 0);
+                        refreshActivity();
                     } else {
                         pollActivity_textView_check_3.setText(data.getStringExtra("result"));
                         checking_img_3();
@@ -1917,10 +1908,7 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
                     break;
                 case 400:
                     if (data.getStringExtra("result").equals("refresh")) {
-                        finish();
-                        overridePendingTransition(0, 0);
-                        startActivity(getIntent());
-                        overridePendingTransition(0, 0);
+                        refreshActivity();
                     } else {
                         pollActivity_textView_check_4.setText(data.getStringExtra("result"));
                         checking_img_4();
@@ -1928,10 +1916,7 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
                     break;
                 case 500:
                     if (data.getStringExtra("result").equals("refresh")) {
-                        finish();
-                        overridePendingTransition(0, 0);
-                        startActivity(getIntent());
-                        overridePendingTransition(0, 0);
+                        refreshActivity();
                     } else {
                         pollActivity_textView_check_5.setText(data.getStringExtra("result"));
                         checking_img_5();
@@ -1939,10 +1924,7 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
                     break;
                 case 600:
                     if (data.getStringExtra("result").equals("refresh")) {
-                        finish();
-                        overridePendingTransition(0, 0);
-                        startActivity(getIntent());
-                        overridePendingTransition(0, 0);
+                        refreshActivity();
                     } else {
                         pollActivity_textView_check_6.setText(data.getStringExtra("result"));
                         checking_img_6();
@@ -1950,10 +1932,7 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
                     break;
                 case 700:
                     if (data.getStringExtra("result").equals("refresh")) {
-                        finish();
-                        overridePendingTransition(0, 0);
-                        startActivity(getIntent());
-                        overridePendingTransition(0, 0);
+                        refreshActivity();
                     } else {
                         pollActivity_textView_check_7.setText(data.getStringExtra("result"));
                         checking_img_7();
@@ -1961,10 +1940,7 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
                     break;
                 case 800:
                     if (data.getStringExtra("result").equals("refresh")) {
-                        finish();
-                        overridePendingTransition(0, 0);
-                        startActivity(getIntent());
-                        overridePendingTransition(0, 0);
+                        refreshActivity();
                     } else {
                         pollActivity_textView_check_8.setText(data.getStringExtra("result"));
                         checking_img_8();
@@ -1972,10 +1948,7 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
                     break;
                 case 900:
                     if (data.getStringExtra("result").equals("refresh")) {
-                        finish();
-                        overridePendingTransition(0, 0);
-                        startActivity(getIntent());
-                        overridePendingTransition(0, 0);
+                        refreshActivity();
                     } else {
                         pollActivity_textView_check_9.setText(data.getStringExtra("result"));
                         checking_img_9();
@@ -1983,10 +1956,7 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
                     break;
                 case 1000:
                     if (data.getStringExtra("result").equals("refresh")) {
-                        finish();
-                        overridePendingTransition(0, 0);
-                        startActivity(getIntent());
-                        overridePendingTransition(0, 0);
+                        refreshActivity();
                     } else {
                         pollActivity_textView_check_10.setText(data.getStringExtra("result"));
                         checking_img_10();
@@ -2086,10 +2056,7 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
         int curId = item.getItemId();
         switch (curId) {
             case R.id.menu_refresh:
-                finish();
-                overridePendingTransition(0, 0);
-                startActivity(getIntent());
-                overridePendingTransition(0, 0);
+                refreshActivity();
                 break;
             case R.id.menu_goHome:
                 Intent intent = new Intent(PollRankingActivity.this, HomeActivity.class);
@@ -2106,6 +2073,12 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
         return super.onOptionsItemSelected(item);
     }
 
+    public void refreshActivity() {
+        finish();
+        overridePendingTransition(0, 0);
+        startActivity(getIntent());
+        overridePendingTransition(0, 0);
+    }
 
     //picker의 현재픽,성별,나이 가져와서 통계항목에 + n
     private String addStatistics(String statistics_code, ArrayList<Integer> currentPickScore, String gender, int age) {

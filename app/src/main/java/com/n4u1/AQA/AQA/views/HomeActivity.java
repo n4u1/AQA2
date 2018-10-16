@@ -1,7 +1,6 @@
 package com.n4u1.AQA.AQA.views;
 
 import android.content.Intent;
-import android.graphics.Paint;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
@@ -15,11 +14,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.animation.AlphaAnimation;
-import android.view.animation.Animation;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.n4u1.AQA.AQA.R;
@@ -35,15 +30,11 @@ import com.tomer.fadingtextview.FadingTextView;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Random;
 import java.util.Set;
-import java.util.Timer;
-import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
 
 
@@ -108,7 +99,6 @@ public class HomeActivity extends AppCompatActivity implements SwipeRefreshLayou
         String[] tempString = {" ", "2", "3", "4", "5"};
         fadingTextView.setTimeout(4, TimeUnit.SECONDS);
         if (!BuildConfig.DEBUG) {
-
             fadingTextView.setTexts(tempString);
         }
 
@@ -133,25 +123,19 @@ public class HomeActivity extends AppCompatActivity implements SwipeRefreshLayou
                     strings.add(String.valueOf(snapshot.getValue()));
                 }
                 for (int i = 0; i < dataSnapshot.getChildrenCount(); i++) {
-
                     stringsTemp_.add(i, strings.get(i).replace("{", ""));
                     stringsTemp.add(i, stringsTemp_.get(i).replace("}", ""));
-
                 }
 
                 stringsTemp__ = stringsTemp.get(0).split("=");
-
                 for (int i = 0; i < dataSnapshot.getChildrenCount(); i++) {
                     stringsTemp__ = stringsTemp.get(i).split("=");
                     issueMap.put(stringsTemp__[0], stringsTemp__[1]);
                     issueString.add(stringsTemp__[0]);
-
                 }
-
                 for (int i = 0; i < dataSnapshot.getChildrenCount(); i++) {
                     issueLong.add(Long.parseLong(issueString.get(i)));
                 }
-
 
                 long issueDate_ = getCurrentDate();
                 int filteringCount = 0;
@@ -170,7 +154,6 @@ public class HomeActivity extends AppCompatActivity implements SwipeRefreshLayou
 
                 for (int i = 0; i < filteringCount; i++) {
                     filteringIssueString.add(filterIssueDate.get(i));
-
                 }
 
                 //해당시간안에 컨텐츠당 투표한 인원 구하기
@@ -232,11 +215,13 @@ public class HomeActivity extends AppCompatActivity implements SwipeRefreshLayou
                         issueContents = issueContents_.toArray(new String[issueContents_.size()]);
                         onIssueContents(issueContents);
                     }
+
                     @Override
                     public void onCancelled(@NonNull DatabaseError databaseError) {
                     }
                 });
             }
+
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
             }
@@ -378,9 +363,6 @@ public class HomeActivity extends AppCompatActivity implements SwipeRefreshLayou
                             contentDTOS.add(contentDTOSTemp.get(i));
                         }
 
-
-//                        postAdapter.notifyItemInserted(contentDTOS.size());
-
                         postAdapter.notifyDataSetChanged();
                         recyclerView_home.scrollToPosition(0);
                     }
@@ -392,7 +374,6 @@ public class HomeActivity extends AppCompatActivity implements SwipeRefreshLayou
                 mSwipeRefreshLayout.setRefreshing(false);
             }
         });
-
 
         //글쓰기 FloatingActionButton
         fab_addContent.setOnClickListener(new View.OnClickListener() {
@@ -459,8 +440,7 @@ public class HomeActivity extends AppCompatActivity implements SwipeRefreshLayou
         Collections.sort(mapValues);
         Collections.sort(mapKeys);
 
-        LinkedHashMap<String, Integer> sortedMap =
-                new LinkedHashMap<>();
+        LinkedHashMap<String, Integer> sortedMap = new LinkedHashMap<>();
 
         Iterator<Integer> valueIt = mapValues.iterator();
         while (valueIt.hasNext()) {

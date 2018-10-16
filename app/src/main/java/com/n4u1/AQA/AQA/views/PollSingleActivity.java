@@ -1910,10 +1910,7 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
         int curId = item.getItemId();
         switch (curId) {
             case R.id.menu_refresh:
-                finish();
-                overridePendingTransition(0, 0);
-                startActivity(getIntent());
-                overridePendingTransition(0, 0);
+                refreshActivity();
                 break;
             case R.id.menu_goHome:
                 Intent intent = new Intent(PollSingleActivity.this, HomeActivity.class);
@@ -2869,6 +2866,14 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
 
             }
         });
+    }
+
+
+    public void refreshActivity() {
+        finish();
+        overridePendingTransition(0, 0);
+        startActivity(getIntent());
+        overridePendingTransition(0, 0);
     }
 
     //게시물 좋아요 클릭 (따봉 이미지)
