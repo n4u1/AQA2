@@ -33,10 +33,9 @@
             android:layout_marginEnd="8dp"
             android:layout_marginRight="8dp"
             android:layout_marginBottom="8dp"
-
             android:ems="10"
-            android:hint="ID"
-            android:inputType="textVisiblePassword"
+            android:hint="Email"
+            android:inputType="textEmailAddress"
             android:theme="@style/TextLabel"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

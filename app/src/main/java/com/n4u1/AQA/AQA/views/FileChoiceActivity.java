@@ -56,6 +56,7 @@ public class FileChoiceActivity extends AppCompatActivity
     private StorageReference storageRef;
     private DatabaseReference mdatabaseRef;
     private String key;
+    private String currentUserId;
 
     private ViewPager viewPager;
     final int[] i = new int[1];
@@ -70,7 +71,7 @@ public class FileChoiceActivity extends AppCompatActivity
         getSupportActionBar().setHomeAsUpIndicator(R.mipmap.ic_aqa_custom);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
-        if (getSupportActionBar() != null){
+        if (getSupportActionBar() != null) {
             getSupportActionBar().setTitle("");
         }
 
@@ -212,7 +213,7 @@ public class FileChoiceActivity extends AppCompatActivity
     public void upload(final String[] uri) {
         Fragment page = getSupportFragmentManager().findFragmentByTag("android:switcher:" + R.id.viewPager + ":" + viewPager.getCurrentItem());
         Log.d("lkjtest", String.valueOf(page));
-/*VideoVideoVideoVideoVideoVideoVideoVideoVideoVideoVideoVideoVideoVideoVideoVideoVideoVideoVideoVideoVideoVideoVideoVideoVideoVideoVideoVideoVideoVideoVideoVideoVideo*/
+        /*VideoVideoVideoVideoVideoVideoVideoVideoVideoVideoVideoVideoVideoVideoVideoVideoVideoVideoVideoVideoVideoVideoVideoVideoVideoVideoVideoVideoVideoVideoVideoVideoVideo*/
         if (String.valueOf(page).contains("Video")) {
             int itemViewTypeCount = 1;
             Log.d("lkjtest", String.valueOf(itemViewTypeCount));
@@ -471,12 +472,12 @@ public class FileChoiceActivity extends AppCompatActivity
                     }
                 });
             }
-            mdatabaseRef.child("user_contents").child(key).child("itemViewType").setValue(itemViewTypeCount+100);
+            mdatabaseRef.child("user_contents").child(key).child("itemViewType").setValue(itemViewTypeCount + 100);
             finish();
 
         }
 
-/*imageimageimageimageimageimageimageimageimageimageimageimageimageimageimageimageimageimageimageimageimageimageimageimageimageimageimageimageimageimageimageimageimage*/
+        /*imageimageimageimageimageimageimageimageimageimageimageimageimageimageimageimageimageimageimageimageimageimageimageimageimageimageimageimageimageimageimageimageimage*/
         else if (String.valueOf(page).contains("Image")) {
 
             int itemViewTypeCount = 1;
@@ -494,8 +495,7 @@ public class FileChoiceActivity extends AppCompatActivity
             contentDTO.pollMode = userInputContents.get(2);
             contentDTO.description = userInputContents.get(3);
             contentDTO.uid = auth.getCurrentUser().getUid();
-            String[] tempId = auth.getCurrentUser().getEmail().split("@");
-            contentDTO.userID = tempId[0];
+            contentDTO.userID = userInputContents.get(4);
             mdatabaseRef.child("user_contents").child(key).setValue(contentDTO);
             mdatabaseRef.child("users").child(auth.getCurrentUser().getUid()).child("uploadContent").child(key).setValue("true");
 
@@ -741,20 +741,18 @@ public class FileChoiceActivity extends AppCompatActivity
             mdatabaseRef.child("user_contents").child(key).child("itemViewType").setValue(itemViewTypeCount);
 
 
-            Intent intent = new Intent(getApplicationContext(),HomeActivity.class);
+            Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intent);
 
 
         }
-/*CameraCameraCameraCameraCameraCameraCameraCameraCameraCameraCameraCameraCameraCameraCameraCameraCameraCameraCameraCameraCameraCameraCameraCameraCameraCamera*/
+        /*CameraCameraCameraCameraCameraCameraCameraCameraCameraCameraCameraCameraCameraCameraCameraCameraCameraCameraCameraCameraCameraCameraCameraCameraCameraCamera*/
         else if (String.valueOf(page).contains("Camera")) {
 
-        }
-        else {
+        } else {
             Toast.makeText(getApplicationContext(), "파일 업로드 실패!", Toast.LENGTH_SHORT).show();
         }
-
 
 
     }
@@ -823,15 +821,6 @@ public class FileChoiceActivity extends AppCompatActivity
 
 
      */
-
-
-
-
-
-
-
-
-
 
 
 }

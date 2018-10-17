@@ -36,6 +36,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.n4u1.AQA.AQA.dialog.NotInputDialog;
 
 import java.io.File;
 import java.util.regex.Matcher;
@@ -109,10 +110,8 @@ public class LoginActivity extends AppCompatActivity {
                 userId = editTextEmail.getText().toString();
 //                userId = editTextEmail.getText().toString() + "@aqa.com";
                 if (editTextEmail.getText().toString().equals("") || editTextPassword.getText().toString().equals("")) {
-                    Toast toast = Toast.makeText(getApplicationContext(), "빈 칸이 있어요 ㅠ_ㅠ", Toast.LENGTH_SHORT);
-                    toast.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL, 0, 0);
-                    toast.show();
-//                    Snackbar.make(v, "빈 칸이 있습니다ㅠ_ㅠ", Snackbar.LENGTH_SHORT).show();
+                    NotInputDialog notInputDialog = new NotInputDialog();
+                    notInputDialog.show(getSupportFragmentManager(), "notInputDialog");
                 } else {
                     loginUser(userId, editTextPassword.getText().toString());
                 }

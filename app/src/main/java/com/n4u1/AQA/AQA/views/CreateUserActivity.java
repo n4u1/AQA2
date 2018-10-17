@@ -11,8 +11,17 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.n4u1.AQA.AQA.R;
+import com.n4u1.AQA.AQA.dialog.AgainPasswordDialog;
+import com.n4u1.AQA.AQA.dialog.ConfirmPasswordFailDialog;
 import com.n4u1.AQA.AQA.dialog.CreateUserAgeDialog;
 import com.n4u1.AQA.AQA.dialog.CreateUserGenderDialog;
+import com.n4u1.AQA.AQA.dialog.FindPasswordFailDialog;
+import com.n4u1.AQA.AQA.dialog.NotEmailDialog;
+import com.n4u1.AQA.AQA.dialog.NotGenderDialog;
+import com.n4u1.AQA.AQA.dialog.NotIdlDialog;
+import com.n4u1.AQA.AQA.dialog.NotInputDialog;
+import com.n4u1.AQA.AQA.dialog.NullEmailDialog;
+import com.n4u1.AQA.AQA.dialog.ShortIdDialog;
 import com.n4u1.AQA.AQA.models.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -21,6 +30,10 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+import java.util.TimeZone;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -29,8 +42,13 @@ public class CreateUserActivity extends AppCompatActivity implements CreateUserA
 
     private FirebaseAuth mAuth;
     private DatabaseReference mDatabase;
-    private EditText createUser_editText_email, createUser_editText_password,
-            createUser_editText_sex, createUser_editText_age;
+    private EditText createUser_editText_email, createUser_editText_password, createUser_editText_confirmPassword,
+            createUser_editText_birth, createUser_editText_gender, createUser_editText_id;
+    private ImageView createUser_imageView_start;
+
+    private String gender, email, uid, userId, password;
+    private int age;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,15 +59,19 @@ public class CreateUserActivity extends AppCompatActivity implements CreateUserA
         mAuth = FirebaseAuth.getInstance();
 
         mDatabase = FirebaseDatabase.getInstance().getReference();
-
+        createUser_editText_id = findViewById(R.id.createUser_editText_id);
+        createUser_imageView_start = findViewById(R.id.createUser_imageView_start);
         createUser_editText_email = findViewById(R.id.createUser_editText_email);
         createUser_editText_password = findViewById(R.id.createUser_editText_password);
-
-
+        createUser_editText_gender = findViewById(R.id.createUser_editText_gender);
+        createUser_editText_birth = findViewById(R.id.createUser_editText_birth);
+        createUser_editText_confirmPassword = findViewById(R.id.createUser_editText_confirmPassword);
+//
+//
         //나이 선택
-        createUser_editText_age.setFocusable(false);
-        createUser_editText_age.setClickable(false);
-        createUser_editText_age.setOnClickListener(new View.OnClickListener() {
+        createUser_editText_birth.setFocusable(false);
+        createUser_editText_birth.setClickable(false);
+        createUser_editText_birth.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 CreateUserAgeDialog createUserAgeDialog = new CreateUserAgeDialog();
@@ -58,13 +80,29 @@ public class CreateUserActivity extends AppCompatActivity implements CreateUserA
         });
 
         //성별 선택
-        createUser_editText_sex.setFocusable(false);
-        createUser_editText_sex.setClickable(false);
-        createUser_editText_sex.setOnClickListener(new View.OnClickListener() {
+        createUser_editText_gender.setFocusable(false);
+        createUser_editText_gender.setClickable(false);
+        createUser_editText_gender.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 CreateUserGenderDialog createUserGenderDialog = new CreateUserGenderDialog();
                 createUserGenderDialog.show(getSupportFragmentManager(), "createUserGenderDialog");
+            }
+        });
+
+
+        createUser_imageView_start.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                if (checkingCreateUser()){
+                    gender = createUser_editText_gender.getText().toString();
+                    userId = createUser_editText_id.getText().toString();
+                    email = createUser_editText_email.getText().toString();
+                    age = getYear() + 1 - Integer.parseInt(createUser_editText_birth.getText().toString());
+                    password = createUser_editText_password.getText().toString();
+                    createUser(email, password);
+                }
             }
         });
 
@@ -79,13 +117,9 @@ public class CreateUserActivity extends AppCompatActivity implements CreateUserA
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
                             Toast.makeText(getApplicationContext(), "User Create Success", Toast.LENGTH_LONG).show();
-                            String sex = createUser_editText_sex.getText().toString();
-//                            String job = createUser_editText_job.getText().toString();
                             String email = mAuth.getCurrentUser().getEmail();
                             String uid = mAuth.getCurrentUser().getUid();
-                            int ageTemp = Integer.parseInt(createUser_editText_age.getText().toString());
-                            int age = 2018 + 1 - ageTemp;
-                            writeNewUser(null, sex, uid, email, age);
+                            writeNewUser(null, gender, uid, email, age, userId);
                         } else {
                             // If sign in fails, display a message to the user.
                             Toast.makeText(getApplicationContext(), "User Create Fail : " + task.getException(), Toast.LENGTH_LONG).show();
@@ -97,14 +131,54 @@ public class CreateUserActivity extends AppCompatActivity implements CreateUserA
 
     private boolean checkingCreateUser() {
 
-        if (createUser_editText_email.getText().toString().isEmpty() || createUser_editText_password.getText().toString().isEmpty()) {
-            Toast.makeText(getApplicationContext(), "아이디, 비밀번호를 입력해주세요!", Toast.LENGTH_LONG).show();
+        if (createUser_editText_email.getText().toString().isEmpty()) {
+            NullEmailDialog nullEmailDialog = new NullEmailDialog();
+            nullEmailDialog.show(getSupportFragmentManager(), "nullEmailDialog");
             return false;
         }
 
-        if (createUser_editText_age.getText().toString().isEmpty()) {
-            Toast.makeText(getApplicationContext(), "나이를 입력해주세요!", Toast.LENGTH_LONG).show();
+        if (!checkEmail(createUser_editText_email.getText().toString())) {
+            NotEmailDialog notEmailDialog = new NotEmailDialog();
+            notEmailDialog.show(getSupportFragmentManager(), "notEmailDialog");
             return false;
+        }
+
+        if(createUser_editText_id.getText().toString().isEmpty()) {
+            NotIdlDialog notIdlDialog = new NotIdlDialog();
+            notIdlDialog.show(getSupportFragmentManager(), "notIdlDialog");
+            return false;
+        }
+
+        if (createUser_editText_id.getText().toString().length() < 4) {
+            ShortIdDialog shortIdDialog = new ShortIdDialog();
+            shortIdDialog.show(getSupportFragmentManager(), "shortIdDialog");
+            return false;
+
+        }
+
+
+        if (createUser_editText_password.getText().toString().length() < 6) {
+            AgainPasswordDialog againPasswordDialog = new AgainPasswordDialog();
+            againPasswordDialog.show(getSupportFragmentManager(), "againPasswordDialog");
+            return false;
+        }
+
+
+        if (createUser_editText_birth.getText().toString().equals("")) {
+            FindPasswordFailDialog findPasswordFailDialog = new FindPasswordFailDialog();
+            findPasswordFailDialog.show(getSupportFragmentManager(), "findPasswordFailDialog");
+            return false;
+        }
+
+        if (!createUser_editText_confirmPassword.getText().toString().equals(createUser_editText_password.getText().toString())) {
+            ConfirmPasswordFailDialog confirmPasswordFailDialog = new ConfirmPasswordFailDialog();
+            confirmPasswordFailDialog.show(getSupportFragmentManager(), "confirmPasswordFailDialog");
+            return false;
+        }
+
+        if (createUser_editText_gender.getText().toString().isEmpty()) {
+            NotGenderDialog notGenderDialog = new NotGenderDialog();
+            notGenderDialog.show(getSupportFragmentManager(), "notGenderDialog");
         }
 //
 //        if (createUser_editText_job.getText().toString().isEmpty()) {
@@ -112,25 +186,12 @@ public class CreateUserActivity extends AppCompatActivity implements CreateUserA
 //            return false;
 //        }
 
-        if (createUser_editText_sex.getText().toString().isEmpty()) {
-            Toast.makeText(getApplicationContext(), "성별을 입력해주세요!", Toast.LENGTH_LONG).show();
-            return false;
-        }
-//
-//        if (!checkEmail(createUser_editText_email.getText().toString())) {
-//            Toast.makeText(getApplicationContext(), "이메일 형식으로 입력해주세요!!!!", Toast.LENGTH_LONG).show();
-//            return false;
-//        }
-
-        if (createUser_editText_password.getText().toString().length() < 6) {
-            Toast.makeText(getApplicationContext(), "비밀번호가 너무 짧아요ㅠ_ㅠ (6자 이상)", Toast.LENGTH_LONG).show();
-            return false;
-        }
         return true;
     }
 
-    private void writeNewUser(String deviceName, String sex, String uid, String email, int age) {
+    private void writeNewUser(String deviceName, String sex, String uid, String email, int age, String userId) {
         User user = new User();
+        user.setUserId(userId);
         user.setAge(age);
         user.setSex(sex);
 //        user.setJob(job);
@@ -138,6 +199,7 @@ public class CreateUserActivity extends AppCompatActivity implements CreateUserA
         user.setEmail(email);
         mDatabase.child("users").child(uid).setValue(user);
         Intent intent = new Intent(CreateUserActivity.this, HomeActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
         finish();
 
@@ -152,14 +214,25 @@ public class CreateUserActivity extends AppCompatActivity implements CreateUserA
     }
 
 
+    public int getYear() {
+        TimeZone timeZone;
+        timeZone = TimeZone.getTimeZone("Asia/Seoul");
+        Date date = new Date();
+        SimpleDateFormat df = new SimpleDateFormat("yyyy.MM.dd(E)HH:mm:ss", Locale.KOREAN);
+        df.setTimeZone(timeZone);
+        String currentDate = df.format(date);
+        String currentYear = currentDate.substring(0,4);
+        return Integer.parseInt(currentYear);
+    }
+
     //ContentTypeDialog choiceItemCallback
     @Override
     public void choiceItemCallback(String string) {
-        createUser_editText_age.setText(string);
+        createUser_editText_birth.setText(string);
     }
 
     @Override
     public void choiceItemCallbackGender(String string) {
-        createUser_editText_sex.setText(string);
+        createUser_editText_gender.setText(string);
     }
 }

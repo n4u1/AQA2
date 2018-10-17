@@ -1,24 +1,26 @@
 package com.n4u1.AQA.AQA.views;
 
 import android.Manifest;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.text.InputType;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.ValueEventListener;
 import com.n4u1.AQA.AQA.R;
 
 import com.n4u1.AQA.AQA.dialog.ContentChoiceDialog;
@@ -26,6 +28,7 @@ import com.n4u1.AQA.AQA.dialog.ContentTypeDialog;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
+import com.n4u1.AQA.AQA.models.User;
 
 import java.util.ArrayList;
 
@@ -52,9 +55,10 @@ public class UserContentsUploadActivity extends AppCompatActivity implements Con
 
 
 
+
     private FirebaseStorage storage;
     private FirebaseAuth auth;
-    private FirebaseDatabase database;
+    private FirebaseDatabase mdatabase;
 
 
     @Override
@@ -82,11 +86,14 @@ public class UserContentsUploadActivity extends AppCompatActivity implements Con
 
 
         storage = FirebaseStorage.getInstance();
-        database = FirebaseDatabase.getInstance();
+        mdatabase = FirebaseDatabase.getInstance();
         auth = FirebaseAuth.getInstance();
         pollMode = "";
         editText_title = findViewById(R.id.editText_title);
         editText_description = findViewById(R.id.editText_description);
+
+
+
 
 
         //카테고리 선택
@@ -146,14 +153,28 @@ public class UserContentsUploadActivity extends AppCompatActivity implements Con
                 if (editText_title.getText().toString().equals("") | editText_addCategory.getText().toString().equals("") | editText_pollMode.getText().toString().equals("") | editText_description.getText().toString().equals("")) {
                     Toast.makeText(getApplicationContext(), "빈 칸이 있어요!", Toast.LENGTH_SHORT).show();
                 } else {
-                    ArrayList<String> userInputContents = new ArrayList<>();
-                    userInputContents.add(editText_title.getText().toString());
-                    userInputContents.add(editText_addCategory.getText().toString());
-                    userInputContents.add(editText_pollMode.getText().toString());
-                    userInputContents.add(editText_description.getText().toString());
-                    Intent intent = new Intent(UserContentsUploadActivity.this, FileChoiceActivity.class);
-                    intent.putStringArrayListExtra("userInputContents", userInputContents);
-                    startActivity(intent);
+                    mdatabase.getReference().child("users").child(auth.getCurrentUser().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            User user = dataSnapshot.getValue(User.class);
+                            user.getUserId();
+                            ArrayList<String> userInputContents = new ArrayList<>();
+                            userInputContents.add(editText_title.getText().toString());
+                            userInputContents.add(editText_addCategory.getText().toString());
+                            userInputContents.add(editText_pollMode.getText().toString());
+                            userInputContents.add(editText_description.getText().toString());
+                            userInputContents.add(user.getUserId());
+                            Intent intent = new Intent(UserContentsUploadActivity.this, FileChoiceActivity.class);
+                            intent.putStringArrayListExtra("userInputContents", userInputContents);
+                            startActivity(intent);
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                        }
+                    });
+
                 }
                 break;
             case R.id.menu_home:

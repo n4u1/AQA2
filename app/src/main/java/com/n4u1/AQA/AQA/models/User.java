@@ -8,7 +8,7 @@ import java.util.Map;
 public class User {
 
     private String tmpImgUrl_0,tmpImgUrl_1,tmpImgUrl_2,tmpImgUrl_3,tmpImgUrl_4,tmpImgUrl_5,tmpImgUrl_6,tmpImgUrl_7,tmpImgUrl_8,tmpImgUrl_9;
-    private String deviceName, sex, job, uid, email;
+    private String deviceName, sex, job, uid, email, userId;
     private String pickContent;
     private int age;
     private String search_flag_category, search_flag_title;
@@ -17,7 +17,7 @@ public class User {
 
     public User () {    }
 
-    public User(String tmpImgUrl_0, String tmpImgUrl_1, String tmpImgUrl_2, String tmpImgUrl_3, String tmpImgUrl_4, String tmpImgUrl_5, String tmpImgUrl_6, String tmpImgUrl_7, String tmpImgUrl_8, String tmpImgUrl_9, String deviceName, String sex, String job, String uid, String email, String pickContent, int age, String search_flag_category, String search_flag_title, Map<String, Boolean> likeContent) {
+    public User(String tmpImgUrl_0, String tmpImgUrl_1, String tmpImgUrl_2, String tmpImgUrl_3, String tmpImgUrl_4, String tmpImgUrl_5, String tmpImgUrl_6, String tmpImgUrl_7, String tmpImgUrl_8, String tmpImgUrl_9, String deviceName, String sex, String job, String uid, String email, String userId, String pickContent, int age, String search_flag_category, String search_flag_title, Map<String, Boolean> likeContent) {
         this.tmpImgUrl_0 = tmpImgUrl_0;
         this.tmpImgUrl_1 = tmpImgUrl_1;
         this.tmpImgUrl_2 = tmpImgUrl_2;
@@ -33,6 +33,7 @@ public class User {
         this.job = job;
         this.uid = uid;
         this.email = email;
+        this.userId = userId;
         this.pickContent = pickContent;
         this.age = age;
         this.search_flag_category = search_flag_category;
@@ -52,6 +53,14 @@ public class User {
         result.put("search_flag_title", search_flag_title);
 
         return result;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
     public String getSearch_flag_category() {

@@ -17,6 +17,7 @@ import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.n4u1.AQA.AQA.R;
 import com.n4u1.AQA.AQA.models.ContentDTO;
 import com.n4u1.AQA.AQA.recyclerview.PostAdapter;
@@ -42,6 +43,7 @@ public class HomeActivity extends AppCompatActivity implements SwipeRefreshLayou
 
     private FirebaseDatabase mDatabase;
     private FirebaseDatabase firebaseDatabase;
+    private FirebaseAuth auth;
     protected Handler handler;
     private LinearLayoutManager mLayoutManager;
     private RecyclerView recyclerView_home;
@@ -81,6 +83,7 @@ public class HomeActivity extends AppCompatActivity implements SwipeRefreshLayou
 //        final TextView testText = findViewById(R.id.testText);
         fadingTextView = findViewById(R.id.fadingTextView);
         firebaseDatabase = FirebaseDatabase.getInstance();
+        auth = FirebaseAuth.getInstance();
 
 
         recyclerView_home.setHasFixedSize(true);
@@ -236,6 +239,9 @@ public class HomeActivity extends AppCompatActivity implements SwipeRefreshLayou
                     if (fadingTextView.getText().equals(issueContentDTOS.get(i).title)) {
                         //PostAdapter 의 movePoll(int position) 내용만 가져옴
                         if (issueContentDTOS.get(i).getPollMode().equals("순위 투표")) {
+
+
+
                             Intent intent = new Intent(getApplicationContext(), PollRankingActivity.class);
                             Bundle bundle = new Bundle();
                             bundle.putString("contentKey", issueContentDTOS.get(i).contentKey);

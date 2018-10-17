@@ -81,6 +81,56 @@
     </string-array>
 
 
+
+    <string-array name="FindPasswordFail">
+        <item>메일 전송에 실패했습니다.</item>
+        <item>가입시 등록한 이메일이 맞는지 확인 부탁드려요.\n</item>
+        <item>기억이 나지 않는다면 lkj8402111@gmail.com으로 문의 주시기 바랍니다.</item>
+    </string-array>
+
+
+    <string-array name="NullEmail">
+        <item>이메일을 입력해주세요.</item>
+    </string-array>
+
+
+    <string-array name="NotEmail">
+        <item>이메일형식으로 입력해주세요.</item>
+    </string-array>
+
+
+
+    <string-array name="ShortEmail">
+        <item>아이디는 3~12 글자 사이로 입력해주세요.</item>
+    </string-array>
+
+
+    <string-array name="NotId">
+        <item>아이디를 입력해주세요.</item>
+    </string-array>
+
+
+    <string-array name="NotGender">
+        <item>성별을 입력해주세요.</item>
+    </string-array>
+
+
+    <string-array name="ConfirmPasswordFail">
+        <item>비밀번호가 다릅니다.</item>
+    </string-array>
+
+
+    <string-array name="NotInput">
+        <item>빈칸이 있습니다.</item>
+    </string-array>
+
+
+
+    <string-array name="AgainPassword">
+        <item>비밀번호는 6자 이상입니다.</item>
+    </string-array>
+
+
     <string-array name="createUserGender">
         <item>남</item>
         <item>여</item>
@@ -88,94 +138,94 @@
 
 
     <string-array name="createUserAge">
-        <item>1920</item>
-        <item>1921</item>
-        <item>1922</item>
-        <item>1923</item>
-        <item>1924</item>
-        <item>1925</item>
-        <item>1926</item>
-        <item>1927</item>
-        <item>1928</item>
-        <item>1929</item>
-        <item>1930</item>
-        <item>1931</item>
-        <item>1932</item>
-        <item>1933</item>
-        <item>1934</item>
-        <item>1935</item>
-        <item>1936</item>
-        <item>1937</item>
-        <item>1938</item>
-        <item>1939</item>
-        <item>1940</item>
-        <item>1941</item>
-        <item>1942</item>
-        <item>1943</item>
-        <item>1944</item>
-        <item>1945</item>
-        <item>1946</item>
-        <item>1947</item>
-        <item>1948</item>
-        <item>1949</item>
-        <item>1950</item>
-        <item>1951</item>
-        <item>1952</item>
-        <item>1953</item>
-        <item>1954</item>
-        <item>1955</item>
-        <item>1956</item>
-        <item>1957</item>
-        <item>1958</item>
-        <item>1959</item>
-        <item>1960</item>
-        <item>1961</item>
-        <item>1962</item>
-        <item>1963</item>
-        <item>1964</item>
-        <item>1965</item>
-        <item>1966</item>
-        <item>1967</item>
-        <item>1968</item>
-        <item>1969</item>
-        <item>1970</item>
-        <item>1971</item>
-        <item>1972</item>
-        <item>1973</item>
-        <item>1974</item>
-        <item>1975</item>
-        <item>1976</item>
-        <item>1977</item>
-        <item>1978</item>
-        <item>1979</item>
-        <item>1980</item>
-        <item>1981</item>
-        <item>1982</item>
-        <item>1983</item>
-        <item>1984</item>
-        <item>1985</item>
-        <item>1986</item>
-        <item>1987</item>
-        <item>1988</item>
-        <item>1989</item>
-        <item>1990</item>
-        <item>1991</item>
-        <item>1992</item>
-        <item>1993</item>
-        <item>1994</item>
-        <item>1995</item>
-        <item>1996</item>
-        <item>1997</item>
-        <item>1998</item>
-        <item>1999</item>
-        <item>2000</item>
-        <item>2001</item>
-        <item>2002</item>
-        <item>2003</item>
-        <item>2004</item>
-        <item>2005</item>
-        <item>2006</item>
         <item>2007</item>
+        <item>2006</item>
+        <item>2005</item>
+        <item>2004</item>
+        <item>2003</item>
+        <item>2002</item>
+        <item>2001</item>
+        <item>2000</item>
+        <item>1999</item>
+        <item>1998</item>
+        <item>1997</item>
+        <item>1996</item>
+        <item>1995</item>
+        <item>1994</item>
+        <item>1993</item>
+        <item>1992</item>
+        <item>1991</item>
+        <item>1990</item>
+        <item>1989</item>
+        <item>1988</item>
+        <item>1987</item>
+        <item>1986</item>
+        <item>1985</item>
+        <item>1984</item>
+        <item>1983</item>
+        <item>1982</item>
+        <item>1981</item>
+        <item>1980</item>
+        <item>1979</item>
+        <item>1978</item>
+        <item>1977</item>
+        <item>1976</item>
+        <item>1975</item>
+        <item>1974</item>
+        <item>1973</item>
+        <item>1972</item>
+        <item>1971</item>
+        <item>1970</item>
+        <item>1969</item>
+        <item>1968</item>
+        <item>1967</item>
+        <item>1966</item>
+        <item>1965</item>
+        <item>1964</item>
+        <item>1963</item>
+        <item>1962</item>
+        <item>1961</item>
+        <item>1960</item>
+        <item>1959</item>
+        <item>1958</item>
+        <item>1957</item>
+        <item>1956</item>
+        <item>1955</item>
+        <item>1954</item>
+        <item>1953</item>
+        <item>1952</item>
+        <item>1951</item>
+        <item>1950</item>
+        <item>1949</item>
+        <item>1948</item>
+        <item>1947</item>
+        <item>1946</item>
+        <item>1945</item>
+        <item>1944</item>
+        <item>1943</item>
+        <item>1942</item>
+        <item>1941</item>
+        <item>1940</item>
+        <item>1939</item>
+        <item>1938</item>
+        <item>1937</item>
+        <item>1936</item>
+        <item>1935</item>
+        <item>1934</item>
+        <item>1933</item>
+        <item>1932</item>
+        <item>1931</item>
+        <item>1930</item>
+        <item>1929</item>
+        <item>1928</item>
+        <item>1927</item>
+        <item>1926</item>
+        <item>1925</item>
+        <item>1924</item>
+        <item>1923</item>
+        <item>1922</item>
+        <item>1921</item>
+        <item>1920</item>
     </string-array>
 
 
