@@ -60,6 +60,7 @@ public class LoginActivity extends AppCompatActivity {
 
         ImageView imageView_createUser = findViewById(R.id.imageView_createUser);
         ImageView imageView_loginUser = findViewById(R.id.imageView_loginUser);
+        ImageView imageView_findUser = findViewById(R.id.imageView_findUser);
 //        Button button_Login = findViewById(R.id.button_login);
         Button button_aLogin = findViewById(R.id.button_aLogin);
         Button button_bLogin = findViewById(R.id.button_bLogin);
@@ -78,6 +79,7 @@ public class LoginActivity extends AppCompatActivity {
         storage = FirebaseStorage.getInstance();
 
 
+
         imageView_createUser.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -86,6 +88,18 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
+
+        //계정 찾기
+        imageView_findUser.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent findIntent = new Intent(LoginActivity.this, FindUserActivity.class);
+                startActivity(findIntent);
+            }
+        });
+
+
+        //로그인하기
         imageView_loginUser.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -6,6 +6,14 @@
     tools:context=".views.CreateUserActivity">
 
 
+    <ImageView
+        android:layout_width="80dp"
+        android:layout_height="50dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="18dp"
+        android:src="@drawable/aqacustom2" />
+
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -13,24 +21,19 @@
         android:orientation="vertical"
         android:theme="@style/TextLabel">
 
-        <ImageView
-            android:layout_width="80dp"
-            android:layout_height="50dp"
-            android:layout_marginTop="18dp"
-            android:src="@drawable/aqacustom2" />
+
+
 
 
         <android.support.design.widget.TextInputLayout
             android:layout_width="305dp"
-            android:layout_height="70dp"
+            android:layout_height="58dp"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="30dp"
             android:layout_marginEnd="8dp"
             android:gravity="center"
             android:theme="@style/TextLabel">
-
             <android.support.design.widget.TextInputEditText
-                android:id="@+id/createUser_editText_email"
+                android:id="@+id/createUser_editText_id"
                 android:layout_width="282dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
@@ -38,34 +41,32 @@
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginRight="8dp"
-
+                android:digits="abcdefghijklmnopqrstuvwxyz1234567890"
                 android:ems="10"
                 android:hint="ID"
                 android:inputType="textVisiblePassword"
                 android:theme="@style/TextLabel" />
         </android.support.design.widget.TextInputLayout>
-<!--android:digits="abcdefghijklmnopqrstuvwxyz1234567890"-->
+
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="top"
             android:gravity="top"
             android:orientation="horizontal">
-
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1" />
-
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="top"
-                android:layout_weight="2"
+                android:layout_weight="4"
                 android:gravity="top"
-                android:text="※영어(소문자)와 숫자만 가능합니다."
+                android:text="※소문자,숫자(앱상에서 노출됩니다)"
                 android:textSize="12dp" />
-
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -73,11 +74,12 @@
         </LinearLayout>
 
 
+
+
         <android.support.design.widget.TextInputLayout
             android:layout_width="305dp"
-            android:layout_height="70dp"
+            android:layout_height="58dp"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="16dp"
             android:layout_marginEnd="8dp"
             android:gravity="center"
             android:theme="@style/TextLabel">
@@ -103,21 +105,69 @@
             android:layout_gravity="top"
             android:gravity="top"
             android:orientation="horizontal">
-
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1" />
-
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="top"
-                android:layout_weight="2"
+                android:layout_weight="4"
                 android:gravity="top"
                 android:text="※6자 이상입니다."
                 android:textSize="12dp" />
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+        </LinearLayout>
 
+
+
+
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="305dp"
+            android:layout_height="58dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:gravity="center"
+            android:theme="@style/TextLabel">
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/createUser_editText_passwordRe"
+                android:layout_width="282dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginRight="8dp"
+                android:ems="10"
+                android:hint="Confirm Password"
+                android:inputType="textPassword"
+                android:theme="@style/TextLabel" />
+        </android.support.design.widget.TextInputLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top"
+            android:gravity="top"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top"
+                android:layout_weight="4"
+                android:gravity="top"
+                android:text="※한번더 입력해주세요."
+                android:textSize="12dp" />
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -127,16 +177,13 @@
 
         <android.support.design.widget.TextInputLayout
             android:layout_width="305dp"
-            android:layout_height="70dp"
+            android:layout_height="58dp"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="16dp"
             android:layout_marginEnd="8dp"
-            android:layout_marginBottom="8dp"
             android:gravity="center"
             android:theme="@style/TextLabel">
-
             <android.support.design.widget.TextInputEditText
-                android:id="@+id/createUser_editText_age"
+                android:id="@+id/createUser_editText_email"
                 android:layout_width="282dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
@@ -144,103 +191,75 @@
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginRight="8dp"
-                android:layout_marginBottom="8dp"
                 android:ems="10"
-                android:hint="Birth"
-                android:inputType="number"
-                android:theme="@style/TextLabel" />
-        </android.support.design.widget.TextInputLayout>
-
-
-        <!--<android.support.design.widget.TextInputLayout-->
-        <!--android:layout_width="305dp"-->
-        <!--android:layout_height="70dp"-->
-        <!--android:layout_marginStart="8dp"-->
-        <!--android:layout_marginTop="8dp"-->
-        <!--android:layout_marginEnd="8dp"-->
-        <!--android:layout_marginBottom="8dp"-->
-        <!--android:gravity="center"-->
-        <!--android:theme="@style/TextLabel">-->
-
-        <!--<android.support.design.widget.TextInputEditText-->
-        <!--android:id="@+id/createUser_editText_job"-->
-        <!--android:layout_width="232dp"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_marginStart="8dp"-->
-        <!--android:layout_marginLeft="8dp"-->
-        <!--android:layout_marginTop="16dp"-->
-        <!--android:layout_marginEnd="8dp"-->
-        <!--android:layout_marginRight="8dp"-->
-        <!--android:layout_marginBottom="8dp"-->
-        <!--android:ems="10"-->
-        <!--android:hint="job"-->
-        <!--android:inputType="textEmailAddress"-->
-        <!--android:theme="@style/TextLabel" />-->
-        <!--</android.support.design.widget.TextInputLayout>-->
-
-
-        <android.support.design.widget.TextInputLayout
-            android:id="@+id/textInputLayout3"
-            android:layout_width="305dp"
-            android:layout_height="70dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginBottom="8dp"
-            android:gravity="center"
-            android:theme="@style/TextLabel">
-
-            <android.support.design.widget.TextInputEditText
-                android:id="@+id/createUser_editText_sex"
-                android:layout_width="282dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginLeft="8dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginRight="8dp"
-                android:layout_marginBottom="8dp"
-                android:ems="10"
-                android:hint="Gender"
+                android:hint="Email"
                 android:inputType="textEmailAddress"
                 android:theme="@style/TextLabel" />
         </android.support.design.widget.TextInputLayout>
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top"
+            android:gravity="top"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top"
+                android:layout_weight="4"
+                android:gravity="top"
+                android:text="※로그인, 정보변경에 사용됩니다."
+                android:textSize="12dp" />
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top"
+            android:gravity="top"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top"
+                android:layout_weight="4"
+                android:gravity="top"
+                android:text="    정확하게 입력해주세요."
+                android:textSize="12dp" />
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+        </LinearLayout>
+
+
 
         <RelativeLayout
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="60dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
-
-            <ImageView
-                android:id="@+id/createUser_button_createUser"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentTop="true"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginBottom="8dp"
-                android:src="@drawable/ic_userlogin"
-                 />
-
             <TextView
-                android:id="@+id/textView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignLeft="@id/createUser_button_createUser"
-                android:layout_alignTop="@id/createUser_button_createUser"
-                android:layout_alignRight="@id/createUser_button_createUser"
-                android:layout_alignBottom="@id/createUser_button_createUser"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="8dp"
+                android:textSize="18dp"
                 android:gravity="center"
-                android:textSize="16dp"
-                android:hint=""/>
-
+                android:text="다 음"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
         </RelativeLayout>
+
+
     </LinearLayout>
 
 

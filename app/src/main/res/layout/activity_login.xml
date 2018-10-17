@@ -118,13 +118,13 @@
         android:src="@drawable/ic_createuser"
         android:text="create user"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/imageView_forgetUser"
+        app:layout_constraintEnd_toStartOf="@+id/imageView_findUser"
         app:layout_constraintTop_toBottomOf="@+id/textInputLayout2"
         app:layout_constraintVertical_bias="0.03" />
 
 
     <ImageView
-        android:id="@+id/imageView_forgetUser"
+        android:id="@+id/imageView_findUser"
         android:layout_width="35dp"
         android:layout_height="35dp"
         android:layout_marginTop="8dp"
@@ -150,7 +150,7 @@
         android:src="@drawable/ic_userlogin"
         android:text="Login"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/imageView_forgetUser"
+        app:layout_constraintStart_toEndOf="@+id/imageView_findUser"
         app:layout_constraintTop_toBottomOf="@+id/textInputLayout2"
         app:layout_constraintVertical_bias="0.03" />
 
@@ -331,7 +331,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.488"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView_forgetUser"
+        app:layout_constraintTop_toBottomOf="@+id/imageView_findUser"
         app:layout_constraintVertical_bias="0.97"
         app:srcCompat="@drawable/aqacustom2" />
 

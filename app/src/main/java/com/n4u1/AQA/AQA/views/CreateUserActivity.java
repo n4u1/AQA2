@@ -44,9 +44,6 @@ public class CreateUserActivity extends AppCompatActivity implements CreateUserA
 
         createUser_editText_email = findViewById(R.id.createUser_editText_email);
         createUser_editText_password = findViewById(R.id.createUser_editText_password);
-        createUser_editText_age = findViewById(R.id.createUser_editText_age);
-        createUser_editText_sex = findViewById(R.id.createUser_editText_sex);
-        createUser_button_createUser = findViewById(R.id.createUser_button_createUser);
 
 
         //나이 선택
@@ -72,18 +69,6 @@ public class CreateUserActivity extends AppCompatActivity implements CreateUserA
         });
 
 
-        //사용자에게 입력은 아이디만 받고 내부적으로 "aqa.com을 붙여서 이메일 형식으로 로그인
-        //사용자는 그냥 아이디로 로그인
-        createUser_button_createUser.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (checkingCreateUser()) {
-                    String userId = createUser_editText_email.getText().toString();
-//                    String userId = createUser_editText_email.getText().toString() + "@aqa.com";
-                    createUser(userId, createUser_editText_password.getText().toString());
-                }
-            }
-        });
     }
 
     private void createUser(String email, String password) {
