@@ -18,6 +18,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 //
 
@@ -61,6 +62,8 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        TextView textView_hidden = findViewById(R.id.textView_hidden);
+
         ImageView imageView_createUser = findViewById(R.id.imageView_createUser);
         ImageView imageView_loginUser = findViewById(R.id.imageView_loginUser);
         ImageView imageView_findUser = findViewById(R.id.imageView_findUser);
@@ -82,7 +85,18 @@ public class LoginActivity extends AppCompatActivity {
         storage = FirebaseStorage.getInstance();
 
 
+        //히든
+        textView_hidden.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(getApplicationContext(), "Hidden Quest Complete!\n오늘 좋은일이 생길거에요!", Toast.LENGTH_LONG).show();
 
+            }
+        });
+
+
+
+        //계정 만들기
         imageView_createUser.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

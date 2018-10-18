@@ -153,39 +153,27 @@ public class CreateUserActivity extends AppCompatActivity implements CreateUserA
             ShortIdDialog shortIdDialog = new ShortIdDialog();
             shortIdDialog.show(getSupportFragmentManager(), "shortIdDialog");
             return false;
-
         }
-
-
         if (createUser_editText_password.getText().toString().length() < 6) {
             AgainPasswordDialog againPasswordDialog = new AgainPasswordDialog();
             againPasswordDialog.show(getSupportFragmentManager(), "againPasswordDialog");
             return false;
         }
-
-
         if (createUser_editText_birth.getText().toString().equals("")) {
             FindPasswordFailDialog findPasswordFailDialog = new FindPasswordFailDialog();
             findPasswordFailDialog.show(getSupportFragmentManager(), "findPasswordFailDialog");
             return false;
         }
-
         if (!createUser_editText_confirmPassword.getText().toString().equals(createUser_editText_password.getText().toString())) {
             ConfirmPasswordFailDialog confirmPasswordFailDialog = new ConfirmPasswordFailDialog();
             confirmPasswordFailDialog.show(getSupportFragmentManager(), "confirmPasswordFailDialog");
             return false;
         }
-
         if (createUser_editText_gender.getText().toString().isEmpty()) {
             NotGenderDialog notGenderDialog = new NotGenderDialog();
             notGenderDialog.show(getSupportFragmentManager(), "notGenderDialog");
+            return false;
         }
-//
-//        if (createUser_editText_job.getText().toString().isEmpty()) {
-//            Toast.makeText(getApplicationContext(), "직업을 입력해주세요!", Toast.LENGTH_LONG).show();
-//            return false;
-//        }
-
         return true;
     }
 

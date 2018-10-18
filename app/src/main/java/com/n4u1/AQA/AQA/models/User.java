@@ -45,6 +45,7 @@ public class User {
     public Map<String, Object> toMap() {
         HashMap<String, Object> result = new HashMap<>();
         result.put("uid", uid);
+        result.put("userId", userId);
         result.put("likeContent", likeContent);
         result.put("sex", sex);
         result.put("age", age);

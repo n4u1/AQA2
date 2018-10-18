@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -28,7 +29,6 @@ import java.util.Set;
 public class MyPollActivity extends AppCompatActivity {
 
 
-
     private FirebaseDatabase mDatabase;
     private FirebaseDatabase mDatabaseUser;
     private FirebaseUser mFireBaseUser;
@@ -48,7 +48,7 @@ public class MyPollActivity extends AppCompatActivity {
         getSupportActionBar().setHomeAsUpIndicator(R.mipmap.ic_aqa_custom);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
-        if (getSupportActionBar() != null){
+        if (getSupportActionBar() != null) {
             getSupportActionBar().setTitle("");
         }
 
@@ -72,6 +72,7 @@ public class MyPollActivity extends AppCompatActivity {
         //onCreate시 참여한 게시물 추려서 최초1회 바인딩
         mDatabase.getReference().child("user_contents").addListenerForSingleValueEvent(new ValueEventListener() {
             ArrayList<String> key = new ArrayList<>();
+
             @Override
             public void onDataChange(@NonNull final DataSnapshot dataSnapshot) {
 
@@ -81,30 +82,28 @@ public class MyPollActivity extends AppCompatActivity {
                         Map<String, Object> pickContent = (Map<String, Object>) dataSnapshots.getValue();
                         int tempCount = 0;
 
-                        Set set = pickContent.keySet();
-                        Iterator iterator = set.iterator();
-                        while(iterator.hasNext()){
-                            key.add((String)iterator.next());
-                            tempCount++;
-                        }
-//
-//                        for (int i = 0; i < dataSnapshots.getChildrenCount(); i++) {
-//                            if (pickContent.get(key.get(i)).toString().equals("true")) {
-//                                key_.add(key.get(i));
-//                                tempCount++;
-//                            }
-//                        }
+                        try {
+                            Set set = pickContent.keySet();
+                            Iterator iterator = set.iterator();
+                            while (iterator.hasNext()) {
+                                key.add((String) iterator.next());
+                                tempCount++;
+                            }
 
-                        contentDTOS.clear();
-                        for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                            ContentDTO contentDTO = snapshot.getValue(ContentDTO.class);
-                            for(int i = 0; i < tempCount; i++) {
-                                if (contentDTO.getContentKey().contains(key.get(i))) {
-                                    contentDTOS.add(contentDTO);
+                            contentDTOS.clear();
+                            for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                                ContentDTO contentDTO = snapshot.getValue(ContentDTO.class);
+                                for (int i = 0; i < tempCount; i++) {
+                                    if (contentDTO.getContentKey().contains(key.get(i))) {
+                                        contentDTOS.add(contentDTO);
+                                    }
                                 }
                             }
+                            postAdapterMine.notifyDataSetChanged();
+                        } catch (Exception e) {
+                            Log.d("lkj exception", e.toString());
                         }
-                        postAdapterMine.notifyDataSetChanged();
+
                     }
 
                     @Override
@@ -128,7 +127,6 @@ public class MyPollActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.mypoll_menu, menu);
         return true;
     }
-
 
 
     @Override

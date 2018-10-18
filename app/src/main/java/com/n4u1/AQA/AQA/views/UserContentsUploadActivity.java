@@ -31,6 +31,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.n4u1.AQA.AQA.models.User;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 public class UserContentsUploadActivity extends AppCompatActivity implements ContentChoiceDialog.ContentChoiceDialogListener
         , ContentTypeDialog.ContentTypeDialogListener, AddContentFragment.AddContentFragmentListener {
@@ -156,14 +157,15 @@ public class UserContentsUploadActivity extends AppCompatActivity implements Con
                     mdatabase.getReference().child("users").child(auth.getCurrentUser().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                            User user = dataSnapshot.getValue(User.class);
-                            user.getUserId();
+
+                            Map<String, Object> user = (Map<String, Object>) dataSnapshot.getValue();
+
                             ArrayList<String> userInputContents = new ArrayList<>();
                             userInputContents.add(editText_title.getText().toString());
                             userInputContents.add(editText_addCategory.getText().toString());
                             userInputContents.add(editText_pollMode.getText().toString());
                             userInputContents.add(editText_description.getText().toString());
-                            userInputContents.add(user.getUserId());
+                            userInputContents.add(user.get("userId").toString());
                             Intent intent = new Intent(UserContentsUploadActivity.this, FileChoiceActivity.class);
                             intent.putStringArrayListExtra("userInputContents", userInputContents);
                             startActivity(intent);
