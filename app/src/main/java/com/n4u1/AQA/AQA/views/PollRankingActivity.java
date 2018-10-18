@@ -143,7 +143,7 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         if (getSupportActionBar() != null){
-            getSupportActionBar().setTitle("");
+            getSupportActionBar().setTitle(null);
         }
 
         final String contentKey = getIntent().getStringExtra("contentKey");

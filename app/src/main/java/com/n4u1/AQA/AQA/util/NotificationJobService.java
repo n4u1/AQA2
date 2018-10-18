@@ -45,7 +45,7 @@ public class NotificationJobService extends JobService {
 
     private void notificationShow() {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this, "default");
-        builder.setSmallIcon(R.mipmap.ic_aqa_custom);
+        builder.setSmallIcon(R.mipmap.ic_q_custom);
         builder.setContentTitle("100명이 투표했어요!");
         builder.setContentText("클릭해서 확인하기!");
         Intent intentHome = new Intent(this, HomeActivity.class);

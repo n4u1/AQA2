@@ -8,11 +8,4 @@
         app:showAsAction="always" />
 
 
-    <item
-        android:id="@+id/menu_home"
-        android:icon="@drawable/ic_outline_home_24px"
-        android:title="Home"
-        app:showAsAction="always" />
-
-
 </menu>

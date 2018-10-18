@@ -13,11 +13,13 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.SwitchCompat;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -58,39 +60,42 @@ public class MineActivity extends AppCompatActivity {
         getSupportActionBar().setHomeAsUpIndicator(R.mipmap.ic_aqa_custom);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
+
         if (getSupportActionBar() != null){
-            getSupportActionBar().setTitle("");
+            getSupportActionBar().setTitle(null);
         }
 
         mFireBaseUser = FirebaseAuth.getInstance().getCurrentUser();
         mDatabaseReference = FirebaseDatabase.getInstance().getReference("users").child(mFireBaseUser.getUid());
 
+        final TextView mineActivity_textView_noti = findViewById(R.id.mineActivity_textView_noti);
+        final TextView mineActivity_textView_id = findViewById(R.id.mineActivity_textView_id);
         TextView mineActivity_textView_account = findViewById(R.id.mineActivity_textView_account);
         final TextView mineActivity_textView_gender = findViewById(R.id.mineActivity_textView_gender);
         final TextView mineActivity_textView_age = findViewById(R.id.mineActivity_textView_age);
-        TextView mineActivity_textView_like = findViewById(R.id.mineActivity_textView_like);
-        TextView mineActivity_textView_like_ = findViewById(R.id.mineActivity_textView_like_);
-        TextView mineActivity_textView_pickContent = findViewById(R.id.mineActivity_textView_pickContent);
-        TextView mineActivity_textView_pickContent_ = findViewById(R.id.mineActivity_textView_pickContent_);
-        TextView mineActivity_textView_reply = findViewById(R.id.mineActivity_textView_reply);
-        TextView mineActivity_textView_reply_ = findViewById(R.id.mineActivity_textView_reply_);
-        TextView mineActivity_textView_upload = findViewById(R.id.mineActivity_textView_upload);
-        TextView mineActivity_textView_upload_ = findViewById(R.id.mineActivity_textView_upload_);
-        LinearLayout mineActivity_linearLayout8 = findViewById(R.id.mineActivity_linearLayout8);
+        LinearLayout mineActivity_linearLayout_like = findViewById(R.id.mineActivity_linearLayout_like);
+        LinearLayout mineActivity_linearLayout_pickContent = findViewById(R.id.mineActivity_linearLayout_pickContent);
+        LinearLayout mineActivity_linearLayout_reply = findViewById(R.id.mineActivity_linearLayout_reply);
+        LinearLayout mineActivity_linearLayout_upload = findViewById(R.id.mineActivity_linearLayout_upload);
+
+
+        LinearLayout mineActivity_linearLayout_noti = findViewById(R.id.mineActivity_linearLayout_noti);
         LinearLayout mineActivity_linearLayout_password = findViewById(R.id.mineActivity_linearLayout_password);
-
-        //아이디 가져오기
-        String tempId[] = mFireBaseUser.getEmail().split("@");
-        mineActivity_textView_account.setText(tempId[0]);
+        final SwitchCompat mineActivity_switch_noti = findViewById(R.id.mineActivity_switch_noti);
 
 
-        //성별 가져오기
+
+        //이메일 가져오기
+        mineActivity_textView_account.setText(mFireBaseUser.getEmail());
+
+        //성별 나이 아이디 가져오기
         mDatabaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 Map<String, Object> users = (Map<String, Object>) dataSnapshot.getValue();
                 mineActivity_textView_gender.setText(String.valueOf(users.get("sex")));
                 mineActivity_textView_age.setText(String.valueOf(users.get("age")));
+                mineActivity_textView_id.setText(String.valueOf(users.get("userId")));
             }
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
@@ -98,22 +103,14 @@ public class MineActivity extends AppCompatActivity {
             }
         });
 
-        //notify test
-        mineActivity_linearLayout8.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                backgroundNotify();
 
-            }
-
-        });
 
         //비밀번호 변경하기
         mineActivity_linearLayout_password.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 FirebaseAuth auth = FirebaseAuth.getInstance();
-                String emailAddress = "lkj840211@gmail.com";
+                String emailAddress = auth.getCurrentUser().getEmail();
 
                 auth.sendPasswordResetEmail(emailAddress)
                         .addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -131,15 +128,47 @@ public class MineActivity extends AppCompatActivity {
         });
 
 
-        //좋아요 누른 게시물 모아보기
-        mineActivity_textView_like.setOnClickListener(new View.OnClickListener() {
+        //notify test
+        mineActivity_linearLayout_noti.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MineActivity.this, MyLikeContentsActivity.class);
-                startActivity(intent);
+                backgroundNotify();
+
+            }
+
+        });
+
+        //노티 스위치 상태
+        if (mineActivity_switch_noti.getTextOn().toString().equals("on")) {
+            mineActivity_textView_noti.setText("알람(사용중)");
+        } else {
+            mineActivity_textView_noti.setText("알람(미사용중)");
+        }
+
+
+        //노티 스위치 버튼
+        mineActivity_switch_noti.setChecked(true);
+        mineActivity_switch_noti.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if (b) {
+                    Log.d("lkj switch", "switch on");
+                    Log.d("lkj switchlog", mineActivity_switch_noti.getTextOn().toString());
+                    mineActivity_textView_noti.setText("알람 (사용중)");
+
+                } else {
+                    Log.d("lkj switch", "switch off");
+                    Log.d("lkj switchlog", mineActivity_switch_noti.getTextOff().toString());
+                    mineActivity_textView_noti.setText("알람 (미 사용중)");
+                }
             }
         });
-        mineActivity_textView_like_.setOnClickListener(new View.OnClickListener() {
+
+
+
+
+        //좋아요 누른 게시물 모아보기
+        mineActivity_linearLayout_like.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MineActivity.this, MyLikeContentsActivity.class);
@@ -148,14 +177,7 @@ public class MineActivity extends AppCompatActivity {
         });
 
         //참여한 게시물 모아보기
-        mineActivity_textView_pickContent.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MineActivity.this, MyPollActivity.class);
-                startActivity(intent);
-            }
-        });
-        mineActivity_textView_pickContent_.setOnClickListener(new View.OnClickListener() {
+        mineActivity_linearLayout_pickContent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MineActivity.this, MyPollActivity.class);
@@ -164,14 +186,7 @@ public class MineActivity extends AppCompatActivity {
         });
 
         //댓글 남긴 게시물 모아보기
-        mineActivity_textView_reply.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MineActivity.this, MyReplyContentsActivity.class);
-                startActivity(intent);
-            }
-        });
-        mineActivity_textView_reply_.setOnClickListener(new View.OnClickListener() {
+        mineActivity_linearLayout_reply.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MineActivity.this, MyReplyContentsActivity.class);
@@ -180,14 +195,7 @@ public class MineActivity extends AppCompatActivity {
         });
 
         //내가 올린 게시물 모아보기
-        mineActivity_textView_upload.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MineActivity.this, MyUploadActivity.class);
-                startActivity(intent);
-            }
-        });
-        mineActivity_textView_upload_.setOnClickListener(new View.OnClickListener() {
+        mineActivity_linearLayout_upload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MineActivity.this, MyUploadActivity.class);
@@ -199,8 +207,6 @@ public class MineActivity extends AppCompatActivity {
 
     private void backgroundNotify() {
         FirebaseJobDispatcher dispatcher = new FirebaseJobDispatcher(new GooglePlayDriver(this));
-
-
         Job myJob = dispatcher.newJobBuilder()
                 // the JobService that will be called
                 .setService(NotificationJobService.class)
@@ -211,7 +217,7 @@ public class MineActivity extends AppCompatActivity {
                 // don't persist past a device reboot
                 .setLifetime(Lifetime.FOREVER)
                 // start between 0 and 60 seconds from now
-                .setTrigger(Trigger.executionWindow(30, 60))
+                .setTrigger(Trigger.executionWindow(10, 20))
                 // don't overwrite an existing job with the same tag
                 .setReplaceCurrent(true)
                 // retry with exponential backoff

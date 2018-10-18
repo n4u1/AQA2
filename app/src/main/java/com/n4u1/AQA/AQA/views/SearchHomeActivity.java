@@ -54,11 +54,11 @@ public class SearchHomeActivity extends AppCompatActivity {
 
         Toolbar myToolbar = findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
-        getSupportActionBar().setHomeAsUpIndicator(R.mipmap.ic_aqa_custom);
+//        getSupportActionBar().setHomeAsUpIndicator(R.mipmap.ic_aqa_custom);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         if (getSupportActionBar() != null){
-            getSupportActionBar().setTitle("");
+            getSupportActionBar().setTitle(null);
         }
 
         listViewCategory = findViewById(R.id.searchHomeActivity_listView_category);
@@ -226,6 +226,7 @@ public class SearchHomeActivity extends AppCompatActivity {
         searchView = (SearchView) myActionMenuItem.getActionView();
         searchView.setFocusable(true);  //자동포커스
         searchView.setIconified(false); //자동포커스
+
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {

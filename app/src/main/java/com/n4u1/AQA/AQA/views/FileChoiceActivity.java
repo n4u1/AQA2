@@ -72,7 +72,7 @@ public class FileChoiceActivity extends AppCompatActivity
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         if (getSupportActionBar() != null) {
-            getSupportActionBar().setTitle("");
+            getSupportActionBar().setTitle(null);
         }
 
         TabLayout tabLayout = findViewById(R.id.tabLayout);

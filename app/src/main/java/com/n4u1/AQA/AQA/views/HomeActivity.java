@@ -71,7 +71,7 @@ public class HomeActivity extends AppCompatActivity implements SwipeRefreshLayou
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         if (getSupportActionBar() != null) {
-            getSupportActionBar().setTitle("");
+            getSupportActionBar().setTitle(null);
         }
 
         final SwipeRefreshLayout mSwipeRefreshLayout = findViewById(R.id.swipeRFL);

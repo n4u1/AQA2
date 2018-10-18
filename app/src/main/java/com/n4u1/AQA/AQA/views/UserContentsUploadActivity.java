@@ -75,7 +75,7 @@ public class UserContentsUploadActivity extends AppCompatActivity implements Con
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         if (getSupportActionBar() != null){
-            getSupportActionBar().setTitle("");
+            getSupportActionBar().setTitle(null);
         }
 
 
