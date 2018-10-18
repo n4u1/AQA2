@@ -84,8 +84,8 @@
 
     <string-array name="FindPasswordFail">
         <item>메일 전송에 실패했습니다.</item>
-        <item>가입시 등록한 이메일이 맞는지 확인 부탁드려요.\n</item>
-        <item>기억이 나지 않는다면 lkj8402111@gmail.com으로 문의 주시기 바랍니다.</item>
+        <item>가입시 등록한 이메일이 맞는지 확인 해주시기 바랍니다.\n</item>
+        <item>확인되지 않으면 lkj8402111@gmail.com으로 문의해주세요.</item>
     </string-array>
 
 

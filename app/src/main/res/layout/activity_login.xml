@@ -44,7 +44,7 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.081" />
     </android.support.design.widget.TextInputLayout>
-<!--android:digits="abcdefghijklmnopqrstuvwxyz1234567890"-->
+    <!--android:digits="abcdefghijklmnopqrstuvwxyz1234567890"-->
 
     <android.support.design.widget.TextInputLayout
         android:id="@+id/textInputLayout2"
@@ -162,7 +162,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="120dp"
         android:text="a로그인"
-        android:visibility="visible"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.028"
@@ -179,7 +179,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="120dp"
         android:text="b로그인"
-        android:visibility="visible"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.342"
@@ -196,7 +196,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="120dp"
         android:text="c로그인"
-        android:visibility="visible"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.657"
@@ -213,7 +213,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="120dp"
         android:text="d로그인"
-        android:visibility="visible"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.971"
@@ -231,6 +231,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
         android:text="e로그인"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.028"
@@ -247,6 +248,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
         android:text="f로그인"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.342"
@@ -263,6 +265,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
         android:text="g로그인"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.657"
@@ -279,6 +282,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
         android:text="h로그인"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.971"

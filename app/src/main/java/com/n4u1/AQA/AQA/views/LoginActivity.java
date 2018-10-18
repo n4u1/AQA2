@@ -36,6 +36,8 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.n4u1.AQA.AQA.dialog.AgainPasswordDialog;
+import com.n4u1.AQA.AQA.dialog.NotEmailDialog;
 import com.n4u1.AQA.AQA.dialog.NotInputDialog;
 
 import java.io.File;
@@ -112,6 +114,12 @@ public class LoginActivity extends AppCompatActivity {
                 if (editTextEmail.getText().toString().equals("") || editTextPassword.getText().toString().equals("")) {
                     NotInputDialog notInputDialog = new NotInputDialog();
                     notInputDialog.show(getSupportFragmentManager(), "notInputDialog");
+                } else if (!checkEmail(editTextEmail.getText().toString())) {
+                    NotEmailDialog notEmailDialog = new NotEmailDialog();
+                    notEmailDialog.show(getSupportFragmentManager(), "notEmailDialog");
+                } else if (editTextPassword.getText().toString().length() < 6) {
+                    AgainPasswordDialog againPasswordDialog = new AgainPasswordDialog();
+                    againPasswordDialog.show(getSupportFragmentManager(), "againPasswordDialog");
                 } else {
                     loginUser(userId, editTextPassword.getText().toString());
                 }
@@ -250,5 +258,14 @@ public class LoginActivity extends AppCompatActivity {
 
                     }
                 });
+    }
+
+
+    private boolean checkEmail(String inputUserEmail) {
+        String regex = "^[_a-zA-Z0-9-\\.]+@[\\.a-zA-Z0-9-]+\\.[a-zA-Z]+$";
+        Pattern p = Pattern.compile(regex);
+        Matcher m = p.matcher(inputUserEmail);
+        boolean isNormal = m.matches();
+        return isNormal;
     }
 }
