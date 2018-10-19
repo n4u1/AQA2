@@ -19,7 +19,7 @@
         android:paddingBottom="4dp"
         android:text="test"
         android:textColor="#000"
-        android:textSize="25dp"
+        android:textSize="20dp"
         android:visibility="gone" />
 
     <TextView
@@ -33,7 +33,7 @@
         android:paddingBottom="4dp"
         android:text="test"
         android:textColor="#000"
-        android:textSize="25dp"
+        android:textSize="20dp"
         android:visibility="gone" />
 
     <TextView
@@ -47,7 +47,7 @@
         android:paddingBottom="4dp"
         android:text="test"
         android:textColor="#000"
-        android:textSize="25dp"
+        android:textSize="20dp"
         android:visibility="gone" />
 
     <TextView
@@ -61,7 +61,7 @@
         android:paddingBottom="4dp"
         android:text="test"
         android:textColor="#000"
-        android:textSize="25dp"
+        android:textSize="20dp"
         android:visibility="gone" />
 
     <TextView
@@ -75,7 +75,7 @@
         android:paddingBottom="4dp"
         android:text="test"
         android:textColor="#000"
-        android:textSize="25dp"
+        android:textSize="20dp"
         android:visibility="gone" />
 
     <TextView
@@ -89,7 +89,7 @@
         android:paddingBottom="4dp"
         android:text="test"
         android:textColor="#000"
-        android:textSize="25dp"
+        android:textSize="20dp"
         android:visibility="gone" />
 
     <TextView
@@ -103,7 +103,7 @@
         android:paddingBottom="4dp"
         android:text="test"
         android:textColor="#000"
-        android:textSize="25dp"
+        android:textSize="20dp"
         android:visibility="gone" />
 
     <TextView
@@ -117,7 +117,7 @@
         android:paddingBottom="4dp"
         android:text="test"
         android:textColor="#000"
-        android:textSize="25dp"
+        android:textSize="20dp"
         android:visibility="gone" />
 
     <TextView
@@ -131,7 +131,7 @@
         android:paddingBottom="4dp"
         android:text="test"
         android:textColor="#000"
-        android:textSize="25dp"
+        android:textSize="20dp"
         android:visibility="gone" />
 
     <TextView
@@ -145,7 +145,7 @@
         android:paddingBottom="4dp"
         android:text="test"
         android:textColor="#000"
-        android:textSize="25dp"
+        android:textSize="20dp"
         android:visibility="gone" />
 
     <TextView
@@ -159,7 +159,7 @@
         android:paddingBottom="16dp"
         android:text="test"
         android:textColor="#000"
-        android:textSize="25dp"
+        android:textSize="20dp"
         android:visibility="gone" />
 
     <!-- Notice -->

@@ -100,7 +100,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="7"
-                    android:text="a@a.com"
+                    android:text="a1a1a1"
                     android:textColor="#808080"
                     android:textSize="18dp" />
             </LinearLayout>
@@ -184,7 +184,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="7"
-                    android:text="11"
+                    android:text="22"
                     android:textColor="#808080"
                     android:textSize="18dp" />
             </LinearLayout>
@@ -254,11 +254,11 @@
                 android:padding="12dp">
 
                 <ImageView
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
+                    android:layout_width="26dp"
+                    android:layout_height="26dp"
                     android:layout_gravity="center"
                     android:layout_weight="1"
-                    android:src="@drawable/ic_uploadicon" />
+                    android:src="@drawable/ic_outline_creat_24px" />
 
                 <TextView
                     android:id="@+id/mineActivity_textView_upload_"
@@ -438,7 +438,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="8"
-                    android:text="111"
+                    android:text="알람"
                     android:textColor="#383838"
                     android:textSize="18dp" />
 
