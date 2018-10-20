@@ -11,12 +11,14 @@ import com.n4u1.AQA.AQA.R;
 //adapter에 viewHolder가 들어갈것임
 public class PostViewHolder3 extends RecyclerView.ViewHolder{
 
-    public ImageView imageView_postImg_0, imageView_postImg_1, imageView_postImg_2, imageView_postImg_3, imageView_like, imageView_share, imageView_hitCount, imageView_state;
+    public ImageView imageView_postImg_0, imageView_postImg_1, imageView_postImg_2,
+            imageView_postImg_3, imageView_like, imageView_share, imageView_hitCount, imageView_state, imageView_userClass;
     public TextView textView_likeCount, textView_userName, textView_title, textView_contentType, textView_hitCount, textView_replyCount, textView_pollMode;
 
 
     public PostViewHolder3(View itemView) {
         super(itemView);
+        imageView_userClass = itemView.findViewById(R.id.imageView_userClass);
         imageView_postImg_0 = itemView.findViewById(R.id.imageView_postImg_0);
         imageView_postImg_1 = itemView.findViewById(R.id.imageView_postImg_1);
         imageView_postImg_2 = itemView.findViewById(R.id.imageView_postImg_2);

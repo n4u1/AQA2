@@ -113,6 +113,7 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
             pollActivity_imageView_around_7, pollActivity_imageView_around_8,
             pollActivity_imageView_around_9, pollActivity_imageView_around_10;
 
+    ImageView imageView_userClass0, imageView_userClass1, imageView_userClass2;
     ImageView pollActivity_button_replySend;
     EditText pollActivity_editText_reply;
     RecyclerView pollActivity_recyclerView_reply;
@@ -129,7 +130,7 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
             pollActivity_textView_check_7, pollActivity_textView_check_8,
             pollActivity_textView_check_9, pollActivity_textView_check_10;
 
-    TextView pollActivity_textView_hitCount, pollActivity_textView_likeCount;
+    TextView pollActivity_textView_hitCount, pollActivity_textView_likeCount, pollActivity_textView_contentId;
     ImageView pollActivity_imageView_state, pollActivity_imageView_like, pollActivity_imageView_share;
 
     @Override
@@ -165,6 +166,9 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
 //        pollActivity_imageView_around_1.setBackground(gradientDrawable);
 //        pollActivity_imageView_around_1.setClipToOutline(true);
 
+        imageView_userClass0 = findViewById(R.id.imageView_userClass0);
+        imageView_userClass1 = findViewById(R.id.imageView_userClass1);
+        imageView_userClass2 = findViewById(R.id.imageView_userClass2);
 
         pollActivity_fab_result = findViewById(R.id.pollActivity_fab_result);
         pollActivity_textView_title = findViewById(R.id.pollActivity_textView_title);
@@ -172,6 +176,7 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
         pollActivity_textView_contentType = findViewById(R.id.pollActivity_textView_contentType);
         pollActivity_textView_pollMode = findViewById(R.id.pollActivity_textView_pollMode);
         pollActivity_textView_date = findViewById(R.id.pollActivity_textView_date);
+        pollActivity_textView_contentId = findViewById(R.id.pollActivity_textView_contentId);
 
         pollActivity_imageView_userAddContent_1 = findViewById(R.id.pollActivity_imageView_userAddContent_1);
         pollActivity_imageView_userAddContent_2 = findViewById(R.id.pollActivity_imageView_userAddContent_2);
@@ -594,7 +599,9 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
                             replyDTO.setReplyKey(replyKey);
                             replyDTO.setDate(date);
                             replyDTO.setId(users.get("userId").toString());
+                            replyDTO.setuId(auth.getCurrentUser().getUid());
                             replyDTO.setReply(pollActivity_editText_reply.getText().toString());
+                            replyDTO.setqPoint(Integer.parseInt(users.get("userClass").toString()));
                             replyDTO.setContentKey(contentKey);
                             firebaseDatabase.getReference().child("reply").child(contentKey).child(replyKey).setValue(replyDTO);
                             firebaseDatabase.getReference().child("users").child(auth.getCurrentUser().getUid()).child("reply").child(contentKey).push().setValue(replyDTO);
@@ -624,6 +631,7 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
                 ContentDTO contentDTO = dataSnapshot.getValue(ContentDTO.class);
                 pollActivity_textView_date.setText(contentDTO.getUploadDate());
                 pollActivity_textView_title.setText(contentDTO.getTitle());
+                pollActivity_textView_contentId.setText(contentDTO.getContentId());
                 pollActivity_textView_contentType.setText(contentDTO.getContentType());
                 pollActivity_textView_description.setText(contentDTO.getDescription());
                 pollActivity_textView_pollMode.setText(contentDTO.getPollMode());
@@ -699,7 +707,6 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
                         pollActivity_textView_check_3.setVisibility(View.VISIBLE);
                         pollActivity_textView_check_4.setVisibility(View.VISIBLE);
                         pollActivity_textView_check_5.setVisibility(View.VISIBLE);
-                        pollActivity_textView_check_6.setVisibility(View.VISIBLE);
                         pollActivity_imageView_around_1.setVisibility(View.VISIBLE);
                         pollActivity_imageView_around_2.setVisibility(View.VISIBLE);
                         pollActivity_imageView_around_3.setVisibility(View.VISIBLE);
@@ -999,6 +1006,28 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
 
             try {
                 if (replyDTOS.get(0) != null && replyDTOS.get(0).likeCount > 0) {
+                    int userClass = replyDTOS.get(0).getqPoint();
+                    if (userClass >= 0 && userClass < 50) {
+                        imageView_userClass0.setImageResource(R.drawable.q_class_red_1);
+                    } else if (userClass >= 50 && userClass < 100) {
+                        imageView_userClass0.setImageResource(R.drawable.q_class_red_2);
+                    } else if (userClass >= 100 && userClass < 150) {
+                        imageView_userClass0.setImageResource(R.drawable.q_class_orange_1);
+                    } else if (userClass >= 150 && userClass < 200) {
+                        imageView_userClass0.setImageResource(R.drawable.q_class_orange_2);
+                    } else if (userClass >= 200 && userClass < 250) {
+                        imageView_userClass0.setImageResource(R.drawable.q_class_yellow_1);
+                    } else if (userClass >= 250 && userClass < 300) {
+                        imageView_userClass0.setImageResource(R.drawable.q_class_yellow_2);
+                    } else if (userClass >= 300 && userClass < 350) {
+                        imageView_userClass0.setImageResource(R.drawable.q_class_green_1);
+                    } else if (userClass >= 350 && userClass < 400) {
+                        imageView_userClass0.setImageResource(R.drawable.q_class_green_2);
+                    } else if (userClass >= 400 && userClass < 450) {
+                        imageView_userClass0.setImageResource(R.drawable.q_class_blue_1);
+                    } else if (userClass >= 450 && userClass < 501) {
+                        imageView_userClass0.setImageResource(R.drawable.q_class_blue_2);
+                    }
                     linearLayout_bestReply0.setVisibility(View.VISIBLE);
                     bestReply_id0.setText(replyDTOS.get(0).getId());
                     bestReply_reply0.setText(replyDTOS.get(0).getReply());
@@ -1007,6 +1036,28 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
                 }
 
                 if (replyDTOS.get(1) != null && replyDTOS.get(1).likeCount > 0) {
+                    int userClass = replyDTOS.get(1).getqPoint();
+                    if (userClass >= 0 && userClass < 50) {
+                        imageView_userClass0.setImageResource(R.drawable.q_class_red_1);
+                    } else if (userClass >= 50 && userClass < 100) {
+                        imageView_userClass0.setImageResource(R.drawable.q_class_red_2);
+                    } else if (userClass >= 100 && userClass < 150) {
+                        imageView_userClass0.setImageResource(R.drawable.q_class_orange_1);
+                    } else if (userClass >= 150 && userClass < 200) {
+                        imageView_userClass0.setImageResource(R.drawable.q_class_orange_2);
+                    } else if (userClass >= 200 && userClass < 250) {
+                        imageView_userClass0.setImageResource(R.drawable.q_class_yellow_1);
+                    } else if (userClass >= 250 && userClass < 300) {
+                        imageView_userClass0.setImageResource(R.drawable.q_class_yellow_2);
+                    } else if (userClass >= 300 && userClass < 350) {
+                        imageView_userClass0.setImageResource(R.drawable.q_class_green_1);
+                    } else if (userClass >= 350 && userClass < 400) {
+                        imageView_userClass0.setImageResource(R.drawable.q_class_green_2);
+                    } else if (userClass >= 400 && userClass < 450) {
+                        imageView_userClass0.setImageResource(R.drawable.q_class_blue_1);
+                    } else if (userClass >= 450 && userClass < 501) {
+                        imageView_userClass0.setImageResource(R.drawable.q_class_blue_2);
+                    }
                     linearLayout_bestReply1.setVisibility(View.VISIBLE);
                     bestReply_id1.setText(replyDTOS.get(1).getId());
                     bestReply_reply1.setText(replyDTOS.get(1).getReply());
@@ -1015,6 +1066,28 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
                 }
 
                 if (replyDTOS.get(2) != null && replyDTOS.get(2).likeCount > 0) {
+                    int userClass = replyDTOS.get(2).getqPoint();
+                    if (userClass >= 0 && userClass < 50) {
+                        imageView_userClass0.setImageResource(R.drawable.q_class_red_1);
+                    } else if (userClass >= 50 && userClass < 100) {
+                        imageView_userClass0.setImageResource(R.drawable.q_class_red_2);
+                    } else if (userClass >= 100 && userClass < 150) {
+                        imageView_userClass0.setImageResource(R.drawable.q_class_orange_1);
+                    } else if (userClass >= 150 && userClass < 200) {
+                        imageView_userClass0.setImageResource(R.drawable.q_class_orange_2);
+                    } else if (userClass >= 200 && userClass < 250) {
+                        imageView_userClass0.setImageResource(R.drawable.q_class_yellow_1);
+                    } else if (userClass >= 250 && userClass < 300) {
+                        imageView_userClass0.setImageResource(R.drawable.q_class_yellow_2);
+                    } else if (userClass >= 300 && userClass < 350) {
+                        imageView_userClass0.setImageResource(R.drawable.q_class_green_1);
+                    } else if (userClass >= 350 && userClass < 400) {
+                        imageView_userClass0.setImageResource(R.drawable.q_class_green_2);
+                    } else if (userClass >= 400 && userClass < 450) {
+                        imageView_userClass0.setImageResource(R.drawable.q_class_blue_1);
+                    } else if (userClass >= 450 && userClass < 501) {
+                        imageView_userClass0.setImageResource(R.drawable.q_class_blue_2);
+                    }
                     linearLayout_bestReply2.setVisibility(View.VISIBLE);
                     bestReply_id2.setText(replyDTOS.get(2).getId());
                     bestReply_reply2.setText(replyDTOS.get(2).getReply());

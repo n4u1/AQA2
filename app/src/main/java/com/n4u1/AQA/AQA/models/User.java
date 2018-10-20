@@ -10,7 +10,7 @@ public class User {
     private String tmpImgUrl_0,tmpImgUrl_1,tmpImgUrl_2,tmpImgUrl_3,tmpImgUrl_4,tmpImgUrl_5,tmpImgUrl_6,tmpImgUrl_7,tmpImgUrl_8,tmpImgUrl_9;
     private String deviceName, sex, job, uid, email, userId;
     private String pickContent;
-    private int age;
+    private int age, userClass;
     private String search_flag_category, search_flag_title;
 
     public Map<String, Boolean> likeContent = new HashMap<>();
@@ -45,6 +45,7 @@ public class User {
     public Map<String, Object> toMap() {
         HashMap<String, Object> result = new HashMap<>();
         result.put("uid", uid);
+        result.put("userclass", userClass);
         result.put("userId", userId);
         result.put("likeContent", likeContent);
         result.put("sex", sex);
@@ -54,6 +55,14 @@ public class User {
         result.put("search_flag_title", search_flag_title);
 
         return result;
+    }
+
+    public int getUserClass() {
+        return userClass;
+    }
+
+    public void setUserClass(int userClass) {
+        this.userClass = userClass;
     }
 
     public String getUserId() {

@@ -185,6 +185,7 @@ public class CreateUserActivity extends AppCompatActivity implements CreateUserA
 //        user.setJob(job);
         user.setUid(uid);
         user.setEmail(email);
+        user.setUserClass(0);
         mDatabase.child("users").child(uid).setValue(user);
         Intent intent = new Intent(CreateUserActivity.this, HomeActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);

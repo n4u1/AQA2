@@ -60,6 +60,7 @@ public class ReplyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         firebaseDatabase = FirebaseDatabase.getInstance();
         mDatabase = FirebaseDatabase.getInstance();
         auth = FirebaseAuth.getInstance();
+        int userClass = replyDTO.get(position).getqPoint();
 
         ((ReplyViewHolder)holder).relativeLayout_like.setTag("replyAdapter_relativeLayout_like");
         ((ReplyViewHolder)holder).relativeLayout_main.setTag("replyAdapter_relativeLayout_main");
@@ -77,8 +78,31 @@ public class ReplyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             }
         });
 
+        if (userClass >= 0 && userClass < 50) {
+            ((ReplyViewHolder)holder).imageView_userClass.setImageResource(R.drawable.q_class_red_1);
+        } else if (userClass >= 50 && userClass < 100) {
+            ((ReplyViewHolder)holder).imageView_userClass.setImageResource(R.drawable.q_class_red_2);
+        } else if (userClass >= 100 && userClass < 150) {
+            ((ReplyViewHolder)holder).imageView_userClass.setImageResource(R.drawable.q_class_orange_1);
+        } else if (userClass >= 150 && userClass < 200) {
+            ((ReplyViewHolder)holder).imageView_userClass.setImageResource(R.drawable.q_class_orange_2);
+        } else if (userClass >= 200 && userClass < 250) {
+            ((ReplyViewHolder)holder).imageView_userClass.setImageResource(R.drawable.q_class_yellow_1);
+        } else if (userClass >= 250 && userClass < 300) {
+            ((ReplyViewHolder)holder).imageView_userClass.setImageResource(R.drawable.q_class_yellow_2);
+        } else if (userClass >= 300 && userClass < 350) {
+            ((ReplyViewHolder)holder).imageView_userClass.setImageResource(R.drawable.q_class_green_1);
+        } else if (userClass >= 350 && userClass < 400) {
+            ((ReplyViewHolder)holder).imageView_userClass.setImageResource(R.drawable.q_class_green_2);
+        } else if (userClass >= 400 && userClass < 450) {
+            ((ReplyViewHolder)holder).imageView_userClass.setImageResource(R.drawable.q_class_blue_1);
+        } else if (userClass >= 450 && userClass < 501) {
+            ((ReplyViewHolder)holder).imageView_userClass.setImageResource(R.drawable.q_class_blue_2);
+        }
 
 
+
+        //좋아요 색 변경
         if (replyDTO.get(position).likes.containsKey(auth.getCurrentUser().getUid())) {
             ((ReplyViewHolder)holder).imageView_like.setImageResource(R.drawable.ic_thumb_up_blue);
             ((ReplyViewHolder)holder).textView_like.setText(String.valueOf(replyDTO.get(position).likeCount));
@@ -86,6 +110,10 @@ public class ReplyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             ((ReplyViewHolder)holder).imageView_like.setImageResource(R.drawable.ic_outline_thumb_up_24px);
             ((ReplyViewHolder)holder).textView_like.setText(String.valueOf(replyDTO.get(position).likeCount));
         }
+
+
+
+
 
         ((ReplyViewHolder)holder).textView_id.setText(replyDTO.get(position).getId());
         ((ReplyViewHolder)holder).textView_date.setText(replyDTO.get(position).getDate());

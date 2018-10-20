@@ -481,6 +481,8 @@ public class FileChoiceActivity extends AppCompatActivity
         else if (String.valueOf(page).contains("Image")) {
 
             int itemViewTypeCount = 1;
+            String currentDate = getDate();
+            String currentDate_ = currentDate.substring(0, getDate().length()-2);
             Log.d("lkjtest", String.valueOf(itemViewTypeCount));
 
             mdatabaseRef = FirebaseDatabase.getInstance().getReference();
@@ -488,7 +490,8 @@ public class FileChoiceActivity extends AppCompatActivity
 
             //content input start into fireBase "user_contents"
             ContentDTO contentDTO = new ContentDTO();
-            contentDTO.uploadDate = getDate();
+            contentDTO.uploadDate = currentDate_;
+            contentDTO.contentId = getContentId(currentDate);
             contentDTO.contentKey = key;
             contentDTO.title = userInputContents.get(0);
             contentDTO.contentType = userInputContents.get(1);
@@ -775,10 +778,14 @@ public class FileChoiceActivity extends AppCompatActivity
         TimeZone timeZone;
         timeZone = TimeZone.getTimeZone("Asia/Seoul");
         Date date = new Date();
-        SimpleDateFormat df = new SimpleDateFormat("yyyy.MM.dd(E)HH:mm:ss", Locale.KOREAN);
+        SimpleDateFormat df = new SimpleDateFormat("yyyy.MM.dd(E)HH:mm:ssSS", Locale.KOREAN);
         df.setTimeZone(timeZone);
         String currentDate = df.format(date);
         return currentDate;
+    }
+
+    public String getContentId(String date) {
+        return date.replaceAll("[^0-9]", "");
     }
 
     @Override

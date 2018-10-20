@@ -13,11 +13,12 @@ import com.n4u1.AQA.AQA.R;
 public class ReplyViewHolder extends RecyclerView.ViewHolder{
 
     public TextView textView_id, textView_reply, textView_date, textView_like;
-    public ImageView imageView_like;
+    public ImageView imageView_like, imageView_userClass;
     public RelativeLayout relativeLayout_like, relativeLayout_main;
 
     public ReplyViewHolder(View itemView) {
         super(itemView);
+        imageView_userClass = itemView.findViewById(R.id.imageView_userClass);
         relativeLayout_main = itemView.findViewById(R.id.relativeLayout_main);
         relativeLayout_like = itemView.findViewById(R.id.relativeLayout_like);
         imageView_like = itemView.findViewById(R.id.imageView_like);

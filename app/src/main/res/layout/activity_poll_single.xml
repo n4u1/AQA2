@@ -55,6 +55,7 @@
             </LinearLayout>
 
 
+
             <!--투표모드 / 시간-->
             <View
                 android:layout_width="match_parent"
@@ -87,28 +88,35 @@
             </LinearLayout>
 
 
-            <!--&lt;!&ndash;투표방식&ndash;&gt;-->
-            <!--<View-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="1dp"-->
-            <!--android:background="#efefef" />-->
-            <!--<LinearLayout-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_marginTop="8dp"-->
-            <!--android:orientation="horizontal">-->
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#efefef" />
 
-            <!--<TextView-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_weight="4"-->
-            <!--android:gravity="center"-->
-            <!--android:text="방   식"-->
-            <!--android:textColor="#000000"-->
-            <!--android:textSize="16dp"-->
-            <!--android:textStyle="bold" />-->
+            <!--게시글번호-->
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-            <!--</LinearLayout>-->
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:text="글번호 :"
+                    android:textColor="#636363"
+                    android:textSize="14dp" />
+
+                <TextView
+                    android:id="@+id/pollActivity_textView_contentId"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="10"
+                    android:textColor="#636363"
+                    android:textSize="14dp" />
+
+            </LinearLayout>
+
 
 
             <!--카테고리-->
@@ -125,36 +133,22 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="8.5"
-                    android:text="분류 :"
+                    android:layout_weight="2"
+                    android:text="분   류 :"
                     android:textColor="#636363"
                     android:textSize="14dp" />
 
                 <TextView
                     android:id="@+id/pollActivity_textView_contentType"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
+                    android:layout_weight="10"
                     android:textColor="#636363"
                     android:textSize="14dp" />
             </LinearLayout>
 
-
-            <!--&lt;!&ndash;투표하지 않은 게시물 입니다&ndash;&gt;-->
-            <!--<View-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="1dp"-->
-            <!--android:background="#efefef" />-->
-
-            <!--<TextView-->
-            <!--android:id="@+id/pollActivity_textView_pollState"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_marginTop="8dp"-->
-            <!--android:hint="투표에 참여해보세요!"-->
-            <!--android:textSize="16dp" />-->
 
             <!--내용-->
             <View
@@ -777,8 +771,14 @@
                     android:paddingTop="8dp"
                     android:paddingBottom="8dp">
 
+                    <ImageView
+                        android:id="@+id/imageView_userClass0"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp" />
+
 
                     <TextView
+                        android:layout_toRightOf="@id/imageView_userClass0"
                         android:id="@+id/bestReply_id0"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -857,8 +857,13 @@
                     android:paddingTop="8dp"
                     android:paddingBottom="8dp">
 
+                    <ImageView
+                        android:id="@+id/imageView_userClass1"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp" />
 
                     <TextView
+                        android:layout_toRightOf="@id/imageView_userClass1"
                         android:id="@+id/bestReply_id1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -938,7 +943,13 @@
                     android:paddingBottom="8dp">
 
 
+                    <ImageView
+                        android:id="@+id/imageView_userClass2"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp" />
+
                     <TextView
+                        android:layout_toRightOf="@id/imageView_userClass2"
                         android:id="@+id/bestReply_id2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"

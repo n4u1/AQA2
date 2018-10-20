@@ -11,7 +11,7 @@ import com.n4u1.AQA.AQA.R;
 //adapter에 viewHolder가 들어갈것임
 public class PostViewHolderMine extends RecyclerView.ViewHolder{
 
-    public ImageView imageView_share;
+    public ImageView imageView_share, imageView_userClass;
     public TextView textView_userName, textView_title, textView_contentType, textView_hitCount;
 
 
@@ -19,6 +19,7 @@ public class PostViewHolderMine extends RecyclerView.ViewHolder{
 
     public PostViewHolderMine(View itemView) {
         super(itemView);
+        imageView_userClass = itemView.findViewById(R.id.imageView_userClass);
         imageView_share = itemView.findViewById(R.id.imageView_share);
         textView_hitCount = itemView.findViewById(R.id.textView_hitCount);
         textView_userName = itemView.findViewById(R.id.textView_userName);

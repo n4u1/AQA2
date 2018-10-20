@@ -20,6 +20,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.CompoundButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -40,6 +41,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.n4u1.AQA.AQA.recyclerview.PostViewHolder3;
 import com.n4u1.AQA.AQA.util.NotificationJobService;
 
 import java.util.Map;
@@ -70,6 +72,7 @@ public class MineActivity extends AppCompatActivity {
 
         final TextView mineActivity_textView_noti = findViewById(R.id.mineActivity_textView_noti);
         final TextView mineActivity_textView_id = findViewById(R.id.mineActivity_textView_id);
+        final TextView mineActivity_textView_userClass = findViewById(R.id.mineActivity_textView_userClass);
         TextView mineActivity_textView_account = findViewById(R.id.mineActivity_textView_account);
         final TextView mineActivity_textView_gender = findViewById(R.id.mineActivity_textView_gender);
         final TextView mineActivity_textView_age = findViewById(R.id.mineActivity_textView_age);
@@ -77,6 +80,7 @@ public class MineActivity extends AppCompatActivity {
         LinearLayout mineActivity_linearLayout_pickContent = findViewById(R.id.mineActivity_linearLayout_pickContent);
         LinearLayout mineActivity_linearLayout_reply = findViewById(R.id.mineActivity_linearLayout_reply);
         LinearLayout mineActivity_linearLayout_upload = findViewById(R.id.mineActivity_linearLayout_upload);
+        final ImageView mineActivity_imageView_userClass = findViewById(R.id.mineActivity_imageView_userClass);
 
 
         LinearLayout mineActivity_linearLayout_noti = findViewById(R.id.mineActivity_linearLayout_noti);
@@ -93,15 +97,54 @@ public class MineActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 Map<String, Object> users = (Map<String, Object>) dataSnapshot.getValue();
+
                 mineActivity_textView_gender.setText(String.valueOf(users.get("sex")));
                 mineActivity_textView_age.setText(String.valueOf(users.get("age")));
                 mineActivity_textView_id.setText(String.valueOf(users.get("userId")));
+
             }
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
         });
+
+        //Q포인트 점수,
+        mDatabaseReference.child("userClass").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                int userClass = Integer.parseInt(dataSnapshot.getValue().toString());
+                mineActivity_textView_userClass.setText(String.valueOf(userClass));
+                if (userClass >= 0 && userClass < 50) {
+                    mineActivity_imageView_userClass.setImageResource(R.drawable.q_class_red_1);
+                } else if (userClass >= 50 && userClass < 100) {
+                    mineActivity_imageView_userClass.setImageResource(R.drawable.q_class_red_2);
+                } else if (userClass >= 100 && userClass < 150) {
+                    mineActivity_imageView_userClass.setImageResource(R.drawable.q_class_orange_1);
+                } else if (userClass >= 150 && userClass < 200) {
+                    mineActivity_imageView_userClass.setImageResource(R.drawable.q_class_orange_2);
+                } else if (userClass >= 200 && userClass < 250) {
+                    mineActivity_imageView_userClass.setImageResource(R.drawable.q_class_yellow_1);
+                } else if (userClass >= 250 && userClass < 300) {
+                    mineActivity_imageView_userClass.setImageResource(R.drawable.q_class_yellow_2);
+                } else if (userClass >= 300 && userClass < 350) {
+                    mineActivity_imageView_userClass.setImageResource(R.drawable.q_class_green_1);
+                } else if (userClass >= 350 && userClass < 400) {
+                    mineActivity_imageView_userClass.setImageResource(R.drawable.q_class_green_2);
+                } else if (userClass >= 400 && userClass < 450) {
+                    mineActivity_imageView_userClass.setImageResource(R.drawable.q_class_blue_1);
+                } else if (userClass >= 450 && userClass < 501) {
+                    mineActivity_imageView_userClass.setImageResource(R.drawable.q_class_blue_2);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+
 
 
 
@@ -271,14 +314,18 @@ public class MineActivity extends AppCompatActivity {
         switch (curId) {
             case R.id.menu_home:
                 Intent intentHome = new Intent(MineActivity.this, HomeActivity.class);
+                intentHome.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intentHome);
+                finish();
                 break;
 
 
             case android.R.id.home:
                 Intent intentAqa = new Intent(MineActivity.this, HomeActivity.class);
                 intentAqa.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
                 startActivity(intentAqa);
+                finish();
 
 
         }

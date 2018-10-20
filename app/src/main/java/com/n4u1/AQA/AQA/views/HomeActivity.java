@@ -216,7 +216,7 @@ public class HomeActivity extends AppCompatActivity implements SwipeRefreshLayou
                             }
                         }
                         issueContents = issueContents_.toArray(new String[issueContents_.size()]);
-                        onIssueContents(issueContents);
+//                        onIssueContents(issueContents);
                     }
 
                     @Override
@@ -239,7 +239,6 @@ public class HomeActivity extends AppCompatActivity implements SwipeRefreshLayou
                     if (fadingTextView.getText().equals(issueContentDTOS.get(i).title)) {
                         //PostAdapter 의 movePoll(int position) 내용만 가져옴
                         if (issueContentDTOS.get(i).getPollMode().equals("순위 투표")) {
-
 
 
                             Intent intent = new Intent(getApplicationContext(), PollRankingActivity.class);
@@ -276,10 +275,18 @@ public class HomeActivity extends AppCompatActivity implements SwipeRefreshLayou
                     ContentDTO contentDTO = snapshot.getValue(ContentDTO.class);
                     contentDTOSTemp.add(contentDTO);
                 }
+
+
                 Collections.reverse(contentDTOSTemp);
                 for (int i = 0; i < 10; i++) {
-                    contentDTOS.add(contentDTOSTemp.get(i));
+                    try {
+                        contentDTOS.add(contentDTOSTemp.get(i));
+                    }catch (Exception e) {
+
+                    }
+
                 }
+
 
                 postAdapter.notifyDataSetChanged();
                 recyclerView_home.scrollToPosition(0);
@@ -366,7 +373,12 @@ public class HomeActivity extends AppCompatActivity implements SwipeRefreshLayou
                         Collections.reverse(contentDTOSTemp);
 
                         for (int i = 0; i < 10; i++) {
-                            contentDTOS.add(contentDTOSTemp.get(i));
+                            try {
+                                contentDTOS.add(contentDTOSTemp.get(i));
+                            } catch (Exception e) {
+
+                            }
+
                         }
 
                         postAdapter.notifyDataSetChanged();

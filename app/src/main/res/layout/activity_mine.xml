@@ -191,6 +191,47 @@
 
 
             <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="4dp"
+                android:background="#efefef" />
+
+            <LinearLayout
+                android:id="@+id/mineActivity_linearLayout_userClass"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="12dp">
+
+                <ImageView
+                    android:id="@+id/mineActivity_imageView_userClass"
+                    android:layout_width="28dp"
+                    android:layout_height="28dp"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="3"
+                    android:text="Q포인트"
+                    android:textColor="#383838"
+                    android:textSize="18dp" />
+
+                <TextView
+                    android:id="@+id/mineActivity_textView_userClass"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="7"
+                    android:text="22"
+                    android:textColor="#808080"
+                    android:textSize="18dp" />
+            </LinearLayout>
+
+
+            <View
                 android:id="@+id/view5"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"

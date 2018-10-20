@@ -26,6 +26,7 @@ public class ContentDTO {
     public String uploadDate;
     public String contentKey;
     public String replyDate;
+
     public boolean isUserLike;
     public int pickCandidate = 0;
     public int candidateScore_0 = 0;

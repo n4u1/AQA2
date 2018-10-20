@@ -9,12 +9,29 @@ public class ReplyDTO {
     private String id;
     private String reply;
     private String date;
-    private String contentKey, replyKey;
+    private String contentKey, replyKey, uId;
+    private int qPoint;
+
     public int likeCount = 0;
 
 
     public Map<String, Boolean> likes = new HashMap<>();
 
+    public String getuId() {
+        return uId;
+    }
+
+    public void setuId(String uId) {
+        this.uId = uId;
+    }
+
+    public int getqPoint() {
+        return qPoint;
+    }
+
+    public void setqPoint(int qPoint) {
+        this.qPoint = qPoint;
+    }
 
     public String getReplyKey() {
         return replyKey;
