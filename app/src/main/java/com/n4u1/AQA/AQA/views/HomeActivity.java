@@ -194,29 +194,35 @@ public class HomeActivity extends AppCompatActivity implements SwipeRefreshLayou
                         Iterator<DataSnapshot> contentDTOIterator = dataSnapshot.getChildren().iterator();
                         while (contentDTOIterator.hasNext()) {
                             ContentDTO contentDTO = contentDTOIterator.next().getValue(ContentDTO.class);
-                            if (contentDTO.contentKey.contains(tempKey.get(0))) {
-                                issueContentDTOS.add(contentDTO);
-                                issueContents_.add(contentDTO.title);
+
+                            try {
+                                if (contentDTO.contentKey.contains(tempKey.get(0))) {
+                                    issueContentDTOS.add(contentDTO);
+                                    issueContents_.add(contentDTO.title);
+                                }
+                                if (contentDTO.contentKey.contains(tempKey.get(1))) {
+                                    issueContentDTOS.add(contentDTO);
+                                    issueContents_.add(contentDTO.title);
+                                }
+                                if (contentDTO.contentKey.contains(tempKey.get(2))) {
+                                    issueContentDTOS.add(contentDTO);
+                                    issueContents_.add(contentDTO.title);
+                                }
+                                if (contentDTO.contentKey.contains(tempKey.get(3))) {
+                                    issueContentDTOS.add(contentDTO);
+                                    issueContents_.add(contentDTO.title);
+                                }
+                                if (contentDTO.contentKey.contains(tempKey.get(4))) {
+                                    issueContentDTOS.add(contentDTO);
+                                    issueContents_.add(contentDTO.title);
+                                }
+                            } catch (Exception e) {
+
                             }
-                            if (contentDTO.contentKey.contains(tempKey.get(1))) {
-                                issueContentDTOS.add(contentDTO);
-                                issueContents_.add(contentDTO.title);
-                            }
-                            if (contentDTO.contentKey.contains(tempKey.get(2))) {
-                                issueContentDTOS.add(contentDTO);
-                                issueContents_.add(contentDTO.title);
-                            }
-                            if (contentDTO.contentKey.contains(tempKey.get(3))) {
-                                issueContentDTOS.add(contentDTO);
-                                issueContents_.add(contentDTO.title);
-                            }
-                            if (contentDTO.contentKey.contains(tempKey.get(4))) {
-                                issueContentDTOS.add(contentDTO);
-                                issueContents_.add(contentDTO.title);
-                            }
+
                         }
                         issueContents = issueContents_.toArray(new String[issueContents_.size()]);
-//                        onIssueContents(issueContents);
+                        onIssueContents(issueContents);
                     }
 
                     @Override

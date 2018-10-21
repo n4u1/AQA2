@@ -1,14 +1,39 @@
 package com.n4u1.AQA.AQA.fragments;
 
+import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.FileProvider;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.n4u1.AQA.AQA.R;
+import com.n4u1.AQA.AQA.util.PermissionRequester;
+
+import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
+
+import static android.app.Activity.RESULT_OK;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -18,7 +43,30 @@ import com.n4u1.AQA.AQA.R;
  */
 public class CameraFragment extends Fragment {
 
+    private int REQUEST_IMAGE_CAPTURE = 10000;
     private OnFragmentInteractionListener mListener;
+    Button button;
+    ImageView imageView;
+    String imagePath;
+
+
+    String[] fileString = {"", "", "", "", "", "", "", "", "", ""};
+
+    LinearLayout imageView_addImage;
+    ImageView imageView_userAddContent_1, imageView_userAddContent_2, imageView_userAddContent_3,
+            imageView_userAddContent_4, imageView_userAddContent_5, imageView_userAddContent_6,
+            imageView_userAddContent_7, imageView_userAddContent_8, imageView_userAddContent_9,
+            imageView_userAddContent_10;
+    LinearLayout linearLayout_userAddContent_1, linearLayout_userAddContent_2, linearLayout_userAddContent_3,
+            linearLayout_userAddContent_4, linearLayout_userAddContent_5, linearLayout_userAddContent_6,
+            linearLayout_userAddContent_7, linearLayout_userAddContent_8, linearLayout_userAddContent_9,
+            linearLayout_userAddContent_10;
+    TextView textView_userAddContent_1, textView_userAddContent_2, textView_userAddContent_3,
+            textView_userAddContent_4, textView_userAddContent_5, textView_userAddContent_6,
+            textView_userAddContent_7, textView_userAddContent_8, textView_userAddContent_9,
+            textView_userAddContent_10;
+    File picture;
+
 
     public CameraFragment() {
         // Required empty public constructor
@@ -29,13 +77,94 @@ public class CameraFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_camera, container, false);
+        View view = inflater.inflate(R.layout.fragment_camera, container, false);
+        imageView_addImage = view.findViewById(R.id.imageView_addImage);
+        imageView = view.findViewById(R.id.imageView);
+        linearLayout_userAddContent_1 = view.findViewById(R.id.linearLayout_userAddContent_1);
+        linearLayout_userAddContent_2 = view.findViewById(R.id.linearLayout_userAddContent_2);
+        linearLayout_userAddContent_3 = view.findViewById(R.id.linearLayout_userAddContent_3);
+        linearLayout_userAddContent_4 = view.findViewById(R.id.linearLayout_userAddContent_4);
+        linearLayout_userAddContent_5 = view.findViewById(R.id.linearLayout_userAddContent_5);
+        linearLayout_userAddContent_6 = view.findViewById(R.id.linearLayout_userAddContent_6);
+        linearLayout_userAddContent_7 = view.findViewById(R.id.linearLayout_userAddContent_7);
+        linearLayout_userAddContent_8 = view.findViewById(R.id.linearLayout_userAddContent_8);
+        linearLayout_userAddContent_9 = view.findViewById(R.id.linearLayout_userAddContent_9);
+        linearLayout_userAddContent_10 = view.findViewById(R.id.linearLayout_userAddContent_10);
+        textView_userAddContent_1 = view.findViewById(R.id.textView_userAddContent_1);
+        textView_userAddContent_2 = view.findViewById(R.id.textView_userAddContent_2);
+        textView_userAddContent_3 = view.findViewById(R.id.textView_userAddContent_3);
+        textView_userAddContent_4 = view.findViewById(R.id.textView_userAddContent_4);
+        textView_userAddContent_5 = view.findViewById(R.id.textView_userAddContent_5);
+        textView_userAddContent_6 = view.findViewById(R.id.textView_userAddContent_6);
+        textView_userAddContent_7 = view.findViewById(R.id.textView_userAddContent_7);
+        textView_userAddContent_8 = view.findViewById(R.id.textView_userAddContent_8);
+        textView_userAddContent_9 = view.findViewById(R.id.textView_userAddContent_9);
+        textView_userAddContent_10 = view.findViewById(R.id.textView_userAddContent_10);
+        imageView_userAddContent_1 = view.findViewById(R.id.imageView_userAddContent_1);
+        imageView_userAddContent_2 = view.findViewById(R.id.imageView_userAddContent_2);
+        imageView_userAddContent_3 = view.findViewById(R.id.imageView_userAddContent_3);
+        imageView_userAddContent_4 = view.findViewById(R.id.imageView_userAddContent_4);
+        imageView_userAddContent_5 = view.findViewById(R.id.imageView_userAddContent_5);
+        imageView_userAddContent_6 = view.findViewById(R.id.imageView_userAddContent_6);
+        imageView_userAddContent_7 = view.findViewById(R.id.imageView_userAddContent_7);
+        imageView_userAddContent_8 = view.findViewById(R.id.imageView_userAddContent_8);
+        imageView_userAddContent_9 = view.findViewById(R.id.imageView_userAddContent_9);
+        imageView_userAddContent_10 = view.findViewById(R.id.imageView_userAddContent_10);
+
+
+
+        imageView_addImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                // Camera Application이 있으면
+                if (isExistCameraApplication()) {
+
+                    // Camera Application을 실행한다.
+                    Intent cameraApp = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+
+                    // 찍은 사진을 보관할 파일 객체를 만들어서 보낸다.
+                    picture = savePictureFile();
+
+                    if (picture != null) {
+//                        cameraApp.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(picture));
+                        cameraApp.putExtra(MediaStore.EXTRA_OUTPUT, FileProvider.getUriForFile(getContext(), "com.bignerdranch.android.test.fileprovider", picture));
+                        startActivityForResult(cameraApp, 10000);
+                    }
+
+                } else {
+                    Toast.makeText(getContext(), "카메라 앱을 설치하세요.", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+        return view;
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        int checkCount = imageViewCheck();
+
+        if (requestCode == 10000 && resultCode == RESULT_OK) {
+
+            // 사진을 ImageView에 보여준다.
+            BitmapFactory.Options factory = new BitmapFactory.Options();
+//            factory.inJustDecodeBounds = true;
+//            BitmapFactory.decodeFile(imagePath);
+
+            factory.inJustDecodeBounds = false;
+//            factory.inPurgeable = true;
+
+            Bitmap bitmap = BitmapFactory.decodeFile(imagePath, factory);
+//            imageView.setImageBitmap(bitmap);
+
+
+            linearLayout_userAddContent_1.setVisibility(View.VISIBLE);
+            textView_userAddContent_1.setVisibility(View.VISIBLE);
+            imageView_userAddContent_1.setVisibility(View.VISIBLE);
+//            imgPath = getPath(data.getData());
+            imageView_userAddContent_1.setImageBitmap(bitmap);
+//            fileString[0] = imgPath;
         }
     }
 
@@ -53,7 +182,9 @@ public class CameraFragment extends Fragment {
     @Override
     public void onDetach() {
         super.onDetach();
+        imageView = null;
         mListener = null;
+        Log.d("lkj onDetach", "ondetach");
     }
 
     /**
@@ -69,5 +200,149 @@ public class CameraFragment extends Fragment {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
+    }
+
+    // TODO: Rename method, update argument and hook method into UI event
+    public void onButtonPressed(Uri uri) {
+        if (mListener != null) {
+            mListener.onFragmentInteraction(uri);
+        }
+    }
+
+
+    private int imageViewCheck() {
+        int count = 0;
+        if (imageView_userAddContent_1.getVisibility() == View.VISIBLE) {
+            count++;
+        }
+        if (imageView_userAddContent_2.getVisibility() == View.VISIBLE) {
+            count++;
+        }
+        if (imageView_userAddContent_3.getVisibility() == View.VISIBLE) {
+            count++;
+        }
+        if (imageView_userAddContent_4.getVisibility() == View.VISIBLE) {
+            count++;
+        }
+        if (imageView_userAddContent_5.getVisibility() == View.VISIBLE) {
+            count++;
+        }
+        if (imageView_userAddContent_6.getVisibility() == View.VISIBLE) {
+            count++;
+        }
+        if (imageView_userAddContent_7.getVisibility() == View.VISIBLE) {
+            count++;
+        }
+        if (imageView_userAddContent_8.getVisibility() == View.VISIBLE) {
+            count++;
+        }
+        if (imageView_userAddContent_9.getVisibility() == View.VISIBLE) {
+            count++;
+        }
+        if (imageView_userAddContent_10.getVisibility() == View.VISIBLE) {
+            count++;
+        }
+        return count;
+    }
+
+
+    /**
+     * Android에 Camera Application이 설치되어있는지 확인한다.
+     *
+     * @return 카메라 앱이 있으면 true, 없으면 false
+     */
+    private boolean isExistCameraApplication() {
+
+        // Android의 모든 Application을 얻어온다.
+        PackageManager packageManager = getContext().getPackageManager();
+
+        // Camera Application
+        Intent cameraApp = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+
+        // MediaStore.ACTION_IMAGE_CAPTURE을 처리할 수 있는 App 정보를 가져온다.
+        List cameraApps = packageManager.queryIntentActivities(cameraApp, PackageManager.MATCH_DEFAULT_ONLY);
+
+        // 카메라 App이 적어도 한개 이상 있는지 리턴
+        return cameraApps.size() > 0;
+    }
+
+
+    /**
+     * 카메라에서 찍은 사진을 외부 저장소에 저장한다.
+     *
+     * @return
+     */
+    private File savePictureFile() {
+
+        // 외부 저장소 쓰기 권한을 얻어온다.
+        PermissionRequester.Builder requester =
+                new PermissionRequester.Builder(getActivity());
+
+        int result = requester
+                .create()
+                .request(
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                        20000,
+                        new PermissionRequester.OnClickDenyButtonListener() {
+                            @Override
+                            public void onClick(Activity activity) {
+
+                            }
+                        });
+
+        // 사용자가 권한을 수락한 경우
+        if (result == PermissionRequester.ALREADY_GRANTED
+                || result == PermissionRequester.REQUEST_PERMISSION) {
+
+            // 사진 파일의 이름을 만든다.
+            // Date는 java.util 을 Import 한다.
+            String timestamp = new SimpleDateFormat("yyyyMMdd_HHmmss")
+                    .format(new Date());
+            String fileName = "IMG_" + timestamp;
+
+            /**
+             * 사진파일이 저장될 장소를 구한다.
+             * 외장메모리에서 사진을 저장하는 폴더를 찾아서
+             * 그곳에 MYAPP 이라는 폴더를 만든다.
+             */
+            File pictureStorage = new File(
+                    Environment.getExternalStoragePublicDirectory(
+                            Environment.DIRECTORY_PICTURES), "AQA");
+
+            // 만약 장소가 존재하지 않는다면 폴더를 새롭게 만든다.
+            if (!pictureStorage.exists()) {
+
+                /**
+                 * mkdir은 폴더를 하나만 만들고,
+                 * mkdirs는 경로상에 존재하는 모든 폴더를 만들어준다.
+                 */
+                pictureStorage.mkdirs();
+            }
+
+            try {
+                File file = File.createTempFile(fileName, ".jpg", pictureStorage);
+
+                // ImageView에 보여주기위해 사진파일의 절대 경로를 얻어온다.
+                imagePath = file.getAbsolutePath();
+
+                // 찍힌 사진을 "갤러리" 앱에 추가한다.
+                Intent mediaScanIntent =
+                        new Intent( Intent.ACTION_MEDIA_SCANNER_SCAN_FILE );
+                File f = new File( imagePath );
+                Uri contentUri = Uri.fromFile( f );
+                mediaScanIntent.setData( contentUri );
+                getActivity().sendBroadcast( mediaScanIntent );
+
+                return file;
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        // 사용자가 권한을 거부한 경우
+        else {
+
+        }
+
+        return null;
     }
 }

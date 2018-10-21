@@ -100,7 +100,7 @@ public class ImageFragment extends Fragment {
         imageView_userAddContent_9 = view.findViewById(R.id.imageView_userAddContent_9);
         imageView_userAddContent_10 = view.findViewById(R.id.imageView_userAddContent_10);
 
-        ImageView imageView_addImage = view.findViewById(R.id.imageView_addImage);
+        LinearLayout imageView_addImage = view.findViewById(R.id.imageView_addImage);
         imageView_addImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

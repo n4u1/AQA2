@@ -28,13 +28,14 @@ import com.n4u1.AQA.AQA.dialog.ContentTypeDialog;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
+import com.n4u1.AQA.AQA.dialog.GoHomeDialog;
 import com.n4u1.AQA.AQA.models.User;
 
 import java.util.ArrayList;
 import java.util.Map;
 
 public class UserContentsUploadActivity extends AppCompatActivity implements ContentChoiceDialog.ContentChoiceDialogListener
-        , ContentTypeDialog.ContentTypeDialogListener, AddContentFragment.AddContentFragmentListener {
+        , ContentTypeDialog.ContentTypeDialogListener, AddContentFragment.AddContentFragmentListener, GoHomeDialog.GoHomeDialogListener {
 
 
     private static final int GALLEY_CODE = 100;
@@ -44,7 +45,7 @@ public class UserContentsUploadActivity extends AppCompatActivity implements Con
     ImageView imageView_userAddContent_2;
     ImageView imageView_userAddContent_3;
 
-    TextView textView;
+    TextView textView_next;
 
     EditText editText_title;
     EditText editText_description;
@@ -52,9 +53,6 @@ public class UserContentsUploadActivity extends AppCompatActivity implements Con
     EditText editText_addCategory;
 
     String pollMode;
-
-
-
 
 
     private FirebaseStorage storage;
@@ -68,22 +66,23 @@ public class UserContentsUploadActivity extends AppCompatActivity implements Con
         setContentView(R.layout.activity_user_contents_upload);
 
 
-
         Toolbar myToolbar = findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
         getSupportActionBar().setHomeAsUpIndicator(R.mipmap.ic_aqa_custom);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
-        if (getSupportActionBar() != null){
+        if (getSupportActionBar() != null) {
             getSupportActionBar().setTitle(null);
         }
 
 
-
         //파일업로드용 기기 저장소 접근 권한 요청
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},0);
+            requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.CAMERA}, 0);
+//            requestPermissions(new String[]{Manifest.permission.CAMERA},1);
         }
+
+//            requestPermissions(new String[]{Manifest.permission.CAMERA}, 1);
 
 
         storage = FirebaseStorage.getInstance();
@@ -92,9 +91,6 @@ public class UserContentsUploadActivity extends AppCompatActivity implements Con
         pollMode = "";
         editText_title = findViewById(R.id.editText_title);
         editText_description = findViewById(R.id.editText_description);
-
-
-
 
 
         //카테고리 선택
@@ -120,46 +116,19 @@ public class UserContentsUploadActivity extends AppCompatActivity implements Con
                 contentTypeDialog.show(getSupportFragmentManager(), "pollModeDialog");
             }
         });
-    }
 
 
-    // + 버튼클릭 > 사진 or 동영상 추가 팝업 > 사진 선택
-    public void addUserContentImage() {
-        Intent intent = new Intent(Intent.ACTION_PICK);
-        intent.setType(MediaStore.Images.Media.CONTENT_TYPE);
-        intent.setData(MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-        startActivityForResult(intent, GALLEY_CODE);
-    }
-
-    // + 버튼클릭 > 사진 or 동영상 추가 팝업 > 동영상 선택
-    private void addUserContentVideo() {
-    }
-
-
-
-
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.usercontentupload_menu, menu);
-        return true;
-    }
-
-    // 상단>버튼 클릭시 이미지or동영상 선택
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int curId = item.getItemId();
-        switch (curId) {
-            case R.id.menu_next:
+        textView_next = findViewById(R.id.textView_next);
+        textView_next.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
                 if (editText_title.getText().toString().equals("") | editText_addCategory.getText().toString().equals("") | editText_pollMode.getText().toString().equals("") | editText_description.getText().toString().equals("")) {
                     Toast.makeText(getApplicationContext(), "빈 칸이 있어요!", Toast.LENGTH_SHORT).show();
                 } else {
                     mdatabase.getReference().child("users").child(auth.getCurrentUser().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
                             Map<String, Object> user = (Map<String, Object>) dataSnapshot.getValue();
-
                             ArrayList<String> userInputContents = new ArrayList<>();
                             userInputContents.add(editText_title.getText().toString());
                             userInputContents.add(editText_addCategory.getText().toString());
@@ -178,18 +147,59 @@ public class UserContentsUploadActivity extends AppCompatActivity implements Con
                     });
 
                 }
-                break;
+            }
+        });
+
+
+    }
+
+
+    // + 버튼클릭 > 사진 or 동영상 추가 팝업 > 사진 선택
+    public void addUserContentImage() {
+        Intent intent = new Intent(Intent.ACTION_PICK);
+        intent.setType(MediaStore.Images.Media.CONTENT_TYPE);
+        intent.setData(MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        startActivityForResult(intent, GALLEY_CODE);
+    }
+
+    // + 버튼클릭 > 사진 or 동영상 추가 팝업 > 동영상 선택
+    private void addUserContentVideo() {
+    }
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.usercontentupload_menu, menu);
+        return true;
+    }
+
+    // 상단>버튼 클릭시 이미지or동영상 선택
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int curId = item.getItemId();
+        switch (curId) {
             case R.id.menu_home:
-                Intent intentHome = new Intent(UserContentsUploadActivity.this, HomeActivity.class);
-                intentHome.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intentHome);
+                if (editText_title.getText().toString().length() + editText_pollMode.getText().toString().length() +
+                        editText_description.getText().toString().length() + editText_addCategory.getText().toString().length() == 0) {
+                    Intent intentAqa = new Intent(UserContentsUploadActivity.this, HomeActivity.class);
+                    intentAqa.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intentAqa);
+                } else {
+                    GoHomeDialog goHomeDialog = new GoHomeDialog();
+                    goHomeDialog.show(getSupportFragmentManager(), "goHomeDialog");
+                }
                 break;
-
             case android.R.id.home:
-                Intent intentAqa = new Intent(UserContentsUploadActivity.this, HomeActivity.class);
-                intentAqa.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intentAqa);
-
+                if (editText_title.getText().toString().length() + editText_pollMode.getText().toString().length() +
+                        editText_description.getText().toString().length() + editText_addCategory.getText().toString().length() == 0) {
+                    Intent intentAqa = new Intent(UserContentsUploadActivity.this, HomeActivity.class);
+                    intentAqa.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intentAqa);
+                } else {
+                    GoHomeDialog goHomeDialog = new GoHomeDialog();
+                    goHomeDialog.show(getSupportFragmentManager(), "goHomeDialog");
+                }
+                break;
         }
 
         return super.onOptionsItemSelected(item);
@@ -210,16 +220,17 @@ public class UserContentsUploadActivity extends AppCompatActivity implements Con
     //ContentChoiceDialog 확인
     @Override
     public void onDialogPositiveClick(ArrayList arrayList) {
-        textView = findViewById(R.id.editText_addCategory);
+        editText_addCategory = findViewById(R.id.editText_addCategory);
         String string = arrayList.toString();
         if (arrayList.size() < 6) {
             String resultString = string.replace("[", "").replace("]", "");
-            textView.setText(resultString);
+            editText_addCategory.setText(resultString);
         } else {
-            textView.setText("");
+            editText_addCategory.setText("");
             Toast.makeText(getApplicationContext(), "5개 이하로 선택해주세요.", Toast.LENGTH_SHORT).show();
         }
     }
+
     //ContentChoiceDialog 취소
     @Override
     public void onDialogNegativeClick(DialogFragment dialog) {
@@ -253,4 +264,12 @@ public class UserContentsUploadActivity extends AppCompatActivity implements Con
 
     }
 
+    @Override
+    public void GoHomeDialogCallback(String string) {
+        if (string.equals("확인")) {
+            Intent intentAqa = new Intent(UserContentsUploadActivity.this, HomeActivity.class);
+            intentAqa.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intentAqa);
+        }
+    }
 }

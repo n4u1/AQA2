@@ -410,10 +410,10 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
                         onResultClicked(firebaseDatabase.getReference().child("user_contents").child(contentKey), currentAge, currentGender);
 
 //                        issueContents 테스트 디비 입력용
-//                        long issueDate = getCurrentDate();
-//                        issueMap.put(String.valueOf(issueDate), contentKey);
-//                        firebaseDatabase.getReference().child("issueContents").child(String.valueOf(issueDate)).setValue(issueMap);
                         long issueDate = getCurrentDate();
+                        issueMap.put(String.valueOf(issueDate), contentKey);
+                        firebaseDatabase.getReference().child("issueContents").child(String.valueOf(issueDate)).setValue(issueMap);
+//                        long issueDate = getCurrentDate();
                         issueMap.put(String.valueOf(issueDate), contentKey);
                         firebaseDatabase.getReference().child("issueContents").child(String.valueOf(issueDate)).setValue(issueMap);
                     }

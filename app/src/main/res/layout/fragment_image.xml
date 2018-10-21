@@ -2,8 +2,7 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".views.UserContentsUploadActivity">
+    android:layout_height="match_parent">
 
 
     <LinearLayout
@@ -298,7 +297,7 @@
         <LinearLayout
             android:orientation="vertical"
             android:layout_alignBottom="@id/imageView_userAddContent_10"
-            android:id="@+id/frameLayout_addContent"
+            android:id="@+id/imageView_addImage"
             android:layout_width="match_parent"
             android:layout_height="250dp"
             android:layout_marginBottom="6dp"
@@ -306,7 +305,6 @@
 
             <ImageView
                 android:layout_gravity="center"
-                android:id="@+id/imageView_addImage"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
                 android:scaleType="centerInside"

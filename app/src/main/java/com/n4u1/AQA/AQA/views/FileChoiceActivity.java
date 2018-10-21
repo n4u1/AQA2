@@ -21,6 +21,7 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.n4u1.AQA.AQA.R;
+import com.n4u1.AQA.AQA.dialog.GoHomeDialog;
 import com.n4u1.AQA.AQA.fragments.CameraFragment;
 import com.n4u1.AQA.AQA.fragments.ImageFragment;
 import com.n4u1.AQA.AQA.fragments.VideoFragment;
@@ -44,7 +45,8 @@ import java.util.TimeZone;
 public class FileChoiceActivity extends AppCompatActivity
         implements ImageFragment.OnFragmentInteractionListener,
         VideoFragment.OnFragmentInteractionListener,
-        CameraFragment.OnFragmentInteractionListener {
+        CameraFragment.OnFragmentInteractionListener,
+        GoHomeDialog.GoHomeDialogListener {
 
     private String[] imgStrings;
     private ArrayList<String> userInputContents;
@@ -119,6 +121,15 @@ public class FileChoiceActivity extends AppCompatActivity
 
     }//super.onCreate(savedInstanceState);
 
+    @Override
+    public void GoHomeDialogCallback(String string) {
+        if (string.equals("확인")) {
+            Intent intentAqa = new Intent(FileChoiceActivity.this, HomeActivity.class);
+            intentAqa.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intentAqa);
+        }
+    }
+
     private class PagerAdapter extends FragmentPagerAdapter {
         private Fragment[] arrFragments;
 
@@ -170,15 +181,12 @@ public class FileChoiceActivity extends AppCompatActivity
 
 
             case android.R.id.home:
-                Intent intentAqa = new Intent(FileChoiceActivity.this, HomeActivity.class);
-                intentAqa.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intentAqa);
+                GoHomeDialog goHomeDialog = new GoHomeDialog();
+                goHomeDialog.show(getSupportFragmentManager(), "goHomeDialog");
 
 
         }
 
-        Intent intent = new Intent(FileChoiceActivity.this, HomeActivity.class);
-        startActivity(intent);
 
         return super.onOptionsItemSelected(item);
     }
