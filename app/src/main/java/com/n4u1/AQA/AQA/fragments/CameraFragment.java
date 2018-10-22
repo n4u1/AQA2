@@ -24,7 +24,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.n4u1.AQA.AQA.R;
+import com.n4u1.AQA.AQA.util.GlideApp;
 import com.n4u1.AQA.AQA.util.PermissionRequester;
 
 import java.io.File;
@@ -146,160 +148,83 @@ public class CameraFragment extends Fragment {
         if (requestCode == 10000 && resultCode == RESULT_OK) {
 
             if (checkCount == 0) {
-
-                InputStream is = new InputStream() {
-                    @Override
-                    public int read() throws IOException {
-                        return 0;
-                    }
-                };
-                BitmapFactory.Options factory = new BitmapFactory.Options();
-                factory.inJustDecodeBounds = true;
-                BitmapFactory.decodeStream(is, null, factory);
-                factory.inSampleSize = calculateInSampleSize(factory, 100, 100);
-                factory.inJustDecodeBounds = false;
-
-//            BitmapFactory.decodeFile(imagePath);
-//            factory.inPurgeable = true;
-                Bitmap bitmap = BitmapFactory.decodeFile(imagePath, factory);
-//            imageView.setImageBitmap(bitmap);
-                fileString[0] = imagePath;
                 linearLayout_userAddContent_1.setVisibility(View.VISIBLE);
                 textView_userAddContent_1.setVisibility(View.VISIBLE);
                 imageView_userAddContent_1.setVisibility(View.VISIBLE);
-                imageView_userAddContent_1.setImageBitmap(bitmap);
+                fileString[0] = imagePath;
+                GlideApp.with(getContext()).load(imagePath).centerCrop().into(imageView_userAddContent_1);
+
             }
             if (checkCount == 1) {
-                BitmapFactory.Options factory = new BitmapFactory.Options();
-                factory.inJustDecodeBounds = true;
-//            BitmapFactory.decodeFile(imagePath);
-//            factory.inPurgeable = true;
-                Bitmap bitmap = BitmapFactory.decodeFile(imagePath, factory);
-//            imageView.setImageBitmap(bitmap);
                 fileString[1] = imagePath;
                 linearLayout_userAddContent_2.setVisibility(View.VISIBLE);
                 textView_userAddContent_2.setVisibility(View.VISIBLE);
                 imageView_userAddContent_2.setVisibility(View.VISIBLE);
-                imageView_userAddContent_2.setImageBitmap(bitmap);
+                GlideApp.with(getContext()).load(imagePath).centerCrop().into(imageView_userAddContent_2);
             }
 
             if (checkCount == 2) {
-                BitmapFactory.Options factory = new BitmapFactory.Options();
-                factory.inJustDecodeBounds = true;
-//            BitmapFactory.decodeFile(imagePath);
-//            factory.inPurgeable = true;
-                Bitmap bitmap = BitmapFactory.decodeFile(imagePath, factory);
-//            imageView.setImageBitmap(bitmap);
                 fileString[2] = imagePath;
                 linearLayout_userAddContent_3.setVisibility(View.VISIBLE);
                 textView_userAddContent_3.setVisibility(View.VISIBLE);
                 imageView_userAddContent_3.setVisibility(View.VISIBLE);
-                imageView_userAddContent_3.setImageBitmap(bitmap);
+                GlideApp.with(getContext()).load(imagePath).centerCrop().into(imageView_userAddContent_3);
             }
 
             if (checkCount == 3) {
-                BitmapFactory.Options factory = new BitmapFactory.Options();
-//            factory.inJustDecodeBounds = true;
-//            BitmapFactory.decodeFile(imagePath);
-                factory.inJustDecodeBounds = true;
-//            factory.inPurgeable = true;
-                Bitmap bitmap = BitmapFactory.decodeFile(imagePath, factory);
-//            imageView.setImageBitmap(bitmap);
                 fileString[3] = imagePath;
                 linearLayout_userAddContent_4.setVisibility(View.VISIBLE);
                 textView_userAddContent_4.setVisibility(View.VISIBLE);
                 imageView_userAddContent_4.setVisibility(View.VISIBLE);
-                imageView_userAddContent_4.setImageBitmap(bitmap);
+                GlideApp.with(getContext()).load(imagePath).centerCrop().into(imageView_userAddContent_4);
             }
 
             if (checkCount == 4) {
-                BitmapFactory.Options factory = new BitmapFactory.Options();
-//            factory.inJustDecodeBounds = true;
-//            BitmapFactory.decodeFile(imagePath);
-                factory.inJustDecodeBounds = true;
-//            factory.inPurgeable = true;
-                Bitmap bitmap = BitmapFactory.decodeFile(imagePath, factory);
-//            imageView.setImageBitmap(bitmap);
                 fileString[4] = imagePath;
                 linearLayout_userAddContent_5.setVisibility(View.VISIBLE);
                 textView_userAddContent_5.setVisibility(View.VISIBLE);
                 imageView_userAddContent_5.setVisibility(View.VISIBLE);
-                imageView_userAddContent_6.setImageBitmap(bitmap);
+                GlideApp.with(getContext()).load(imagePath).centerCrop().into(imageView_userAddContent_5);
             }
 
             if (checkCount == 5) {
-                BitmapFactory.Options factory = new BitmapFactory.Options();
-//            factory.inJustDecodeBounds = true;
-//            BitmapFactory.decodeFile(imagePath);
-                factory.inJustDecodeBounds = true;
-//            factory.inPurgeable = true;
-                Bitmap bitmap = BitmapFactory.decodeFile(imagePath, factory);
-//            imageView.setImageBitmap(bitmap);
                 fileString[5] = imagePath;
                 linearLayout_userAddContent_6.setVisibility(View.VISIBLE);
                 textView_userAddContent_6.setVisibility(View.VISIBLE);
                 imageView_userAddContent_6.setVisibility(View.VISIBLE);
-                imageView_userAddContent_6.setImageBitmap(bitmap);
+                GlideApp.with(getContext()).load(imagePath).centerCrop().into(imageView_userAddContent_6);
             }
 
             if (checkCount == 6) {
-                BitmapFactory.Options factory = new BitmapFactory.Options();
-//            factory.inJustDecodeBounds = true;
-//            BitmapFactory.decodeFile(imagePath);
-                factory.inJustDecodeBounds = true;
-//            factory.inPurgeable = true;
-                Bitmap bitmap = BitmapFactory.decodeFile(imagePath, factory);
-//            imageView.setImageBitmap(bitmap);
                 fileString[6] = imagePath;
                 linearLayout_userAddContent_7.setVisibility(View.VISIBLE);
                 textView_userAddContent_7.setVisibility(View.VISIBLE);
                 imageView_userAddContent_7.setVisibility(View.VISIBLE);
-                imageView_userAddContent_7.setImageBitmap(bitmap);
+                GlideApp.with(getContext()).load(imagePath).centerCrop().into(imageView_userAddContent_7);
             }
 
             if (checkCount == 7) {
-                BitmapFactory.Options factory = new BitmapFactory.Options();
-//            factory.inJustDecodeBounds = true;
-//            BitmapFactory.decodeFile(imagePath);
-                factory.inJustDecodeBounds = false;
-//            factory.inPurgeable = true;
-                Bitmap bitmap = BitmapFactory.decodeFile(imagePath, factory);
-//            imageView.setImageBitmap(bitmap);
                 fileString[7] = imagePath;
                 linearLayout_userAddContent_8.setVisibility(View.VISIBLE);
                 textView_userAddContent_8.setVisibility(View.VISIBLE);
                 imageView_userAddContent_8.setVisibility(View.VISIBLE);
-                imageView_userAddContent_8.setImageBitmap(bitmap);
+                GlideApp.with(getContext()).load(imagePath).centerCrop().into(imageView_userAddContent_8);
             }
 
             if (checkCount == 8) {
-                BitmapFactory.Options factory = new BitmapFactory.Options();
-//            factory.inJustDecodeBounds = true;
-//            BitmapFactory.decodeFile(imagePath);
-                factory.inJustDecodeBounds = true;
-//            factory.inPurgeable = true;
-                Bitmap bitmap = BitmapFactory.decodeFile(imagePath, factory);
-//            imageView.setImageBitmap(bitmap);
                 fileString[8] = imagePath;
                 linearLayout_userAddContent_9.setVisibility(View.VISIBLE);
                 textView_userAddContent_9.setVisibility(View.VISIBLE);
                 imageView_userAddContent_9.setVisibility(View.VISIBLE);
-                imageView_userAddContent_9.setImageBitmap(bitmap);
+                GlideApp.with(getContext()).load(imagePath).centerCrop().into(imageView_userAddContent_9);
             }
 
             if (checkCount == 9) {
-                BitmapFactory.Options factory = new BitmapFactory.Options();
-//            factory.inJustDecodeBounds = true;
-//            BitmapFactory.decodeFile(imagePath);
-                factory.inJustDecodeBounds = true;
-//            factory.inPurgeable = true;
-                Bitmap bitmap = BitmapFactory.decodeFile(imagePath, factory);
-//            imageView.setImageBitmap(bitmap);
                 fileString[9] = imagePath;
                 linearLayout_userAddContent_10.setVisibility(View.VISIBLE);
                 textView_userAddContent_10.setVisibility(View.VISIBLE);
                 imageView_userAddContent_10.setVisibility(View.VISIBLE);
-                imageView_userAddContent_10.setImageBitmap(bitmap);
+                GlideApp.with(getContext()).load(imagePath).centerCrop().into(imageView_userAddContent_10);
             }
 
         }
@@ -323,7 +248,17 @@ public class CameraFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
-        Log.d("lkj onDetach", "onDetach");
+        imageView_userAddContent_1 = null;
+        imageView_userAddContent_2 = null;
+        imageView_userAddContent_3 = null;
+        imageView_userAddContent_4 = null;
+        imageView_userAddContent_5 = null;
+        imageView_userAddContent_6 = null;
+        imageView_userAddContent_7 = null;
+        imageView_userAddContent_8 = null;
+        imageView_userAddContent_9 = null;
+        imageView_userAddContent_10 = null;
+
     }
 
     /**

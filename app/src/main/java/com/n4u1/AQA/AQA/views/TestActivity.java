@@ -1,11 +1,23 @@
 package com.n4u1.AQA.AQA.views;
 
+import android.app.ProgressDialog;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.OnProgressListener;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.n4u1.AQA.AQA.R;
 import com.github.chrisbanes.photoview.PhotoView;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class TestActivity extends AppCompatActivity {
 
@@ -16,8 +28,12 @@ public class TestActivity extends AppCompatActivity {
         setContentView(R.layout.activity_test);
 
 
+
     }
-} 
+
+
+}
+
 
 /*
 ToDo
@@ -33,6 +49,9 @@ mineActivity 에서 이메일 항목 n 글자 이상일경우 ... 표시
 AQA 방향성
 funny, transparently, confidently
 재밌게 투명하게 자신있게
+
+
+funny, trustly, purely
 ###################################################################################################################################################
 AQA 계획
 ###################################################################################################################################################

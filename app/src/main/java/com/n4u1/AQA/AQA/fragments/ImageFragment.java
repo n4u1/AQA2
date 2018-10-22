@@ -20,6 +20,7 @@ import com.n4u1.AQA.AQA.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
+import com.n4u1.AQA.AQA.util.GlideApp;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -149,7 +150,7 @@ public class ImageFragment extends Fragment {
                     textView_userAddContent_1.setVisibility(View.VISIBLE);
                     imageView_userAddContent_1.setVisibility(View.VISIBLE);
                     imgPath = getPath(data.getData());
-                    imageView_userAddContent_1.setImageURI(Uri.parse(imgPath));
+                    GlideApp.with(getContext()).load(imgPath).centerCrop().into(imageView_userAddContent_1);
                     fileString[0] = imgPath;
                 }
                 if (checkCount == 1) {
@@ -157,7 +158,7 @@ public class ImageFragment extends Fragment {
                     textView_userAddContent_2.setVisibility(View.VISIBLE);
                     imageView_userAddContent_2.setVisibility(View.VISIBLE);
                     imgPath = getPath(data.getData());
-                    imageView_userAddContent_2.setImageURI(Uri.parse(imgPath));
+                    GlideApp.with(getContext()).load(imgPath).centerCrop().into(imageView_userAddContent_2);
                     fileString[1] = imgPath;
                 }
                 if (checkCount == 2) {
@@ -165,7 +166,7 @@ public class ImageFragment extends Fragment {
                     textView_userAddContent_3.setVisibility(View.VISIBLE);
                     imageView_userAddContent_3.setVisibility(View.VISIBLE);
                     imgPath = getPath(data.getData());
-                    imageView_userAddContent_3.setImageURI(Uri.parse(imgPath));
+                    GlideApp.with(getContext()).load(imgPath).centerCrop().into(imageView_userAddContent_3);
                     fileString[2] = imgPath;
                 }
                 if (checkCount == 3) {
@@ -173,7 +174,7 @@ public class ImageFragment extends Fragment {
                     textView_userAddContent_4.setVisibility(View.VISIBLE);
                     imageView_userAddContent_4.setVisibility(View.VISIBLE);
                     imgPath = getPath(data.getData());
-                    imageView_userAddContent_4.setImageURI(Uri.parse(imgPath));
+                    GlideApp.with(getContext()).load(imgPath).centerCrop().into(imageView_userAddContent_4);
                     fileString[3] = imgPath;
                 }
                 if (checkCount == 4) {
@@ -181,7 +182,7 @@ public class ImageFragment extends Fragment {
                     textView_userAddContent_5.setVisibility(View.VISIBLE);
                     imageView_userAddContent_5.setVisibility(View.VISIBLE);
                     imgPath = getPath(data.getData());
-                    imageView_userAddContent_5.setImageURI(Uri.parse(imgPath));
+                    GlideApp.with(getContext()).load(imgPath).centerCrop().into(imageView_userAddContent_5);
                     fileString[4] = imgPath;
 
                 }
@@ -190,7 +191,7 @@ public class ImageFragment extends Fragment {
                     textView_userAddContent_6.setVisibility(View.VISIBLE);
                     imageView_userAddContent_6.setVisibility(View.VISIBLE);
                     imgPath = getPath(data.getData());
-                    imageView_userAddContent_6.setImageURI(Uri.parse(imgPath));
+                    GlideApp.with(getContext()).load(imgPath).centerCrop().into(imageView_userAddContent_6);
                     fileString[5] = imgPath;
                 }
                 if (checkCount == 6) {
@@ -198,7 +199,7 @@ public class ImageFragment extends Fragment {
                     textView_userAddContent_7.setVisibility(View.VISIBLE);
                     imageView_userAddContent_7.setVisibility(View.VISIBLE);
                     imgPath = getPath(data.getData());
-                    imageView_userAddContent_7.setImageURI(Uri.parse(imgPath));
+                    GlideApp.with(getContext()).load(imgPath).centerCrop().into(imageView_userAddContent_7);
                     fileString[6] = imgPath;
                 }
                 if (checkCount == 7) {
@@ -206,7 +207,7 @@ public class ImageFragment extends Fragment {
                     textView_userAddContent_8.setVisibility(View.VISIBLE);
                     imageView_userAddContent_8.setVisibility(View.VISIBLE);
                     imgPath = getPath(data.getData());
-                    imageView_userAddContent_8.setImageURI(Uri.parse(imgPath));
+                    GlideApp.with(getContext()).load(imgPath).centerCrop().into(imageView_userAddContent_8);
                     fileString[7] = imgPath;
 
                 }
@@ -215,7 +216,7 @@ public class ImageFragment extends Fragment {
                     textView_userAddContent_9.setVisibility(View.VISIBLE);
                     imageView_userAddContent_9.setVisibility(View.VISIBLE);
                     imgPath = getPath(data.getData());
-                    imageView_userAddContent_9.setImageURI(Uri.parse(imgPath));
+                    GlideApp.with(getContext()).load(imgPath).centerCrop().into(imageView_userAddContent_9);
                     fileString[8] = imgPath;
                 }
                 if (checkCount == 9) {
@@ -223,7 +224,7 @@ public class ImageFragment extends Fragment {
                     textView_userAddContent_10.setVisibility(View.VISIBLE);
                     imageView_userAddContent_10.setVisibility(View.VISIBLE);
                     imgPath = getPath(data.getData());
-                    imageView_userAddContent_10.setImageURI(Uri.parse(imgPath));
+                    GlideApp.with(getContext()).load(imgPath).centerCrop().into(imageView_userAddContent_10);
                     fileString[9] = imgPath;
 
                 }
