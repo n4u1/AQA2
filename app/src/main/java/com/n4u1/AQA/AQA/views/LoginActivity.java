@@ -1,14 +1,17 @@
 package com.n4u1.AQA.AQA.views;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.CursorLoader;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
+import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -45,6 +48,8 @@ import java.io.File;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static java.security.AccessController.getContext;
+
 
 public class LoginActivity extends AppCompatActivity {
     private static final int GALLEY_CODE = 10;
@@ -67,7 +72,6 @@ public class LoginActivity extends AppCompatActivity {
         ImageView imageView_createUser = findViewById(R.id.imageView_createUser);
         ImageView imageView_loginUser = findViewById(R.id.imageView_loginUser);
         ImageView imageView_findUser = findViewById(R.id.imageView_findUser);
-//        Button button_Login = findViewById(R.id.button_login);
         Button button_aLogin = findViewById(R.id.button_aLogin);
         Button button_bLogin = findViewById(R.id.button_bLogin);
         Button button_cLogin = findViewById(R.id.button_cLogin);
@@ -76,13 +80,29 @@ public class LoginActivity extends AppCompatActivity {
         Button button_fLogin = findViewById(R.id.button_fLogin);
         Button button_gLogin = findViewById(R.id.button_gLogin);
         Button button_hLogin = findViewById(R.id.button_hLogin);
-//        Button button_uploadTest = findViewById(R.id.button_uploadTest);
+        Button button_test = findViewById(R.id.button_test);
 
         mAuth = FirebaseAuth.getInstance();
         mFirebaseUser = mAuth.getCurrentUser();
         mDatabase = FirebaseDatabase.getInstance();
         mEmailDatabaseReference = mDatabase.getReference("users");
         storage = FirebaseStorage.getInstance();
+
+        button_test.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String type = "image/*";
+                String filename = "Screenshot_20180405-194228.png";
+                String mediaPath = Environment.getExternalStorageDirectory() + "/DCIM/Screenshots/" + filename;
+
+
+                createInstagramIntent(type, mediaPath);
+
+            }
+        });
+
+
+
 
 
         //히든
@@ -281,5 +301,54 @@ public class LoginActivity extends AppCompatActivity {
         Matcher m = p.matcher(inputUserEmail);
         boolean isNormal = m.matches();
         return isNormal;
+    }
+
+
+    private void createInstagramIntent(String type, String mediaPath){
+
+        // Create the new Intent using the 'Send' action.
+        Intent share = new Intent(Intent.ACTION_SEND);
+
+
+
+
+        // Create the URI from the media
+        File media = new File(mediaPath);
+//        Uri uri = Uri.fromFile(media);
+
+
+        Uri uri = FileProvider.getUriForFile(getApplicationContext(), "com.n4u1.AQA.AQA.fileprovider", media);
+
+        share.putExtra(Intent.EXTRA_TITLE, "골라봐여");
+        share.setType("text/plain");
+        // Add the URI to the Intent.
+        share.putExtra(Intent.EXTRA_STREAM, uri);
+        share.setType(type);
+
+        share.setPackage("com.twitter.android");
+//        share.putExtra(Intent.EXTRA_STREAM, FileProvider.getUriForFile(getApplicationContext(), "com.bignerdranch.android.test.fileprovider", media));
+
+        startActivity(share);
+        // Broadcast the Intent.
+//        startActivity(Intent.createChooser(share, "Share to"));
+
+
+
+        // Define image asset URI and attribution link URL
+//        Uri backgroundAssetUri = uri;
+//        String attributionLinkUrl = "https://www.my-aweseome-app.com/p/BhzbIOUBval/";
+//
+//// Instantiate implicit intent with ADD_TO_STORY action,
+//// background asset, and attribution link
+//        Intent intent = new Intent("com.instagram.share.ADD_TO_STORY");
+//        intent.setDataAndType(backgroundAssetUri, type);
+//        intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+//        intent.putExtra("content_url", attributionLinkUrl);
+//
+//// Instantiate activity and verify it will resolve implicit intent
+//        Activity activity = this;
+//        if (activity.getPackageManager().resolveActivity(intent, 0) != null) {
+//            activity.startActivityForResult(intent, 0);
+//        }
     }
 }

@@ -28,10 +28,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:padding="12dp">
+                android:paddingRight="12dp"
+                android:paddingLeft="12dp"
+                android:paddingTop="16dp"
+                android:paddingBottom="16dp">
 
                 <ImageView
-                    android:layout_width="20dp"
+                    android:layout_width="24dp"
                     android:layout_height="24dp"
                     android:layout_gravity="center"
                     android:layout_weight="1"
@@ -59,18 +62,12 @@
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="2.2"
+                    android:layout_weight="2"
                     android:text="변경하기"
                     android:textColor="#808080"
                     android:textSize="16dp" />
             </LinearLayout>
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginTop="4dp"
-                android:layout_marginBottom="4dp"
-                android:background="#efefef" />
 
 
             <LinearLayout
@@ -78,11 +75,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:padding="12dp">
+                android:paddingRight="12dp"
+                android:paddingLeft="12dp"
+                android:paddingTop="16dp"
+                android:paddingBottom="16dp">
 
                 <ImageView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
                     android:layout_gravity="center"
                     android:layout_weight="1"
                     android:src="@drawable/ic_mineicon" />
@@ -106,13 +106,6 @@
             </LinearLayout>
 
 
-            <View
-                android:id="@+id/view3"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginTop="4dp"
-                android:layout_marginBottom="4dp"
-                android:background="#efefef" />
 
 
             <LinearLayout
@@ -120,10 +113,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:padding="12dp">
+                android:paddingRight="12dp"
+                android:paddingLeft="12dp"
+                android:paddingTop="16dp"
+                android:paddingBottom="16dp">
 
                 <ImageView
-                    android:layout_width="20dp"
+                    android:layout_width="24dp"
                     android:layout_height="24dp"
                     android:layout_gravity="center"
                     android:layout_weight="1"
@@ -149,20 +145,17 @@
             </LinearLayout>
 
 
-            <View
-                android:id="@+id/view4"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginTop="4dp"
-                android:layout_marginBottom="4dp"
-                android:background="#efefef" />
 
             <LinearLayout
+                android:paddingRight="12dp"
+                android:paddingLeft="12dp"
+                android:paddingTop="16dp"
+                android:paddingBottom="16dp"
                 android:id="@+id/mineActivity_linearLayout3"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:padding="12dp">
+                >
 
                 <ImageView
                     android:layout_width="24dp"
@@ -190,24 +183,22 @@
             </LinearLayout>
 
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginTop="4dp"
-                android:layout_marginBottom="4dp"
-                android:background="#efefef" />
 
             <LinearLayout
+                android:paddingRight="12dp"
+                android:paddingLeft="12dp"
+                android:paddingTop="16dp"
+                android:paddingBottom="16dp"
                 android:id="@+id/mineActivity_linearLayout_userClass"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:padding="12dp">
+                >
 
                 <ImageView
                     android:id="@+id/mineActivity_imageView_userClass"
-                    android:layout_width="28dp"
-                    android:layout_height="28dp"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
                     android:layout_gravity="center"
                     android:layout_weight="1"
                     />
@@ -231,21 +222,18 @@
             </LinearLayout>
 
 
-            <View
-                android:id="@+id/view5"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginTop="4dp"
-                android:layout_marginBottom="4dp"
-                android:background="#efefef" />
 
 
             <LinearLayout
+                android:paddingRight="12dp"
+                android:paddingLeft="12dp"
+                android:paddingTop="16dp"
+                android:paddingBottom="16dp"
                 android:id="@+id/mineActivity_linearLayout_password"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:padding="12dp">
+                >
 
                 <ImageView
                     android:layout_width="24dp"
@@ -273,30 +261,26 @@
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="2.2"
+                    android:layout_weight="2"
                     android:text="변경하기"
                     android:textColor="#808080"
                     android:textSize="16dp" />
             </LinearLayout>
 
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginTop="4dp"
-                android:layout_marginBottom="4dp"
-                android:background="#efefef" />
-
             <LinearLayout
+                android:paddingRight="12dp"
+                android:paddingLeft="12dp"
+                android:paddingTop="16dp"
+                android:paddingBottom="16dp"
                 android:id="@+id/mineActivity_linearLayout_upload"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:padding="12dp">
+                android:orientation="horizontal">
 
                 <ImageView
-                    android:layout_width="26dp"
-                    android:layout_height="26dp"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
                     android:layout_gravity="center"
                     android:layout_weight="1"
                     android:src="@drawable/ic_outline_creat_24px" />
@@ -315,28 +299,24 @@
                     android:id="@+id/mineActivity_textView_upload"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="2.2"
+                    android:layout_weight="2"
                     android:text="모아보기"
                     android:textColor="#808080"
                     android:textSize="16dp" />
             </LinearLayout>
 
 
-            <View
-                android:id="@+id/view6"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginTop="4dp"
-                android:layout_marginBottom="4dp"
-                android:background="#efefef" />
 
 
             <LinearLayout
+                android:paddingRight="12dp"
+                android:paddingLeft="12dp"
+                android:paddingTop="16dp"
+                android:paddingBottom="16dp"
                 android:id="@+id/mineActivity_linearLayout_pickContent"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:padding="12dp">
+                android:orientation="horizontal">
 
                 <ImageView
                     android:layout_width="24dp"
@@ -359,27 +339,23 @@
                     android:id="@+id/mineActivity_textView_pickContent"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="2.2"
+                    android:layout_weight="2"
                     android:text="모아보기"
                     android:textColor="#808080"
                     android:textSize="16dp" />
             </LinearLayout>
 
 
-            <View
-                android:id="@+id/view7"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginTop="4dp"
-                android:layout_marginBottom="4dp"
-                android:background="#efefef" />
 
             <LinearLayout
+                android:paddingRight="12dp"
+                android:paddingLeft="12dp"
+                android:paddingTop="16dp"
+                android:paddingBottom="16dp"
                 android:id="@+id/mineActivity_linearLayout_like"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:padding="12dp">
+                android:orientation="horizontal">
 
                 <ImageView
                     android:layout_width="24dp"
@@ -401,28 +377,23 @@
                     android:id="@+id/mineActivity_textView_like"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="2.2"
+                    android:layout_weight="2"
                     android:text="모아보기"
                     android:textColor="#808080"
                     android:textSize="16dp" />
             </LinearLayout>
 
 
-            <View
-                android:id="@+id/view8"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginTop="4dp"
-                android:layout_marginBottom="4dp"
-                android:background="#efefef" />
-
 
             <LinearLayout
+                android:paddingRight="12dp"
+                android:paddingLeft="12dp"
+                android:paddingTop="16dp"
+                android:paddingBottom="16dp"
                 android:id="@+id/mineActivity_linearLayout_reply"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:padding="12dp">
+                android:orientation="horizontal">
 
 
                 <ImageView
@@ -445,27 +416,21 @@
                     android:id="@+id/mineActivity_textView_reply"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="2.2"
+                    android:layout_weight="2"
                     android:text="모아보기"
                     android:textColor="#808080"
                     android:textSize="16dp" />
             </LinearLayout>
 
-            <View
-                android:id="@+id/view9"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginTop="4dp"
-                android:layout_marginBottom="4dp"
-                android:background="#efefef" />
-
-
             <LinearLayout
+                android:paddingRight="12dp"
+                android:paddingLeft="12dp"
+                android:paddingTop="16dp"
+                android:paddingBottom="16dp"
                 android:id="@+id/mineActivity_linearLayout_noti"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:padding="12dp">
+                android:orientation="horizontal">
 
                 <ImageView
                     android:layout_width="24dp"
@@ -491,28 +456,14 @@
                     android:textOff="off"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="2.2" />
+                    android:layout_weight="2" />
 
             </LinearLayout>
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginTop="4dp"
-                android:layout_marginBottom="4dp"
-                android:background="#efefef" />
 
 
 
 
-
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="5dp"
-                android:layout_marginTop="4dp"
-                android:layout_marginBottom="4dp"
-                android:background="#efefef" />
 
 
             <View

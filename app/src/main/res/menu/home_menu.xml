@@ -13,11 +13,6 @@
         app:showAsAction="always"/>
 
 
-    <item
-        android:title="Home"
-        android:id="@+id/menu_home"
-        android:icon="@drawable/ic_outline_home_24px"
-        app:showAsAction="always"/>
 
 
     <item
@@ -26,6 +21,13 @@
         android:icon="@drawable/ic_perm_identity_black_24dp"
         app:showAsAction="always"/>
 
+
+
+    <item
+        android:title="share"
+        android:id="@+id/menu_share"
+        android:icon="@drawable/ic_share_black_24dp"
+        app:showAsAction="always"/>
 
 
 

@@ -19,6 +19,7 @@ import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.n4u1.AQA.AQA.R;
+import com.n4u1.AQA.AQA.dialog.ShareDialog;
 import com.n4u1.AQA.AQA.models.ContentDTO;
 import com.n4u1.AQA.AQA.recyclerview.PostAdapter;
 import com.n4u1.AQA.AQA.util.OnLoadMoreListener;
@@ -35,11 +36,13 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 
-public class HomeActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener {
+public class HomeActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener,
+        ShareDialog.ShareDialogListener {
 
     private FirebaseDatabase mDatabase;
     private FirebaseDatabase firebaseDatabase;
@@ -523,18 +526,35 @@ public class HomeActivity extends AppCompatActivity implements SwipeRefreshLayou
                 startActivity(intentSearch);
                 overridePendingTransition(0, 0);
                 break;
-
-            case R.id.menu_home:
-//                resetActivity();
-                finish();
-                overridePendingTransition(0, 0);
-                startActivity(getIntent());
-                overridePendingTransition(0, 0);
-                break;
+//
+//            case R.id.menu_home:
+////                resetActivity();
+//                finish();
+//                overridePendingTransition(0, 0);
+//                startActivity(getIntent());
+//                overridePendingTransition(0, 0);
+//                break;
 
             case R.id.menu_mine:
                 Intent intentMine = new Intent(HomeActivity.this, MineActivity.class);
                 startActivity(intentMine);
+                break;
+
+            case R.id.menu_share:
+                firebaseDatabase.getReference().child("users").child(auth.getCurrentUser().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        Map<String, Object> users = (Map<String, Object>) dataSnapshot.getValue();
+                        String id = String.valueOf(users.get("userId"));
+                        ShareDialog shareDialog = ShareDialog.newInstance(id);
+                        shareDialog.show(getSupportFragmentManager(), "shareDialog");
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
                 break;
 
             case android.R.id.home:
@@ -548,5 +568,22 @@ public class HomeActivity extends AppCompatActivity implements SwipeRefreshLayou
         }
         return super.onOptionsItemSelected(item);
     }
+
+
+    //공유하기 콜백
+    @Override
+    public void ShareDialogCallback(String string) {
+        switch (string) {
+            case "공유하기" :
+                Log.d("lkj share", "share");
+                break;
+            case "인증하기" :
+                Log.d("lkj auth", "auth");
+                break;
+
+        }
+    }
+
+
 
 }

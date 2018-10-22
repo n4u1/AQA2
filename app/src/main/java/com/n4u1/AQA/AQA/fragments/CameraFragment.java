@@ -128,7 +128,7 @@ public class CameraFragment extends Fragment {
 
                     if (picture != null) {
 //                        cameraApp.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(picture));
-                        cameraApp.putExtra(MediaStore.EXTRA_OUTPUT, FileProvider.getUriForFile(getContext(), "com.bignerdranch.android.test.fileprovider", picture));
+                        cameraApp.putExtra(MediaStore.EXTRA_OUTPUT, FileProvider.getUriForFile(getContext(), "com.n4u1.AQA.AQA.fileprovider", picture));
                         startActivityForResult(cameraApp, 10000);
                     }
 
