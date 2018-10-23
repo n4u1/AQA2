@@ -1,9 +1,13 @@
 package com.n4u1.AQA.AQA.views;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.content.FileProvider;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -14,6 +18,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
@@ -30,6 +35,8 @@ import com.google.firebase.database.ValueEventListener;
 import com.tomer.fadingtextview.BuildConfig;
 import com.tomer.fadingtextview.FadingTextView;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -57,6 +64,7 @@ public class HomeActivity extends AppCompatActivity implements SwipeRefreshLayou
     private long backPressedTime = 0;
     final ArrayList<String> tempKey = new ArrayList<>();
     final ArrayList<String> issueContents_ = new ArrayList<>();
+    private ImageView homeActivity_imageView_share;
     FadingTextView fadingTextView;
     String[] issueContents = new String[5];
 
@@ -89,6 +97,7 @@ public class HomeActivity extends AppCompatActivity implements SwipeRefreshLayou
         auth = FirebaseAuth.getInstance();
 
 
+        homeActivity_imageView_share = findViewById(R.id.homeActivity_imageView_share);
         recyclerView_home.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(this);//20180730 전날꺼 보기 getApplicationContext()전에 this,?? 였음
         mLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
@@ -98,9 +107,15 @@ public class HomeActivity extends AppCompatActivity implements SwipeRefreshLayou
         postAdapter = new PostAdapter(this, contentDTOS, recyclerView_home);
         recyclerView_home.setAdapter(postAdapter);
         postAdapter.notifyDataSetChanged();
+
+
+
+
+
+
+
+
         //실시간 투표순위 5개
-
-
         //fadingTextview init
         String[] tempString = {" ", "2", "3", "4", "5"};
         fadingTextView.setTimeout(4, TimeUnit.SECONDS);
@@ -119,9 +134,9 @@ public class HomeActivity extends AppCompatActivity implements SwipeRefreshLayou
                 ArrayList<String> filteringIssueString = new ArrayList<>();
                 ArrayList<Long> issueLong = new ArrayList<>();
                 HashMap<String, String> issueMap = new HashMap<>();
-//                        Map<String, String> resultMap = new HashMap<>();
                 LinkedHashMap<String, Integer> resultMap = new LinkedHashMap<>();
                 LinkedHashMap<String, Integer> resultMap_ = new LinkedHashMap<>();
+
 
                 String[] stringsTemp__;
 
@@ -575,8 +590,27 @@ public class HomeActivity extends AppCompatActivity implements SwipeRefreshLayou
     public void ShareDialogCallback(String string) {
         switch (string) {
             case "공유하기" :
+                String type = "image/*";
+                try {
+                    Bitmap shareBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.aqacustom2);
+                    File outputFile = new File(getApplicationContext().getCacheDir(), "AQA" + ".png");
+                    FileOutputStream outPutStream = new FileOutputStream(outputFile);
+                    shareBitmap.compress(Bitmap.CompressFormat.PNG, 100, outPutStream);
+                    outPutStream.flush();
+                    outPutStream.close();
+                    outputFile.setReadable(true, false);
+                    Uri outputUri = FileProvider.getUriForFile(getApplicationContext(), "com.n4u1.AQA.AQA.fileprovider", outputFile);
+                    Intent share = new Intent(Intent.ACTION_SEND);
+                    share.putExtra(Intent.EXTRA_STREAM, outputUri);
+                    share.setType(type);
+                    startActivity(Intent.createChooser(share, "공유하기"));
+                } catch (Exception e) {
+                    Toast.makeText(getApplicationContext(), "error", Toast.LENGTH_LONG).show();
+                    Log.d("lkj shareErr", e.toString());
+                }
                 Log.d("lkj share", "share");
                 break;
+
             case "인증하기" :
                 Log.d("lkj auth", "auth");
                 break;

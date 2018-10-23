@@ -82,13 +82,18 @@ public class ShareDialog extends DialogFragment {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 mListener.ShareDialogCallback("공유하기");
-
             }
         });
         builder.setNegativeButton("인증하기", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 mListener.ShareDialogCallback("인증하기");
+            }
+        });
+        builder.setNeutralButton("취소", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
             }
         });
 

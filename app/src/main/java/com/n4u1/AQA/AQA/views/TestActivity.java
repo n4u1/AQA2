@@ -1,9 +1,12 @@
 package com.n4u1.AQA.AQA.views;
 
 import android.app.ProgressDialog;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
@@ -16,6 +19,8 @@ import com.google.firebase.storage.UploadTask;
 import com.n4u1.AQA.AQA.R;
 import com.github.chrisbanes.photoview.PhotoView;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -27,6 +32,33 @@ public class TestActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_test);
 
+//
+//        imgview = (ImageView)findViewById(R.id.imageView1);
+//        Bitmap bm = BitmapFactory.decodeResource(getResources(), R.drawable.comp1_16);
+//        imgview.setImageBitmap(bm);
+//
+//
+//        try{
+//
+//            File file = new File("test.png");
+//            FileOutputStream fos = openFileOutput("test.png" , 0);
+//            bm.compress(Bitmap.CompressFormat.PNG, 100 , fos);
+//            fos.flush();
+//            fos.close();
+//
+//            Toast.makeText(this, "file ok", Toast.LENGTH_SHORT).show();
+//        }catch(Exception e) { Toast.makeText(this, "file error", Toast.LENGTH_SHORT).show();}
+//
+//
+//
+//        try{
+//            imgview = (ImageView)findViewById(R.id.imageView1);
+//            String imgpath = "data/data/com.test.SDCard_Ani/files/test.png";
+//            bm = BitmapFactory.decodeFile(imgpath);
+//            imgview.setImageBitmap(bm);
+//            Toast.makeText(getApplicationContext(), "load ok", Toast.LENGTH_SHORT).show();
+//        }catch(Exception e){Toast.makeText(getApplicationContext(), "load error", Toast.LENGTH_SHORT).show();}
+//
 
 
     }

@@ -5,6 +5,8 @@ import android.app.Activity;
 import android.content.CursorLoader;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
@@ -43,8 +45,10 @@ import com.google.firebase.storage.UploadTask;
 import com.n4u1.AQA.AQA.dialog.AgainPasswordDialog;
 import com.n4u1.AQA.AQA.dialog.NotEmailDialog;
 import com.n4u1.AQA.AQA.dialog.NotInputDialog;
+import com.n4u1.AQA.AQA.util.ImageSaver;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -69,6 +73,15 @@ public class LoginActivity extends AppCompatActivity {
 
         TextView textView_hidden = findViewById(R.id.textView_hidden);
 
+
+        //테스트용
+        final ImageView homeActivity_imageView_share = findViewById(R.id.homeActivity_imageView_share);
+        Button button_test2 = findViewById(R.id.button_test2);
+        Button button_test = findViewById(R.id.button_test);
+//        Bitmap shareBitmap;
+        //테스트용
+
+
         ImageView imageView_createUser = findViewById(R.id.imageView_createUser);
         ImageView imageView_loginUser = findViewById(R.id.imageView_loginUser);
         ImageView imageView_findUser = findViewById(R.id.imageView_findUser);
@@ -80,7 +93,7 @@ public class LoginActivity extends AppCompatActivity {
         Button button_fLogin = findViewById(R.id.button_fLogin);
         Button button_gLogin = findViewById(R.id.button_gLogin);
         Button button_hLogin = findViewById(R.id.button_hLogin);
-        Button button_test = findViewById(R.id.button_test);
+
 
         mAuth = FirebaseAuth.getInstance();
         mFirebaseUser = mAuth.getCurrentUser();
@@ -91,18 +104,16 @@ public class LoginActivity extends AppCompatActivity {
         button_test.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String type = "image/*";
-                String filename = "Screenshot_20180405-194228.png";
-                String mediaPath = Environment.getExternalStorageDirectory() + "/DCIM/Screenshots/" + filename;
-
-
-                createInstagramIntent(type, mediaPath);
 
             }
         });
 
+        button_test2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
-
+            }
+        });
 
 
         //히든
@@ -113,7 +124,6 @@ public class LoginActivity extends AppCompatActivity {
 
             }
         });
-
 
 
         //계정 만들기
@@ -304,34 +314,30 @@ public class LoginActivity extends AppCompatActivity {
     }
 
 
-    private void createInstagramIntent(String type, String mediaPath){
+    private void createInstagramIntent(String type, Uri uri) {
 
         // Create the new Intent using the 'Send' action.
         Intent share = new Intent(Intent.ACTION_SEND);
 
 
-
-
         // Create the URI from the media
-        File media = new File(mediaPath);
+//        File media = new File(mediaPath);
 //        Uri uri = Uri.fromFile(media);
 
 
-        Uri uri = FileProvider.getUriForFile(getApplicationContext(), "com.n4u1.AQA.AQA.fileprovider", media);
+//        Uri uri = FileProvider.getUriForFile(getApplicationContext(), "com.n4u1.AQA.AQA.fileprovider", media);
 
-        share.putExtra(Intent.EXTRA_TITLE, "골라봐여");
-        share.setType("text/plain");
+//        share.putExtra(Intent.EXTRA_TITLE, "골라봐여");
+//        share.setType("text/plain");
         // Add the URI to the Intent.
         share.putExtra(Intent.EXTRA_STREAM, uri);
         share.setType(type);
 
-        share.setPackage("com.twitter.android");
+//        share.setPackage("com.twitter.android");
 //        share.putExtra(Intent.EXTRA_STREAM, FileProvider.getUriForFile(getApplicationContext(), "com.bignerdranch.android.test.fileprovider", media));
 
-        startActivity(share);
-        // Broadcast the Intent.
-//        startActivity(Intent.createChooser(share, "Share to"));
-
+//        startActivity(share);
+        startActivity(Intent.createChooser(share, "공유하기"));
 
 
         // Define image asset URI and attribution link URL
