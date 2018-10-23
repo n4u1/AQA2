@@ -1,28 +1,9 @@
 package com.n4u1.AQA.AQA.views;
 
-import android.app.ProgressDialog;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.widget.ImageView;
-import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.OnProgressListener;
-import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
 import com.n4u1.AQA.AQA.R;
-import com.github.chrisbanes.photoview.PhotoView;
-
-import java.io.File;
-import java.io.FileOutputStream;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 public class TestActivity extends AppCompatActivity {
 
@@ -75,6 +56,8 @@ ToDo
 친구추가 기능? / 채팅 기능? / 사진 2개일경우 자동으로 단일 투표로 / 리플달때만 리플수 변경됨 / SharedPreferences 자동로그인 / 투표수에 따른 알람 /
 ###################################################################################################################################################
 mineActivity 에서 이메일 항목 n 글자 이상일경우 ... 표시 / 창전환 스플래시 액티비티 / uploadContentsActivity 제목부분 글자 밀림현상
+###################################################################################################################################################
+관리자 페이지 : 이벤트,공지사항업로드,각종조회되도록,
 ###################################################################################################################################################
 내정보에서 올린거 참여한거 좋아요 보여주는 리사이클러뷰 변경필요
 ###################################################################################################################################################

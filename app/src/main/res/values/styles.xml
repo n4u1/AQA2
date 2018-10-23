@@ -44,7 +44,7 @@
 
 
 
-    <style name="Theme.RankingChoiceDialog" parent="Theme.AppCompat.Light.Dialog">
+    <style name="Theme.DialogFragmentActivity" parent="Theme.AppCompat.Light.Dialog">
         <item name="windowNoTitle">true</item>
         <item name="windowActionBar">false</item>
     </style>

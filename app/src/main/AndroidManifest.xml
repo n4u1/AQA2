@@ -4,8 +4,7 @@
 
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.CAMERA"/>
-
+    <uses-permission android:name="android.permission.CAMERA" />
 
     <!-- INTENT-FILTER 넣어야함 ??? -->
     <application
@@ -22,6 +21,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <provider
             android:name="android.support.v4.content.FileProvider"
             android:authorities="com.n4u1.AQA.AQA.fileprovider"
@@ -54,7 +54,7 @@
         <activity android:name=".views.CreateUserActivity" />
         <activity
             android:name=".dialog.RankingChoiceActivity"
-            android:theme="@style/Theme.RankingChoiceDialog" />
+            android:theme="@style/Theme.DialogFragmentActivity" />
         <activity android:name=".views.SearchHomeActivity" />
         <activity android:name=".views.MineActivity" />
         <activity android:name=".views.MyLikeContentsActivity" />
@@ -65,8 +65,10 @@
         <activity android:name=".views.FullImageActivity" />
         <activity
             android:name=".dialog.DeleteModificationActivity"
-            android:theme="@style/Theme.RankingChoiceDialog" />
-        <activity android:name=".views.FindUserActivity"></activity>
+            android:theme="@style/Theme.DialogFragmentActivity" />
+        <activity android:name=".views.FindUserActivity" />
+        <activity android:name=".dialog.UploadLoadingActivity"
+            android:theme="@style/Theme.DialogFragmentActivity"></activity>
     </application>
 
 </manifest>

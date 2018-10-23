@@ -35,7 +35,7 @@ dependencies {
 
     implementation 'com.google.firebase:firebase-core:16.0.4'
     implementation 'com.google.firebase:firebase-database:16.0.3'
-    implementation 'com.google.firebase:firebase-auth:16.0.4'
+    implementation 'com.google.firebase:firebase-auth:16.0.5'
     implementation 'com.google.firebase:firebase-storage:16.0.3'
     implementation 'com.google.android.gms:play-services-auth:16.0.1'
     implementation 'com.firebase:firebase-jobdispatcher:0.8.5'
@@ -50,5 +50,6 @@ dependencies {
     implementation 'com.google.android.exoplayer:exoplayer:2.8.1'
 //    implementation 'net.danlew:android.joda:2.9.9.3'
     implementation 'com.tomer:fadingtextview:2.5'
+    implementation 'com.github.HOTBitmapGG:RingProgressBar:V1.2.2'
 }
 apply plugin: 'com.google.gms.google-services'

@@ -22,6 +22,8 @@ import android.widget.Toast;
 
 import com.n4u1.AQA.AQA.R;
 import com.n4u1.AQA.AQA.dialog.GoHomeDialog;
+import com.n4u1.AQA.AQA.dialog.RankingChoiceActivity;
+import com.n4u1.AQA.AQA.dialog.UploadLoadingActivity;
 import com.n4u1.AQA.AQA.fragments.CameraFragment;
 import com.n4u1.AQA.AQA.fragments.ImageFragment;
 import com.n4u1.AQA.AQA.fragments.VideoFragment;
@@ -62,6 +64,7 @@ public class FileChoiceActivity extends AppCompatActivity
 
     private ViewPager viewPager;
     final int[] i = new int[1];
+    int loadingSec = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -176,6 +179,8 @@ public class FileChoiceActivity extends AppCompatActivity
         int curId = item.getItemId();
         switch (curId) {
             case R.id.menu_confirm:
+                loadingSec = getLoadingSec(imgStrings);//1000 = 1M
+                Log.d("lkjsec", String.valueOf(loadingSec));
                 upload(imgStrings);
                 break;
 
@@ -189,6 +194,21 @@ public class FileChoiceActivity extends AppCompatActivity
 
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private int getLoadingSec(String[] imgStrings) {
+        int sec = 0;
+        int file_size = 0;
+        for (int i = 0; i < 10; i++) {
+            if (imgStrings[i] != null) {
+                imgStrings[i] = imgStrings[i];
+                File file = new File(imgStrings[i]);
+                file_size = Integer.parseInt(String.valueOf(file.length()/1024));
+            }
+            sec = sec + file_size;
+        }
+        //1000 = 1M
+        return sec;
     }
 
 
@@ -240,6 +260,7 @@ public class FileChoiceActivity extends AppCompatActivity
 //
             if (uri[0].length() != 0) {
                 Uri file_0 = Uri.fromFile(new File(uri[0]));
+
                 storageRef = storage.getReferenceFromUrl("gs://test130-1068f.appspot.com");
                 riversRef = storageRef.child("videos/" + file_0.getLastPathSegment());
                 uploadTask = riversRef.putFile(file_0);
@@ -264,6 +285,7 @@ public class FileChoiceActivity extends AppCompatActivity
             if (uri[1].length() != 0) {
                 itemViewTypeCount++;
                 Uri file_1 = Uri.fromFile(new File(uri[1]));
+
                 StorageReference storageRef = storage.getReferenceFromUrl("gs://test130-1068f.appspot.com");
                 final StorageReference riversRef = storageRef.child("videos/" + file_1.getLastPathSegment());
                 UploadTask uploadTask = riversRef.putFile(file_1);
@@ -531,8 +553,11 @@ public class FileChoiceActivity extends AppCompatActivity
             }
 
             if (uri[1].length() != 0) {
+
+
                 itemViewTypeCount++;
                 Uri file_1 = Uri.fromFile(new File(uri[1]));
+
                 StorageReference storageRef = storage.getReferenceFromUrl("gs://test130-1068f.appspot.com");
                 final StorageReference riversRef = storageRef.child("images/" + file_1.getLastPathSegment());
                 UploadTask uploadTask = riversRef.putFile(file_1);
@@ -747,10 +772,13 @@ public class FileChoiceActivity extends AppCompatActivity
             }
             mdatabaseRef.child("user_contents").child(key).child("itemViewType").setValue(itemViewTypeCount);
 
-
+            Intent progressIntent = new Intent(FileChoiceActivity.this, UploadLoadingActivity.class);
+            progressIntent.putExtra("sec", loadingSec);
             Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            progressIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intent);
+            startActivity(progressIntent);
 
 
         }
@@ -1020,11 +1048,13 @@ public class FileChoiceActivity extends AppCompatActivity
             }
             mdatabaseRef.child("user_contents").child(key).child("itemViewType").setValue(itemViewTypeCount);
 
-
+            Intent progressIntent = new Intent(FileChoiceActivity.this, UploadLoadingActivity.class);
+            progressIntent.putExtra("sec", loadingSec);
             Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            progressIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intent);
-
+            startActivity(progressIntent);
 
         } else {
             Toast.makeText(getApplicationContext(), "파일 업로드 실패!", Toast.LENGTH_SHORT).show();

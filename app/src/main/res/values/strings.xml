@@ -81,7 +81,6 @@
     </string-array>
 
 
-
     <string-array name="FindPasswordFail">
         <item>메일 전송에 실패했습니다.</item>
         <item>가입시 등록한 이메일이 맞는지 확인 해주시기 바랍니다.\n</item>
@@ -97,7 +96,6 @@
     <string-array name="NotEmail">
         <item>이메일 형식으로 입력해주세요.</item>
     </string-array>
-
 
 
     <string-array name="ShortEmail">
@@ -123,7 +121,6 @@
     <string-array name="NotInput">
         <item>빈칸이 있습니다.</item>
     </string-array>
-
 
 
     <string-array name="AgainPassword">

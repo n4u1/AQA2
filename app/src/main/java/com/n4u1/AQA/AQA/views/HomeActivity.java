@@ -1,5 +1,6 @@
 package com.n4u1.AQA.AQA.views;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -15,6 +16,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -22,6 +24,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import com.github.mikephil.charting.utils.FileUtils;
 import com.google.firebase.auth.FirebaseAuth;
 import com.n4u1.AQA.AQA.R;
 import com.n4u1.AQA.AQA.dialog.ShareDialog;
@@ -64,7 +67,7 @@ public class HomeActivity extends AppCompatActivity implements SwipeRefreshLayou
     private long backPressedTime = 0;
     final ArrayList<String> tempKey = new ArrayList<>();
     final ArrayList<String> issueContents_ = new ArrayList<>();
-    private ImageView homeActivity_imageView_share;
+
     FadingTextView fadingTextView;
     String[] issueContents = new String[5];
 
@@ -97,7 +100,6 @@ public class HomeActivity extends AppCompatActivity implements SwipeRefreshLayou
         auth = FirebaseAuth.getInstance();
 
 
-        homeActivity_imageView_share = findViewById(R.id.homeActivity_imageView_share);
         recyclerView_home.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(this);//20180730 전날꺼 보기 getApplicationContext()전에 this,?? 였음
         mLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
@@ -107,12 +109,6 @@ public class HomeActivity extends AppCompatActivity implements SwipeRefreshLayou
         postAdapter = new PostAdapter(this, contentDTOS, recyclerView_home);
         recyclerView_home.setAdapter(postAdapter);
         postAdapter.notifyDataSetChanged();
-
-
-
-
-
-
 
 
         //실시간 투표순위 5개
@@ -290,6 +286,7 @@ public class HomeActivity extends AppCompatActivity implements SwipeRefreshLayou
 
         //onCreate시 액티비티 최초1회 바인딩
         mDatabase.getReference().child("user_contents").addListenerForSingleValueEvent(new ValueEventListener() {
+
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 contentDTOS.clear();
@@ -305,7 +302,7 @@ public class HomeActivity extends AppCompatActivity implements SwipeRefreshLayou
                 for (int i = 0; i < 10; i++) {
                     try {
                         contentDTOS.add(contentDTOSTemp.get(i));
-                    }catch (Exception e) {
+                    } catch (Exception e) {
 
                     }
 
@@ -402,9 +399,7 @@ public class HomeActivity extends AppCompatActivity implements SwipeRefreshLayou
                             } catch (Exception e) {
 
                             }
-
                         }
-
                         postAdapter.notifyDataSetChanged();
                         recyclerView_home.scrollToPosition(0);
                     }
@@ -430,6 +425,7 @@ public class HomeActivity extends AppCompatActivity implements SwipeRefreshLayou
 
     //실시간투표 fadingTextView 세팅
     private void onIssueContents(String[] issueContents) {
+        deleteCache(getApplicationContext());
         fadingTextView.forceRefresh();
         fadingTextView.setTimeout(4, TimeUnit.SECONDS);
         if (!BuildConfig.DEBUG) {
@@ -589,9 +585,15 @@ public class HomeActivity extends AppCompatActivity implements SwipeRefreshLayou
     @Override
     public void ShareDialogCallback(String string) {
         switch (string) {
-            case "공유하기" :
-                String type = "image/*";
+            case "공유하기":
+
                 try {
+//                    Toast toast = Toast.makeText(this, "정식 런칭 되면 많이 해주세요!!", Toast.LENGTH_SHORT);
+//                    toast.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL, 0, 0);
+//                    toast.show();
+
+
+                    String type = "image/*";
                     Bitmap shareBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.aqacustom2);
                     File outputFile = new File(getApplicationContext().getCacheDir(), "AQA" + ".png");
                     FileOutputStream outPutStream = new FileOutputStream(outputFile);
@@ -604,6 +606,9 @@ public class HomeActivity extends AppCompatActivity implements SwipeRefreshLayou
                     share.putExtra(Intent.EXTRA_STREAM, outputUri);
                     share.setType(type);
                     startActivity(Intent.createChooser(share, "공유하기"));
+
+
+
                 } catch (Exception e) {
                     Toast.makeText(getApplicationContext(), "error", Toast.LENGTH_LONG).show();
                     Log.d("lkj shareErr", e.toString());
@@ -611,13 +616,37 @@ public class HomeActivity extends AppCompatActivity implements SwipeRefreshLayou
                 Log.d("lkj share", "share");
                 break;
 
-            case "인증하기" :
+            case "인증하기":
                 Log.d("lkj auth", "auth");
                 break;
 
         }
     }
 
+    public static void deleteCache(Context context) {
+        try {
+            File dir = context.getCacheDir();
+            deleteDir(dir);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
+    public static boolean deleteDir(File dir) {
+        if (dir != null && dir.isDirectory()) {
+            String[] children = dir.list();
+            for (int i = 0; i < children.length; i++) {
+                boolean success = deleteDir(new File(dir, children[i]));
+                if (!success) {
+                    return false;
+                }
+            }
+            return dir.delete();
+        } else if (dir != null && dir.isFile()) {
+            return dir.delete();
+        } else {
+            return false;
+        }
+    }
 
 }
