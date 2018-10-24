@@ -10,6 +10,7 @@ import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
 import android.support.annotation.NonNull;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -41,15 +42,25 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.n4u1.AQA.AQA.dialog.ContentChoiceDialog;
+import com.n4u1.AQA.AQA.models.ContentDTO;
 import com.n4u1.AQA.AQA.recyclerview.PostViewHolder3;
 import com.n4u1.AQA.AQA.util.NotificationJobService;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 public class MineActivity extends AppCompatActivity {
 
     FirebaseUser mFireBaseUser;
     DatabaseReference mDatabaseReference;
+
+    DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
+    FirebaseUser mUser = FirebaseAuth.getInstance().getCurrentUser();
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -171,22 +182,76 @@ public class MineActivity extends AppCompatActivity {
         });
 
 
-        //notify test
+        //notify test, 알람
         mineActivity_linearLayout_noti.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                backgroundNotify();
+
+//                backgroundNotify();
+
+                mDatabase.child("users").child(mUser.getUid()).child("uploadContent").addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        Map<String, Object> uploadContents = (Map<String, Object>) dataSnapshot.getValue();
+//                        Set set = uploadContents.keySet();
+
+                        final ArrayList<String> contentList = new ArrayList<>();
+
+                        for (Map.Entry<String, Object> entry : uploadContents.entrySet()) {
+//                            System.out.println(entry.getKey() + " / " + entry.getValue());
+                            if (entry.getValue().equals("true")) {
+                                contentList.add(entry.getKey());
+                            }
+                        }
+//
+//                        for(int i = 0; i < contentList.size(); i++) {
+//                            System.out.println(contentList.get(i));
+//                        }
+//
+//                        Map<String, String> alarmList;
+//                        alarmList = getAlarmList(contentList);
+
+                        mDatabase.child("user_contents").addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                final HashMap<String, String> list = new HashMap<>();
+                                Iterator<DataSnapshot> listIterator = dataSnapshot.getChildren().iterator();
+                                while (listIterator.hasNext()) {
+                                    ContentDTO contentDTO = listIterator.next().getValue(ContentDTO.class);
+                                    for (int i = 0; i < contentList.size(); i++) {
+                                        if (contentDTO.contentKey.equals(contentList.get(i))) {
+                                            Log.d("lkj", String.valueOf(i) + " : " + contentDTO.contentKey);
+                                            Log.d("lkj", String.valueOf(i) + " : " + contentList.get(i));
+                                            list.put(contentDTO.contentKey, contentDTO.title);
+                                        }
+                                    }
+                                }
+                                list.clear();
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
 
             }
 
         });
 
         //노티 스위치 상태
-        if (mineActivity_switch_noti.getTextOn().toString().equals("on")) {
-            mineActivity_textView_noti.setText("알람(사용중)");
-        } else {
-            mineActivity_textView_noti.setText("알람(미사용중)");
-        }
+//        if (mineActivity_switch_noti.getTextOn().toString().equals("on")) {
+//            mineActivity_textView_noti.setText("알람(사용중)");
+//        } else {
+//            mineActivity_textView_noti.setText("알람(미사용중)");
+//        }
 
 
         //노티 스위치 버튼
@@ -249,6 +314,7 @@ public class MineActivity extends AppCompatActivity {
     }
 
     private void backgroundNotify() {
+        String id = "aa";
         FirebaseJobDispatcher dispatcher = new FirebaseJobDispatcher(new GooglePlayDriver(this));
         Job myJob = dispatcher.newJobBuilder()
                 // the JobService that will be called
@@ -301,11 +367,61 @@ public class MineActivity extends AppCompatActivity {
 
     }
 
+
+    private Map<String, String> getAlarmList(final ArrayList<String> contentList) {
+//        ArrayList<String> alarmList = new ArrayList<>();
+
+        mDatabase.child("user_contents").addListenerForSingleValueEvent(new ValueEventListener() {
+
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//
+//                ArrayList<String> tmp = new ArrayList<>();
+//
+//                Iterator<DataSnapshot> contentDTOIterator = dataSnapshot.getChildren().iterator();
+//
+//                while (contentDTOIterator.hasNext()) {
+//                    final ContentDTO contentDTO = contentDTOIterator.next().getValue(ContentDTO.class);
+//                    tmp.add(contentDTO.title);
+//                }
+                final HashMap<String, String> list = new HashMap<>();
+                Iterator<DataSnapshot> listIterator = dataSnapshot.getChildren().iterator();
+                while (listIterator.hasNext()) {
+                    ContentDTO contentDTO = listIterator.next().getValue(ContentDTO.class);
+
+                    for (int i = 0; i < contentList.size(); i++) {
+                        if (contentDTO.contentKey.equals(contentList.get(i))) {
+                            Log.d("lkj", String.valueOf(i) + " : " + contentDTO.contentKey);
+                            Log.d("lkj", String.valueOf(i) + " : " + contentList.get(i));
+                            list.put(contentDTO.contentKey, contentDTO.title);
+                        }
+                    }
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+        return null;
+
+    }
+
+
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.mine_menu, menu);
         return true;
 
+    }
+
+    @Override
+    public void onAttachedToWindow() {
+        super.onAttachedToWindow();
     }
 
     @Override
