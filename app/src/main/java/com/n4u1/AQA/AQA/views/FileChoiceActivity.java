@@ -525,6 +525,7 @@ public class FileChoiceActivity extends AppCompatActivity
             contentDTO.description = userInputContents.get(3);
             contentDTO.uid = auth.getCurrentUser().getUid();
             contentDTO.userID = userInputContents.get(4);
+            contentDTO.alarm = "C0O0";
             mdatabaseRef.child("user_contents").child(key).setValue(contentDTO);
             mdatabaseRef.child("users").child(auth.getCurrentUser().getUid()).child("uploadContent").child(key).setValue("true");
 
@@ -804,6 +805,7 @@ public class FileChoiceActivity extends AppCompatActivity
             contentDTO.description = userInputContents.get(3);
             contentDTO.uid = auth.getCurrentUser().getUid();
             contentDTO.userID = userInputContents.get(4);
+            contentDTO.alarm = "C0O0";
             mdatabaseRef.child("user_contents").child(key).setValue(contentDTO);
             mdatabaseRef.child("users").child(auth.getCurrentUser().getUid()).child("uploadContent").child(key).setValue("true");
 

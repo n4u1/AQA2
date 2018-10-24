@@ -140,7 +140,7 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
 
         Toolbar myToolbar = findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
-        getSupportActionBar().setHomeAsUpIndicator(R.mipmap.ic_aqa_custom);
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_arrow_back_black_24dp);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         if (getSupportActionBar() != null){
@@ -2196,9 +2196,8 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
                 this.onBackPressed();
                 break;
             case android.R.id.home:
-                Intent intentAqa = new Intent(PollRankingActivity.this, HomeActivity.class);
-                intentAqa.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intentAqa);
+                onBackPressed();
+                break;
         }
         return super.onOptionsItemSelected(item);
     }

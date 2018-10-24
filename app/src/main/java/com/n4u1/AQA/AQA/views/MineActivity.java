@@ -10,6 +10,7 @@ import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -34,6 +35,7 @@ import com.firebase.jobdispatcher.RetryStrategy;
 import com.firebase.jobdispatcher.Trigger;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.ChildEventListener;
 import com.n4u1.AQA.AQA.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -186,62 +188,6 @@ public class MineActivity extends AppCompatActivity {
         mineActivity_linearLayout_noti.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-//                backgroundNotify();
-
-                mDatabase.child("users").child(mUser.getUid()).child("uploadContent").addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        Map<String, Object> uploadContents = (Map<String, Object>) dataSnapshot.getValue();
-//                        Set set = uploadContents.keySet();
-
-                        final ArrayList<String> contentList = new ArrayList<>();
-
-                        for (Map.Entry<String, Object> entry : uploadContents.entrySet()) {
-//                            System.out.println(entry.getKey() + " / " + entry.getValue());
-                            if (entry.getValue().equals("true")) {
-                                contentList.add(entry.getKey());
-                            }
-                        }
-//
-//                        for(int i = 0; i < contentList.size(); i++) {
-//                            System.out.println(contentList.get(i));
-//                        }
-//
-//                        Map<String, String> alarmList;
-//                        alarmList = getAlarmList(contentList);
-
-                        mDatabase.child("user_contents").addListenerForSingleValueEvent(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                final HashMap<String, String> list = new HashMap<>();
-                                Iterator<DataSnapshot> listIterator = dataSnapshot.getChildren().iterator();
-                                while (listIterator.hasNext()) {
-                                    ContentDTO contentDTO = listIterator.next().getValue(ContentDTO.class);
-                                    for (int i = 0; i < contentList.size(); i++) {
-                                        if (contentDTO.contentKey.equals(contentList.get(i))) {
-                                            Log.d("lkj", String.valueOf(i) + " : " + contentDTO.contentKey);
-                                            Log.d("lkj", String.valueOf(i) + " : " + contentList.get(i));
-                                            list.put(contentDTO.contentKey, contentDTO.title);
-                                        }
-                                    }
-                                }
-                                list.clear();
-                            }
-
-                            @Override
-                            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                            }
-                        });
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                    }
-                });
-
             }
 
         });

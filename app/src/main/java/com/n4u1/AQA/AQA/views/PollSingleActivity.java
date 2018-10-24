@@ -3,7 +3,9 @@ package com.n4u1.AQA.AQA.views;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.PorterDuff;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -133,12 +135,14 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
 
         Toolbar myToolbar = findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
-        getSupportActionBar().setHomeAsUpIndicator(R.mipmap.ic_aqa_custom);
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_arrow_back_black_24dp);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         if (getSupportActionBar() != null){
             getSupportActionBar().setTitle(null);
         }
+
+
 
 
         final String contentKey = getIntent().getStringExtra("contentKey");
@@ -2022,9 +2026,8 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
                 break;
 
             case android.R.id.home:
-                Intent intentAqa = new Intent(PollSingleActivity.this, HomeActivity.class);
-                intentAqa.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intentAqa);
+                onBackPressed();
+                break;
 
         }
         return super.onOptionsItemSelected(item);

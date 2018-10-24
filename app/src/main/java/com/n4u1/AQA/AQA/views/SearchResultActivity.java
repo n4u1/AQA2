@@ -38,7 +38,7 @@ public class SearchResultActivity extends AppCompatActivity {
 
         Toolbar myToolbar = findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
-        getSupportActionBar().setHomeAsUpIndicator(R.mipmap.ic_aqa_custom);
+//        getSupportActionBar().setHomeAsUpIndicator(R.mipmap.ic_aqa_custom);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         if (getSupportActionBar() != null){
@@ -134,9 +134,7 @@ public class SearchResultActivity extends AppCompatActivity {
                 break;
 
             case android.R.id.home:
-                Intent intentAqa = new Intent(SearchResultActivity.this, HomeActivity.class);
-                intentAqa.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intentAqa);
+                onBackPressed();
 
         }
         return super.onOptionsItemSelected(item);

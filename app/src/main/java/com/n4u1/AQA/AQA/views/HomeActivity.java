@@ -1,5 +1,6 @@
 package com.n4u1.AQA.AQA.views;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -24,12 +25,19 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import com.firebase.jobdispatcher.FirebaseJobDispatcher;
+import com.firebase.jobdispatcher.GooglePlayDriver;
+import com.firebase.jobdispatcher.Job;
+import com.firebase.jobdispatcher.Lifetime;
+import com.firebase.jobdispatcher.RetryStrategy;
+import com.firebase.jobdispatcher.Trigger;
 import com.github.mikephil.charting.utils.FileUtils;
 import com.google.firebase.auth.FirebaseAuth;
 import com.n4u1.AQA.AQA.R;
 import com.n4u1.AQA.AQA.dialog.ShareDialog;
 import com.n4u1.AQA.AQA.models.ContentDTO;
 import com.n4u1.AQA.AQA.recyclerview.PostAdapter;
+import com.n4u1.AQA.AQA.util.NotificationJobService;
 import com.n4u1.AQA.AQA.util.OnLoadMoreListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -109,6 +117,8 @@ public class HomeActivity extends AppCompatActivity implements SwipeRefreshLayou
         postAdapter = new PostAdapter(this, contentDTOS, recyclerView_home);
         recyclerView_home.setAdapter(postAdapter);
         postAdapter.notifyDataSetChanged();
+
+        backgroundNotify();
 
 
         //실시간 투표순위 5개
@@ -506,7 +516,9 @@ public class HomeActivity extends AppCompatActivity implements SwipeRefreshLayou
         long intervalTime = tempTime - backPressedTime;
 
         if (0 <= intervalTime && FINISH_INTERVAL_TIME >= intervalTime) {
-            super.onBackPressed();
+//            super.onBackPressed();
+            Activity activity = this;
+            activity.finish();
         } else {
             backPressedTime = tempTime;
             Toast.makeText(this, " '뒤로' 버튼을 한번더 누르시면 종료 됩니다.", Toast.LENGTH_SHORT).show();
@@ -647,6 +659,33 @@ public class HomeActivity extends AppCompatActivity implements SwipeRefreshLayou
         } else {
             return false;
         }
+    }
+
+
+    //알람켜기
+    private void backgroundNotify() {
+        FirebaseJobDispatcher dispatcher = new FirebaseJobDispatcher(new GooglePlayDriver(this));
+        Job myJob = dispatcher.newJobBuilder()
+                // the JobService that will be called
+                .setService(NotificationJobService.class)
+                // uniquely identifies the job
+                .setTag("NotificationJobService")
+                // one-off job
+                .setRecurring(true)
+                // don't persist past a device reboot
+                .setLifetime(Lifetime.FOREVER)
+                // start between 0 and 60 seconds from now
+                .setTrigger(Trigger.executionWindow(10, 20))
+                // don't overwrite an existing job with the same tag
+                .setReplaceCurrent(true)
+                // retry with exponential backoff
+                .setRetryStrategy(RetryStrategy.DEFAULT_LINEAR)
+                // constraints that need to be satisfied for the job to run
+
+
+                .build();
+
+        dispatcher.mustSchedule(myJob);
     }
 
 }

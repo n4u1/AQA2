@@ -27,6 +27,10 @@ public class ContentDTO {
     public String contentKey;
     public String replyDate;
 
+    //알람카운트
+    //C아래 숫자 : continue, N번 마다 노티
+    //O아래 숫자 : one, N번 째 한번 노티
+    public String alarm = "C0O0";
     public boolean isUserLike;
     public int pickCandidate = 0;
     public int candidateScore_0 = 0;
@@ -97,6 +101,14 @@ public class ContentDTO {
 
     public void setStatistics_code(String statistics_code) {
         this.statistics_code = statistics_code;
+    }
+
+    public String getAlarm() {
+        return alarm;
+    }
+
+    public void setAlarm(String alarm) {
+        this.alarm = alarm;
     }
 
     public String getVideoUrl_0() {
