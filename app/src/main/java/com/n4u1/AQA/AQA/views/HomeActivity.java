@@ -66,12 +66,10 @@ public class HomeActivity extends AppCompatActivity implements SwipeRefreshLayou
     private FirebaseDatabase firebaseDatabase;
     private FirebaseAuth auth;
     protected Handler handler;
-    private LinearLayoutManager mLayoutManager;
     private RecyclerView recyclerView_home;
     private PostAdapter postAdapter;
     final ArrayList<ContentDTO> contentDTOS = new ArrayList<>();
     final ArrayList<ContentDTO> issueContentDTOS = new ArrayList<>();
-    private final long FINISH_INTERVAL_TIME = 2000;
     private long backPressedTime = 0;
     final ArrayList<String> tempKey = new ArrayList<>();
     final ArrayList<String> issueContents_ = new ArrayList<>();
@@ -109,7 +107,7 @@ public class HomeActivity extends AppCompatActivity implements SwipeRefreshLayou
 
 
         recyclerView_home.setHasFixedSize(true);
-        mLayoutManager = new LinearLayoutManager(this);//20180730 전날꺼 보기 getApplicationContext()전에 this,?? 였음
+        LinearLayoutManager mLayoutManager = new LinearLayoutManager(this);
         mLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         mLayoutManager.isSmoothScrollbarEnabled();
         mLayoutManager.setStackFromEnd(true);
@@ -306,8 +304,6 @@ public class HomeActivity extends AppCompatActivity implements SwipeRefreshLayou
                     ContentDTO contentDTO = snapshot.getValue(ContentDTO.class);
                     contentDTOSTemp.add(contentDTO);
                 }
-
-
                 Collections.reverse(contentDTOSTemp);
                 for (int i = 0; i < 10; i++) {
                     try {
@@ -315,10 +311,7 @@ public class HomeActivity extends AppCompatActivity implements SwipeRefreshLayou
                     } catch (Exception e) {
 
                     }
-
                 }
-
-
                 postAdapter.notifyDataSetChanged();
                 recyclerView_home.scrollToPosition(0);
             }
@@ -515,6 +508,7 @@ public class HomeActivity extends AppCompatActivity implements SwipeRefreshLayou
         long tempTime = System.currentTimeMillis();
         long intervalTime = tempTime - backPressedTime;
 
+        long FINISH_INTERVAL_TIME = 2000;
         if (0 <= intervalTime && FINISH_INTERVAL_TIME >= intervalTime) {
 //            super.onBackPressed();
             Activity activity = this;

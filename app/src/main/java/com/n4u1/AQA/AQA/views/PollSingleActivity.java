@@ -417,9 +417,6 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
                         long issueDate = getCurrentDate();
                         issueMap.put(String.valueOf(issueDate), contentKey);
                         firebaseDatabase.getReference().child("issueContents").child(String.valueOf(issueDate)).setValue(issueMap);
-//                        long issueDate = getCurrentDate();
-                        issueMap.put(String.valueOf(issueDate), contentKey);
-                        firebaseDatabase.getReference().child("issueContents").child(String.valueOf(issueDate)).setValue(issueMap);
                     }
 
                     @Override
@@ -1214,6 +1211,7 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
     private void onResultClicked(final DatabaseReference postRef, final int currentAge, final String currentGender) {
         final int contentAmount = getIntent().getIntExtra("itemViewType", 0);
         Log.d("lkj contentAmount", String.valueOf(contentAmount));
+
         postRef.runTransaction(new Transaction.Handler() {
             @Override
             public Transaction.Result doTransaction(MutableData mutableData) {

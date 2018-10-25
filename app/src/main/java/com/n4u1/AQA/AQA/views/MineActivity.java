@@ -72,7 +72,7 @@ public class MineActivity extends AppCompatActivity {
 
         Toolbar myToolbar = findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
-        getSupportActionBar().setHomeAsUpIndicator(R.mipmap.ic_aqa_custom);
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_arrow_back_black_24dp);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
@@ -383,11 +383,8 @@ public class MineActivity extends AppCompatActivity {
 
 
             case android.R.id.home:
-                Intent intentAqa = new Intent(MineActivity.this, HomeActivity.class);
-                intentAqa.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-
-                startActivity(intentAqa);
-                finish();
+                onBackPressed();
+                break;
 
 
         }

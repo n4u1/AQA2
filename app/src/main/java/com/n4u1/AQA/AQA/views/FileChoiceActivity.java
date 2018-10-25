@@ -41,7 +41,9 @@ import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 import java.util.TimeZone;
 
 public class FileChoiceActivity extends AppCompatActivity
@@ -235,6 +237,8 @@ public class FileChoiceActivity extends AppCompatActivity
 
     //upload할 파일의 경로를 리스너로 받음 → 현재프레그먼트에 따라서 → FireBase 에 업로드
     public void upload(final String[] uri) {
+        Map<String, Integer> myContentIntoId = new HashMap<>();
+        myContentIntoId.put(auth.getCurrentUser().getUid(), 9999);
         Fragment page = getSupportFragmentManager().findFragmentByTag("android:switcher:" + R.id.viewPager + ":" + viewPager.getCurrentItem());
         Log.d("lkjtest", String.valueOf(page));
         /*VideoVideoVideoVideoVideoVideoVideoVideoVideoVideoVideoVideoVideoVideoVideoVideoVideoVideoVideoVideoVideoVideoVideoVideoVideoVideoVideoVideoVideoVideoVideoVideoVideo*/
@@ -255,6 +259,8 @@ public class FileChoiceActivity extends AppCompatActivity
             contentDTO.description = userInputContents.get(3);
             contentDTO.uid = auth.getCurrentUser().getUid();
             contentDTO.userID = auth.getCurrentUser().getEmail();
+            contentDTO.contentPicker = myContentIntoId;
+
             mdatabaseRef.child("user_contents").child(key).setValue(contentDTO);
             mdatabaseRef.child("users").child(auth.getCurrentUser().getUid()).child("uploadContent").child(key).setValue("true");
 //
@@ -526,6 +532,7 @@ public class FileChoiceActivity extends AppCompatActivity
             contentDTO.uid = auth.getCurrentUser().getUid();
             contentDTO.userID = userInputContents.get(4);
             contentDTO.alarm = "C0O0";
+            contentDTO.contentPicker = myContentIntoId;
             mdatabaseRef.child("user_contents").child(key).setValue(contentDTO);
             mdatabaseRef.child("users").child(auth.getCurrentUser().getUid()).child("uploadContent").child(key).setValue("true");
 
@@ -805,6 +812,7 @@ public class FileChoiceActivity extends AppCompatActivity
             contentDTO.description = userInputContents.get(3);
             contentDTO.uid = auth.getCurrentUser().getUid();
             contentDTO.userID = userInputContents.get(4);
+            contentDTO.contentPicker = myContentIntoId;
             contentDTO.alarm = "C0O0";
             mdatabaseRef.child("user_contents").child(key).setValue(contentDTO);
             mdatabaseRef.child("users").child(auth.getCurrentUser().getUid()).child("uploadContent").child(key).setValue("true");

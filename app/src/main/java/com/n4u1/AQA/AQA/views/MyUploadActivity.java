@@ -1,12 +1,15 @@
 package com.n4u1.AQA.AQA.views;
 
 import android.content.Intent;
+import android.os.Handler;
 import android.support.annotation.NonNull;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -21,8 +24,10 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.n4u1.AQA.AQA.util.OnLoadMoreListener;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
@@ -32,9 +37,11 @@ public class MyUploadActivity extends AppCompatActivity {
     private FirebaseDatabase mDatabase;
     private FirebaseDatabase mDatabaseUser;
     private FirebaseUser mFireBaseUser;
+    protected Handler handler;
+    private PostAdapterMine postAdapterMine;
+    private SwipeRefreshLayout swipeRFL;
 
     final ArrayList<ContentDTO> contentDTOS = new ArrayList<>();
-    final PostAdapterMine postAdapterMine = new PostAdapterMine(this, contentDTOS);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,10 +51,10 @@ public class MyUploadActivity extends AppCompatActivity {
 
         Toolbar myToolbar = findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
-        getSupportActionBar().setHomeAsUpIndicator(R.mipmap.ic_aqa_custom);
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_arrow_back_black_24dp);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
-        if (getSupportActionBar() != null){
+        if (getSupportActionBar() != null) {
             getSupportActionBar().setTitle(null);
         }
 
@@ -55,7 +62,9 @@ public class MyUploadActivity extends AppCompatActivity {
         mDatabaseUser = FirebaseDatabase.getInstance();
         mFireBaseUser = FirebaseAuth.getInstance().getCurrentUser();
 
+        swipeRFL = findViewById(R.id.swipeRFL);
         final RecyclerView recyclerView_myUpload = findViewById(R.id.recyclerView_myUpload);
+        postAdapterMine = new PostAdapterMine(this, contentDTOS, recyclerView_myUpload);
         final TextView textView_myUpload = findViewById(R.id.textView_myUpload);
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         mLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
@@ -96,7 +105,6 @@ public class MyUploadActivity extends AppCompatActivity {
                                 key.add((String) iterator.next());
                                 tempCount++;
                             }
-
                             contentDTOS.clear();
                             for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                                 ContentDTO contentDTO = snapshot.getValue(ContentDTO.class);
@@ -125,6 +133,17 @@ public class MyUploadActivity extends AppCompatActivity {
 
             }
         });
+
+
+        swipeRFL.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                finish();
+                overridePendingTransition(0, 0);
+                startActivity(getIntent());
+                overridePendingTransition(0, 0);
+            }
+        });
     }
 
 
@@ -143,13 +162,16 @@ public class MyUploadActivity extends AppCompatActivity {
                 Intent intentHome = new Intent(MyUploadActivity.this, HomeActivity.class);
                 startActivity(intentHome);
                 break;
-            case R.id.menu_back:
-                break;
 
+            case R.id.menu_refresh:
+                finish();
+                overridePendingTransition(0, 0);
+                startActivity(getIntent());
+                overridePendingTransition(0, 0);
+                break;
             case android.R.id.home:
-                Intent intentAqa = new Intent(MyUploadActivity.this, HomeActivity.class);
-                intentAqa.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intentAqa);
+                onBackPressed();
+                break;
         }
 //        onBackPressed();
         return super.onOptionsItemSelected(item);

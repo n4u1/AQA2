@@ -2,6 +2,7 @@ package com.n4u1.AQA.AQA.views;
 
 import android.content.Intent;
 import android.support.annotation.NonNull;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -22,6 +23,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
@@ -29,12 +31,12 @@ import java.util.Set;
 public class MyPollActivity extends AppCompatActivity {
 
 
-    private FirebaseDatabase mDatabase;
     private FirebaseDatabase mDatabaseUser;
     private FirebaseUser mFireBaseUser;
 
     final ArrayList<ContentDTO> contentDTOS = new ArrayList<>();
-    final PostAdapterMine postAdapterMine = new PostAdapterMine(this, contentDTOS);
+    private SwipeRefreshLayout swipeRFL;
+
 
 
     @Override
@@ -45,7 +47,7 @@ public class MyPollActivity extends AppCompatActivity {
 
         Toolbar myToolbar = findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
-        getSupportActionBar().setHomeAsUpIndicator(R.mipmap.ic_aqa_custom);
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_arrow_back_black_24dp);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         if (getSupportActionBar() != null) {
@@ -53,11 +55,13 @@ public class MyPollActivity extends AppCompatActivity {
         }
 
 
-        mDatabase = FirebaseDatabase.getInstance();
+        FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
         mDatabaseUser = FirebaseDatabase.getInstance();
         mFireBaseUser = FirebaseAuth.getInstance().getCurrentUser();
 
+        swipeRFL = findViewById(R.id.swipeRFL);
         final RecyclerView recyclerViewList = findViewById(R.id.recyclerView_home);
+        final PostAdapterMine postAdapterMine = new PostAdapterMine(this, contentDTOS, recyclerViewList);
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         mLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         mLayoutManager.isSmoothScrollbarEnabled();
@@ -75,7 +79,6 @@ public class MyPollActivity extends AppCompatActivity {
 
             @Override
             public void onDataChange(@NonNull final DataSnapshot dataSnapshot) {
-
                 mDatabaseUser.getReference().child("users").child(mFireBaseUser.getUid()).child("pickContent").addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshots) {
@@ -119,6 +122,20 @@ public class MyPollActivity extends AppCompatActivity {
 
             }
         });
+
+
+        swipeRFL.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                finish();
+                overridePendingTransition(0, 0);
+                startActivity(getIntent());
+                overridePendingTransition(0, 0);
+            }
+        });
+
+
+
     }
 
 
@@ -137,12 +154,10 @@ public class MyPollActivity extends AppCompatActivity {
                 Intent intentHome = new Intent(MyPollActivity.this, HomeActivity.class);
                 startActivity(intentHome);
                 break;
-            case R.id.menu_back:
-                break;
+
             case android.R.id.home:
-                Intent intentAqa = new Intent(MyPollActivity.this, HomeActivity.class);
-                intentAqa.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intentAqa);
+                onBackPressed();
+                break;
         }
 //        onBackPressed();
         return super.onOptionsItemSelected(item);
