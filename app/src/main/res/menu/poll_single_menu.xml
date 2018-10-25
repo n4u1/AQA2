@@ -18,12 +18,6 @@
         app:showAsAction="always"/>
 
 
-    <item
-        android:title="뒤로"
-        android:id="@+id/menu_back"
-        android:icon="@drawable/ic_arrow_back_black_24dp"
-        app:showAsAction="always"/>
-
 
 
 </menu>

@@ -59,11 +59,16 @@ public class NotificationJobService extends JobService {
                         //내가 게시한 투표 리스트 가져오기
                         Map<String, Object> uploadContents = (Map<String, Object>) dataSnapshot.getValue();
                         final ArrayList<String> contentList = new ArrayList<>();
-                        for (Map.Entry<String, Object> entry : uploadContents.entrySet()) {
-                            if (entry.getValue().equals("true")) {
-                                contentList.add(entry.getKey());
+                        try {
+                            for (Map.Entry<String, Object> entry : uploadContents.entrySet()) {
+                                if (entry.getValue().equals("true")) {
+                                    contentList.add(entry.getKey());
+                                }
                             }
+                        } catch (Exception e) {
+                            e.printStackTrace();
                         }
+
 
                         //가져온 리스트와 전체 리스트 비교하기
                         mDatabase.child("user_contents").addListenerForSingleValueEvent(new ValueEventListener() {
@@ -109,8 +114,6 @@ public class NotificationJobService extends JobService {
 
                                                 }
                                             });
-
-
                                         }
                                     }
                                 }

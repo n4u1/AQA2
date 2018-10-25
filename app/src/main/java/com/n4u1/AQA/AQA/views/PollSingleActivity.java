@@ -106,7 +106,7 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
             pollActivity_imageView_around_7, pollActivity_imageView_around_8,
             pollActivity_imageView_around_9, pollActivity_imageView_around_10;
 
-    ImageView imageView_userClass0, imageView_userClass1, imageView_userClass2;
+    ImageView pollActivity_imageView_userClass, imageView_userClass0, imageView_userClass1, imageView_userClass2;
     ImageView pollActivity_button_replySend;
     EditText pollActivity_editText_reply;
     RecyclerView pollActivity_recyclerView_reply;
@@ -115,16 +115,16 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
     LinearLayout linearLayout_bestReply0, linearLayout_bestReply1, linearLayout_bestReply2;
     TextView bestReply_id0, bestReply_id1, bestReply_id2, bestReply_reply0, bestReply_reply1, bestReply_reply2,
             bestReply_date0, bestReply_date1, bestReply_date2, bestReply_likeCount0, bestReply_likeCount1, bestReply_likeCount2;
-    ImageView bestReply_thumbImg0, bestReply_thumbImg1, bestReply_thumbImg2;
+    ImageView bestReply_thumbImg0, bestReply_thumbImg1, bestReply_thumbImg2, pollActivity_imageView_showMore;
 
     TextView pollActivity_textView_check_1, pollActivity_textView_check_2,
             pollActivity_textView_check_3, pollActivity_textView_check_4,
             pollActivity_textView_check_5, pollActivity_textView_check_6,
             pollActivity_textView_check_7, pollActivity_textView_check_8,
-            pollActivity_textView_check_9, pollActivity_textView_check_10;
+            pollActivity_textView_check_9, pollActivity_textView_check_10, pollActivity_textView_userId ;
 
-    TextView pollActivity_textView_hitCount, pollActivity_textView_likeCount, pollActivity_textView_contentId;
-    ImageView pollActivity_imageView_state, pollActivity_imageView_like, pollActivity_imageView_share;
+    TextView pollActivity_textView_hitCount, pollActivity_textView_likeCount, pollActivity_textView_contentId, pollActivity_textView_replyCount;
+    ImageView pollActivity_imageView_state, pollActivity_imageView_like;
 
 
     @Override
@@ -138,17 +138,137 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_arrow_back_black_24dp);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
-        if (getSupportActionBar() != null){
+        if (getSupportActionBar() != null) {
             getSupportActionBar().setTitle(null);
         }
-
-
 
 
         final String contentKey = getIntent().getStringExtra("contentKey");
         contentHit = getIntent().getIntExtra("contentHit", 999999);
 
 
+        mDatabaseReference = FirebaseDatabase.getInstance().getReference("user_contents").child(contentKey);
+        mDatabaseReferencePicker = FirebaseDatabase.getInstance().getReference("users");
+        auth = FirebaseAuth.getInstance();
+        firebaseDatabase = FirebaseDatabase.getInstance();
+        likeFirebaseDatabase = FirebaseDatabase.getInstance();
+
+
+        pollActivity_imageView_around_1 = findViewById(R.id.pollActivity_imageView_around_1);
+
+
+//        scrollView = findViewById(R.id.scrollView);
+        pollActivity_fab_result = findViewById(R.id.pollActivity_fab_result);
+        pollActivity_textView_title = findViewById(R.id.pollActivity_textView_title);
+        pollActivity_textView_description = findViewById(R.id.pollActivity_textView_description);
+        pollActivity_textView_contentType = findViewById(R.id.pollActivity_textView_contentType);
+        pollActivity_textView_pollMode = findViewById(R.id.pollActivity_textView_pollMode);
+        pollActivity_textView_date = findViewById(R.id.pollActivity_textView_date);
+        pollActivity_textView_contentId = findViewById(R.id.pollActivity_textView_contentId);
+        pollActivity_imageView_showMore = findViewById(R.id.pollActivity_imageView_showMore);
+        pollActivity_imageView_userClass = findViewById(R.id.pollActivity_imageView_userClass);
+        imageView_userClass0 = findViewById(R.id.imageView_userClass0);
+        imageView_userClass1 = findViewById(R.id.imageView_userClass1);
+        imageView_userClass2 = findViewById(R.id.imageView_userClass2);
+
+
+        pollActivity_textView_replyCount = findViewById(R.id.pollActivity_textView_replyCount);
+        pollActivity_imageView_userAddContent_1 = findViewById(R.id.pollActivity_imageView_userAddContent_1);
+        pollActivity_imageView_userAddContent_2 = findViewById(R.id.pollActivity_imageView_userAddContent_2);
+        pollActivity_imageView_userAddContent_3 = findViewById(R.id.pollActivity_imageView_userAddContent_3);
+        pollActivity_imageView_userAddContent_4 = findViewById(R.id.pollActivity_imageView_userAddContent_4);
+        pollActivity_imageView_userAddContent_5 = findViewById(R.id.pollActivity_imageView_userAddContent_5);
+        pollActivity_imageView_userAddContent_6 = findViewById(R.id.pollActivity_imageView_userAddContent_6);
+        pollActivity_imageView_userAddContent_7 = findViewById(R.id.pollActivity_imageView_userAddContent_7);
+        pollActivity_imageView_userAddContent_8 = findViewById(R.id.pollActivity_imageView_userAddContent_8);
+        pollActivity_imageView_userAddContent_9 = findViewById(R.id.pollActivity_imageView_userAddContent_9);
+        pollActivity_imageView_userAddContent_10 = findViewById(R.id.pollActivity_imageView_userAddContent_10);
+
+        pollActivity_textView_userId = findViewById(R.id.pollActivity_textView_userId);
+        linearLayout_bestReply0 = findViewById(R.id.linearLayout_bestReply0);
+        linearLayout_bestReply1 = findViewById(R.id.linearLayout_bestReply1);
+        linearLayout_bestReply2 = findViewById(R.id.linearLayout_bestReply2);
+        bestReply_thumbImg0 = findViewById(R.id.bestReply_thumbImg0);
+        bestReply_thumbImg1 = findViewById(R.id.bestReply_thumbImg1);
+        bestReply_thumbImg2 = findViewById(R.id.bestReply_thumbImg2);
+        bestReply_id0 = findViewById(R.id.bestReply_id0);
+        bestReply_id1 = findViewById(R.id.bestReply_id1);
+        bestReply_id2 = findViewById(R.id.bestReply_id2);
+        bestReply_reply0 = findViewById(R.id.bestReply_reply0);
+        bestReply_reply1 = findViewById(R.id.bestReply_reply1);
+        bestReply_reply2 = findViewById(R.id.bestReply_reply2);
+        bestReply_date0 = findViewById(R.id.bestReply_date0);
+        bestReply_date1 = findViewById(R.id.bestReply_date1);
+        bestReply_date2 = findViewById(R.id.bestReply_date2);
+        bestReply_likeCount0 = findViewById(R.id.bestReply_likeCount0);
+        bestReply_likeCount1 = findViewById(R.id.bestReply_likeCount1);
+        bestReply_likeCount2 = findViewById(R.id.bestReply_likeCount2);
+
+        pollActivity_relativeLayout_reply = findViewById(R.id.pollActivity_relativeLayout_reply);
+        pollActivity_recyclerView_reply = findViewById(R.id.pollActivity_recyclerView_reply);
+        pollActivity_editText_reply = findViewById(R.id.pollActivity_editText_reply);
+        pollActivity_button_replySend = findViewById(R.id.pollActivity_button_replySend);
+
+        pollActivity_imageView_choice_1 = findViewById(R.id.pollActivity_imageView_choice_1);
+        pollActivity_imageView_choice_2 = findViewById(R.id.pollActivity_imageView_choice_2);
+        pollActivity_imageView_choice_3 = findViewById(R.id.pollActivity_imageView_choice_3);
+        pollActivity_imageView_choice_4 = findViewById(R.id.pollActivity_imageView_choice_4);
+        pollActivity_imageView_choice_5 = findViewById(R.id.pollActivity_imageView_choice_5);
+        pollActivity_imageView_choice_6 = findViewById(R.id.pollActivity_imageView_choice_6);
+        pollActivity_imageView_choice_7 = findViewById(R.id.pollActivity_imageView_choice_7);
+        pollActivity_imageView_choice_8 = findViewById(R.id.pollActivity_imageView_choice_8);
+        pollActivity_imageView_choice_9 = findViewById(R.id.pollActivity_imageView_choice_9);
+        pollActivity_imageView_choice_10 = findViewById(R.id.pollActivity_imageView_choice_10);
+
+        pollActivity_textView_check_1 = findViewById(R.id.pollActivity_textView_check_1);
+        pollActivity_textView_check_2 = findViewById(R.id.pollActivity_textView_check_2);
+        pollActivity_textView_check_3 = findViewById(R.id.pollActivity_textView_check_3);
+        pollActivity_textView_check_4 = findViewById(R.id.pollActivity_textView_check_4);
+        pollActivity_textView_check_5 = findViewById(R.id.pollActivity_textView_check_5);
+        pollActivity_textView_check_6 = findViewById(R.id.pollActivity_textView_check_6);
+        pollActivity_textView_check_7 = findViewById(R.id.pollActivity_textView_check_7);
+        pollActivity_textView_check_8 = findViewById(R.id.pollActivity_textView_check_8);
+        pollActivity_textView_check_9 = findViewById(R.id.pollActivity_textView_check_9);
+        pollActivity_textView_check_10 = findViewById(R.id.pollActivity_textView_check_10);
+
+        pollActivity_imageView_around_1 = findViewById(R.id.pollActivity_imageView_around_1);
+        pollActivity_imageView_around_2 = findViewById(R.id.pollActivity_imageView_around_2);
+        pollActivity_imageView_around_3 = findViewById(R.id.pollActivity_imageView_around_3);
+        pollActivity_imageView_around_4 = findViewById(R.id.pollActivity_imageView_around_4);
+        pollActivity_imageView_around_5 = findViewById(R.id.pollActivity_imageView_around_5);
+        pollActivity_imageView_around_6 = findViewById(R.id.pollActivity_imageView_around_6);
+        pollActivity_imageView_around_7 = findViewById(R.id.pollActivity_imageView_around_7);
+        pollActivity_imageView_around_8 = findViewById(R.id.pollActivity_imageView_around_8);
+        pollActivity_imageView_around_9 = findViewById(R.id.pollActivity_imageView_around_9);
+        pollActivity_imageView_around_10 = findViewById(R.id.pollActivity_imageView_around_10);
+
+
+        pollActivity_textView_hitCount = findViewById(R.id.pollActivity_textView_hitCount);
+        pollActivity_textView_likeCount = findViewById(R.id.pollActivity_textView_likeCount);
+        pollActivity_imageView_state = findViewById(R.id.pollActivity_imageView_state);
+        pollActivity_imageView_like = findViewById(R.id.pollActivity_imageView_like);
+
+
+        pollActivity_imageView_userAddContent_1.setOnClickListener(this);
+        pollActivity_imageView_userAddContent_2.setOnClickListener(this);
+        pollActivity_imageView_userAddContent_3.setOnClickListener(this);
+        pollActivity_imageView_userAddContent_4.setOnClickListener(this);
+        pollActivity_imageView_userAddContent_5.setOnClickListener(this);
+        pollActivity_imageView_userAddContent_6.setOnClickListener(this);
+        pollActivity_imageView_userAddContent_7.setOnClickListener(this);
+        pollActivity_imageView_userAddContent_8.setOnClickListener(this);
+        pollActivity_imageView_userAddContent_9.setOnClickListener(this);
+        pollActivity_imageView_userAddContent_10.setOnClickListener(this);
+        pollActivity_textView_check_1.setOnClickListener(this);
+        pollActivity_textView_check_2.setOnClickListener(this);
+        pollActivity_textView_check_3.setOnClickListener(this);
+        pollActivity_textView_check_4.setOnClickListener(this);
+        pollActivity_textView_check_5.setOnClickListener(this);
+        pollActivity_textView_check_6.setOnClickListener(this);
+        pollActivity_textView_check_7.setOnClickListener(this);
+        pollActivity_textView_check_8.setOnClickListener(this);
+        pollActivity_textView_check_9.setOnClickListener(this);
+        pollActivity_textView_check_10.setOnClickListener(this);
 
 
         //reply item click listener 댓글 클릭 리스너
@@ -230,129 +350,6 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
             }
         });
 
-        mDatabaseReference = FirebaseDatabase.getInstance().getReference("user_contents").child(contentKey);
-        mDatabaseReferencePicker = FirebaseDatabase.getInstance().getReference("users");
-        auth = FirebaseAuth.getInstance();
-        firebaseDatabase = FirebaseDatabase.getInstance();
-        likeFirebaseDatabase = FirebaseDatabase.getInstance();
-
-
-        pollActivity_imageView_around_1 = findViewById(R.id.pollActivity_imageView_around_1);
-
-
-//        scrollView = findViewById(R.id.scrollView);
-        pollActivity_fab_result = findViewById(R.id.pollActivity_fab_result);
-        pollActivity_textView_title = findViewById(R.id.pollActivity_textView_title);
-        pollActivity_textView_description = findViewById(R.id.pollActivity_textView_description);
-        pollActivity_textView_contentType = findViewById(R.id.pollActivity_textView_contentType);
-        pollActivity_textView_pollMode = findViewById(R.id.pollActivity_textView_pollMode);
-        pollActivity_textView_date = findViewById(R.id.pollActivity_textView_date);
-        pollActivity_textView_contentId = findViewById(R.id.pollActivity_textView_contentId);
-
-        imageView_userClass0 = findViewById(R.id.imageView_userClass0);
-        imageView_userClass1 = findViewById(R.id.imageView_userClass1);
-        imageView_userClass2 = findViewById(R.id.imageView_userClass2);
-
-        pollActivity_imageView_userAddContent_1 = findViewById(R.id.pollActivity_imageView_userAddContent_1);
-        pollActivity_imageView_userAddContent_2 = findViewById(R.id.pollActivity_imageView_userAddContent_2);
-        pollActivity_imageView_userAddContent_3 = findViewById(R.id.pollActivity_imageView_userAddContent_3);
-        pollActivity_imageView_userAddContent_4 = findViewById(R.id.pollActivity_imageView_userAddContent_4);
-        pollActivity_imageView_userAddContent_5 = findViewById(R.id.pollActivity_imageView_userAddContent_5);
-        pollActivity_imageView_userAddContent_6 = findViewById(R.id.pollActivity_imageView_userAddContent_6);
-        pollActivity_imageView_userAddContent_7 = findViewById(R.id.pollActivity_imageView_userAddContent_7);
-        pollActivity_imageView_userAddContent_8 = findViewById(R.id.pollActivity_imageView_userAddContent_8);
-        pollActivity_imageView_userAddContent_9 = findViewById(R.id.pollActivity_imageView_userAddContent_9);
-        pollActivity_imageView_userAddContent_10 = findViewById(R.id.pollActivity_imageView_userAddContent_10);
-
-        linearLayout_bestReply0 = findViewById(R.id.linearLayout_bestReply0);
-        linearLayout_bestReply1 = findViewById(R.id.linearLayout_bestReply1);
-        linearLayout_bestReply2 = findViewById(R.id.linearLayout_bestReply2);
-        bestReply_thumbImg0 = findViewById(R.id.bestReply_thumbImg0);
-        bestReply_thumbImg1 = findViewById(R.id.bestReply_thumbImg1);
-        bestReply_thumbImg2 = findViewById(R.id.bestReply_thumbImg2);
-        bestReply_id0 = findViewById(R.id.bestReply_id0);
-        bestReply_id1 = findViewById(R.id.bestReply_id1);
-        bestReply_id2 = findViewById(R.id.bestReply_id2);
-        bestReply_reply0 = findViewById(R.id.bestReply_reply0);
-        bestReply_reply1 = findViewById(R.id.bestReply_reply1);
-        bestReply_reply2 = findViewById(R.id.bestReply_reply2);
-        bestReply_date0 = findViewById(R.id.bestReply_date0);
-        bestReply_date1 = findViewById(R.id.bestReply_date1);
-        bestReply_date2 = findViewById(R.id.bestReply_date2);
-        bestReply_likeCount0 = findViewById(R.id.bestReply_likeCount0);
-        bestReply_likeCount1 = findViewById(R.id.bestReply_likeCount1);
-        bestReply_likeCount2 = findViewById(R.id.bestReply_likeCount2);
-
-        pollActivity_relativeLayout_reply = findViewById(R.id.pollActivity_relativeLayout_reply);
-        pollActivity_recyclerView_reply = findViewById(R.id.pollActivity_recyclerView_reply);
-        pollActivity_editText_reply = findViewById(R.id.pollActivity_editText_reply);
-        pollActivity_button_replySend = findViewById(R.id.pollActivity_button_replySend);
-
-        pollActivity_imageView_choice_1 = findViewById(R.id.pollActivity_imageView_choice_1);
-        pollActivity_imageView_choice_2 = findViewById(R.id.pollActivity_imageView_choice_2);
-        pollActivity_imageView_choice_3 = findViewById(R.id.pollActivity_imageView_choice_3);
-        pollActivity_imageView_choice_4 = findViewById(R.id.pollActivity_imageView_choice_4);
-        pollActivity_imageView_choice_5 = findViewById(R.id.pollActivity_imageView_choice_5);
-        pollActivity_imageView_choice_6 = findViewById(R.id.pollActivity_imageView_choice_6);
-        pollActivity_imageView_choice_7 = findViewById(R.id.pollActivity_imageView_choice_7);
-        pollActivity_imageView_choice_8 = findViewById(R.id.pollActivity_imageView_choice_8);
-        pollActivity_imageView_choice_9 = findViewById(R.id.pollActivity_imageView_choice_9);
-        pollActivity_imageView_choice_10 = findViewById(R.id.pollActivity_imageView_choice_10);
-
-        pollActivity_textView_check_1 = findViewById(R.id.pollActivity_textView_check_1);
-        pollActivity_textView_check_2 = findViewById(R.id.pollActivity_textView_check_2);
-        pollActivity_textView_check_3 = findViewById(R.id.pollActivity_textView_check_3);
-        pollActivity_textView_check_4 = findViewById(R.id.pollActivity_textView_check_4);
-        pollActivity_textView_check_5 = findViewById(R.id.pollActivity_textView_check_5);
-        pollActivity_textView_check_6 = findViewById(R.id.pollActivity_textView_check_6);
-        pollActivity_textView_check_7 = findViewById(R.id.pollActivity_textView_check_7);
-        pollActivity_textView_check_8 = findViewById(R.id.pollActivity_textView_check_8);
-        pollActivity_textView_check_9 = findViewById(R.id.pollActivity_textView_check_9);
-        pollActivity_textView_check_10 = findViewById(R.id.pollActivity_textView_check_10);
-
-        pollActivity_imageView_around_1 = findViewById(R.id.pollActivity_imageView_around_1);
-        pollActivity_imageView_around_2 = findViewById(R.id.pollActivity_imageView_around_2);
-        pollActivity_imageView_around_3 = findViewById(R.id.pollActivity_imageView_around_3);
-        pollActivity_imageView_around_4 = findViewById(R.id.pollActivity_imageView_around_4);
-        pollActivity_imageView_around_5 = findViewById(R.id.pollActivity_imageView_around_5);
-        pollActivity_imageView_around_6 = findViewById(R.id.pollActivity_imageView_around_6);
-        pollActivity_imageView_around_7 = findViewById(R.id.pollActivity_imageView_around_7);
-        pollActivity_imageView_around_8 = findViewById(R.id.pollActivity_imageView_around_8);
-        pollActivity_imageView_around_9 = findViewById(R.id.pollActivity_imageView_around_9);
-        pollActivity_imageView_around_10 = findViewById(R.id.pollActivity_imageView_around_10);
-
-//        TextView pollActivity_textView_hitCount, pollActivity_textView_likeCount;
-//        ImageView pollActivity_imageView_state, pollActivity_imageView_like, pollActivity_imageView_share;
-
-        pollActivity_textView_hitCount = findViewById(R.id.pollActivity_textView_hitCount);
-        pollActivity_textView_likeCount = findViewById(R.id.pollActivity_textView_likeCount);
-        pollActivity_imageView_state = findViewById(R.id.pollActivity_imageView_state);
-        pollActivity_imageView_like = findViewById(R.id.pollActivity_imageView_like);
-        pollActivity_imageView_share = findViewById(R.id.pollActivity_imageView_share);
-
-
-        pollActivity_imageView_userAddContent_1.setOnClickListener(this);
-        pollActivity_imageView_userAddContent_2.setOnClickListener(this);
-        pollActivity_imageView_userAddContent_3.setOnClickListener(this);
-        pollActivity_imageView_userAddContent_4.setOnClickListener(this);
-        pollActivity_imageView_userAddContent_5.setOnClickListener(this);
-        pollActivity_imageView_userAddContent_6.setOnClickListener(this);
-        pollActivity_imageView_userAddContent_7.setOnClickListener(this);
-        pollActivity_imageView_userAddContent_8.setOnClickListener(this);
-        pollActivity_imageView_userAddContent_9.setOnClickListener(this);
-        pollActivity_imageView_userAddContent_10.setOnClickListener(this);
-        pollActivity_textView_check_1.setOnClickListener(this);
-        pollActivity_textView_check_2.setOnClickListener(this);
-        pollActivity_textView_check_3.setOnClickListener(this);
-        pollActivity_textView_check_4.setOnClickListener(this);
-        pollActivity_textView_check_5.setOnClickListener(this);
-        pollActivity_textView_check_6.setOnClickListener(this);
-        pollActivity_textView_check_7.setOnClickListener(this);
-        pollActivity_textView_check_8.setOnClickListener(this);
-        pollActivity_textView_check_9.setOnClickListener(this);
-        pollActivity_textView_check_10.setOnClickListener(this);
-
-
         //이미투표했는지 여부 확인해서 floating action button 색 넣기
         fabCheck(firebaseDatabase.getReference().child("user_contents").child(contentKey));
 
@@ -427,7 +424,6 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
 
             }
         });
-
 
 
         //댓글 등록 버튼 색 변경
@@ -554,7 +550,6 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
         });
 
 
-
         //댓글 리사이클러뷰 스크롤은 PollSingleActivity에 포함되도록
         pollActivity_recyclerView_reply.setNestedScrollingEnabled(false);
         pollActivity_recyclerView_reply.setLayoutManager(new LinearLayoutManager(this) {
@@ -617,11 +612,6 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
         });
 
 
-
-
-
-
-
         //이미지 크게보기
 //        isImageFitToScreen = getIntent().getStringExtra("fullScreenIndicator");
 //        if ("y".equals(isImageFitToScreen)) {
@@ -638,10 +628,10 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
 //            pollActivity_imageView_userAddContent_1.setScaleType(ImageView.ScaleType.FIT_XY);
 //        }
 
+        //show more ; show or noShow
 
 
-
-        //contentDTO init binding
+        //contentDTO 화면 초기세팅
         mDatabaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -654,19 +644,19 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
                 pollActivity_textView_pollMode.setText(contentDTO.getPollMode());
                 pollActivity_textView_hitCount.setText(String.valueOf(contentDTO.getContentHit()));
                 pollActivity_textView_likeCount.setText(String.valueOf(contentDTO.getLikeCount()));
+                pollActivity_textView_replyCount.setText(String.valueOf(contentDTO.getReplyCount()));
+                pollActivity_textView_userId.setText(contentDTO.getUserID());
+                settingUserIcon(contentDTO.getUid());
                 if (contentDTO.likes.containsKey(auth.getCurrentUser().getUid())) {
                     pollActivity_imageView_like.setImageResource(R.drawable.ic_thumb_up_blue);
                 } else {
                     pollActivity_imageView_like.setImageResource(R.drawable.ic_outline_thumb_up_24px);
                 }
+                if (contentDTO.getUid().equals(auth.getCurrentUser().getUid())) {
+                    pollActivity_imageView_showMore.setVisibility(View.VISIBLE);
+                }
+
                 switch (contentDTO.getItemViewType()) {
-                    case 1:
-                        pollActivity_textView_check_1.setVisibility(View.VISIBLE);
-                        pollActivity_imageView_around_1.setVisibility(View.VISIBLE);
-                        pollActivity_imageView_choice_1.setVisibility(View.VISIBLE);
-                        pollActivity_imageView_userAddContent_1.setVisibility(View.VISIBLE);
-                        GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_0()).centerCrop().thumbnail(Glide.with(getApplicationContext()).load(R.drawable.loadingicon)).into(pollActivity_imageView_userAddContent_1).getView();
-                        break;
                     case 2:
                         pollActivity_textView_check_1.setVisibility(View.VISIBLE);
                         pollActivity_textView_check_2.setVisibility(View.VISIBLE);
@@ -966,11 +956,46 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
         });
     }
 
+    private void settingUserIcon(String userId) {
+        firebaseDatabase.getReference().child("users").child(userId).child("userClass").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                int userClass = Integer.parseInt(dataSnapshot.getValue().toString());
+                if (userClass >= 0 && userClass < 50) {
+                    pollActivity_imageView_userClass.setImageResource(R.drawable.q_class_red_1);
+                } else if (userClass >= 50 && userClass < 100) {
+                    pollActivity_imageView_userClass.setImageResource(R.drawable.q_class_red_2);
+                } else if (userClass >= 100 && userClass < 150) {
+                    pollActivity_imageView_userClass.setImageResource(R.drawable.q_class_orange_1);
+                } else if (userClass >= 150 && userClass < 200) {
+                    pollActivity_imageView_userClass.setImageResource(R.drawable.q_class_orange_2);
+                } else if (userClass >= 200 && userClass < 250) {
+                    pollActivity_imageView_userClass.setImageResource(R.drawable.q_class_yellow_1);
+                } else if (userClass >= 250 && userClass < 300) {
+                    pollActivity_imageView_userClass.setImageResource(R.drawable.q_class_yellow_2);
+                } else if (userClass >= 300 && userClass < 350) {
+                    pollActivity_imageView_userClass.setImageResource(R.drawable.q_class_green_1);
+                } else if (userClass >= 350 && userClass < 400) {
+                    pollActivity_imageView_userClass.setImageResource(R.drawable.q_class_green_2);
+                } else if (userClass >= 400 && userClass < 450) {
+                    pollActivity_imageView_userClass.setImageResource(R.drawable.q_class_blue_1);
+                } else if (userClass >= 450 && userClass < 501) {
+                    pollActivity_imageView_userClass.setImageResource(R.drawable.q_class_blue_2);
+                }
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+
     /**
      * onCreate()
      */
 
-    private void likeClick () {
+    private void likeClick() {
         final String contentKey = getIntent().getStringExtra("contentKey");
         firebaseDatabase.getReference().child("user_contents").child(contentKey).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -997,6 +1022,7 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
                             pollActivity_textView_likeCount.setText(String.valueOf(contentDTO_.likeCount));
                         }
                     }
+
                     @Override
                     public void onCancelled(@NonNull DatabaseError databaseError) {
 
@@ -1411,7 +1437,7 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
                         firebaseDatabase.getReference().child("reply").child(contentKey).child(replyKey).removeValue();
 
                         Toast.makeText(getApplicationContext(), "삭제하기", Toast.LENGTH_SHORT).show();
-                    } else if (data.getStringArrayListExtra("resultDelete").get(1).equals("수정하기")){
+                    } else if (data.getStringArrayListExtra("resultDelete").get(1).equals("수정하기")) {
                         Toast.makeText(getApplicationContext(), "수정하기", Toast.LENGTH_SHORT).show();
                     } else break;
                     break;
@@ -2017,16 +2043,12 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
                 break;
             case R.id.menu_goHome:
                 Intent intent = new Intent(PollSingleActivity.this, HomeActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
                 break;
-            case R.id.menu_back:
-                this.onBackPressed();
-                break;
-
             case android.R.id.home:
                 onBackPressed();
                 break;
-
         }
         return super.onOptionsItemSelected(item);
     }
