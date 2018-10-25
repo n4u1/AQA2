@@ -91,7 +91,7 @@ public class NotificationJobService extends JobService {
                                                         int index = tmp.indexOf("C");//ContinueCount
                                                         String temp = tmp.substring(index, tmp.length() - 2);
                                                         int index_ = temp.indexOf("O");//OneCount
-                                                        int continueCount = Integer.parseInt(temp.substring(1, index_));
+//                                                        int continueCount = Integer.parseInt(temp.substring(1, index_));
                                                         int oneCount = Integer.parseInt(temp.substring(index_ + 1, temp.length()));
 //
                                                         if (oneCount != 0) {

@@ -38,6 +38,7 @@ import com.n4u1.AQA.AQA.R;
 import com.n4u1.AQA.AQA.dialog.DeleteModificationActivity;
 import com.n4u1.AQA.AQA.dialog.PollResultRankingDialog;
 import com.n4u1.AQA.AQA.dialog.RankingChoiceActivity;
+import com.n4u1.AQA.AQA.dialog.ShowMoreActivity;
 import com.n4u1.AQA.AQA.models.ContentDTO;
 import com.n4u1.AQA.AQA.models.ReplyDTO;
 import com.n4u1.AQA.AQA.recyclerview.PostViewHolder1;
@@ -270,6 +271,20 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
         pollActivity_textView_check_8.setOnClickListener(this);
         pollActivity_textView_check_9.setOnClickListener(this);
         pollActivity_textView_check_10.setOnClickListener(this);
+
+
+
+        //제목옆에 더보기 클릭
+        pollActivity_imageView_showMore.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d("lkjshormore", "showmore");
+                Intent intentShowMore = new Intent(PollRankingActivity.this, ShowMoreActivity.class);
+                intentShowMore.putExtra("pollKey", contentKey);
+                startActivity(intentShowMore);
+            }
+        });
+
 
 
 

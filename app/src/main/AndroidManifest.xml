@@ -67,7 +67,10 @@
             android:name=".dialog.DeleteModificationActivity"
             android:theme="@style/Theme.DialogFragmentActivity" />
         <activity android:name=".views.FindUserActivity" />
-        <activity android:name=".dialog.UploadLoadingActivity"
+        <activity
+            android:name=".dialog.UploadLoadingActivity"
+            android:theme="@style/Theme.DialogFragmentActivity" />
+        <activity android:name=".dialog.ShowMoreActivity"
             android:theme="@style/Theme.DialogFragmentActivity"></activity>
     </application>
 

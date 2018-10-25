@@ -148,6 +148,7 @@ public class MyLikeContentsActivity extends AppCompatActivity {
         switch (curId) {
             case R.id.menu_home:
                 Intent intentHome = new Intent(MyLikeContentsActivity.this, HomeActivity.class);
+                intentHome.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intentHome);
                 break;
 

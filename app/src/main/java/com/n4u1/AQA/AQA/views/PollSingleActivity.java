@@ -34,6 +34,7 @@ import com.bumptech.glide.Glide;
 import com.n4u1.AQA.AQA.R;
 import com.n4u1.AQA.AQA.dialog.DeleteModificationActivity;
 import com.n4u1.AQA.AQA.dialog.PollResultDialog;
+import com.n4u1.AQA.AQA.dialog.ShowMoreActivity;
 import com.n4u1.AQA.AQA.models.ContentDTO;
 import com.n4u1.AQA.AQA.models.ReplyDTO;
 import com.n4u1.AQA.AQA.models.User;
@@ -271,6 +272,20 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
         pollActivity_textView_check_10.setOnClickListener(this);
 
 
+
+        //제목옆에 더보기 클릭
+        pollActivity_imageView_showMore.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d("lkjshormore", "showmore");
+                Intent intentShowMore = new Intent(PollSingleActivity.this, ShowMoreActivity.class);
+                intentShowMore.putExtra("pollKey", contentKey);
+                startActivity(intentShowMore);
+            }
+        });
+
+
+
         //reply item click listener 댓글 클릭 리스너
         final ReplyAdapter replyAdapter = new ReplyAdapter(getApplicationContext(), replyDTOS, new ReplyAdapter.OnItemClickListener() {
             @Override
@@ -353,21 +368,6 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
         //이미투표했는지 여부 확인해서 floating action button 색 넣기
         fabCheck(firebaseDatabase.getReference().child("user_contents").child(contentKey));
 
-
-        //처음 댓글펼치기 버튼의 setText (리플 갯수 넣기위함)
-//        firebaseDatabase.getReference().child("user_contents").child(contentKey).addListenerForSingleValueEvent(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-//                ContentDTO contentDTO = dataSnapshot.getValue(ContentDTO.class);
-//                int replyCount = contentDTO.getReplyCount();
-//                pollActivity_textView_reply.setText("댓글 펼치기(" + replyCount + ")");
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError databaseError) {
-//
-//            }
-//        });
 
         //투표하고 결과보기
         pollActivity_imageView_state.setOnClickListener(new View.OnClickListener() {
