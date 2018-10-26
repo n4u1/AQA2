@@ -391,19 +391,20 @@
         app:layout_constraintVertical_bias="0.964" />
 
 
-    <ImageView
-        android:id="@+id/homeActivity_imageView_share"
-        android:layout_width="66dp"
-        android:layout_height="86dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.94"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button_hLogin"
-        app:layout_constraintVertical_bias="0.303" />
+    <!--<pl.droidsonroids.gif.GifImageView-->
+        <!--android:layout_width="24dp"-->
+        <!--android:layout_height="24dp"-->
+        <!--android:layout_gravity="center"-->
+        <!--android:layout_marginStart="8dp"-->
+        <!--android:layout_marginTop="208dp"-->
+        <!--android:layout_marginEnd="8dp"-->
+        <!--android:layout_marginBottom="8dp"-->
+        <!--android:src="@drawable/qloading4"-->
+        <!--app:layout_constraintBottom_toBottomOf="parent"-->
+        <!--app:layout_constraintEnd_toEndOf="parent"-->
+        <!--app:layout_constraintHorizontal_bias="0.947"-->
+        <!--app:layout_constraintStart_toStartOf="parent"-->
+        <!--app:layout_constraintTop_toTopOf="parent"-->
+        <!--app:layout_constraintVertical_bias="0.755" />-->
 
 </android.support.constraint.ConstraintLayout>

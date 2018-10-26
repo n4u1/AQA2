@@ -66,7 +66,10 @@ public class LoginActivity extends AppCompatActivity {
     private ValueEventListener mEmailListener;
     private ChildEventListener mChildEventListener;
     private FirebaseStorage storage;
-    private SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
+//    private SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
+
+    SplashActivity splashActivity;
+
 
 
     @Override
@@ -118,20 +121,16 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
+//        SharedPreferences pref = getSharedPreferences("com.n4u1.AQA", MODE_PRIVATE);
+//        String spUserEmail = pref.getString("com.n4u1.AQA.fireBaseUserEmail", null);
+//        String spUserPassword = pref.getString("com.n4u1.AQA.fireBaseUserPassword", null);
+//
+//
+//        if (spUserEmail != null || spUserPassword != null) {
+//            Log.d("lkj SharedPreferences", spUserEmail + spUserPassword);
+//            loginUser(spUserEmail, spUserPassword);
+//        }
 
-//        editor.putString("com.n4u1.AQA.fireBaseUid", email);
-//        editor.putString("com.n4u1.AQA.fireBasePassword", password);
-
-        Context context = this;
-//        SharedPreferences sharedPrefId = context.getSharedPreferences("com.n4u1.AQA.fireBaseUid", Context.MODE_PRIVATE);
-//        SharedPreferences sharedPrefPw = context.getSharedPreferences("com.n4u1.AQA.fireBasePassword", Context.MODE_PRIVATE);
-
-        String sharedPrefId = sharedPref.getString("com.n4u1.AQA.fireBaseUid", null);
-        String sharedPrefPw = sharedPref.getString("com.n4u1.AQA.fireBasePassword", null);
-
-        if (sharedPrefId != null && sharedPrefPw != null) {
-            loginUser(sharedPrefId, sharedPrefPw);
-        }
 
 
         //히든
@@ -280,21 +279,31 @@ public class LoginActivity extends AppCompatActivity {
 //    }
 
     private void loginUser(final String email, final String password) {
+
         mAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
+//
+//                            SharedPreferences.Editor editor = sharedPref.edit();
+//                            editor.putString("com.n4u1.AQA.fireBaseUid", email);
+//                            editor.putString("com.n4u1.AQA.fireBasePassword", password);
+//                            editor.commit();
 
-                            SharedPreferences.Editor editor = sharedPref.edit();
-                            editor.putString("com.n4u1.AQA.fireBaseUid", email);
-                            editor.putString("com.n4u1.AQA.fireBasePassword", password);
+
+                            SharedPreferences pref = getSharedPreferences("com.n4u1.AQA", MODE_PRIVATE);
+                            SharedPreferences.Editor editor = pref.edit();
+                            editor.putString("com.n4u1.AQA.fireBaseUserEmail", email);
+                            editor.putString("com.n4u1.AQA.fireBaseUserPassword", password);
                             editor.commit();
 
                             // Sign in success, update UI with the signed-in user's information
                             //Toast.makeText(getApplicationContext(), "User Login Success", Toast.LENGTH_LONG).show();//
                             Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
                             finish();
+
+
                             startActivity(intent);
                         } else {
                             // If sign in fails, display a message to the user.

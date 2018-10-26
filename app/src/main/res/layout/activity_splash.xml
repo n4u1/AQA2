@@ -19,12 +19,20 @@
         android:layout_width="150dp"
         android:layout_height="150dp" />
 
-    <pl.droidsonroids.gif.GifImageView
+    <!--<pl.droidsonroids.gif.GifImageView-->
+        <!--android:layout_gravity="center"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:src="@drawable/loadingicon"/>-->
 
+
+    <pl.droidsonroids.gif.GifImageView
+        android:layout_marginLeft="5dp"
         android:layout_gravity="center"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/loadingicon"/>
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:src="@drawable/qloading4"/>
+
 
 
 

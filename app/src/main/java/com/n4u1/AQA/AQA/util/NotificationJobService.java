@@ -3,6 +3,7 @@ package com.n4u1.AQA.AQA.util;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -14,6 +15,7 @@ import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.TaskStackBuilder;
 import android.util.Log;
 
 import com.firebase.jobdispatcher.JobParameters;
@@ -33,6 +35,7 @@ import com.n4u1.AQA.AQA.views.HomeActivity;
 import com.n4u1.AQA.AQA.views.MineActivity;
 import com.n4u1.AQA.AQA.views.PollRankingActivity;
 import com.n4u1.AQA.AQA.views.PollSingleActivity;
+import com.n4u1.AQA.AQA.views.SplashActivity;
 import com.n4u1.AQA.AQA.views.TestActivity;
 
 import java.util.ArrayList;
@@ -40,6 +43,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
+
+import static android.media.RingtoneManager.getDefaultUri;
 
 public class NotificationJobService extends JobService {
     DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
@@ -153,6 +158,8 @@ public class NotificationJobService extends JobService {
         builder.setContentText(hitCount + "분께서 투표하셨어요!");
         PendingIntent pendingIntent;
 
+        int requestID = (int) System.currentTimeMillis();
+
         Log.d("lkj hitCount", String.valueOf(hitCount));
         Log.d("lkj title", title);
         Log.d("lkj contentKey", contentKey);
@@ -161,20 +168,27 @@ public class NotificationJobService extends JobService {
 
         if (mode.equals("순위 투표")) {
             Intent intentRanking = new Intent(getApplicationContext(), PollRankingActivity.class);
+            TaskStackBuilder stackBuilder = TaskStackBuilder.create(getApplicationContext());
+            stackBuilder.addParentStack(SplashActivity.class);
+            stackBuilder.addNextIntent(intentRanking);
             Bundle bundle = new Bundle();
             bundle.putString("contentKey", contentKey);
             bundle.putInt("itemViewType", itemViewType);
             bundle.putInt("contentHit", hitCount);
             intentRanking.putExtras(bundle);
-            pendingIntent = PendingIntent.getActivity(getApplicationContext(), 0, intentRanking, PendingIntent.FLAG_UPDATE_CURRENT);
+            pendingIntent = stackBuilder.getPendingIntent(requestID, PendingIntent.FLAG_UPDATE_CURRENT);
+
         } else {
             Intent intentSingle = new Intent(getApplicationContext(), PollSingleActivity.class);
+            TaskStackBuilder stackBuilder = TaskStackBuilder.create(getApplicationContext());
+            stackBuilder.addParentStack(SplashActivity.class);
+            stackBuilder.addNextIntent(intentSingle);
             Bundle bundle = new Bundle();
             bundle.putString("contentKey", contentKey);
             bundle.putInt("itemViewType", itemViewType);
             bundle.putInt("contentHit", hitCount);
             intentSingle.putExtras(bundle);
-            pendingIntent = PendingIntent.getActivity(getApplicationContext(), 0, intentSingle, PendingIntent.FLAG_UPDATE_CURRENT);
+            pendingIntent = stackBuilder.getPendingIntent(requestID, PendingIntent.FLAG_UPDATE_CURRENT);
         }
 
 
@@ -198,5 +212,33 @@ public class NotificationJobService extends JobService {
 
 
     }
+//
+//    private void setNotification(String notificationMessage) {
+//
+////**add this line**
+//        int requestID = (int) System.currentTimeMillis();
+//
+//        Uri alarmSound = getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+//        mNotificationManager  = getApplication().getSystemService(Context.NOTIFICATION_SERVICE);
+//
+//        Intent notificationIntent = new Intent(getApplicationContext(), NotificationActivity2.class);
+//
+////**add this line**
+//        notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+//
+////**edit this line to put requestID as requestCode**
+//        PendingIntent contentIntent = PendingIntent.getActivity(this, requestID,notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+//
+//        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(getApplicationContext())
+//                .setSmallIcon(R.drawable.logo)
+//                .setContentTitle("My Notification")
+//                .setStyle(new NotificationCompat.BigTextStyle()
+//                        .bigText(notificationMessage))
+//                .setContentText(notificationMessage).setAutoCancel(true);
+//        mBuilder.setSound(alarmSound);
+//        mBuilder.setContentIntent(contentIntent);
+//        mNotificationManager.notify(NOTIFICATION_ID, mBuilder.build());
+//
+//    }
 
 }

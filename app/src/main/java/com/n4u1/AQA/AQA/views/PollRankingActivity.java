@@ -3,6 +3,7 @@ package com.n4u1.AQA.AQA.views;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.graphics.Bitmap;
@@ -36,6 +37,9 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.github.mikephil.charting.utils.Utils;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
 import com.n4u1.AQA.AQA.R;
 import com.n4u1.AQA.AQA.dialog.AlarmDoneDialog;
 import com.n4u1.AQA.AQA.dialog.DeleteModificationActivity;
@@ -86,6 +90,9 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
 
     private FirebaseAuth auth;
     private DatabaseReference mDatabaseReference;
+    private DatabaseReference mDatabaseReferenceAlarm;
+
+
     private DatabaseReference mDatabaseReferencePicker;
     private FirebaseDatabase firebaseDatabase;
     private FirebaseDatabase likeFirebaseDatabase;
@@ -166,6 +173,7 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
 //        Log.d("lkj itemViewType", String.valueOf(itemViewType));
 
         mDatabaseReference = FirebaseDatabase.getInstance().getReference("user_contents").child(contentKey);
+
         mDatabaseReferencePicker = FirebaseDatabase.getInstance().getReference("users");
         auth = FirebaseAuth.getInstance();
         firebaseDatabase = FirebaseDatabase.getInstance();
@@ -283,6 +291,14 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
         pollActivity_textView_check_8.setOnClickListener(this);
         pollActivity_textView_check_9.setOnClickListener(this);
         pollActivity_textView_check_10.setOnClickListener(this);
+
+
+        SharedPreferences pref = getSharedPreferences("com.n4u1.AQA", MODE_PRIVATE);
+        String spUserEmail = pref.getString("com.n4u1.AQA.fireBaseUserEmail", null);
+        String spUserPassword = pref.getString("com.n4u1.AQA.fireBaseUserPassword", null);
+        String currentId = auth.getCurrentUser().getUid();
+        Log.d("lkj currentId", currentId);
+        loginUser(spUserEmail, spUserPassword);
 
 
 
@@ -645,10 +661,13 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
 
 
         //contentDTO 화면 초기세팅
-        mDatabaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+        mDatabaseReferenceAlarm = FirebaseDatabase.getInstance().getReference();
+        mDatabaseReferenceAlarm.child("user_contents").child(contentKey).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 ContentDTO contentDTO = dataSnapshot.getValue(ContentDTO.class);
+                Log.d("lkj contentDTD", contentDTO.toString());
+                Log.d("lkj contentDTD", dataSnapshot.toString());
                 pollActivity_textView_date.setText(contentDTO.getUploadDate());
                 pollActivity_textView_title.setText(contentDTO.getTitle());
                 pollActivity_textView_contentId.setText(contentDTO.getContentId());
@@ -958,6 +977,7 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
                         GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_9()).centerCrop().thumbnail(Glide.with(getApplicationContext()).load(R.drawable.loadingicon)).into(pollActivity_imageView_userAddContent_10).getView();
                         break;
                 }
+
             }
 
             @Override
@@ -965,6 +985,8 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
 
             }
         });
+
+
 
 
     }
@@ -2641,6 +2663,31 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
 
             }
         });
+    }
+
+
+    private void loginUser(final String email, final String password) {
+        auth.signInWithEmailAndPassword(email, password)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            //
+//                            SharedPreferences.Editor editor = sharedPref.edit();
+//                            editor.putString("com.n4u1.AQA.fireBaseUid", email);
+//                            editor.putString("com.n4u1.AQA.fireBasePassword", password);
+//                            editor.commit();
+
+
+                            // Sign in success, update UI with the signed-in user's information
+                            //Toast.makeText(getApplicationContext(), "User Login Success", Toast.LENGTH_LONG).show();//
+
+                        } else {
+                            // If sign in fails, display a message to the user.
+                            Toast.makeText(getApplicationContext(), "User Login Fail", Toast.LENGTH_LONG).show();
+                        }
+                    }
+                });
     }
 
 }
