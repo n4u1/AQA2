@@ -28,8 +28,8 @@ public class DeleteModificationActivity extends AppCompatActivity {
         final ArrayList<String> keyModify = new ArrayList<>();
         keyDelete.add(replyKey);
         keyDelete.add("삭제하기");
-        keyModify.add(replyKey);
-        keyModify.add("수정하기");
+//        keyModify.add(replyKey);
+//        keyModify.add("수정하기");
 
 
 

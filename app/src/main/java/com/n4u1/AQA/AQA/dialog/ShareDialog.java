@@ -14,7 +14,7 @@ public class ShareDialog extends DialogFragment {
     public ShareDialog() {}
 
 
-    public static final ShareDialog newInstance(String id) {
+    public static ShareDialog newInstance(String id) {
         ShareDialog shareDialog =  new ShareDialog();
         Bundle bundle = new Bundle(1);
         bundle.putString("id", id);
@@ -35,7 +35,6 @@ public class ShareDialog extends DialogFragment {
         super.onStart();
         ((AlertDialog) getDialog()).getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(0xff4485c9);
         ((AlertDialog) getDialog()).getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(0xff4485c9);
-
     }
 
 

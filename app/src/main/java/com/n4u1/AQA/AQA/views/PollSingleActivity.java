@@ -32,6 +32,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.n4u1.AQA.AQA.R;
+import com.n4u1.AQA.AQA.dialog.AlarmDoneDialog;
 import com.n4u1.AQA.AQA.dialog.DeleteModificationActivity;
 import com.n4u1.AQA.AQA.dialog.PollResultDialog;
 import com.n4u1.AQA.AQA.dialog.ShowMoreActivity;
@@ -280,7 +281,8 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
                 Log.d("lkjshormore", "showmore");
                 Intent intentShowMore = new Intent(PollSingleActivity.this, ShowMoreActivity.class);
                 intentShowMore.putExtra("pollKey", contentKey);
-                startActivity(intentShowMore);
+                intentShowMore.putExtra("hitCount", contentHit);
+                startActivityForResult(intentShowMore, 20000);
             }
         });
 
@@ -1441,15 +1443,16 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
                         Toast.makeText(getApplicationContext(), "수정하기", Toast.LENGTH_SHORT).show();
                     } else break;
                     break;
+                case 20000:
+                    String alarmCount = data.getStringExtra("resultAlarmCount");
+                    AlarmDoneDialog alarmDoneDialog = AlarmDoneDialog.newInstance(alarmCount);
+                    alarmDoneDialog.show(getSupportFragmentManager(), "alarmDoneDialog");
+                    break;
             }
-
-
         }
-
-
         super.onActivityResult(requestCode, resultCode, data);
-
     }
+
 
     public void checking_img_1() {
         pickCandidate = 1;

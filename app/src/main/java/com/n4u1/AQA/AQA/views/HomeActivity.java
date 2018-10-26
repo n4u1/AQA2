@@ -592,28 +592,24 @@ public class HomeActivity extends AppCompatActivity implements SwipeRefreshLayou
     public void ShareDialogCallback(String string) {
         switch (string) {
             case "공유하기":
-
                 try {
-//                    Toast toast = Toast.makeText(this, "정식 런칭 되면 많이 해주세요!!", Toast.LENGTH_SHORT);
-//                    toast.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL, 0, 0);
-//                    toast.show();
+                    Toast toast = Toast.makeText(this, "정식 버전 되면 많이 해주세요!!", Toast.LENGTH_SHORT);
+                    toast.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL, 0, 0);
+                    toast.show();
 
-
-                    String type = "image/*";
-                    Bitmap shareBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.aqacustom2);
-                    File outputFile = new File(getApplicationContext().getCacheDir(), "AQA" + ".png");
-                    FileOutputStream outPutStream = new FileOutputStream(outputFile);
-                    shareBitmap.compress(Bitmap.CompressFormat.PNG, 100, outPutStream);
-                    outPutStream.flush();
-                    outPutStream.close();
-                    outputFile.setReadable(true, false);
-                    Uri outputUri = FileProvider.getUriForFile(getApplicationContext(), "com.n4u1.AQA.AQA.fileprovider", outputFile);
-                    Intent share = new Intent(Intent.ACTION_SEND);
-                    share.putExtra(Intent.EXTRA_STREAM, outputUri);
-                    share.setType(type);
-                    startActivity(Intent.createChooser(share, "공유하기"));
-
-
+//                    String type = "image/*";
+//                    Bitmap shareBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.aqacustom2);
+//                    File outputFile = new File(getApplicationContext().getCacheDir(), "AQA" + ".png");
+//                    FileOutputStream outPutStream = new FileOutputStream(outputFile);
+//                    shareBitmap.compress(Bitmap.CompressFormat.PNG, 100, outPutStream);
+//                    outPutStream.flush();
+//                    outPutStream.close();
+//                    outputFile.setReadable(true, false);
+//                    Uri outputUri = FileProvider.getUriForFile(getApplicationContext(), "com.n4u1.AQA.AQA.fileprovider", outputFile);
+//                    Intent share = new Intent(Intent.ACTION_SEND);
+//                    share.putExtra(Intent.EXTRA_STREAM, outputUri);
+//                    share.setType(type);
+//                    startActivity(Intent.createChooser(share, "공유하기"));
 
                 } catch (Exception e) {
                     Toast.makeText(getApplicationContext(), "error", Toast.LENGTH_LONG).show();
@@ -625,7 +621,6 @@ public class HomeActivity extends AppCompatActivity implements SwipeRefreshLayou
             case "인증하기":
                 Log.d("lkj auth", "auth");
                 break;
-
         }
     }
 

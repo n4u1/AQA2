@@ -1,16 +1,19 @@
 package com.n4u1.AQA.AQA.dialog;
 
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -34,7 +37,8 @@ public class ShowMoreActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_show_more);
 
-        String pollKey = getIntent().getStringExtra("pollKey");
+        final String pollKey = getIntent().getStringExtra("pollKey");
+        final int contentHit = getIntent().getIntExtra("hitCount", 0);
 
         final TextView showMore_textView_countResult = findViewById(R.id.showMore_textView_countResult);
         TextView showMore_textView_done = findViewById(R.id.showMore_textView_done);
@@ -81,7 +85,7 @@ public class ShowMoreActivity extends AppCompatActivity {
 //
                     if (oneCount != 0) {
                         showMore_editText_count.setVisibility(View.VISIBLE);
-                        showMore_textView_countResult.setText(oneCount + "명 이 투표하면 알려드려요!");
+                        showMore_textView_countResult.setText("현재" + oneCount + "명 이 투표하면 알람이 발생하도록 설정되어 있습니다.");
                         showMore_textView_countResult.setVisibility(View.VISIBLE);
                         showMore_imageView_upDown.setImageResource(R.drawable.ic_keyboard_arrow_up_black_24dp);
                         ALARM_LAYOUT_FLAG = true;
@@ -121,6 +125,67 @@ public class ShowMoreActivity extends AppCompatActivity {
                 }
             }
         });
+
+
+        //취소 클릭
+        showMore_textView_cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
+
+        //확인 클릭
+        showMore_textView_done.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+
+
+                mReference.child("user_contents").child(pollKey).child("alarm").addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        try {
+                            String count = showMore_editText_count.getText().toString();
+                            String alarmCount = "C0O" + count;
+                            if (Integer.parseInt(count) <= contentHit) {
+                                Toast toast = Toast.makeText(getApplicationContext(), "현재 투표수는" + contentHit + "입니다.", Toast.LENGTH_SHORT);
+                                toast.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL, 0, 0);
+                                toast.show();
+                            } else {
+                                mReference.child("user_contents").child(pollKey).child("alarm").setValue(alarmCount);
+                                Intent resultIntent = new Intent();
+                                resultIntent.putExtra("resultAlarmCount", count);
+                                setResult(RESULT_OK, resultIntent);
+                                finish();
+                            }
+
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+
+
+            }
+        });
+
+
+
+
+
+
+
+
+
+
+
 
 
     }

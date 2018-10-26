@@ -35,6 +35,7 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.github.mikephil.charting.utils.Utils;
 import com.n4u1.AQA.AQA.R;
+import com.n4u1.AQA.AQA.dialog.AlarmDoneDialog;
 import com.n4u1.AQA.AQA.dialog.DeleteModificationActivity;
 import com.n4u1.AQA.AQA.dialog.PollResultRankingDialog;
 import com.n4u1.AQA.AQA.dialog.RankingChoiceActivity;
@@ -281,7 +282,8 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
                 Log.d("lkjshormore", "showmore");
                 Intent intentShowMore = new Intent(PollRankingActivity.this, ShowMoreActivity.class);
                 intentShowMore.putExtra("pollKey", contentKey);
-                startActivity(intentShowMore);
+                intentShowMore.putExtra("hitCount", contentHit);
+                startActivityForResult(intentShowMore, 20000);
             }
         });
 
@@ -1982,70 +1984,70 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
                 break;
         }
     }
-
-    private void aqaShare() {
-//##############스샷찍어 공유하기 > 이건 7.0이상에선 동작 안함################
-//        View container;
-//        container = getWindow().getDecorView();
-//        container.buildDrawingCache();
-//        Bitmap captureView = container.getDrawingCache();
-//        String adress = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Android/data/com.AQA/shareCapture" + "/capture.jpeg";
-//        FileOutputStream fos;
-//        try {
-//            fos = new FileOutputStream(adress);
-//            captureView.compress(Bitmap.CompressFormat.JPEG, 100, fos);
-//        } catch (FileNotFoundException e) {
-//            e.printStackTrace();
-//        }
-//        Uri uri = Uri.fromFile(new File(adress));
-//        Intent shareIntent = new Intent(Intent.ACTION_SEND);
-//        shareIntent.putExtra(Intent.EXTRA_STREAM, uri);
-//        shareIntent.setType("image/*");
-//        startActivity(Intent.createChooser(shareIntent, "공유"));
-//##############스샷찍어 공유하기 > 이건 7.0이상에선 동작 안함################
-
-//##############인스타에 이미지 공유하기... 부족함################
-//        Uri file = Uri.parse("android.resource://com.n4u1.AQA.AQA/"+R.drawable.aqacustom2);
-//        Intent shareIntent = new Intent(android.content.Intent.ACTION_SEND);
-//        shareIntent.setType("image/*");
-//        shareIntent.putExtra(Intent.EXTRA_STREAM,file);
-//        shareIntent.putExtra(Intent.EXTRA_TITLE, "YOUR TEXT HERE");
-//        shareIntent.setPackage("com.instagram.android");
-//        startActivity(shareIntent);
-//##############인스타에 이미지 공유하기... 부족함################
-
-//##############공유하기 기본################
-        Intent intent = new Intent();
-        intent.setAction(Intent.ACTION_SEND);
-        intent.setType("text/plain");
-        intent.putExtra(Intent.EXTRA_SUBJECT, "AQA 시작하기");
-        intent.putExtra(Intent.EXTRA_TEXT, "\n" + "https://play.google.com/apps/testing/com.n4u1.AQA.AQA");
-        Intent chooser = Intent.createChooser(intent, "친구에게 공유하기");
-        startActivity(chooser);
-//##############공유하기 기본################
-
-//        PackageManager packManager = getApplicationContext().getPackageManager();
-//        List<ResolveInfo> resolvedInfoList = packManager.queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY);
 //
-//        boolean resolved = false;
-//        for(ResolveInfo resolveInfo: resolvedInfoList) {
-//            if(resolveInfo.activityInfo.packageName.startsWith("com.facebook.katana")){
-//                intent.setClassName(
-//                        resolveInfo.activityInfo.packageName,
-//                        resolveInfo.activityInfo.name );
-//                resolved = true;
-//                break;
-//            }
-//        }
+//    private void aqaShare() {
+////##############스샷찍어 공유하기 > 이건 7.0이상에선 동작 안함################
+////        View container;
+////        container = getWindow().getDecorView();
+////        container.buildDrawingCache();
+////        Bitmap captureView = container.getDrawingCache();
+////        String adress = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Android/data/com.AQA/shareCapture" + "/capture.jpeg";
+////        FileOutputStream fos;
+////        try {
+////            fos = new FileOutputStream(adress);
+////            captureView.compress(Bitmap.CompressFormat.JPEG, 100, fos);
+////        } catch (FileNotFoundException e) {
+////            e.printStackTrace();
+////        }
+////        Uri uri = Uri.fromFile(new File(adress));
+////        Intent shareIntent = new Intent(Intent.ACTION_SEND);
+////        shareIntent.putExtra(Intent.EXTRA_STREAM, uri);
+////        shareIntent.setType("image/*");
+////        startActivity(Intent.createChooser(shareIntent, "공유"));
+////##############스샷찍어 공유하기 > 이건 7.0이상에선 동작 안함################
 //
-//        if(resolved) {
-//            startActivity(intent);
+////##############인스타에 이미지 공유하기... 부족함################
+////        Uri file = Uri.parse("android.resource://com.n4u1.AQA.AQA/"+R.drawable.aqacustom2);
+////        Intent shareIntent = new Intent(android.content.Intent.ACTION_SEND);
+////        shareIntent.setType("image/*");
+////        shareIntent.putExtra(Intent.EXTRA_STREAM,file);
+////        shareIntent.putExtra(Intent.EXTRA_TITLE, "YOUR TEXT HERE");
+////        shareIntent.setPackage("com.instagram.android");
+////        startActivity(shareIntent);
+////##############인스타에 이미지 공유하기... 부족함################
 //
-//        } else {
-//            Toast.makeText(PollRankingActivity.this, "페이스북 앱이 없습니다.", Toast.LENGTH_SHORT).show();
-//        }
-
-    }
+////##############공유하기 기본################
+//        Intent intent = new Intent();
+//        intent.setAction(Intent.ACTION_SEND);
+//        intent.setType("text/plain");
+//        intent.putExtra(Intent.EXTRA_SUBJECT, "AQA 시작하기");
+//        intent.putExtra(Intent.EXTRA_TEXT, "\n" + "https://play.google.com/apps/testing/com.n4u1.AQA.AQA");
+//        Intent chooser = Intent.createChooser(intent, "친구에게 공유하기");
+//        startActivity(chooser);
+////##############공유하기 기본################
+//
+////        PackageManager packManager = getApplicationContext().getPackageManager();
+////        List<ResolveInfo> resolvedInfoList = packManager.queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY);
+////
+////        boolean resolved = false;
+////        for(ResolveInfo resolveInfo: resolvedInfoList) {
+////            if(resolveInfo.activityInfo.packageName.startsWith("com.facebook.katana")){
+////                intent.setClassName(
+////                        resolveInfo.activityInfo.packageName,
+////                        resolveInfo.activityInfo.name );
+////                resolved = true;
+////                break;
+////            }
+////        }
+////
+////        if(resolved) {
+////            startActivity(intent);
+////
+////        } else {
+////            Toast.makeText(PollRankingActivity.this, "페이스북 앱이 없습니다.", Toast.LENGTH_SHORT).show();
+////        }
+//
+//    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -2143,10 +2145,18 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
                         Toast.makeText(getApplicationContext(), "수정하기", Toast.LENGTH_SHORT).show();
                     } else break;
                     break;
+                case 20000:
+//                    String alarmCount = getIntent().getStringExtra("resultAlarmCount");
+                    String alarmCount = data.getStringExtra("resultAlarmCount");
+                    AlarmDoneDialog alarmDoneDialog = AlarmDoneDialog.newInstance(alarmCount);
+                    alarmDoneDialog.show(getSupportFragmentManager(), "alarmDoneDialog");
+                    break;
             }
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
+
+
 
     public class ResultValueFormatter implements IValueFormatter {
         private DecimalFormat mFormat;
