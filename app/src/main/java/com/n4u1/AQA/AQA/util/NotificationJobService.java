@@ -150,25 +150,31 @@ public class NotificationJobService extends JobService {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this, "default");
         builder.setSmallIcon(R.mipmap.ic_q_custom);
         builder.setContentTitle(title);
-        builder.setContentText(hitCount + "분 께서 투표하셨어요!");
+        builder.setContentText(hitCount + "분께서 투표하셨어요!");
         PendingIntent pendingIntent;
 
+        Log.d("lkj hitCount", String.valueOf(hitCount));
+        Log.d("lkj title", title);
+        Log.d("lkj contentKey", contentKey);
+        Log.d("lkj mode", mode);
+        Log.d("lkj itemViewType", String.valueOf(itemViewType));
+
         if (mode.equals("순위 투표")) {
-            Intent intentRanking = new Intent(this, PollRankingActivity.class);
+            Intent intentRanking = new Intent(getApplicationContext(), PollRankingActivity.class);
             Bundle bundle = new Bundle();
             bundle.putString("contentKey", contentKey);
             bundle.putInt("itemViewType", itemViewType);
             bundle.putInt("contentHit", hitCount);
             intentRanking.putExtras(bundle);
-            pendingIntent = PendingIntent.getActivity(this, 0, intentRanking, PendingIntent.FLAG_CANCEL_CURRENT);
+            pendingIntent = PendingIntent.getActivity(getApplicationContext(), 0, intentRanking, PendingIntent.FLAG_UPDATE_CURRENT);
         } else {
-            Intent intentSingle = new Intent(this, PollSingleActivity.class);
+            Intent intentSingle = new Intent(getApplicationContext(), PollSingleActivity.class);
             Bundle bundle = new Bundle();
             bundle.putString("contentKey", contentKey);
             bundle.putInt("itemViewType", itemViewType);
             bundle.putInt("contentHit", hitCount);
             intentSingle.putExtras(bundle);
-            pendingIntent = PendingIntent.getActivity(this, 0, intentSingle, PendingIntent.FLAG_CANCEL_CURRENT);
+            pendingIntent = PendingIntent.getActivity(getApplicationContext(), 0, intentSingle, PendingIntent.FLAG_UPDATE_CURRENT);
         }
 
 

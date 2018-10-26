@@ -9,6 +9,8 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Environment;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -150,9 +152,18 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
             getSupportActionBar().setTitle(null);
         }
 
+
+
+
         final String contentKey = getIntent().getStringExtra("contentKey");
         contentHit = getIntent().getIntExtra("contentHit", 999999);
 
+
+        Log.d("lkj hitCount!!!", String.valueOf(contentHit));
+//        Log.d("lkj title", title);
+        Log.d("lkj contentKey!!!", contentKey);
+//        Log.d("lkj mode", mode);
+//        Log.d("lkj itemViewType", String.valueOf(itemViewType));
 
         mDatabaseReference = FirebaseDatabase.getInstance().getReference("user_contents").child(contentKey);
         mDatabaseReferencePicker = FirebaseDatabase.getInstance().getReference("users");
@@ -630,8 +641,6 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
                 }
             }
         });
-
-
 
 
 
@@ -2202,12 +2211,36 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
                     return Transaction.success(mutableData);
                 }
                 if (contentDTO.contentPicker.containsKey(auth.getCurrentUser().getUid())) {
-                    pollActivity_fab_result.setImageResource(R.drawable.q);//fab 파란색
-                    pollActivity_imageView_state.setImageResource(R.drawable.q);
+
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            runOnUiThread(new Runnable(){
+                                @Override
+                                public void run() {
+                                    pollActivity_fab_result.setImageResource(R.drawable.q);//fab 파란색
+                                    pollActivity_imageView_state.setImageResource(R.drawable.q);
+                                }
+                            });
+                        }
+                    }).start();
+
                     checkUserHitContent = true;//투표여부
                 } else {
-                    pollActivity_fab_result.setImageResource(R.drawable.q_bg_w);//fab 흰색
-                    pollActivity_imageView_state.setImageResource(R.drawable.q_bg_w);
+
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            runOnUiThread(new Runnable(){
+                                @Override
+                                public void run() {
+                                    pollActivity_fab_result.setImageResource(R.drawable.q_bg_w);//fab 흰색
+                                    pollActivity_imageView_state.setImageResource(R.drawable.q_bg_w);
+                                }
+                            });
+                        }
+                    }).start();
+
                     checkUserHitContent = false;//투표여부
                 }
                 return Transaction.success(mutableData);
@@ -2217,6 +2250,10 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
             }
         });
     }
+
+
+
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

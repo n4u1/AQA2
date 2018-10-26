@@ -2,8 +2,10 @@ package com.n4u1.AQA.AQA.views;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.Context;
 import android.content.CursorLoader;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -64,6 +66,7 @@ public class LoginActivity extends AppCompatActivity {
     private ValueEventListener mEmailListener;
     private ChildEventListener mChildEventListener;
     private FirebaseStorage storage;
+    private SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
 
 
     @Override
@@ -114,6 +117,21 @@ public class LoginActivity extends AppCompatActivity {
 
             }
         });
+
+
+//        editor.putString("com.n4u1.AQA.fireBaseUid", email);
+//        editor.putString("com.n4u1.AQA.fireBasePassword", password);
+
+        Context context = this;
+//        SharedPreferences sharedPrefId = context.getSharedPreferences("com.n4u1.AQA.fireBaseUid", Context.MODE_PRIVATE);
+//        SharedPreferences sharedPrefPw = context.getSharedPreferences("com.n4u1.AQA.fireBasePassword", Context.MODE_PRIVATE);
+
+        String sharedPrefId = sharedPref.getString("com.n4u1.AQA.fireBaseUid", null);
+        String sharedPrefPw = sharedPref.getString("com.n4u1.AQA.fireBasePassword", null);
+
+        if (sharedPrefId != null && sharedPrefPw != null) {
+            loginUser(sharedPrefId, sharedPrefPw);
+        }
 
 
         //히든
@@ -261,24 +279,27 @@ public class LoginActivity extends AppCompatActivity {
 //        return isNormal;
 //    }
 
-    private void loginUser(final String email, String password) {
+    private void loginUser(final String email, final String password) {
         mAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
+
+                            SharedPreferences.Editor editor = sharedPref.edit();
+                            editor.putString("com.n4u1.AQA.fireBaseUid", email);
+                            editor.putString("com.n4u1.AQA.fireBasePassword", password);
+                            editor.commit();
+
                             // Sign in success, update UI with the signed-in user's information
-//                            Toast.makeText(getApplicationContext(), "User Login Success", Toast.LENGTH_LONG).show();//
+                            //Toast.makeText(getApplicationContext(), "User Login Success", Toast.LENGTH_LONG).show();//
                             Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
                             finish();
                             startActivity(intent);
                         } else {
                             // If sign in fails, display a message to the user.
                             Toast.makeText(getApplicationContext(), "User Login Fail", Toast.LENGTH_LONG).show();
-
                         }
-
-                        // ...
                     }
                 });
     }
