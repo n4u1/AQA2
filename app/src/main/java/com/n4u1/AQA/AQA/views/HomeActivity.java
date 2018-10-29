@@ -109,7 +109,7 @@ public class HomeActivity extends AppCompatActivity implements SwipeRefreshLayou
         firebaseDatabase = FirebaseDatabase.getInstance();
         auth = FirebaseAuth.getInstance();
 
-        MobileAds.initialize(getApplicationContext(), "ca-app-pub-1854873514128645~3190074937");
+        MobileAds.initialize(this, "ca-app-pub-1854873514128645~3190074937");
         recyclerView_home.setHasFixedSize(true);
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(this);
         mLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
