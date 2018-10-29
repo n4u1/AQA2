@@ -37,6 +37,7 @@ import com.n4u1.AQA.AQA.views.PollRankingActivity;
 import com.n4u1.AQA.AQA.views.PollSingleActivity;
 import com.n4u1.AQA.AQA.views.SplashActivity;
 import com.n4u1.AQA.AQA.views.TestActivity;
+import com.n4u1.AQA.AQA.views.WhenNotiClickActivity;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -57,86 +58,89 @@ public class NotificationJobService extends JobService {
         new Thread(new Runnable() {
             @Override
             public void run() {
-
-                mDatabase.child("users").child(mUser.getUid()).child("uploadContent").addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        //내가 게시한 투표 리스트 가져오기
-                        Map<String, Object> uploadContents = (Map<String, Object>) dataSnapshot.getValue();
-                        final ArrayList<String> contentList = new ArrayList<>();
-                        try {
-                            for (Map.Entry<String, Object> entry : uploadContents.entrySet()) {
-                                if (entry.getValue().equals("true")) {
-                                    contentList.add(entry.getKey());
+                Log.d("lkj noti ready", "noti ready");
+                if (mUser != null) {
+                    mDatabase.child("users").child(mUser.getUid()).child("uploadContent").addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            //내가 게시한 투표 리스트 가져오기
+                            Map<String, Object> uploadContents = (Map<String, Object>) dataSnapshot.getValue();
+                            final ArrayList<String> contentList = new ArrayList<>();
+                            try {
+                                for (Map.Entry<String, Object> entry : uploadContents.entrySet()) {
+                                    if (entry.getValue().equals("true")) {
+                                        contentList.add(entry.getKey());
+                                    }
                                 }
+                            } catch (Exception e) {
+                                e.printStackTrace();
                             }
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
 
 
-                        //가져온 리스트와 전체 리스트 비교하기
-                        mDatabase.child("user_contents").addListenerForSingleValueEvent(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                Iterator<DataSnapshot> listIterator = dataSnapshot.getChildren().iterator();
-                                while (listIterator.hasNext()) {
-                                    final ContentDTO contentDTO = listIterator.next().getValue(ContentDTO.class);
-                                    for (int i = 0; i < contentList.size(); i++) {
-                                        if (contentDTO.contentKey.equals(contentList.get(i))) {
+                            //가져온 리스트와 전체 리스트 비교하기
+                            mDatabase.child("user_contents").addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                    Iterator<DataSnapshot> listIterator = dataSnapshot.getChildren().iterator();
+                                    while (listIterator.hasNext()) {
+                                        final ContentDTO contentDTO = listIterator.next().getValue(ContentDTO.class);
+                                        for (int i = 0; i < contentList.size(); i++) {
+                                            if (contentDTO.contentKey.equals(contentList.get(i))) {
 
-                                            //가져온 리스트와 전체 리스트 비교해서 알람에 설정된 카운트 가져오기
-                                            //continueCount는 n번째마다 알람
-                                            //oneCount는 n번
-                                            mDatabase.child("user_contents").child(contentList.get(i)).child("alarm").addListenerForSingleValueEvent(new ValueEventListener() {
-                                                @Override
-                                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                                    try {
-                                                        String tmp = dataSnapshot.toString();
-                                                        int index = tmp.indexOf("C");//ContinueCount
-                                                        String temp = tmp.substring(index, tmp.length() - 2);
-                                                        int index_ = temp.indexOf("O");//OneCount
+                                                //가져온 리스트와 전체 리스트 비교해서 알람에 설정된 카운트 가져오기
+                                                //continueCount는 n번째마다 알람
+                                                //oneCount는 n번
+                                                mDatabase.child("user_contents").child(contentList.get(i)).child("alarm").addListenerForSingleValueEvent(new ValueEventListener() {
+                                                    @Override
+                                                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                                        try {
+                                                            String tmp = dataSnapshot.toString();
+                                                            int index = tmp.indexOf("C");//ContinueCount
+                                                            String temp = tmp.substring(index, tmp.length() - 2);
+                                                            int index_ = temp.indexOf("O");//OneCount
 //                                                        int continueCount = Integer.parseInt(temp.substring(1, index_));
-                                                        int oneCount = Integer.parseInt(temp.substring(index_ + 1, temp.length()));
+                                                            int oneCount = Integer.parseInt(temp.substring(index_ + 1, temp.length()));
 //
-                                                        if (oneCount != 0) {
-                                                            if (contentDTO.contentHit >= oneCount) {
-                                                                notificationShow(contentDTO.title, contentDTO.contentHit, contentDTO.contentKey, contentDTO.pollMode, contentDTO.itemViewType);
-                                                                mDatabase.child("user_contents").child(contentDTO.contentKey).child("alarm").setValue("C0O0");
-                                                                Log.d("lkjJobTest1", "JOBTESTTTTT???????????TT");
-                                                                Log.d("lkjJobTest2", String.valueOf(contentDTO.contentHit));
-                                                                Log.d("lkjJobTest3", String.valueOf(oneCount));
+                                                            if (oneCount != 0) {
+                                                                if (contentDTO.contentHit >= oneCount) {
+                                                                    notificationShow(contentDTO.title, contentDTO.contentHit, contentDTO.contentKey, contentDTO.pollMode, contentDTO.itemViewType);
+                                                                    mDatabase.child("user_contents").child(contentDTO.contentKey).child("alarm").setValue("C0O0");
+                                                                    Log.d("lkjJobTest1", "JOBTESTTTTT???????????TT");
+                                                                    Log.d("lkjJobTest2", String.valueOf(contentDTO.contentHit));
+                                                                    Log.d("lkjJobTest3", String.valueOf(oneCount));
+                                                                }
                                                             }
+                                                        } catch (Exception e) {
+                                                            e.printStackTrace();
                                                         }
-                                                    } catch (Exception e) {
-                                                        e.printStackTrace();
+
                                                     }
 
-                                                }
+                                                    @Override
+                                                    public void onCancelled(@NonNull DatabaseError databaseError) {
 
-                                                @Override
-                                                public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                                                }
-                                            });
+                                                    }
+                                                });
+                                            }
                                         }
                                     }
                                 }
-                            }
 
-                            @Override
-                            public void onCancelled(@NonNull DatabaseError databaseError) {
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError databaseError) {
 
-                            }
-                        });
-                    }
+                                }
+                            });
+                        }
 
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
 
-                    }
-                });
-                Log.d("lkjJobTest", "JOBTESTTTTTTTTTTTTTTTT");
+                        }
+                    });
+                    Log.d("lkjJobTest", "JOBTESTTTTTTTTTTTTTTTT");
+                }
+
             }
         }).start();
 
@@ -151,7 +155,7 @@ public class NotificationJobService extends JobService {
     }
 
 
-    private void notificationShow(String title, int hitCount, String contentKey, String mode, int itemViewType) {
+    public void notificationShow(String title, int hitCount, String contentKey, String mode, int itemViewType) {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this, "default");
         builder.setSmallIcon(R.mipmap.ic_q_custom);
         builder.setContentTitle(title);
@@ -166,31 +170,42 @@ public class NotificationJobService extends JobService {
         Log.d("lkj mode", mode);
         Log.d("lkj itemViewType", String.valueOf(itemViewType));
 
-        if (mode.equals("순위 투표")) {
-            Intent intentRanking = new Intent(getApplicationContext(), PollRankingActivity.class);
-            TaskStackBuilder stackBuilder = TaskStackBuilder.create(getApplicationContext());
-            stackBuilder.addParentStack(SplashActivity.class);
-            stackBuilder.addNextIntent(intentRanking);
-            Bundle bundle = new Bundle();
-            bundle.putString("contentKey", contentKey);
-            bundle.putInt("itemViewType", itemViewType);
-            bundle.putInt("contentHit", hitCount);
-            intentRanking.putExtras(bundle);
-            pendingIntent = stackBuilder.getPendingIntent(requestID, PendingIntent.FLAG_UPDATE_CURRENT);
+//        if (mode.equals("순위 투표")) {
+//            Intent intentRanking = new Intent(getApplicationContext(), PollRankingActivity.class);
+//            TaskStackBuilder stackBuilder = TaskStackBuilder.create(getApplicationContext());
+//            stackBuilder.addParentStack(SplashActivity.class);
+//            stackBuilder.addNextIntent(intentRanking);
+//            Bundle bundle = new Bundle();
+//            bundle.putString("notify_contentKey", contentKey);
+//            bundle.putInt("notify_itemViewType", itemViewType);
+//            bundle.putInt("notify_contentHit", hitCount);
+//            intentRanking.putExtras(bundle);
+//            pendingIntent = stackBuilder.getPendingIntent(requestID, PendingIntent.FLAG_UPDATE_CURRENT);
+//
+//        } else {
+//            Intent intentSingle = new Intent(getApplicationContext(), PollSingleActivity.class);
+//            TaskStackBuilder stackBuilder = TaskStackBuilder.create(getApplicationContext());
+//            stackBuilder.addParentStack(SplashActivity.class);
+//            stackBuilder.addNextIntent(intentSingle);
+//            Bundle bundle = new Bundle();
+//            bundle.putString("notify_contentKey", contentKey);
+//            bundle.putInt("notify_itemViewType", itemViewType);
+//            bundle.putInt("notify_contentHit", hitCount);
+//            intentSingle.putExtras(bundle);
+//            pendingIntent = stackBuilder.getPendingIntent(requestID, PendingIntent.FLAG_UPDATE_CURRENT);
+//        }
 
-        } else {
-            Intent intentSingle = new Intent(getApplicationContext(), PollSingleActivity.class);
-            TaskStackBuilder stackBuilder = TaskStackBuilder.create(getApplicationContext());
-            stackBuilder.addParentStack(SplashActivity.class);
-            stackBuilder.addNextIntent(intentSingle);
-            Bundle bundle = new Bundle();
-            bundle.putString("contentKey", contentKey);
-            bundle.putInt("itemViewType", itemViewType);
-            bundle.putInt("contentHit", hitCount);
-            intentSingle.putExtras(bundle);
-            pendingIntent = stackBuilder.getPendingIntent(requestID, PendingIntent.FLAG_UPDATE_CURRENT);
-        }
-
+        Intent intent = new Intent(getApplicationContext(), WhenNotiClickActivity.class);
+        TaskStackBuilder stackBuilder = TaskStackBuilder.create(getApplicationContext());
+        stackBuilder.addParentStack(SplashActivity.class);
+        stackBuilder.addNextIntent(intent);
+        Bundle bundle = new Bundle();
+        bundle.putString("notify_contentKey", contentKey);
+        bundle.putString("notify_mode", mode);
+        bundle.putInt("notify_itemViewType", itemViewType);
+        bundle.putInt("notify_contentHit", hitCount);
+        intent.putExtras(bundle);
+        pendingIntent = stackBuilder.getPendingIntent(requestID, PendingIntent.FLAG_UPDATE_CURRENT);
 
         builder.setContentIntent(pendingIntent);
 

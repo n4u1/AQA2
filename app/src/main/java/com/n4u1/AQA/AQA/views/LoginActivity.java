@@ -29,6 +29,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 //
 
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.n4u1.AQA.AQA.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -47,7 +48,9 @@ import com.google.firebase.storage.UploadTask;
 import com.n4u1.AQA.AQA.dialog.AgainPasswordDialog;
 import com.n4u1.AQA.AQA.dialog.NotEmailDialog;
 import com.n4u1.AQA.AQA.dialog.NotInputDialog;
+import com.n4u1.AQA.AQA.util.Common;
 import com.n4u1.AQA.AQA.util.ImageSaver;
+import com.n4u1.AQA.AQA.util.MyFirebaseInstanceIDService;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -80,10 +83,6 @@ public class LoginActivity extends AppCompatActivity {
         TextView textView_hidden = findViewById(R.id.textView_hidden);
 
 
-        //테스트용
-        final ImageView homeActivity_imageView_share = findViewById(R.id.homeActivity_imageView_share);
-        Button button_test2 = findViewById(R.id.button_test2);
-        Button button_test = findViewById(R.id.button_test);
 //        Bitmap shareBitmap;
         //테스트용
 
@@ -100,36 +99,39 @@ public class LoginActivity extends AppCompatActivity {
         Button button_gLogin = findViewById(R.id.button_gLogin);
         Button button_hLogin = findViewById(R.id.button_hLogin);
 
-
         mAuth = FirebaseAuth.getInstance();
         mFirebaseUser = mAuth.getCurrentUser();
         mDatabase = FirebaseDatabase.getInstance();
         mEmailDatabaseReference = mDatabase.getReference("users");
         storage = FirebaseStorage.getInstance();
 
-        button_test.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
 
-            }
-        });
+//        MyFirebaseInstanceIDService myFirebaseInstanceIDService = new MyFirebaseInstanceIDService();
 
-        button_test2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
-
-//        SharedPreferences pref = getSharedPreferences("com.n4u1.AQA", MODE_PRIVATE);
-//        String spUserEmail = pref.getString("com.n4u1.AQA.fireBaseUserEmail", null);
-//        String spUserPassword = pref.getString("com.n4u1.AQA.fireBaseUserPassword", null);
 //
+//        button_test.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
 //
-//        if (spUserEmail != null || spUserPassword != null) {
-//            Log.d("lkj SharedPreferences", spUserEmail + spUserPassword);
-//            loginUser(spUserEmail, spUserPassword);
-//        }
+//            }
+//        });
+//
+//        button_test2.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//
+//            }
+//        });
+
+        SharedPreferences pref = getSharedPreferences("com.n4u1.AQA", MODE_PRIVATE);
+        String spUserEmail = pref.getString("com.n4u1.AQA.fireBaseUserEmail", null);
+        String spUserPassword = pref.getString("com.n4u1.AQA.fireBaseUserPassword", null);
+
+
+        if (spUserEmail != null || spUserPassword != null) {
+            Log.d("lkj SharedPreferences", spUserEmail + spUserPassword);
+            loginUser(spUserEmail, spUserPassword);
+        }
 
 
 
@@ -172,7 +174,6 @@ public class LoginActivity extends AppCompatActivity {
                 EditText editTextEmail = findViewById(R.id.editText_email);
                 EditText editTextPassword = findViewById(R.id.editText_password);
                 userId = editTextEmail.getText().toString();
-//                userId = editTextEmail.getText().toString() + "@aqa.com";
                 if (editTextEmail.getText().toString().equals("") || editTextPassword.getText().toString().equals("")) {
                     NotInputDialog notInputDialog = new NotInputDialog();
                     notInputDialog.show(getSupportFragmentManager(), "notInputDialog");
@@ -285,12 +286,6 @@ public class LoginActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-//
-//                            SharedPreferences.Editor editor = sharedPref.edit();
-//                            editor.putString("com.n4u1.AQA.fireBaseUid", email);
-//                            editor.putString("com.n4u1.AQA.fireBasePassword", password);
-//                            editor.commit();
-
 
                             SharedPreferences pref = getSharedPreferences("com.n4u1.AQA", MODE_PRIVATE);
                             SharedPreferences.Editor editor = pref.edit();
@@ -298,13 +293,11 @@ public class LoginActivity extends AppCompatActivity {
                             editor.putString("com.n4u1.AQA.fireBaseUserPassword", password);
                             editor.commit();
 
-                            // Sign in success, update UI with the signed-in user's information
-                            //Toast.makeText(getApplicationContext(), "User Login Success", Toast.LENGTH_LONG).show();//
-                            Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
-                            finish();
 
 
+                            Intent intent = new Intent(LoginActivity.this, SplashLoadingActivity.class);
                             startActivity(intent);
+                            finish();
                         } else {
                             // If sign in fails, display a message to the user.
                             Toast.makeText(getApplicationContext(), "User Login Fail", Toast.LENGTH_LONG).show();
@@ -314,26 +307,6 @@ public class LoginActivity extends AppCompatActivity {
     }
 
 
-    private void createUser(String email, String password) {
-        mAuth.createUserWithEmailAndPassword(email, password)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            // Sign in success, update UI with the signed-in user's information
-                            Toast.makeText(getApplicationContext(), "User Create Success", Toast.LENGTH_LONG).show();
-
-                        } else {
-                            // If sign in fails, display a message to the user.
-                            Toast.makeText(getApplicationContext(), "User Create Fail : " + task.getException(), Toast.LENGTH_LONG).show();
-                            Log.d("getException", "createUserWithEmail:failure", task.getException());
-
-
-                        }
-
-                    }
-                });
-    }
 
 
     private boolean checkEmail(String inputUserEmail) {
@@ -345,47 +318,4 @@ public class LoginActivity extends AppCompatActivity {
     }
 
 
-    private void createInstagramIntent(String type, Uri uri) {
-
-        // Create the new Intent using the 'Send' action.
-        Intent share = new Intent(Intent.ACTION_SEND);
-
-
-        // Create the URI from the media
-//        File media = new File(mediaPath);
-//        Uri uri = Uri.fromFile(media);
-
-
-//        Uri uri = FileProvider.getUriForFile(getApplicationContext(), "com.n4u1.AQA.AQA.fileprovider", media);
-
-//        share.putExtra(Intent.EXTRA_TITLE, "골라봐여");
-//        share.setType("text/plain");
-        // Add the URI to the Intent.
-        share.putExtra(Intent.EXTRA_STREAM, uri);
-        share.setType(type);
-
-//        share.setPackage("com.twitter.android");
-//        share.putExtra(Intent.EXTRA_STREAM, FileProvider.getUriForFile(getApplicationContext(), "com.bignerdranch.android.test.fileprovider", media));
-
-//        startActivity(share);
-        startActivity(Intent.createChooser(share, "공유하기"));
-
-
-        // Define image asset URI and attribution link URL
-//        Uri backgroundAssetUri = uri;
-//        String attributionLinkUrl = "https://www.my-aweseome-app.com/p/BhzbIOUBval/";
-//
-//// Instantiate implicit intent with ADD_TO_STORY action,
-//// background asset, and attribution link
-//        Intent intent = new Intent("com.instagram.share.ADD_TO_STORY");
-//        intent.setDataAndType(backgroundAssetUri, type);
-//        intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-//        intent.putExtra("content_url", attributionLinkUrl);
-//
-//// Instantiate activity and verify it will resolve implicit intent
-//        Activity activity = this;
-//        if (activity.getPackageManager().resolveActivity(intent, 0) != null) {
-//            activity.startActivityForResult(intent, 0);
-//        }
-    }
 }

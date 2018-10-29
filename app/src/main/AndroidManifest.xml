@@ -32,6 +32,21 @@
                 android:resource="@xml/filepaths" />
         </provider>
 
+        <service android:name=".util.MyFirebaseMessagingService">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+        <service android:name=".util.MyFirebaseInstanceIDService">
+            <intent-filter>
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
+            </intent-filter>
+        </service>
+
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_icon"
+            android:resource="@drawable/aqacustom2" />
+
         <service
             android:name=".util.NotificationJobService"
             android:enabled="true"
@@ -70,7 +85,12 @@
         <activity
             android:name=".dialog.UploadLoadingActivity"
             android:theme="@style/Theme.DialogFragmentActivity" />
-        <activity android:name=".dialog.ShowMoreActivity"
+        <activity
+            android:name=".dialog.ShowMoreActivity"
+            android:theme="@style/Theme.DialogFragmentActivity" />
+        <activity android:name=".views.WhenNotiClickActivity" />
+        <activity android:name=".views.SplashLoadingActivity" />
+        <activity android:name=".views.UserClassInfoActivity"
             android:theme="@style/Theme.DialogFragmentActivity"></activity>
     </application>
 

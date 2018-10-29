@@ -666,8 +666,6 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 ContentDTO contentDTO = dataSnapshot.getValue(ContentDTO.class);
-                Log.d("lkj contentDTD", contentDTO.toString());
-                Log.d("lkj contentDTD", dataSnapshot.toString());
                 pollActivity_textView_date.setText(contentDTO.getUploadDate());
                 pollActivity_textView_title.setText(contentDTO.getTitle());
                 pollActivity_textView_contentId.setText(contentDTO.getContentId());

@@ -1,26 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
     android:theme="@style/TextLabel"
     tools:context=".views.MineActivity">
 
     <include layout="@layout/mytoolbar" />
 
+
+
+    <ImageView
+        android:id="@+id/homeActivity_imageView_googleAd"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        android:background="#5f95b3" />
+
     <ScrollView
+        android:layout_above="@id/homeActivity_imageView_googleAd"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:fillViewport="true"
+        android:id="@+id/scrollView"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
 
         <LinearLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="54dp"
             android:orientation="vertical"
-            android:paddingTop="8dp"
-            android:paddingRight="10dp">
+            android:paddingTop="8dp">
 
 
             <LinearLayout
@@ -28,9 +43,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:paddingRight="12dp"
                 android:paddingLeft="12dp"
                 android:paddingTop="20dp"
+                android:paddingRight="12dp"
                 android:paddingBottom="20dp">
 
                 <ImageView
@@ -50,11 +65,11 @@
 
                 <TextView
                     android:id="@+id/mineActivity_textView_account"
-                    android:maxLines="1"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="5"
-                    android:text="a@a.com"
+                    android:maxLines="1"
+                    android:text=""
                     android:textColor="#808080"
                     android:textSize="18dp" />
 
@@ -69,15 +84,14 @@
             </LinearLayout>
 
 
-
             <LinearLayout
                 android:id="@+id/mineActivity_linearLayout11"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:paddingRight="12dp"
                 android:paddingLeft="12dp"
                 android:paddingTop="20dp"
+                android:paddingRight="12dp"
                 android:paddingBottom="20dp">
 
                 <ImageView
@@ -100,12 +114,10 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="7"
-                    android:text="a1a1a1"
+                    android:text=""
                     android:textColor="#808080"
                     android:textSize="18dp" />
             </LinearLayout>
-
-
 
 
             <LinearLayout
@@ -113,9 +125,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:paddingRight="12dp"
                 android:paddingLeft="12dp"
                 android:paddingTop="20dp"
+                android:paddingRight="12dp"
                 android:paddingBottom="20dp">
 
                 <ImageView
@@ -138,24 +150,22 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="7"
-                    android:text="남자"
+                    android:text=""
                     android:textColor="#808080"
                     android:textSize="18dp" />
 
             </LinearLayout>
 
 
-
             <LinearLayout
-                android:paddingRight="12dp"
-                android:paddingLeft="12dp"
-                android:paddingTop="20dp"
-                android:paddingBottom="20dp"
                 android:id="@+id/mineActivity_linearLayout3"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                >
+                android:paddingLeft="12dp"
+                android:paddingTop="20dp"
+                android:paddingRight="12dp"
+                android:paddingBottom="20dp">
 
                 <ImageView
                     android:layout_width="24dp"
@@ -177,31 +187,28 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="7"
-                    android:text="22"
+                    android:text=""
                     android:textColor="#808080"
                     android:textSize="18dp" />
             </LinearLayout>
 
 
-
             <LinearLayout
-                android:paddingRight="12dp"
-                android:paddingLeft="12dp"
-                android:paddingTop="20dp"
-                android:paddingBottom="20dp"
                 android:id="@+id/mineActivity_linearLayout_userClass"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                >
+                android:paddingLeft="12dp"
+                android:paddingTop="20dp"
+                android:paddingRight="12dp"
+                android:paddingBottom="20dp">
 
                 <ImageView
                     android:id="@+id/mineActivity_imageView_userClass"
                     android:layout_width="24dp"
                     android:layout_height="24dp"
                     android:layout_gravity="center"
-                    android:layout_weight="1"
-                    />
+                    android:layout_weight="1" />
 
                 <TextView
                     android:layout_width="0dp"
@@ -215,25 +222,30 @@
                     android:id="@+id/mineActivity_textView_userClass"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="7"
-                    android:text="22"
+                    android:layout_weight="5"
+                    android:text=""
                     android:textColor="#808080"
                     android:textSize="18dp" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:text="알아보기"
+                    android:textColor="#808080"
+                    android:textSize="16dp" />
             </LinearLayout>
 
 
-
-
             <LinearLayout
-                android:paddingRight="12dp"
-                android:paddingLeft="12dp"
-                android:paddingTop="20dp"
-                android:paddingBottom="20dp"
                 android:id="@+id/mineActivity_linearLayout_password"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                >
+                android:paddingLeft="12dp"
+                android:paddingTop="20dp"
+                android:paddingRight="12dp"
+                android:paddingBottom="20dp">
 
                 <ImageView
                     android:layout_width="24dp"
@@ -269,14 +281,14 @@
 
 
             <LinearLayout
-                android:paddingRight="12dp"
-                android:paddingLeft="12dp"
-                android:paddingTop="20dp"
-                android:paddingBottom="20dp"
                 android:id="@+id/mineActivity_linearLayout_upload"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:paddingLeft="12dp"
+                android:paddingTop="20dp"
+                android:paddingRight="12dp"
+                android:paddingBottom="20dp">
 
                 <ImageView
                     android:layout_width="24dp"
@@ -306,17 +318,15 @@
             </LinearLayout>
 
 
-
-
             <LinearLayout
-                android:paddingRight="12dp"
-                android:paddingLeft="12dp"
-                android:paddingTop="20dp"
-                android:paddingBottom="20dp"
                 android:id="@+id/mineActivity_linearLayout_pickContent"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:paddingLeft="12dp"
+                android:paddingTop="20dp"
+                android:paddingRight="12dp"
+                android:paddingBottom="20dp">
 
                 <ImageView
                     android:layout_width="24dp"
@@ -346,16 +356,15 @@
             </LinearLayout>
 
 
-
             <LinearLayout
-                android:paddingRight="12dp"
-                android:paddingLeft="12dp"
-                android:paddingTop="20dp"
-                android:paddingBottom="20dp"
                 android:id="@+id/mineActivity_linearLayout_like"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:paddingLeft="12dp"
+                android:paddingTop="20dp"
+                android:paddingRight="12dp"
+                android:paddingBottom="20dp">
 
                 <ImageView
                     android:layout_width="24dp"
@@ -384,16 +393,15 @@
             </LinearLayout>
 
 
-
             <LinearLayout
-                android:paddingRight="12dp"
-                android:paddingLeft="12dp"
-                android:paddingTop="20dp"
-                android:paddingBottom="20dp"
                 android:id="@+id/mineActivity_linearLayout_reply"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:paddingLeft="12dp"
+                android:paddingTop="20dp"
+                android:paddingRight="12dp"
+                android:paddingBottom="20dp">
 
 
                 <ImageView
@@ -423,14 +431,15 @@
             </LinearLayout>
 
             <LinearLayout
-                android:paddingRight="12dp"
-                android:paddingLeft="12dp"
-                android:paddingTop="20dp"
-                android:paddingBottom="20dp"
+                android:visibility="gone"
                 android:id="@+id/mineActivity_linearLayout_noti"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:paddingLeft="12dp"
+                android:paddingTop="20dp"
+                android:paddingRight="12dp"
+                android:paddingBottom="20dp">
 
                 <ImageView
                     android:layout_width="24dp"
@@ -451,149 +460,84 @@
 
                 <android.support.v7.widget.SwitchCompat
                     android:id="@+id/mineActivity_switch_noti"
-                    app:switchMinWidth="46dp"
-                    android:textOn="on"
-                    android:textOff="off"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="2" />
+                    android:layout_weight="2"
+                    android:textOff="off"
+                    android:textOn="on"
+                    app:switchMinWidth="46dp" />
 
             </LinearLayout>
 
 
+            <LinearLayout
+                android:id="@+id/mineActivity_linearLayout_logOut"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingLeft="12dp"
+                android:paddingTop="20dp"
+                android:paddingRight="12dp"
+                android:paddingBottom="20dp">
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:src="@drawable/ic_logout" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="10"
+                    android:text="로그아웃"
+                    android:textColor="#383838"
+                    android:textSize="18dp" />
+            </LinearLayout>
 
 
+            <LinearLayout
+                android:id="@+id/mineActivity_linearLayout_authOut"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingLeft="12dp"
+                android:paddingTop="20dp"
+                android:paddingRight="12dp"
+                android:paddingBottom="20dp">
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:src="@drawable/ic_signout" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="10"
+                    android:text="회원탈퇴"
+                    android:textColor="#383838"
+                    android:textSize="18dp" />
+            </LinearLayout>
 
 
 
             <View
                 android:layout_width="match_parent"
-                android:layout_height="5dp"
+                android:layout_height="30dp"
                 android:layout_marginTop="4dp"
-                android:layout_marginBottom="4dp"
-                android:background="#efefef" />
+                android:layout_marginBottom="40dp"
+                android:paddingBottom="40dp"
+                android:background="#994747" />
 
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="5dp"
-                android:layout_marginTop="4dp"
-                android:layout_marginBottom="4dp"
-                android:background="#efefef" />
-
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="5dp"
-                android:layout_marginTop="4dp"
-                android:layout_marginBottom="4dp"
-                android:background="#efefef" />
-
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginTop="4dp"
-                android:layout_marginBottom="4dp"
-                android:background="#efefef" />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="5dp"
-                android:layout_marginTop="4dp"
-                android:layout_marginBottom="4dp"
-                android:background="#efefef" />
-
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="5dp"
-                android:layout_marginTop="4dp"
-                android:layout_marginBottom="4dp"
-                android:background="#efefef" />
-
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="5dp"
-                android:layout_marginTop="4dp"
-                android:layout_marginBottom="4dp"
-                android:background="#efefef" />
-
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="5dp"
-                android:layout_marginTop="4dp"
-                android:layout_marginBottom="4dp"
-                android:background="#efefef" />
-
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginTop="4dp"
-                android:layout_marginBottom="4dp"
-                android:background="#efefef" />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="5dp"
-                android:layout_marginTop="4dp"
-                android:layout_marginBottom="4dp"
-                android:background="#efefef" />
-
-
-            <View
-                android:id="@+id/view10"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginTop="4dp"
-                android:layout_marginBottom="4dp"
-                android:background="#efefef" />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="5dp"
-                android:layout_marginTop="4dp"
-                android:layout_marginBottom="4dp"
-                android:background="#efefef" />
-
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="5dp"
-                android:layout_marginTop="4dp"
-                android:layout_marginBottom="4dp"
-                android:background="#efefef" />
-
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="5dp"
-                android:layout_marginTop="4dp"
-                android:layout_marginBottom="4dp"
-                android:background="#efefef" />
-
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="5dp"
-                android:layout_marginTop="4dp"
-                android:layout_marginBottom="4dp"
-                android:background="#efefef" />
-
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginTop="4dp"
-                android:layout_marginBottom="4dp"
-                android:background="#efefef" />
 
 
         </LinearLayout>
 
     </ScrollView>
+
 
 </RelativeLayout>

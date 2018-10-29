@@ -39,6 +39,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-storage:16.0.3'
     implementation 'com.google.android.gms:play-services-auth:16.0.1'
     implementation 'com.firebase:firebase-jobdispatcher:0.8.5'
+    implementation 'com.google.firebase:firebase-messaging:17.3.4'
 
     implementation 'com.github.bumptech.glide:glide:4.7.1'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.7.1'
@@ -51,5 +52,8 @@ dependencies {
 //    implementation 'net.danlew:android.joda:2.9.9.3'
     implementation 'com.tomer:fadingtextview:2.5'
     implementation 'com.github.HOTBitmapGG:RingProgressBar:V1.2.2'
+
+    implementation "com.squareup.retrofit2:retrofit:2.4.0"
+    implementation "com.squareup.retrofit2:converter-gson:2.4.0"
 }
 apply plugin: 'com.google.gms.google-services'

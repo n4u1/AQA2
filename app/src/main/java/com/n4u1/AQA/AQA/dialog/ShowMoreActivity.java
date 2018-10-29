@@ -41,6 +41,7 @@ public class ShowMoreActivity extends AppCompatActivity {
         final int contentHit = getIntent().getIntExtra("hitCount", 0);
 
         final TextView showMore_textView_countResult = findViewById(R.id.showMore_textView_countResult);
+
         TextView showMore_textView_done = findViewById(R.id.showMore_textView_done);
         TextView showMore_textView_cancel = findViewById(R.id.showMore_textView_cancel);
         TextView showMore_textView_delete = findViewById(R.id.showMore_textView_delete);
@@ -141,8 +142,6 @@ public class ShowMoreActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-
-
                 mReference.child("user_contents").child(pollKey).child("alarm").addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -151,6 +150,10 @@ public class ShowMoreActivity extends AppCompatActivity {
                             String alarmCount = "C0O" + count;
                             if (Integer.parseInt(count) <= contentHit) {
                                 Toast toast = Toast.makeText(getApplicationContext(), "현재 투표수는" + contentHit + "입니다.", Toast.LENGTH_SHORT);
+                                toast.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL, 0, 0);
+                                toast.show();
+                            } else if (showMore_editText_count == null) {
+                                Toast toast = Toast.makeText(getApplicationContext(), "? 에 숫자를 입력해주세요!", Toast.LENGTH_SHORT);
                                 toast.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL, 0, 0);
                                 toast.show();
                             } else {

@@ -25,7 +25,8 @@ public class UploadLoadingActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_upload_loading);
 
-        int sec = getIntent().getIntExtra("sec", 1000); //1000 = 1MB
+        //1000 = 1MB
+        int sec = getIntent().getIntExtra("sec", 1000);
         if (sec < 2000) {
             uploadingTime = 10;
         } else if (sec < 4000) {

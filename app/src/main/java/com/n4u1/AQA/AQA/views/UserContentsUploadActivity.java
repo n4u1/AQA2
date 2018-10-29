@@ -189,6 +189,33 @@ public class UserContentsUploadActivity extends AppCompatActivity implements Con
                     goHomeDialog.show(getSupportFragmentManager(), "goHomeDialog");
                 }
                 break;
+            case R.id.menu_next:
+                if (editText_title.getText().toString().equals("") | editText_addCategory.getText().toString().equals("") | editText_pollMode.getText().toString().equals("") | editText_description.getText().toString().equals("")) {
+                    Toast.makeText(getApplicationContext(), "빈 칸이 있어요!", Toast.LENGTH_SHORT).show();
+                } else {
+                    mdatabase.getReference().child("users").child(auth.getCurrentUser().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            Map<String, Object> user = (Map<String, Object>) dataSnapshot.getValue();
+                            ArrayList<String> userInputContents = new ArrayList<>();
+                            userInputContents.add(editText_title.getText().toString());
+                            userInputContents.add(editText_addCategory.getText().toString());
+                            userInputContents.add(editText_pollMode.getText().toString());
+                            userInputContents.add(editText_description.getText().toString());
+                            userInputContents.add(user.get("userId").toString());
+                            Intent intent = new Intent(UserContentsUploadActivity.this, FileChoiceActivity.class);
+                            intent.putStringArrayListExtra("userInputContents", userInputContents);
+                            startActivity(intent);
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                        }
+                    });
+
+                }
+                break;
             case android.R.id.home:
                 if (editText_title.getText().toString().length() + editText_pollMode.getText().toString().length() +
                         editText_description.getText().toString().length() + editText_addCategory.getText().toString().length() == 0) {
@@ -200,6 +227,7 @@ public class UserContentsUploadActivity extends AppCompatActivity implements Con
                     goHomeDialog.show(getSupportFragmentManager(), "goHomeDialog");
                 }
                 break;
+
         }
 
         return super.onOptionsItemSelected(item);

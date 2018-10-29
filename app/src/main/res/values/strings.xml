@@ -128,8 +128,6 @@
     </string-array>
 
 
-
-
     <string-array name="createUserGender">
         <item>남</item>
         <item>여</item>

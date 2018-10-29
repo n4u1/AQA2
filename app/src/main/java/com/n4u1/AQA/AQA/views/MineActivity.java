@@ -4,14 +4,13 @@ import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -26,7 +25,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.firebase.jobdispatcher.Constraint;
 import com.firebase.jobdispatcher.FirebaseJobDispatcher;
 import com.firebase.jobdispatcher.GooglePlayDriver;
 import com.firebase.jobdispatcher.Job;
@@ -35,7 +33,6 @@ import com.firebase.jobdispatcher.RetryStrategy;
 import com.firebase.jobdispatcher.Trigger;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.database.ChildEventListener;
 import com.n4u1.AQA.AQA.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -44,9 +41,9 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.n4u1.AQA.AQA.dialog.ContentChoiceDialog;
+import com.n4u1.AQA.AQA.dialog.SignOutDialog;
+import com.n4u1.AQA.AQA.dialog.LogOutDialog;
 import com.n4u1.AQA.AQA.models.ContentDTO;
-import com.n4u1.AQA.AQA.recyclerview.PostViewHolder3;
 import com.n4u1.AQA.AQA.util.NotificationJobService;
 
 import java.util.ArrayList;
@@ -54,7 +51,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-public class MineActivity extends AppCompatActivity {
+public class MineActivity extends AppCompatActivity implements LogOutDialog.LogOutDialogListener, SignOutDialog.SignOutDialogListener {
 
     FirebaseUser mFireBaseUser;
     DatabaseReference mDatabaseReference;
@@ -93,6 +90,9 @@ public class MineActivity extends AppCompatActivity {
         LinearLayout mineActivity_linearLayout_pickContent = findViewById(R.id.mineActivity_linearLayout_pickContent);
         LinearLayout mineActivity_linearLayout_reply = findViewById(R.id.mineActivity_linearLayout_reply);
         LinearLayout mineActivity_linearLayout_upload = findViewById(R.id.mineActivity_linearLayout_upload);
+        LinearLayout mineActivity_linearLayout_logOut = findViewById(R.id.mineActivity_linearLayout_logOut);
+        LinearLayout mineActivity_linearLayout_authOut = findViewById(R.id.mineActivity_linearLayout_authOut);
+        LinearLayout mineActivity_linearLayout_userClass = findViewById(R.id.mineActivity_linearLayout_userClass);
         final ImageView mineActivity_imageView_userClass = findViewById(R.id.mineActivity_imageView_userClass);
 
 
@@ -104,6 +104,22 @@ public class MineActivity extends AppCompatActivity {
 
         //이메일 가져오기
         mineActivity_textView_account.setText(mFireBaseUser.getEmail());
+
+
+
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        user.updateEmail(user.getEmail())
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            Log.d("lkj email update", "User email address updated.");
+                        }
+                    }
+                });
+
+
+
 
         //성별 나이 아이디 가져오기
         mDatabaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -150,10 +166,18 @@ public class MineActivity extends AppCompatActivity {
                     mineActivity_imageView_userClass.setImageResource(R.drawable.q_class_blue_2);
                 }
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
+            }
+        });
+
+        //Q포인트 점수 알아보기
+        mineActivity_linearLayout_userClass.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MineActivity.this, UserClassInfoActivity.class);
+                startActivity(intent);
             }
         });
 
@@ -254,6 +278,26 @@ public class MineActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(MineActivity.this, MyUploadActivity.class);
                 startActivity(intent);
+            }
+        });
+
+        //로그 아웃
+        mineActivity_linearLayout_logOut.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                LogOutDialog logOutDialog = new LogOutDialog();
+                logOutDialog.show(getSupportFragmentManager(), "logOutDialog");
+
+            }
+        });
+
+        //회원 탈퇴
+        mineActivity_linearLayout_authOut.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                SignOutDialog authOutDialog = new SignOutDialog();
+                authOutDialog.show(getSupportFragmentManager(), "authOutDialog");
+
             }
         });
 
@@ -389,5 +433,54 @@ public class MineActivity extends AppCompatActivity {
 
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void LogOutDialogCallback(String string) {
+        if (string.equals("확인")) {
+            FirebaseAuth.getInstance().signOut();
+            SharedPreferences pref = getSharedPreferences("com.n4u1.AQA", MODE_PRIVATE);
+            SharedPreferences.Editor editor = pref.edit();
+            editor.putString("com.n4u1.AQA.fireBaseUserEmail", null);
+            editor.putString("com.n4u1.AQA.fireBaseUserPassword", null);
+            editor.commit();
+            Intent intent = new Intent(MineActivity.this, LoginActivity.class);
+            startActivity(intent);
+        }
+    }
+
+    @Override
+    public void SignOutDialogCallback(String string) {
+        if (string.equals("탈퇴하기")) {
+            FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+            DatabaseReference authDatabaseRef = FirebaseDatabase.getInstance().getReference();
+
+            authDatabaseRef.child("users").child(user.getUid()).removeValue();
+
+            SharedPreferences pref = getSharedPreferences("com.n4u1.AQA", MODE_PRIVATE);
+            SharedPreferences.Editor editor = pref.edit();
+            editor.putString("com.n4u1.AQA.fireBaseUserEmail", null);
+            editor.putString("com.n4u1.AQA.fireBaseUserPassword", null);
+            editor.commit();
+
+
+
+
+            user.delete()
+                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if (task.isSuccessful()) {
+                                Log.d("lkj authout", "User account deleted.");
+                            }
+                        }
+                    });
+
+
+
+            Intent intent = new Intent(MineActivity.this, LoginActivity.class);
+            startActivity(intent);
+        }
+
     }
 }
