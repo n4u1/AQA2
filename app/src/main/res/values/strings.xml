@@ -75,6 +75,14 @@
     </string-array>
 
 
+    <!--test-->
+    <string name="banner_ad_unit_id">ca-app-pub-1854873514128645/3569596301</string>
+    <!--real-->
+    <!--<string name="banner_ad_unit_id">1854873514128645/3569596301</string>-->
+
+
+
+
     <string-array name="contentType">
         <item>단일 투표 </item>
         <item>순위 투표 </item>

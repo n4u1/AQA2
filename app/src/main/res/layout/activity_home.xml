@@ -3,6 +3,8 @@
 <android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/swipeRFL"
+    xmlns:ads="http://schemas.android.com/apk/res-auto"
+
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -20,19 +22,27 @@
 
 
 
-        <ImageView
-            android:id="@+id/homeActivity_imageView_googleAd"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
+
+
+        <com.google.android.gms.ads.AdView
+            android:id="@+id/adView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
             android:layout_alignParentBottom="true"
-            android:background="#5f95b3" />
+            ads:adSize="BANNER"
+            ads:adUnitId="@string/banner_ad_unit_id">
+        </com.google.android.gms.ads.AdView>
+
+
+
 
 
         <LinearLayout
             android:id="@+id/homeActivity_linearLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_above="@id/homeActivity_imageView_googleAd"
+            android:layout_above="@+id/adView"
             android:layout_marginTop="58dp"
             android:gravity="center_horizontal"
             android:orientation="vertical">
@@ -100,8 +110,8 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_alignParentBottom="true"
-            android:layout_marginRight="23dp"
-            android:layout_marginBottom="49dp"
+            android:layout_marginRight="24dp"
+            android:layout_marginBottom="74dp"
             android:src="@drawable/ic_create_black_24dp"
             app:backgroundTint="#ffffff" />
 

@@ -76,14 +76,6 @@ public class UserContentsUploadActivity extends AppCompatActivity implements Con
         }
 
 
-        //파일업로드용 기기 저장소 접근 권한 요청
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.CAMERA}, 0);
-//            requestPermissions(new String[]{Manifest.permission.CAMERA},1);
-        }
-
-//            requestPermissions(new String[]{Manifest.permission.CAMERA}, 1);
-
 
         storage = FirebaseStorage.getInstance();
         mdatabase = FirebaseDatabase.getInstance();

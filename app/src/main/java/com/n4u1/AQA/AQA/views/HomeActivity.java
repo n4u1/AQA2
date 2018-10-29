@@ -1,5 +1,6 @@
 package com.n4u1.AQA.AQA.views;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -32,6 +33,9 @@ import com.firebase.jobdispatcher.Lifetime;
 import com.firebase.jobdispatcher.RetryStrategy;
 import com.firebase.jobdispatcher.Trigger;
 import com.github.mikephil.charting.utils.FileUtils;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
 import com.google.firebase.auth.FirebaseAuth;
 import com.n4u1.AQA.AQA.R;
 import com.n4u1.AQA.AQA.dialog.ShareDialog;
@@ -105,7 +109,7 @@ public class HomeActivity extends AppCompatActivity implements SwipeRefreshLayou
         firebaseDatabase = FirebaseDatabase.getInstance();
         auth = FirebaseAuth.getInstance();
 
-
+        MobileAds.initialize(getApplicationContext(), "ca-app-pub-1854873514128645~3190074937");
         recyclerView_home.setHasFixedSize(true);
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(this);
         mLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
@@ -115,8 +119,22 @@ public class HomeActivity extends AppCompatActivity implements SwipeRefreshLayou
         postAdapter = new PostAdapter(this, contentDTOS, recyclerView_home);
         recyclerView_home.setAdapter(postAdapter);
         postAdapter.notifyDataSetChanged();
+        AdView adView = findViewById(R.id.adView);
 
+        //시작시 권한요청
+        requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.CAMERA}, 0);
+
+        //노티 백그라운드 자동 실행
         backgroundNotify();
+
+        AdRequest adRequest = new AdRequest.Builder()
+//                .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)        // All emulators
+                .addTestDevice("C39C4F095E193D0C5E7BBCB91B89B469")  // Galaxy Nexus-4 device ID
+
+                .build();
+        adView.loadAd(adRequest);
+
+
 
 
         //실시간 투표순위 5개

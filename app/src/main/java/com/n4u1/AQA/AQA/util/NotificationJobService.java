@@ -195,7 +195,7 @@ public class NotificationJobService extends JobService {
 //            pendingIntent = stackBuilder.getPendingIntent(requestID, PendingIntent.FLAG_UPDATE_CURRENT);
 //        }
 
-        Intent intent = new Intent(getApplicationContext(), WhenNotiClickActivity.class);
+        Intent intent = new Intent(getApplicationContext(), MineActivity.class);
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(getApplicationContext());
         stackBuilder.addParentStack(SplashActivity.class);
         stackBuilder.addNextIntent(intent);
