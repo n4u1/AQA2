@@ -10,6 +10,8 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 
 import com.n4u1.AQA.AQA.R;
 import com.n4u1.AQA.AQA.models.ContentDTO;
@@ -56,6 +58,7 @@ public class MyLikeContentsActivity extends AppCompatActivity {
         final RecyclerView recyclerViewList = findViewById(R.id.recyclerView_home);
         final PostAdapterMine postAdapterMine = new PostAdapterMine(this, contentDTOS, recyclerViewList);
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
+        final TextView textView_myLike = findViewById(R.id.textView_myLike);
         mLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         mLayoutManager.isSmoothScrollbarEnabled();
         mLayoutManager.setStackFromEnd(true);
@@ -78,33 +81,41 @@ public class MyLikeContentsActivity extends AppCompatActivity {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshots) {
                         Map<String, Object> likeContent = (Map<String, Object>) dataSnapshots.getValue();
-                        int tempCount = 0;
 
+                        if (likeContent == null) {
+                            textView_myLike.setVisibility(View.VISIBLE);
+                            recyclerViewList.setVisibility(View.GONE);
+                        } else {
+                            textView_myLike.setVisibility(View.GONE);
+                            recyclerViewList.setVisibility(View.VISIBLE);
 
-                        Set set = likeContent.keySet();
-                        Iterator iterator = set.iterator();
-                        while (iterator.hasNext()) {
-                            key.add((String) iterator.next());
-                        }
-
-                        for (int i = 0; i < dataSnapshots.getChildrenCount(); i++) {
-                            if (likeContent.get(key.get(i)).toString().equals("true")) {
-                                key_.add(key.get(i));
-                                tempCount++;
+                            int tempCount = 0;
+                            Set set = likeContent.keySet();
+                            Iterator iterator = set.iterator();
+                            while (iterator.hasNext()) {
+                                key.add((String) iterator.next());
                             }
-                        }
 
-                        contentDTOS.clear();
-                        for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                            ContentDTO contentDTO = snapshot.getValue(ContentDTO.class);
-                            for (int i = 0; i < tempCount; i++) {
-                                if (contentDTO.getContentKey().contains(key_.get(i))) {
-                                    contentDTOS.add(contentDTO);
+                            for (int i = 0; i < dataSnapshots.getChildrenCount(); i++) {
+                                if (likeContent.get(key.get(i)).toString().equals("true")) {
+                                    key_.add(key.get(i));
+                                    tempCount++;
                                 }
                             }
 
+                            contentDTOS.clear();
+                            for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                                ContentDTO contentDTO = snapshot.getValue(ContentDTO.class);
+                                for (int i = 0; i < tempCount; i++) {
+                                    if (contentDTO.getContentKey().contains(key_.get(i))) {
+                                        contentDTOS.add(contentDTO);
+                                    }
+                                }
+
+                            }
+                            postAdapterMine.notifyDataSetChanged();
                         }
-                        postAdapterMine.notifyDataSetChanged();
+
                     }
 
                     @Override

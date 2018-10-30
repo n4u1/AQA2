@@ -11,6 +11,8 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 
 import com.n4u1.AQA.AQA.R;
 import com.n4u1.AQA.AQA.models.ContentDTO;
@@ -63,6 +65,7 @@ public class MyPollActivity extends AppCompatActivity {
         final RecyclerView recyclerViewList = findViewById(R.id.recyclerView_home);
         final PostAdapterMine postAdapterMine = new PostAdapterMine(this, contentDTOS, recyclerViewList);
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
+        final TextView textView_myPoll = findViewById(R.id.textView_myPoll);
         mLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         mLayoutManager.isSmoothScrollbarEnabled();
         mLayoutManager.setStackFromEnd(true);
@@ -83,29 +86,37 @@ public class MyPollActivity extends AppCompatActivity {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshots) {
                         Map<String, Object> pickContent = (Map<String, Object>) dataSnapshots.getValue();
-                        int tempCount = 0;
+                        if (pickContent == null) {
+                            textView_myPoll.setVisibility(View.VISIBLE);
+                            recyclerViewList.setVisibility(View.GONE);
+                        } else {
+                            textView_myPoll.setVisibility(View.GONE);
+                            recyclerViewList.setVisibility(View.VISIBLE);
+                            int tempCount = 0;
 
-                        try {
-                            Set set = pickContent.keySet();
-                            Iterator iterator = set.iterator();
-                            while (iterator.hasNext()) {
-                                key.add((String) iterator.next());
-                                tempCount++;
-                            }
+                            try {
+                                Set set = pickContent.keySet();
+                                Iterator iterator = set.iterator();
+                                while (iterator.hasNext()) {
+                                    key.add((String) iterator.next());
+                                    tempCount++;
+                                }
 
-                            contentDTOS.clear();
-                            for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                                ContentDTO contentDTO = snapshot.getValue(ContentDTO.class);
-                                for (int i = 0; i < tempCount; i++) {
-                                    if (contentDTO.getContentKey().contains(key.get(i))) {
-                                        contentDTOS.add(contentDTO);
+                                contentDTOS.clear();
+                                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                                    ContentDTO contentDTO = snapshot.getValue(ContentDTO.class);
+                                    for (int i = 0; i < tempCount; i++) {
+                                        if (contentDTO.getContentKey().contains(key.get(i))) {
+                                            contentDTOS.add(contentDTO);
+                                        }
                                     }
                                 }
+                                postAdapterMine.notifyDataSetChanged();
+                            } catch (Exception e) {
+                                Log.d("lkj exception", e.toString());
                             }
-                            postAdapterMine.notifyDataSetChanged();
-                        } catch (Exception e) {
-                            Log.d("lkj exception", e.toString());
                         }
+
 
                     }
 

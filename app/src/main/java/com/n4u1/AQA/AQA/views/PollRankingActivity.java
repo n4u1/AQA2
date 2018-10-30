@@ -166,6 +166,7 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
         contentHit = getIntent().getIntExtra("contentHit", 999999);
 
 
+
         Log.d("lkj hitCount!!!", String.valueOf(contentHit));
 //        Log.d("lkj title", title);
         Log.d("lkj contentKey!!!", contentKey);
@@ -301,7 +302,6 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
         loginUser(spUserEmail, spUserPassword);
 
 
-
         //제목옆에 더보기 클릭
         pollActivity_imageView_showMore.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -313,6 +313,7 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
                 startActivityForResult(intentShowMore, 20000);
             }
         });
+
 
 
 
@@ -1923,7 +1924,7 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
 
             case R.id.pollActivity_textView_check_1:
                 if (checkUserHitContent) {
-                    Toast.makeText(getApplicationContext(), "이미 투표 하셨습니다!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "투표하셨거나 자신의 투표입니다.!", Toast.LENGTH_SHORT).show();
                 } else {
                     intent.putExtra("contentsCount", getIntent().getIntExtra("itemViewType", 100));
                     intent.putStringArrayListExtra("rankingTextCheck", rankingTextChecking());
@@ -1932,7 +1933,7 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
                 break;
             case R.id.pollActivity_textView_check_2:
                 if (checkUserHitContent) {
-                    Toast.makeText(getApplicationContext(), "이미 투표 하셨습니다!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "투표하셨거나 자신의 투표입니다.!", Toast.LENGTH_SHORT).show();
                 } else {
                     intent.putExtra("contentsCount", getIntent().getIntExtra("itemViewType", 100));
                     intent.putStringArrayListExtra("rankingTextCheck", rankingTextChecking());
@@ -1941,7 +1942,7 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
                 break;
             case R.id.pollActivity_textView_check_3:
                 if (checkUserHitContent) {
-                    Toast.makeText(getApplicationContext(), "이미 투표 하셨습니다!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "투표하셨거나 자신의 투표입니다.!", Toast.LENGTH_SHORT).show();
                 } else {
                     intent.putExtra("contentsCount", getIntent().getIntExtra("itemViewType", 100));
                     intent.putStringArrayListExtra("rankingTextCheck", rankingTextChecking());
@@ -1950,7 +1951,7 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
                 break;
             case R.id.pollActivity_textView_check_4:
                 if (checkUserHitContent) {
-                    Toast.makeText(getApplicationContext(), "이미 투표 하셨습니다!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "투표하셨거나 자신의 투표입니다.!", Toast.LENGTH_SHORT).show();
                 } else {
                     intent.putExtra("contentsCount", getIntent().getIntExtra("itemViewType", 100));
                     intent.putStringArrayListExtra("rankingTextCheck", rankingTextChecking());
@@ -1959,7 +1960,7 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
                 break;
             case R.id.pollActivity_textView_check_5:
                 if (checkUserHitContent) {
-                    Toast.makeText(getApplicationContext(), "이미 투표 하셨습니다!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "투표하셨거나 자신의 투표입니다.!", Toast.LENGTH_SHORT).show();
                 } else {
                     intent.putExtra("contentsCount", getIntent().getIntExtra("itemViewType", 100));
                     intent.putStringArrayListExtra("rankingTextCheck", rankingTextChecking());
@@ -1968,7 +1969,7 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
                 break;
             case R.id.pollActivity_textView_check_6:
                 if (checkUserHitContent) {
-                    Toast.makeText(getApplicationContext(), "이미 투표 하셨습니다!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "투표하셨거나 자신의 투표입니다.!", Toast.LENGTH_SHORT).show();
                 } else {
                     intent.putExtra("contentsCount", getIntent().getIntExtra("itemViewType", 100));
                     intent.putStringArrayListExtra("rankingTextCheck", rankingTextChecking());
@@ -1977,7 +1978,7 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
                 break;
             case R.id.pollActivity_textView_check_7:
                 if (checkUserHitContent) {
-                    Toast.makeText(getApplicationContext(), "이미 투표 하셨습니다!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "투표하셨거나 자신의 투표입니다.!", Toast.LENGTH_SHORT).show();
                 } else {
                     intent.putExtra("contentsCount", getIntent().getIntExtra("itemViewType", 100));
                     intent.putStringArrayListExtra("rankingTextCheck", rankingTextChecking());
@@ -1986,7 +1987,7 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
                 break;
             case R.id.pollActivity_textView_check_8:
                 if (checkUserHitContent) {
-                    Toast.makeText(getApplicationContext(), "이미 투표 하셨습니다!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "투표하셨거나 자신의 투표입니다.!", Toast.LENGTH_SHORT).show();
                 } else {
                     intent.putExtra("contentsCount", getIntent().getIntExtra("itemViewType", 100));
                     intent.putStringArrayListExtra("rankingTextCheck", rankingTextChecking());
@@ -1995,7 +1996,7 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
                 break;
             case R.id.pollActivity_textView_check_9:
                 if (checkUserHitContent) {
-                    Toast.makeText(getApplicationContext(), "이미 투표 하셨습니다!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "투표하셨거나 자신의 투표입니다.!", Toast.LENGTH_SHORT).show();
                 } else {
                     intent.putExtra("contentsCount", getIntent().getIntExtra("itemViewType", 100));
                     intent.putStringArrayListExtra("rankingTextCheck", rankingTextChecking());
@@ -2004,7 +2005,7 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
                 break;
             case R.id.pollActivity_textView_check_10:
                 if (checkUserHitContent) {
-                    Toast.makeText(getApplicationContext(), "이미 투표 하셨습니다!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "투표하셨거나 자신의 투표입니다.!", Toast.LENGTH_SHORT).show();
                 } else {
                     intent.putExtra("contentsCount", getIntent().getIntExtra("itemViewType", 100));
                     intent.putStringArrayListExtra("rankingTextCheck", rankingTextChecking());

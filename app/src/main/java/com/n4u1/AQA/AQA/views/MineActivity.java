@@ -41,6 +41,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.n4u1.AQA.AQA.dialog.FindEmailDialog;
 import com.n4u1.AQA.AQA.dialog.SignOutDialog;
 import com.n4u1.AQA.AQA.dialog.LogOutDialog;
 import com.n4u1.AQA.AQA.models.ContentDTO;
@@ -51,7 +52,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-public class MineActivity extends AppCompatActivity implements LogOutDialog.LogOutDialogListener, SignOutDialog.SignOutDialogListener {
+public class MineActivity extends AppCompatActivity implements LogOutDialog.LogOutDialogListener,
+        SignOutDialog.SignOutDialogListener, FindEmailDialog.FindEmailDialogListener {
 
     FirebaseUser mFireBaseUser;
     DatabaseReference mDatabaseReference;
@@ -191,18 +193,9 @@ public class MineActivity extends AppCompatActivity implements LogOutDialog.LogO
             public void onClick(View view) {
                 FirebaseAuth auth = FirebaseAuth.getInstance();
                 String emailAddress = auth.getCurrentUser().getEmail();
+                FindEmailDialog findEmailDialog = FindEmailDialog.newInstance(emailAddress);
+                findEmailDialog.show(getSupportFragmentManager(), "findEmailDialog");
 
-                auth.sendPasswordResetEmail(emailAddress)
-                        .addOnCompleteListener(new OnCompleteListener<Void>() {
-                            @Override
-                            public void onComplete(@NonNull Task<Void> task) {
-                                if (task.isSuccessful()) {
-                                    Log.d("lkjpassword", "lkjpassword Success");
-                                } else {
-                                    Log.d("lkjpassword", "lkjpassword Fail");
-                                }
-                            }
-                        });
 
             }
         });
@@ -482,5 +475,25 @@ public class MineActivity extends AppCompatActivity implements LogOutDialog.LogO
             startActivity(intent);
         }
 
+    }
+
+    @Override
+    public void FindEmailDialogCallback(String string) {
+        if (string.equals("확인")) {
+            FirebaseAuth auth = FirebaseAuth.getInstance();
+            String emailAddress = auth.getCurrentUser().getEmail();
+            auth.sendPasswordResetEmail(emailAddress)
+                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if (task.isSuccessful()) {
+                                Log.d("lkjpassword", "lkjpassword Success");
+                            } else {
+                                Log.d("lkjpassword", "lkjpassword Fail");
+                            }
+                        }
+                    });
+
+        }
     }
 }

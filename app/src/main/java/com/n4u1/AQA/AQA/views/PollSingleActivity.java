@@ -148,6 +148,7 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
         final String contentKey = getIntent().getStringExtra("contentKey");
         contentHit = getIntent().getIntExtra("contentHit", 999999);
 
+        Log.d("lkj noti", contentKey);
 
         mDatabaseReference = FirebaseDatabase.getInstance().getReference("user_contents").child(contentKey);
         mDatabaseReferencePicker = FirebaseDatabase.getInstance().getReference("users");
@@ -633,6 +634,8 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
         //show more ; show or noShow
 
 
+
+        Log.d("lkj noti", contentKey);
         //contentDTO 화면 초기세팅
         mDatabaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -1781,8 +1784,8 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
                 break;
 
             case R.id.pollActivity_textView_check_1:
-                if (checkUserHitContent) {
-                    Toast.makeText(getApplicationContext(), "이미 투표 하셨습니다!", Toast.LENGTH_SHORT).show();
+                if (checkUserHitContent) {                    
+                    Toast.makeText(getApplicationContext(), "투표하셨거나 자신의 투표입니다.", Toast.LENGTH_SHORT).show();
                 } else {
                     if (((ColorDrawable) pollActivity_imageView_choice_1.getBackground()).getColor() == 0xff4485c9) {
                         checking_img_1_rt();
@@ -1803,7 +1806,7 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
 
             case R.id.pollActivity_textView_check_2:
                 if (checkUserHitContent) {
-                    Toast.makeText(getApplicationContext(), "이미 투표 하셨습니다!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "투표하셨거나 자신의 투표입니다.", Toast.LENGTH_SHORT).show();
                 } else {
                     if (((ColorDrawable) pollActivity_imageView_choice_2.getBackground()).getColor() == 0xff4485c9) {
                         checking_img_2_rt();
@@ -1824,7 +1827,7 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
 
             case R.id.pollActivity_textView_check_3:
                 if (checkUserHitContent) {
-                    Toast.makeText(getApplicationContext(), "이미 투표 하셨습니다!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "투표하셨거나 자신의 투표입니다.", Toast.LENGTH_SHORT).show();
                 } else {
                     if (((ColorDrawable) pollActivity_imageView_choice_3.getBackground()).getColor() == 0xff4485c9) {
                         checking_img_3_rt();
@@ -1845,7 +1848,7 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
 
             case R.id.pollActivity_textView_check_4:
                 if (checkUserHitContent) {
-                    Toast.makeText(getApplicationContext(), "이미 투표 하셨습니다!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "투표하셨거나 자신의 투표입니다.", Toast.LENGTH_SHORT).show();
                 } else {
                     if (((ColorDrawable) pollActivity_imageView_choice_4.getBackground()).getColor() == 0xff4485c9) {
                         checking_img_4_rt();
@@ -1866,7 +1869,7 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
 
             case R.id.pollActivity_textView_check_5:
                 if (checkUserHitContent) {
-                    Toast.makeText(getApplicationContext(), "이미 투표 하셨습니다!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "투표하셨거나 자신의 투표입니다.", Toast.LENGTH_SHORT).show();
                 } else {
                     if (((ColorDrawable) pollActivity_imageView_choice_5.getBackground()).getColor() == 0xff4485c9) {
                         checking_img_5_rt();
@@ -1887,7 +1890,7 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
 
             case R.id.pollActivity_textView_check_6:
                 if (checkUserHitContent) {
-                    Toast.makeText(getApplicationContext(), "이미 투표 하셨습니다!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "투표하셨거나 자신의 투표입니다.", Toast.LENGTH_SHORT).show();
                 } else {
                     if (((ColorDrawable) pollActivity_imageView_choice_6.getBackground()).getColor() == 0xff4485c9) {
                         checking_img_6_rt();
@@ -1908,7 +1911,7 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
 
             case R.id.pollActivity_textView_check_7:
                 if (checkUserHitContent) {
-                    Toast.makeText(getApplicationContext(), "이미 투표 하셨습니다!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "투표하셨거나 자신의 투표입니다.", Toast.LENGTH_SHORT).show();
                 } else {
                     if (((ColorDrawable) pollActivity_imageView_choice_7.getBackground()).getColor() == 0xff4485c9) {
                         checking_img_7_rt();
@@ -1929,7 +1932,7 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
 
             case R.id.pollActivity_textView_check_8:
                 if (checkUserHitContent) {
-                    Toast.makeText(getApplicationContext(), "이미 투표 하셨습니다!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "투표하셨거나 자신의 투표입니다.", Toast.LENGTH_SHORT).show();
                 } else {
                     if (((ColorDrawable) pollActivity_imageView_choice_8.getBackground()).getColor() == 0xff4485c9) {
                         checking_img_8_rt();
@@ -1950,7 +1953,7 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
 
             case R.id.pollActivity_textView_check_9:
                 if (checkUserHitContent) {
-                    Toast.makeText(getApplicationContext(), "이미 투표 하셨습니다!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "투표하셨거나 자신의 투표입니다.", Toast.LENGTH_SHORT).show();
                 } else {
                     if (((ColorDrawable) pollActivity_imageView_choice_9.getBackground()).getColor() == 0xff4485c9) {
                         checking_img_9_rt();
@@ -1972,7 +1975,7 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
 
             case R.id.pollActivity_textView_check_10:
                 if (checkUserHitContent) {
-                    Toast.makeText(getApplicationContext(), "이미 투표 하셨습니다!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "투표하셨거나 자신의 투표입니다.", Toast.LENGTH_SHORT).show();
                 } else {
                     if (((ColorDrawable) pollActivity_imageView_choice_10.getBackground()).getColor() == 0xff4485c9) {
                         checking_img_10_rt();

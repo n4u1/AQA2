@@ -170,42 +170,42 @@ public class NotificationJobService extends JobService {
         Log.d("lkj mode", mode);
         Log.d("lkj itemViewType", String.valueOf(itemViewType));
 
-//        if (mode.equals("순위 투표")) {
-//            Intent intentRanking = new Intent(getApplicationContext(), PollRankingActivity.class);
-//            TaskStackBuilder stackBuilder = TaskStackBuilder.create(getApplicationContext());
-//            stackBuilder.addParentStack(SplashActivity.class);
-//            stackBuilder.addNextIntent(intentRanking);
-//            Bundle bundle = new Bundle();
-//            bundle.putString("notify_contentKey", contentKey);
-//            bundle.putInt("notify_itemViewType", itemViewType);
-//            bundle.putInt("notify_contentHit", hitCount);
-//            intentRanking.putExtras(bundle);
-//            pendingIntent = stackBuilder.getPendingIntent(requestID, PendingIntent.FLAG_UPDATE_CURRENT);
-//
-//        } else {
-//            Intent intentSingle = new Intent(getApplicationContext(), PollSingleActivity.class);
-//            TaskStackBuilder stackBuilder = TaskStackBuilder.create(getApplicationContext());
-//            stackBuilder.addParentStack(SplashActivity.class);
-//            stackBuilder.addNextIntent(intentSingle);
-//            Bundle bundle = new Bundle();
-//            bundle.putString("notify_contentKey", contentKey);
-//            bundle.putInt("notify_itemViewType", itemViewType);
-//            bundle.putInt("notify_contentHit", hitCount);
-//            intentSingle.putExtras(bundle);
-//            pendingIntent = stackBuilder.getPendingIntent(requestID, PendingIntent.FLAG_UPDATE_CURRENT);
-//        }
+        if (mode.equals("순위 투표")) {
+            Intent intentRanking = new Intent(getApplicationContext(), PollRankingActivity.class);
+            TaskStackBuilder stackBuilder = TaskStackBuilder.create(getApplicationContext());
+            stackBuilder.addParentStack(HomeActivity.class);
+            stackBuilder.addNextIntent(intentRanking);
+            Bundle bundle = new Bundle();
+            bundle.putString("contentKey", contentKey);
+            bundle.putInt("itemViewType", itemViewType);
+            bundle.putInt("contentHit", hitCount);
+            intentRanking.putExtras(bundle);
+            pendingIntent = stackBuilder.getPendingIntent(requestID, PendingIntent.FLAG_UPDATE_CURRENT);
 
-        Intent intent = new Intent(getApplicationContext(), MineActivity.class);
-        TaskStackBuilder stackBuilder = TaskStackBuilder.create(getApplicationContext());
-        stackBuilder.addParentStack(SplashActivity.class);
-        stackBuilder.addNextIntent(intent);
-        Bundle bundle = new Bundle();
-        bundle.putString("notify_contentKey", contentKey);
-        bundle.putString("notify_mode", mode);
-        bundle.putInt("notify_itemViewType", itemViewType);
-        bundle.putInt("notify_contentHit", hitCount);
-        intent.putExtras(bundle);
-        pendingIntent = stackBuilder.getPendingIntent(requestID, PendingIntent.FLAG_UPDATE_CURRENT);
+        } else {
+            Intent intentSingle = new Intent(getApplicationContext(), PollSingleActivity.class);
+            TaskStackBuilder stackBuilder = TaskStackBuilder.create(getApplicationContext());
+            stackBuilder.addParentStack(HomeActivity.class);
+            stackBuilder.addNextIntent(intentSingle);
+            Bundle bundle = new Bundle();
+            bundle.putString("contentKey", contentKey);
+            bundle.putInt("itemViewType", itemViewType);
+            bundle.putInt("contentHit", hitCount);
+            intentSingle.putExtras(bundle);
+            pendingIntent = stackBuilder.getPendingIntent(requestID, PendingIntent.FLAG_UPDATE_CURRENT);
+        }
+//
+//        Intent intent = new Intent(getApplicationContext(), MineActivity.class);
+//        TaskStackBuilder stackBuilder = TaskStackBuilder.create(getApplicationContext());
+//        stackBuilder.addParentStack(SplashActivity.class);
+//        stackBuilder.addNextIntent(intent);
+//        Bundle bundle = new Bundle();
+//        bundle.putString("notify_contentKey", contentKey);
+//        bundle.putString("notify_mode", mode);
+//        bundle.putInt("notify_itemViewType", itemViewType);
+//        bundle.putInt("notify_contentHit", hitCount);
+//        intent.putExtras(bundle);
+//        pendingIntent = stackBuilder.getPendingIntent(requestID, PendingIntent.FLAG_UPDATE_CURRENT);
 
         builder.setContentIntent(pendingIntent);
 

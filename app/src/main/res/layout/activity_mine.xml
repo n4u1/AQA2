@@ -80,7 +80,7 @@
                     android:layout_weight="2"
                     android:text="변경하기"
                     android:textColor="#808080"
-                    android:textSize="16dp" />
+                    android:textSize="12dp" />
             </LinearLayout>
 
 
@@ -233,7 +233,7 @@
                     android:layout_weight="2"
                     android:text="알아보기"
                     android:textColor="#808080"
-                    android:textSize="16dp" />
+                    android:textSize="12dp" />
             </LinearLayout>
 
 
@@ -276,7 +276,7 @@
                     android:layout_weight="2"
                     android:text="변경하기"
                     android:textColor="#808080"
-                    android:textSize="16dp" />
+                    android:textSize="12dp" />
             </LinearLayout>
 
 
@@ -314,7 +314,7 @@
                     android:layout_weight="2"
                     android:text="모아보기"
                     android:textColor="#808080"
-                    android:textSize="16dp" />
+                    android:textSize="12dp" />
             </LinearLayout>
 
 
@@ -352,7 +352,7 @@
                     android:layout_weight="2"
                     android:text="모아보기"
                     android:textColor="#808080"
-                    android:textSize="16dp" />
+                    android:textSize="12dp" />
             </LinearLayout>
 
 
@@ -389,7 +389,7 @@
                     android:layout_weight="2"
                     android:text="모아보기"
                     android:textColor="#808080"
-                    android:textSize="16dp" />
+                    android:textSize="12dp" />
             </LinearLayout>
 
 
@@ -427,7 +427,7 @@
                     android:layout_weight="2"
                     android:text="모아보기"
                     android:textColor="#808080"
-                    android:textSize="16dp" />
+                    android:textSize="12dp" />
             </LinearLayout>
 
             <LinearLayout

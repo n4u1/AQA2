@@ -10,6 +10,8 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 
 import com.n4u1.AQA.AQA.R;
 import com.n4u1.AQA.AQA.models.ContentDTO;
@@ -20,6 +22,8 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -54,8 +58,9 @@ public class MyReplyContentsActivity extends AppCompatActivity {
         mFireBaseUser = FirebaseAuth.getInstance().getCurrentUser();
 
         swipeRFL = findViewById(R.id.swipeRFL);
-        final RecyclerView recyclerViewList = findViewById(R.id.recyclerView_home);
+        final RecyclerView recyclerViewList = findViewById(R.id.recyclerViewList);
         final PostAdapterMine postAdapterMine = new PostAdapterMine(this, contentDTOS, recyclerViewList);
+        final TextView textView_myReply = findViewById(R.id.textView_myReply);
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         mLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         mLayoutManager.isSmoothScrollbarEnabled();
@@ -83,16 +88,24 @@ public class MyReplyContentsActivity extends AppCompatActivity {
                             tempCount++;
                         }
 
-                        contentDTOS.clear();
-                        for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                            ContentDTO contentDTO = snapshot.getValue(ContentDTO.class);
-                            for(int i = 0; i < tempCount; i++) {
-                                if (contentDTO.getContentKey().contains(replyKey.get(i))) {
-                                    contentDTOS.add(contentDTO);
+                        if (tempCount == 0) {
+                            textView_myReply.setVisibility(View.VISIBLE);
+                            recyclerViewList.setVisibility(View.GONE);
+                        } else {
+                            textView_myReply.setVisibility(View.GONE);
+                            recyclerViewList.setVisibility(View.VISIBLE);
+                            contentDTOS.clear();
+                            for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                                ContentDTO contentDTO = snapshot.getValue(ContentDTO.class);
+                                for(int i = 0; i < tempCount; i++) {
+                                    if (contentDTO.getContentKey().contains(replyKey.get(i))) {
+                                        contentDTOS.add(contentDTO);
+                                    }
                                 }
                             }
+                            postAdapterMine.notifyDataSetChanged();
                         }
-                        postAdapterMine.notifyDataSetChanged();
+
                     }
 
                     @Override
