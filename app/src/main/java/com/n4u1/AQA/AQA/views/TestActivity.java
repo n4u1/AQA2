@@ -50,7 +50,7 @@ public class TestActivity extends AppCompatActivity {
 
 /*
 ToDo
-뒤로가기에서 온건지 확인ㅋ
+뒤로가기에서 온건지 확인ㅋㅋㅋ
 https://stackoverflow.com/questions/24597085/android-how-to-detect-that-the-activity-is-back-from-another-activity
 ###################################################################################################################################################
 공유하기 버튼 구현 필요 / 댓글 or 게시글 삭제 및 수정 기능 필요 / 동영상을 어떻게 하지.... / 비밀번호 변경 / 비밀번호 찾기 / uploadContentsActivity 제목부분 글자 밀림현상
