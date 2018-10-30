@@ -2,6 +2,7 @@ package com.n4u1.AQA.AQA.views;
 
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -14,6 +15,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -36,12 +38,15 @@ import android.widget.Toast;
 
 
 import com.bumptech.glide.Glide;
+import com.github.mikephil.charting.renderer.DataRenderer;
 import com.github.mikephil.charting.utils.Utils;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseUser;
 import com.n4u1.AQA.AQA.R;
 import com.n4u1.AQA.AQA.dialog.AlarmDoneDialog;
+import com.n4u1.AQA.AQA.dialog.ContentDeleteDialog;
 import com.n4u1.AQA.AQA.dialog.DeleteModificationActivity;
 import com.n4u1.AQA.AQA.dialog.PollResultRankingDialog;
 import com.n4u1.AQA.AQA.dialog.RankingChoiceActivity;
@@ -81,7 +86,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.TimeZone;
 
-public class PollRankingActivity extends AppCompatActivity implements View.OnClickListener {
+public class PollRankingActivity extends AppCompatActivity implements View.OnClickListener, ContentDeleteDialog.ContentDeleteDialogListener {
 
     private boolean ACTIVITY_REPLY_FLAG;
     private boolean ACTIVITY_BESTREPLY_FLAG;
@@ -134,7 +139,7 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
     LinearLayout linearLayout_bestReply0, linearLayout_bestReply1, linearLayout_bestReply2;
     TextView bestReply_id0, bestReply_id1,bestReply_id2, bestReply_reply0, bestReply_reply1, bestReply_reply2,
             bestReply_date0, bestReply_date1, bestReply_date2, bestReply_likeCount0, bestReply_likeCount1, bestReply_likeCount2;
-    ImageView bestReply_thumbImg0, bestReply_thumbImg1, bestReply_thumbImg2, pollActivity_imageView_showMore;
+    ImageView bestReply_thumbImg0, bestReply_thumbImg1, bestReply_thumbImg2;
 
     TextView pollActivity_textView_check_1, pollActivity_textView_check_2,
             pollActivity_textView_check_3, pollActivity_textView_check_4,
@@ -181,7 +186,7 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
         likeFirebaseDatabase = FirebaseDatabase.getInstance();
 
         pollActivity_imageView_around_1 = findViewById(R.id.pollActivity_imageView_around_1);
-        pollActivity_imageView_showMore = findViewById(R.id.pollActivity_imageView_showMore);
+
 
         pollActivity_imageView_userClass = findViewById(R.id.pollActivity_imageView_userClass);
         imageView_userClass0 = findViewById(R.id.imageView_userClass0);
@@ -303,16 +308,16 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
 
 
         //제목옆에 더보기 클릭
-        pollActivity_imageView_showMore.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Log.d("lkjshormore", "showmore");
-                Intent intentShowMore = new Intent(PollRankingActivity.this, ShowMoreActivity.class);
-                intentShowMore.putExtra("pollKey", contentKey);
-                intentShowMore.putExtra("hitCount", contentHit);
-                startActivityForResult(intentShowMore, 20000);
-            }
-        });
+//        pollActivity_imageView_showMore.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Log.d("lkjshormore", "showmore");
+//                Intent intentShowMore = new Intent(PollRankingActivity.this, ShowMoreActivity.class);
+//                intentShowMore.putExtra("pollKey", contentKey);
+//                intentShowMore.putExtra("hitCount", contentHit);
+//                startActivityForResult(intentShowMore, 20000);
+//            }
+//        });
 
 
 
@@ -678,14 +683,13 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
                 pollActivity_textView_replyCount.setText(String.valueOf(contentDTO.getReplyCount()));
                 pollActivity_textView_userId.setText(contentDTO.getUserID());
                 settingUserIcon(contentDTO.getUid());
+
                 if (contentDTO.likes.containsKey(auth.getCurrentUser().getUid())) {
                     pollActivity_imageView_like.setImageResource(R.drawable.ic_thumb_up_blue);
                 } else {
                     pollActivity_imageView_like.setImageResource(R.drawable.ic_outline_thumb_up_24px);
                 }
-                if (contentDTO.getUid().equals(auth.getCurrentUser().getUid())) {
-                    pollActivity_imageView_showMore.setVisibility(View.VISIBLE);
-                }
+
                 switch (contentDTO.getItemViewType()) {
                     case 2:
                         pollActivity_textView_check_1.setVisibility(View.VISIBLE);
@@ -2277,8 +2281,27 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
 
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
+    public boolean onCreateOptionsMenu(final Menu menu) {
         getMenuInflater().inflate(R.menu.poll_ranking_menu, menu);
+        final MenuItem item = menu.findItem(R.id.menu_showMore);
+        final String contentKey = getIntent().getStringExtra("contentKey");
+        firebaseDatabase.getReference().child("user_contents").child(contentKey).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                ContentDTO contentDTO = dataSnapshot.getValue(ContentDTO.class);
+                if (contentDTO.getUid().equals(auth.getCurrentUser().getUid())) {
+                    item.setVisible(true);
+                } else {
+                    item.setVisible(false);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
         return true;
     }
 
@@ -2296,8 +2319,18 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
                 break;
-            case R.id.menu_back:
-                this.onBackPressed();
+            case R.id.delete:
+                openContentDeleteDialog();
+                Log.d("lkj delete", "dedete");
+
+                break;
+            case R.id.alarm:
+                Log.d("lkj alara", "dedete");
+                String contentKey = getIntent().getStringExtra("contentKey");
+                Intent intentShowMore = new Intent(PollRankingActivity.this, ShowMoreActivity.class);
+                intentShowMore.putExtra("pollKey", contentKey);
+                intentShowMore.putExtra("hitCount", contentHit);
+                startActivityForResult(intentShowMore, 20000);
                 break;
             case android.R.id.home:
                 onBackPressed();
@@ -2306,12 +2339,42 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
         return super.onOptionsItemSelected(item);
     }
 
+    //투표 삭제
+    private void openContentDeleteDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("삭제 알림");
+        builder.setMessage("정말 이 투표를 삭제 하시겠습니까?\n 삭제되면 복구는 불가능 합니다.");
+        builder.setPositiveButton("확 인", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                FirebaseUser mUser = FirebaseAuth.getInstance().getCurrentUser();
+                DatabaseReference mReference = FirebaseDatabase.getInstance().getReference();
+                String pollKey = getIntent().getStringExtra("contentKey");
+                mReference.child("user_contents").child(pollKey).removeValue();
+                mReference.child("users").child(mUser.getUid()).child("uploadContent").child(pollKey).removeValue();
+                Toast toast = Toast.makeText(getApplicationContext(), "삭제 되었습니다.", Toast.LENGTH_SHORT);
+                toast.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL, 0, 0);
+                toast.show();
+                onBackPressed();
+            }
+        });
+        builder.setNeutralButton("취 소", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+
+            }
+        });
+        builder.create().show();
+    }
+
+
     public void refreshActivity() {
         finish();
         overridePendingTransition(0, 0);
         startActivity(getIntent());
         overridePendingTransition(0, 0);
     }
+
 
     //picker의 현재픽,성별,나이 가져와서 통계항목에 + n
     private String addStatistics(String statistics_code, ArrayList<Integer> currentPickScore, String gender, int age) {
@@ -2687,6 +2750,19 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
                         }
                     }
                 });
+    }
+
+
+    @Override
+    public void ContentDeleteDialogCallback(String string) {
+        if (string.equals("확인")) {
+            FirebaseUser mUser = FirebaseAuth.getInstance().getCurrentUser();
+            DatabaseReference mReference = FirebaseDatabase.getInstance().getReference();
+            String pollKey = getIntent().getStringExtra("pollKey");
+            finish();
+            mReference.child("user_contents").child(pollKey).removeValue();
+            mReference.child("users").child(mUser.getUid()).child("uploadContent").child(pollKey).removeValue();
+        }
     }
 
 }

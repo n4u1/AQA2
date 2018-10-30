@@ -12,46 +12,15 @@
     android:paddingBottom="16dp"
     tools:context=".dialog.ShowMoreActivity">
 
+
     <TextView
-        android:id="@+id/showMore_textView_delete"
+        android:id="@+id/showMore_settingAlarm"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingTop="4dp"
-        android:paddingBottom="4dp"
-        android:text="이 게시글 삭제하기"
+        android:gravity="center"
+        android:text="알람 설정하기"
         android:textColor="#1a1a1a"
         android:textSize="22dp" />
-
-    <RelativeLayout
-        android:id="@+id/showMore_relativeLayout_settingAlarm"
-        android:layout_width="160dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:gravity="center"
-        android:paddingTop="4dp"
-        android:paddingBottom="4dp">
-
-
-        <TextView
-            android:id="@+id/showMore_settingAlarm"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="알람 설정하기"
-            android:textColor="#1a1a1a"
-            android:textSize="22dp" />
-
-        <ImageView
-            android:id="@+id/showMore_imageView_upDown"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBottom="@id/showMore_settingAlarm"
-            android:layout_marginLeft="4dp"
-            android:layout_toRightOf="@+id/showMore_settingAlarm"
-            android:layout_weight="1"
-            android:src="@drawable/ic_keyboard_arrow_down_black_24dp" />
-
-    </RelativeLayout>
 
 
     <EditText
@@ -86,18 +55,27 @@
         android:orientation="horizontal">
 
         <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="4" />
-
-        <TextView
             android:id="@+id/showMore_textView_cancel"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_marginRight="8dp"
-            android:layout_weight="1"
+            android:layout_weight="2"
             android:gravity="center"
             android:text="취소"
+            android:textColor="#a12d2d"
+            android:textSize="16dp" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2" />
+
+        <TextView
+            android:id="@+id/showMore_textView_alarmOff"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="2.5"
+            android:gravity="center"
+            android:text="알람해제"
             android:textColor="#4485c9"
             android:textSize="16dp" />
 
@@ -105,7 +83,7 @@
             android:id="@+id/showMore_textView_done"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"
+            android:layout_weight="2"
             android:gravity="center"
             android:text="확인"
             android:textColor="#4485c9"

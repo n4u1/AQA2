@@ -53,13 +53,7 @@
                     android:textSize="20dp"
                     android:textStyle="bold" />
 
-                <ImageView
-                    android:id="@+id/pollActivity_imageView_showMore"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="0.5"
-                    android:src="@drawable/ic_show_more_button_with_three_dots"
-                    android:visibility="gone" />
+
             </LinearLayout>
 
             <View

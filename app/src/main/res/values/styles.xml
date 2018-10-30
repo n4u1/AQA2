@@ -49,6 +49,10 @@
         <item name="windowActionBar">false</item>
     </style>
 
+    <style name="menu_text_style" parent="Theme.AppCompat.Light">
+        <item name="android:textSize">8sp</item>
+    
+    </style>
 
 
 
