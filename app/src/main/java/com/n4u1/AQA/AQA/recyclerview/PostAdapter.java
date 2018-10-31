@@ -48,13 +48,12 @@ import com.n4u1.AQA.AQA.views.TestActivity;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
-import static com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade;
 
 public class PostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private Context mContext;
     private ArrayList<ContentDTO> contentDTOS;
+    public static final int ACTIVITY_BACK_VERRIFICATION = 98765432;
     private static final int ITEM_VIEW_TYPE_1 = 1;
     private static final int ITEM_VIEW_TYPE_2 = 2;
     private static final int ITEM_VIEW_TYPE_3 = 3;
@@ -875,6 +874,7 @@ public class PostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
 
     private void movePoll(int position) {
+
         String string = contentDTOS.get(position).contentKey;
 
         if (contentDTOS.get(position).getPollMode().equals("순위 투표")) {
@@ -885,7 +885,9 @@ public class PostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 bundle.putInt("itemViewType", contentDTOS.get(position).itemViewType);
                 bundle.putInt("contentHit", contentDTOS.get(position).contentHit);
                 intent.putExtras(bundle);
-                mContext.startActivity(intent);
+//                mContext.startActivity(intent);
+
+
             } else { //image 투표
                 Intent intent = new Intent(mContext, PollRankingActivity.class);
                 Bundle bundle = new Bundle();
@@ -894,6 +896,8 @@ public class PostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 bundle.putInt("contentHit", contentDTOS.get(position).contentHit);
                 intent.putExtras(bundle);
                 mContext.startActivity(intent);
+
+
             }
         }
 

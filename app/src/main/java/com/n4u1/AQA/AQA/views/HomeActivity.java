@@ -9,6 +9,7 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Handler;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.FileProvider;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -66,6 +67,7 @@ import java.util.concurrent.TimeUnit;
 public class HomeActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener,
         ShareDialog.ShareDialogListener {
 
+    public static final int ACTIVITY_BACK_VERRIFICATION = 98765432;
     private FirebaseDatabase mDatabase;
     private FirebaseDatabase firebaseDatabase;
     private FirebaseAuth auth;
@@ -133,8 +135,6 @@ public class HomeActivity extends AppCompatActivity implements SwipeRefreshLayou
 
                 .build();
         adView.loadAd(adRequest);
-
-
 
 
         //실시간 투표순위 5개
@@ -285,8 +285,6 @@ public class HomeActivity extends AppCompatActivity implements SwipeRefreshLayou
                     if (fadingTextView.getText().equals(issueContentDTOS.get(i).title)) {
                         //PostAdapter 의 movePoll(int position) 내용만 가져옴
                         if (issueContentDTOS.get(i).getPollMode().equals("순위 투표")) {
-
-
                             Intent intent = new Intent(getApplicationContext(), PollRankingActivity.class);
                             Bundle bundle = new Bundle();
                             bundle.putString("contentKey", issueContentDTOS.get(i).contentKey);
@@ -454,6 +452,13 @@ public class HomeActivity extends AppCompatActivity implements SwipeRefreshLayou
         }
     }
 
+    public void backRefresh() {
+        finish();
+        overridePendingTransition(0, 0);
+        startActivity(getIntent());
+        overridePendingTransition(0, 0);
+    }
+
 
     //좋아요 클릭후 HomeActivity 새로고침
     public void resetActivity() {
@@ -544,11 +549,29 @@ public class HomeActivity extends AppCompatActivity implements SwipeRefreshLayou
     }
 
     @Override
+    protected void onResume() {
+        Log.d("lkj onResume", "onResume()");
+
+        super.onResume();
+
+    }
+
+    @Override
     public void onRefresh() {
+
+        Log.d("lkj onRefresh", "onRefresh()");
+
     }
 
     @Override
     public void onPointerCaptureChanged(boolean hasCapture) {
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        onRefresh();
+
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
     @Override
@@ -563,7 +586,7 @@ public class HomeActivity extends AppCompatActivity implements SwipeRefreshLayou
                 break;
 //
 //            case R.id.menu_home:
-////                resetActivity();
+//                resetActivity();
 //                finish();
 //                overridePendingTransition(0, 0);
 //                startActivity(getIntent());

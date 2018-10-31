@@ -31,7 +31,7 @@
                 android:layout_gravity="center"
                 android:layout_marginTop="10dp"
                 android:layout_marginBottom="10dp"
-                android:text="※죄송합니다. 준비중입니다."
+                android:text="※준비중입니다."
                 android:textSize="12dp" />
 
 

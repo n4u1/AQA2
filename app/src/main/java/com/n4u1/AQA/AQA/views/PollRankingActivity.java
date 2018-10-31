@@ -2356,6 +2356,8 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
                 toast.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL, 0, 0);
                 toast.show();
                 onBackPressed();
+                HomeActivity homeActivity = new HomeActivity();
+                homeActivity.backRefresh();
             }
         });
         builder.setNeutralButton("취 소", new DialogInterface.OnClickListener() {
