@@ -23,6 +23,7 @@ import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.OvershootInterpolator;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
@@ -62,6 +63,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
+
+import jp.wasabeef.recyclerview.adapters.AlphaInAnimationAdapter;
+import jp.wasabeef.recyclerview.animators.SlideInDownAnimator;
+import jp.wasabeef.recyclerview.animators.SlideInUpAnimator;
 
 
 public class HomeActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener,
@@ -110,16 +115,20 @@ public class HomeActivity extends AppCompatActivity implements SwipeRefreshLayou
         fadingTextView = findViewById(R.id.fadingTextView);
         firebaseDatabase = FirebaseDatabase.getInstance();
         auth = FirebaseAuth.getInstance();
-
         MobileAds.initialize(this, "ca-app-pub-1854873514128645~3190074937");
+
+//        SlideInUpAnimator animatorUp = new SlideInUpAnimator(new OvershootInterpolator(1f));
+        SlideInDownAnimator animatorDown = new SlideInDownAnimator(new OvershootInterpolator(1f));
         recyclerView_home.setHasFixedSize(true);
+//        recyclerView_home.setItemAnimator(animatorUp);
+        recyclerView_home.setItemAnimator(animatorDown);
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(this);
         mLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         mLayoutManager.isSmoothScrollbarEnabled();
         mLayoutManager.setStackFromEnd(true);
         recyclerView_home.setLayoutManager(mLayoutManager);
         postAdapter = new PostAdapter(this, contentDTOS, recyclerView_home);
-        recyclerView_home.setAdapter(postAdapter);
+        recyclerView_home.setAdapter(new AlphaInAnimationAdapter(postAdapter));
         postAdapter.notifyDataSetChanged();
         AdView adView = findViewById(R.id.adView);
 

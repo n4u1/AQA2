@@ -2,6 +2,7 @@
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:ads="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -13,15 +14,27 @@
 
 
 
-    <ImageView
-        android:id="@+id/homeActivity_imageView_googleAd"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_alignParentBottom="true"
-        android:background="#5f95b3" />
+    <!--<ImageView-->
+        <!--android:id="@+id/homeActivity_imageView_googleAd"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="50dp"-->
+        <!--android:layout_alignParentBottom="true"-->
+        <!--android:background="#5f95b3" />-->
+
+
+    <!--<com.google.android.gms.ads.AdView-->
+        <!--android:id="@+id/adView"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_alignParentBottom="true"-->
+        <!--android:layout_centerHorizontal="true"-->
+        <!--ads:adSize="BANNER"-->
+        <!--ads:adUnitId="@string/banner_ad_unit_id_">-->
+    <!--</com.google.android.gms.ads.AdView>-->
+
 
     <ScrollView
-        android:layout_above="@id/homeActivity_imageView_googleAd"
+        android:layout_above="@id/adView"
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:fillViewport="true"
         android:id="@+id/scrollView"
@@ -378,7 +391,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="8"
-                    android:text="좋아요 누른 투표"
+                    android:text="좋아요 투표"
                     android:textColor="#383838"
                     android:textSize="18dp" />
 
@@ -430,9 +443,9 @@
                     android:textSize="12dp" />
             </LinearLayout>
 
+
             <LinearLayout
-                android:visibility="gone"
-                android:id="@+id/mineActivity_linearLayout_noti"
+                android:id="@+id/mineActivity_linearLayout_notice"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
@@ -446,27 +459,97 @@
                     android:layout_height="24dp"
                     android:layout_gravity="center"
                     android:layout_weight="1"
-                    android:src="@drawable/ic_notifications_none_black_24dp" />
+                    android:src="@drawable/ic_notice" />
 
                 <TextView
-                    android:id="@+id/mineActivity_textView_noti"
+                    android:id="@+id/mineActivity_textView_notice"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="8"
-                    android:text="알람"
+                    android:text="공지사항"
                     android:textColor="#383838"
                     android:textSize="18dp" />
 
-
-                <android.support.v7.widget.SwitchCompat
-                    android:id="@+id/mineActivity_switch_noti"
+                <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="2"
-                    android:textOff="off"
-                    android:textOn="on"
-                    app:switchMinWidth="46dp" />
+                    android:text="보러가기"
+                    android:textColor="#808080"
+                    android:textSize="12dp" />
+            </LinearLayout>
 
+
+            <LinearLayout
+                android:id="@+id/mineActivity_linearLayout_aqa"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingLeft="12dp"
+                android:paddingTop="20dp"
+                android:paddingRight="12dp"
+                android:paddingBottom="20dp">
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:src="@drawable/q" />
+
+                <TextView
+                    android:id="@+id/mineActivity_textView_aqa"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="8"
+                    android:text="AQA는.."
+                    android:textColor="#383838"
+                    android:textSize="18dp" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:text="보러가기"
+                    android:textColor="#808080"
+                    android:textSize="12dp" />
+            </LinearLayout>
+
+
+
+            <LinearLayout
+                android:id="@+id/mineActivity_linearLayout_suggest"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingLeft="12dp"
+                android:paddingTop="20dp"
+                android:paddingRight="12dp"
+                android:paddingBottom="20dp">
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:src="@drawable/ic_gavel" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="8"
+                    android:text="개발자 욕"
+                    android:textColor="#383838"
+                    android:textSize="18dp" />
+
+                <TextView
+                    android:id="@+id/mineActivity_textView_suggest"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:text="하러가기"
+                    android:textColor="#808080"
+                    android:textSize="12dp" />
             </LinearLayout>
 
 
@@ -531,7 +614,8 @@
                 android:layout_marginTop="4dp"
                 android:layout_marginBottom="40dp"
                 android:paddingBottom="40dp"
-                android:background="#994747" />
+                android:background="#00000000" />
+
 
 
 

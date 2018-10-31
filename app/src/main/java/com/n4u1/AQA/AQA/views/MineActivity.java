@@ -31,6 +31,8 @@ import com.firebase.jobdispatcher.Job;
 import com.firebase.jobdispatcher.Lifetime;
 import com.firebase.jobdispatcher.RetryStrategy;
 import com.firebase.jobdispatcher.Trigger;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.n4u1.AQA.AQA.R;
@@ -82,7 +84,7 @@ public class MineActivity extends AppCompatActivity implements LogOutDialog.LogO
         mFireBaseUser = FirebaseAuth.getInstance().getCurrentUser();
         mDatabaseReference = FirebaseDatabase.getInstance().getReference("users").child(mFireBaseUser.getUid());
 
-        final TextView mineActivity_textView_noti = findViewById(R.id.mineActivity_textView_noti);
+//        AdView adView = findViewById(R.id.adView);
         final TextView mineActivity_textView_id = findViewById(R.id.mineActivity_textView_id);
         final TextView mineActivity_textView_userClass = findViewById(R.id.mineActivity_textView_userClass);
         TextView mineActivity_textView_account = findViewById(R.id.mineActivity_textView_account);
@@ -94,15 +96,21 @@ public class MineActivity extends AppCompatActivity implements LogOutDialog.LogO
         LinearLayout mineActivity_linearLayout_upload = findViewById(R.id.mineActivity_linearLayout_upload);
         LinearLayout mineActivity_linearLayout_logOut = findViewById(R.id.mineActivity_linearLayout_logOut);
         LinearLayout mineActivity_linearLayout_authOut = findViewById(R.id.mineActivity_linearLayout_authOut);
+        LinearLayout mineActivity_linearLayout_suggest = findViewById(R.id.mineActivity_linearLayout_suggest);
         LinearLayout mineActivity_linearLayout_userClass = findViewById(R.id.mineActivity_linearLayout_userClass);
         final ImageView mineActivity_imageView_userClass = findViewById(R.id.mineActivity_imageView_userClass);
 
 
-        LinearLayout mineActivity_linearLayout_noti = findViewById(R.id.mineActivity_linearLayout_noti);
         LinearLayout mineActivity_linearLayout_password = findViewById(R.id.mineActivity_linearLayout_password);
-        final SwitchCompat mineActivity_switch_noti = findViewById(R.id.mineActivity_switch_noti);
 
 
+        //adView
+//        AdRequest adRequest = new AdRequest.Builder()
+////                .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)        // All emulators
+//                .addTestDevice("C39C4F095E193D0C5E7BBCB91B89B469")  // Galaxy Nexus-4 device ID
+//
+//                .build();
+//        adView.loadAd(adRequest);
 
         //이메일 가져오기
         mineActivity_textView_account.setText(mFireBaseUser.getEmail());
@@ -184,6 +192,14 @@ public class MineActivity extends AppCompatActivity implements LogOutDialog.LogO
         });
 
 
+        //개발자욕하러가기
+        mineActivity_linearLayout_suggest.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MineActivity.this, SuggestActivity.class);
+                startActivity(intent);
+            }
+        });
 
 
 
@@ -201,14 +217,6 @@ public class MineActivity extends AppCompatActivity implements LogOutDialog.LogO
         });
 
 
-        //notify test, 알람
-        mineActivity_linearLayout_noti.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-            }
-
-        });
-
         //노티 스위치 상태
 //        if (mineActivity_switch_noti.getTextOn().toString().equals("on")) {
 //            mineActivity_textView_noti.setText("알람(사용중)");
@@ -216,24 +224,6 @@ public class MineActivity extends AppCompatActivity implements LogOutDialog.LogO
 //            mineActivity_textView_noti.setText("알람(미사용중)");
 //        }
 
-
-        //노티 스위치 버튼
-        mineActivity_switch_noti.setChecked(true);
-        mineActivity_switch_noti.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                if (b) {
-                    Log.d("lkj switch", "switch on");
-                    Log.d("lkj switchlog", mineActivity_switch_noti.getTextOn().toString());
-                    mineActivity_textView_noti.setText("알람 (사용중)");
-
-                } else {
-                    Log.d("lkj switch", "switch off");
-                    Log.d("lkj switchlog", mineActivity_switch_noti.getTextOff().toString());
-                    mineActivity_textView_noti.setText("알람 (미 사용중)");
-                }
-            }
-        });
 
 
 

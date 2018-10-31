@@ -5,8 +5,8 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.CAMERA" />
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <!-- INTENT-FILTER 넣어야함 ??? -->
     <application
@@ -16,14 +16,15 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <meta-data android:name="com.google.android.gms.version"
+        <meta-data
+            android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
-            android:value="ca-app-pub-1854873514128645~3190074937"/>
+            android:value="ca-app-pub-1854873514128645~3190074937" />
         <meta-data
             android:name="com.google.android.gms.ads.AD_MANAGER_APP"
-            android:value="true"/>
+            android:value="true" />
 
         <activity android:name=".views.SplashActivity">
             <intent-filter>
@@ -42,7 +43,6 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/filepaths" />
         </provider>
-
 
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_icon"
@@ -91,8 +91,10 @@
             android:theme="@style/Theme.DialogFragmentActivity" />
         <activity android:name=".views.WhenNotiClickActivity" />
         <activity android:name=".views.SplashLoadingActivity" />
-        <activity android:name=".views.UserClassInfoActivity"
-            android:theme="@style/Theme.DialogFragmentActivity"></activity>
+        <activity
+            android:name=".views.UserClassInfoActivity"
+            android:theme="@style/Theme.DialogFragmentActivity" />
+        <activity android:name=".views.SuggestActivity"></activity>
     </application>
 
 </manifest>

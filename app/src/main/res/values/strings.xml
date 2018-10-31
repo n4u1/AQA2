@@ -2,85 +2,10 @@
     <string name="app_name">AQA</string>
 
 
-    <string-array name="contents">
-        <item>개그</item>
-        <item>건강</item>
-        <item>게임</item>
-        <item>결혼</item>
-        <item>경제</item>
-        <item>고민</item>
-        <item>공포</item>
-        <item>과학</item>
-        <item>군대</item>
-        <item>꿈</item>
-        <item>낚시</item>
-        <item>노래</item>
-        <item>농구</item>
-        <item>다이어트</item>
-        <item>동물</item>
-        <item>드라마</item>
-        <item>똥</item>
-        <item>롤</item>
-        <item>만화</item>
-        <item>맛집</item>
-        <item>모바일게임</item>
-        <item>바둑</item>
-        <item>배그</item>
-        <item>법</item>
-        <item>뷰티</item>
-        <item>사건사고</item>
-        <item>사진</item>
-        <item>사회</item>
-        <item>세월호</item>
-        <item>소개팅</item>
-        <item>술</item>
-        <item>스포츠</item>
-        <item>시사</item>
-        <item>식물</item>
-        <item>심리</item>
-        <item>아무거나</item>
-        <item>아이폰</item>
-        <item>아침</item>
-        <item>안드로이드</item>
-        <item>안주</item>
-        <item>애니메이션</item>
-        <item>야구</item>
-        <item>여행</item>
-        <item>역사</item>
-        <item>연애</item>
-        <item>연예인</item>
-        <item>영화</item>
-        <item>와우</item>
-        <item>요리</item>
-        <item>웹툰</item>
-        <item>유머</item>
-        <item>육아</item>
-        <item>음악</item>
-        <item>의료</item>
-        <item>인테리어</item>
-        <item>자동차</item>
-        <item>자전거</item>
-        <item>저녁</item>
-        <item>점심</item>
-        <item>정치</item>
-        <item>종교</item>
-        <item>지식</item>
-        <item>직업</item>
-        <item>책</item>
-        <item>축구</item>
-        <item>취업</item>
-        <item>컴퓨터</item>
-        <item>패션</item>
-        <item>휴가</item>
-    </string-array>
-
-
     <!--test-->
     <string name="banner_ad_unit_id">ca-app-pub-3940256099942544/6300978111</string>
     <!--real-->
-    <!--<string name="banner_ad_unit_id">1854873514128645/3569596301</string>-->
-
-
+    <string name="banner_ad_unit_id_">ca-app-pub-1854873514128645/3569596301</string>
 
 
     <string-array name="contentType">
@@ -255,6 +180,79 @@
     <string name="tab_text_3">Tab 3</string>
     <string name="action_settings">Settings</string>
     <string name="section_format">Hello World from section: %1$d</string>
+
+
+    <string-array name="contents">
+        <item>개그</item>
+        <item>건강</item>
+        <item>게임</item>
+        <item>결혼</item>
+        <item>경제</item>
+        <item>고민</item>
+        <item>공포</item>
+        <item>과학</item>
+        <item>군대</item>
+        <item>꿈</item>
+        <item>낚시</item>
+        <item>노래</item>
+        <item>농구</item>
+        <item>다이어트</item>
+        <item>동물</item>
+        <item>드라마</item>
+        <item>똥</item>
+        <item>롤</item>
+        <item>만화</item>
+        <item>맛집</item>
+        <item>모바일게임</item>
+        <item>바둑</item>
+        <item>배그</item>
+        <item>법</item>
+        <item>뷰티</item>
+        <item>사건사고</item>
+        <item>사진</item>
+        <item>사회</item>
+        <item>세월호</item>
+        <item>소개팅</item>
+        <item>술</item>
+        <item>스포츠</item>
+        <item>시사</item>
+        <item>식물</item>
+        <item>심리</item>
+        <item>아무거나</item>
+        <item>아이폰</item>
+        <item>아침</item>
+        <item>안드로이드</item>
+        <item>안주</item>
+        <item>애니메이션</item>
+        <item>야구</item>
+        <item>여행</item>
+        <item>역사</item>
+        <item>연애</item>
+        <item>연예인</item>
+        <item>영화</item>
+        <item>와우</item>
+        <item>요리</item>
+        <item>웹툰</item>
+        <item>유머</item>
+        <item>육아</item>
+        <item>음악</item>
+        <item>의료</item>
+        <item>인테리어</item>
+        <item>자동차</item>
+        <item>자전거</item>
+        <item>저녁</item>
+        <item>점심</item>
+        <item>정치</item>
+        <item>종교</item>
+        <item>지식</item>
+        <item>직업</item>
+        <item>책</item>
+        <item>축구</item>
+        <item>취업</item>
+        <item>컴퓨터</item>
+        <item>패션</item>
+        <item>휴가</item>
+    </string-array>
 
 
     <string-array name="job">

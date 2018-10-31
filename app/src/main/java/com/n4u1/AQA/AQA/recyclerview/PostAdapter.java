@@ -924,6 +924,7 @@ public class PostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         }
     }
 
+
     @Override
     public int getItemCount() {
         return contentDTOS.size();

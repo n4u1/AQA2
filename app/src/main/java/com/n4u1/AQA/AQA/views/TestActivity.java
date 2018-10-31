@@ -13,34 +13,6 @@ public class TestActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_test);
 
-//
-//        imgview = (ImageView)findViewById(R.id.imageView1);
-//        Bitmap bm = BitmapFactory.decodeResource(getResources(), R.drawable.comp1_16);
-//        imgview.setImageBitmap(bm);
-//
-//
-//        try{
-//
-//            File file = new File("test.png");
-//            FileOutputStream fos = openFileOutput("test.png" , 0);
-//            bm.compress(Bitmap.CompressFormat.PNG, 100 , fos);
-//            fos.flush();
-//            fos.close();
-//
-//            Toast.makeText(this, "file ok", Toast.LENGTH_SHORT).show();
-//        }catch(Exception e) { Toast.makeText(this, "file error", Toast.LENGTH_SHORT).show();}
-//
-//
-//
-//        try{
-//            imgview = (ImageView)findViewById(R.id.imageView1);
-//            String imgpath = "data/data/com.test.SDCard_Ani/files/test.png";
-//            bm = BitmapFactory.decodeFile(imgpath);
-//            imgview.setImageBitmap(bm);
-//            Toast.makeText(getApplicationContext(), "load ok", Toast.LENGTH_SHORT).show();
-//        }catch(Exception e){Toast.makeText(getApplicationContext(), "load error", Toast.LENGTH_SHORT).show();}
-//
-
 
     }
 
@@ -65,7 +37,7 @@ https://stackoverflow.com/questions/24597085/android-how-to-detect-that-the-acti
 ###################################################################################################################################################
 개인정보보호처리 / 사진 2개일경우 자동으로 단일 투표로 / 리플달때만 리플수 변경됨 / 검색결과창, 마이업로드에 더보기 기능? / 알람 클릭이동
 ###################################################################################################################################################
-mineActivity 에서 이메일 항목 n 글자 이상일경우 ... 표시  / 내가 올린게 아니어도 알람 받고싶을수있자나?
+mineActivity 에서 이메일 항목 n 글자 이상일경우 ... 표시  / 내가 올린게 아니어도 알람 받고싶을수있자나? / 액티비티 클릭시 디비에 카운팅해서 유저?(액티비티) 프로파일링 해보자
 ###################################################################################################################################################
 userPoint(userClass) 점수 카운팅, 점수 업로딩 / 광고ID /  공유 인증 페이지 / 딥링크 확인
 ###################################################################################################################################################

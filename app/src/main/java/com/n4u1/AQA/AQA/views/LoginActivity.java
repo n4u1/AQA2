@@ -19,6 +19,7 @@ import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.text.Html;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
@@ -48,6 +49,7 @@ import com.google.firebase.storage.UploadTask;
 import com.n4u1.AQA.AQA.dialog.AgainPasswordDialog;
 import com.n4u1.AQA.AQA.dialog.NotEmailDialog;
 import com.n4u1.AQA.AQA.dialog.NotInputDialog;
+import com.n4u1.AQA.AQA.dialog.PreviewDialog;
 import com.n4u1.AQA.AQA.util.Common;
 import com.n4u1.AQA.AQA.util.ImageSaver;
 
@@ -60,7 +62,7 @@ import java.util.regex.Pattern;
 import static java.security.AccessController.getContext;
 
 
-public class LoginActivity extends AppCompatActivity {
+public class LoginActivity extends AppCompatActivity implements PreviewDialog.PreviewDialogListener {
     private static final int GALLEY_CODE = 10;
     private FirebaseAuth mAuth;
     private FirebaseUser mFirebaseUser;
@@ -98,6 +100,9 @@ public class LoginActivity extends AppCompatActivity {
         Button button_fLogin = findViewById(R.id.button_fLogin);
         Button button_gLogin = findViewById(R.id.button_gLogin);
         Button button_hLogin = findViewById(R.id.button_hLogin);
+        TextView textView_preview = findViewById(R.id.textView_preview);
+        String htmlString="<u>둘러보기</u>";
+
 
         mAuth = FirebaseAuth.getInstance();
         mFirebaseUser = mAuth.getCurrentUser();
@@ -105,33 +110,15 @@ public class LoginActivity extends AppCompatActivity {
         mEmailDatabaseReference = mDatabase.getReference("users");
         storage = FirebaseStorage.getInstance();
 
-
-//        MyFirebaseInstanceIDService myFirebaseInstanceIDService = new MyFirebaseInstanceIDService();
-
-//
-//        button_test.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//
-//            }
-//        });
-//
-//        button_test2.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//
-//            }
-//        });
-
-        SharedPreferences pref = getSharedPreferences("com.n4u1.AQA", MODE_PRIVATE);
-        String spUserEmail = pref.getString("com.n4u1.AQA.fireBaseUserEmail", null);
-        String spUserPassword = pref.getString("com.n4u1.AQA.fireBaseUserPassword", null);
-
-
-        if (spUserEmail != null || spUserPassword != null) {
-            Log.d("lkj SharedPreferences", spUserEmail + spUserPassword);
-            loginUser(spUserEmail, spUserPassword);
-        }
+        //둘러보기
+        textView_preview.setText(Html.fromHtml(htmlString));
+        textView_preview.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                PreviewDialog previewDialog = new PreviewDialog();
+                previewDialog.show(getSupportFragmentManager(), "previewDialog");
+            }
+        });
 
 
 
@@ -318,4 +305,12 @@ public class LoginActivity extends AppCompatActivity {
     }
 
 
+    @Override
+    public void PreviewDialogCallback(String string) {
+        if (string.equals("확인")) {
+            Toast toast = Toast.makeText(this, "준비중 입니다.", Toast.LENGTH_SHORT);
+            toast.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL, 0, 0);
+            toast.show();
+        }
+    }
 }
