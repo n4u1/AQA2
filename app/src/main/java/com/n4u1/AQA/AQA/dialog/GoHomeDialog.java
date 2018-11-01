@@ -17,6 +17,7 @@ public class GoHomeDialog extends DialogFragment {
 
     public interface GoHomeDialogListener {
         public void GoHomeDialogCallback(String string);
+
     }
 
     GoHomeDialogListener mListener;

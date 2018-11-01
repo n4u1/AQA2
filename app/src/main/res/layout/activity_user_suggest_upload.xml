@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".views.UserContentsUploadActivity">
+
+
+    <include layout="@layout/mytoolbar" />
+
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="8dp"
+                android:paddingTop="8dp"
+                android:theme="@style/TextLabel">
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/suggestActivity_editText_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="제목"
+                    android:lines="1"
+                    android:singleLine="true" />
+            </android.support.design.widget.TextInputLayout>
+
+
+
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="8dp"
+                android:paddingTop="8dp"
+                android:theme="@style/TextLabel">
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/suggestActivity_editText_description"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="내용" />
+            </android.support.design.widget.TextInputLayout>
+
+
+
+            <LinearLayout
+                android:paddingLeft="4dp"
+                android:id="@+id/suggestActivity_linearLayout_Image1"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:visibility="gone">
+                <android.support.v7.widget.AppCompatImageView
+                    android:layout_weight="1"
+                    android:id="@+id/suggestActivity_imageView_Image1"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:layout_margin="8dp"
+                    android:scaleType="centerCrop"
+                    android:visibility="gone" />
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:paddingLeft="4dp"
+                android:id="@+id/suggestActivity_linearLayout_Image2"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:visibility="gone">
+                <android.support.v7.widget.AppCompatImageView
+                    android:layout_weight="1"
+                    android:id="@+id/suggestActivity_imageView_Image2"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:layout_margin="8dp"
+                    android:scaleType="centerCrop"
+                    android:visibility="gone" />
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:gravity="center"
+                android:orientation="vertical"
+                android:id="@+id/suggestActivity_linearLayout_addImage"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="6dp"
+                android:padding="20dp">
+                <TextView
+                    android:textSize="12dp"
+                    android:text="스크린샷 첨부하기"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <ImageView
+                    android:layout_gravity="center"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/addphoto" />
+
+                <TextView
+                    android:textSize="8dp"
+                    android:text="(첨부할 내용이 있을경우 첨부가능)"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+
+    </ScrollView>
+</LinearLayout>

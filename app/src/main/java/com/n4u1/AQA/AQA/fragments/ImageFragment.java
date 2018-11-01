@@ -101,6 +101,7 @@ public class ImageFragment extends Fragment {
         imageView_userAddContent_9 = view.findViewById(R.id.imageView_userAddContent_9);
         imageView_userAddContent_10 = view.findViewById(R.id.imageView_userAddContent_10);
 
+        //이미지 첨부
         LinearLayout imageView_addImage = view.findViewById(R.id.imageView_addImage);
         imageView_addImage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -111,6 +112,12 @@ public class ImageFragment extends Fragment {
                 startActivityForResult(intent, GALLEY_CODE);
             }
         });
+
+
+
+
+
+
         return view;
     }
 

@@ -85,7 +85,7 @@ public class ShowMoreActivity extends AppCompatActivity {
         });
 
 
-        //알람설정 여닫기 세팅
+
         mReference.child("user_contents").child(pollKey).child("alarm").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -100,7 +100,7 @@ public class ShowMoreActivity extends AppCompatActivity {
                     if (oneCount == 0) {
                         showMore_textView_countResult.setText("알람을 등록 해보세요.");
                     } else {
-                        showMore_textView_countResult.setText(oneCount + "명 이 투표하면 알려 드립니다.");
+                        showMore_textView_countResult.setText("현재" + oneCount + "명 이 투표하면 알람이 오도록 설정되어 있습니다.");
                     }
 
 

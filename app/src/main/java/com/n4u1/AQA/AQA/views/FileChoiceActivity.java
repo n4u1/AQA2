@@ -75,11 +75,12 @@ public class FileChoiceActivity extends AppCompatActivity
 
         Toolbar myToolbar = findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
-        getSupportActionBar().setHomeAsUpIndicator(R.mipmap.ic_aqa_custom);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
+
         if (getSupportActionBar() != null) {
             getSupportActionBar().setTitle(null);
+            getSupportActionBar().setHomeAsUpIndicator(R.mipmap.ic_aqa_custom);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
         }
 
         TabLayout tabLayout = findViewById(R.id.tabLayout);

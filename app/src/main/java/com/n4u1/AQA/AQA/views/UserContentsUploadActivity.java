@@ -136,7 +136,7 @@ public class UserContentsUploadActivity extends AppCompatActivity implements Con
                         public void onCancelled(@NonNull DatabaseError databaseError) {
 
                         }
-                    });
+                });
 
                 }
             }

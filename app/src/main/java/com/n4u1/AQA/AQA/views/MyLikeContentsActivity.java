@@ -62,7 +62,6 @@ public class MyLikeContentsActivity extends AppCompatActivity {
         mLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         mLayoutManager.isSmoothScrollbarEnabled();
         mLayoutManager.setStackFromEnd(true);
-        mLayoutManager.setReverseLayout(true);
         recyclerViewList.setLayoutManager(mLayoutManager);
 
         recyclerViewList.setAdapter(postAdapterMine);
