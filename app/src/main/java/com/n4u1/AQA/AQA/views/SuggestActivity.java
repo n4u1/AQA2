@@ -152,7 +152,7 @@ public class SuggestActivity extends AppCompatActivity {
             }
         });
 
-        //건의하기
+        //건의하기 글쓰기 클릭 floating action bar
         suggestActivity_fab_addContent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

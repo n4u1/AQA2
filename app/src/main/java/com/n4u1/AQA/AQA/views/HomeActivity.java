@@ -139,8 +139,9 @@ public class HomeActivity extends AppCompatActivity implements SwipeRefreshLayou
         backgroundNotify();
 
         AdRequest adRequest = new AdRequest.Builder()
-//                .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)        // All emulators
-                .addTestDevice("C39C4F095E193D0C5E7BBCB91B89B469")  // Galaxy Nexus-4 device ID
+                .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)        // All emulators
+                .addTestDevice("C39C4F095E193D0C5E7BBCB91B89B469")  // TestDeviceId
+//                .addTestDevice("C39C4F095E193D0C5E7BBCB91B89B469")  // TestDeviceId
 
                 .build();
         adView.loadAd(adRequest);

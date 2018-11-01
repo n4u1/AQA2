@@ -128,7 +128,8 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
             pollActivity_imageView_around_3, pollActivity_imageView_around_4,
             pollActivity_imageView_around_5, pollActivity_imageView_around_6,
             pollActivity_imageView_around_7, pollActivity_imageView_around_8,
-            pollActivity_imageView_around_9, pollActivity_imageView_around_10;
+            pollActivity_imageView_around_9, pollActivity_imageView_around_10,
+            pollActivity_imageView_replyView_1, pollActivity_imageView_replyView_2;
 
     ImageView pollActivity_imageView_userClass, imageView_userClass0, imageView_userClass1, imageView_userClass2;
     ImageView pollActivity_button_replySend;
@@ -186,7 +187,8 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
         likeFirebaseDatabase = FirebaseDatabase.getInstance();
 
         pollActivity_imageView_around_1 = findViewById(R.id.pollActivity_imageView_around_1);
-
+        pollActivity_imageView_replyView_1 = findViewById(R.id.pollActivity_imageView_replyView_1);
+        pollActivity_imageView_replyView_2 = findViewById(R.id.pollActivity_imageView_replyView_2);
 
         pollActivity_imageView_userClass = findViewById(R.id.pollActivity_imageView_userClass);
         imageView_userClass0 = findViewById(R.id.imageView_userClass0);
@@ -1193,6 +1195,8 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
             if (replyCount == 0){
                 pollActivity_editText_reply.setHint("아직 댓글이 없습니다. 댓글을 달아보세요!");
             }
+            pollActivity_imageView_replyView_1.setVisibility(View.GONE);
+            pollActivity_imageView_replyView_2.setVisibility(View.VISIBLE);
             pollActivity_relativeLayout_reply.setFocusableInTouchMode(true);
             pollActivity_relativeLayout_reply.requestFocus();
             pollActivity_recyclerView_reply.setNestedScrollingEnabled(false);
@@ -1202,6 +1206,8 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
             pollActivity_fab_result.hide();
             ACTIVITY_REPLY_FLAG = true;
         } else {
+            pollActivity_imageView_replyView_1.setVisibility(View.VISIBLE);
+            pollActivity_imageView_replyView_2.setVisibility(View.GONE);
             pollActivity_editText_reply.setText(null);//editText 초기화
             InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE); //키보드 숨기기
             inputMethodManager.hideSoftInputFromWindow(pollActivity_editText_reply.getWindowToken(), 0); //키보드 숨기기
@@ -2637,6 +2643,8 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
     protected void onResume() {
         super.onResume();
     }
+
+
 
 
     //댓글 좋아요 클릭

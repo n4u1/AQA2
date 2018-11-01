@@ -5,6 +5,7 @@ import android.support.v4.view.ViewPropertyAnimatorListener;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.n4u1.AQA.AQA.R;
@@ -17,9 +18,11 @@ public class SuggestViewHolder extends RecyclerView.ViewHolder implements Animat
 
     public ImageView imageView_like, imageView_userClass;
     public TextView textView_likeCount, textView_userName, textView_title, textView_replyCount;
+    public LinearLayout suggest_linearLayout_item;
 
     public SuggestViewHolder(View itemView) {
         super(itemView);
+        suggest_linearLayout_item = itemView.findViewById(R.id.suggest_linearLayout_item);
         imageView_userClass = itemView.findViewById(R.id.imageView_userClass);
         imageView_like = itemView.findViewById(R.id.imageView_like);
         textView_likeCount = itemView.findViewById(R.id.textView_likeCount);

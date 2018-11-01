@@ -95,7 +95,8 @@
             android:name=".views.UserClassInfoActivity"
             android:theme="@style/Theme.DialogFragmentActivity" />
         <activity android:name=".views.SuggestActivity" />
-        <activity android:name=".views.UserSuggestUploadActivity"></activity>
+        <activity android:name=".views.UserSuggestUploadActivity" />
+        <activity android:name=".views.SuggestDetailActivity"></activity>
     </application>
 
 </manifest>

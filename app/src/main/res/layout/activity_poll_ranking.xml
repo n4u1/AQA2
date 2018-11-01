@@ -73,7 +73,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="2"
-                    android:text="업로더 :"
+                    android:text="게시자 :"
                     android:textColor="#636363"
                     android:textSize="14dp" />
 
@@ -764,15 +764,26 @@
 
             <!--댓글 펼치기 -->
             <RelativeLayout
+                android:gravity="center_vertical"
                 android:id="@+id/pollActivity_relativeLayout_reply"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="50dp">
 
                 <ImageView
+                    android:id="@+id/pollActivity_imageView_replyView_1"
+                    android:visibility="visible"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:layout_centerHorizontal="true"
                     android:src="@drawable/ic_hambugger" />
+
+                <ImageView
+                    android:id="@+id/pollActivity_imageView_replyView_2"
+                    android:layout_width="50dp"
+                    android:layout_height="40dp"
+                    android:visibility="gone"
+                    android:layout_centerHorizontal="true"
+                    android:src="@drawable/ic_show_more_button_gray" />
             </RelativeLayout>
 
 

@@ -76,6 +76,7 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
 
     private boolean ACTIVITY_REPLY_FLAG;
     private boolean ACTIVITY_BESTREPLY_FLAG;
+
     private int pickCandidate = 0;
     private FirebaseAuth auth;
     private DatabaseReference mDatabaseReference;
@@ -99,7 +100,8 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
             pollActivity_imageView_userAddContent_3, pollActivity_imageView_userAddContent_4,
             pollActivity_imageView_userAddContent_5, pollActivity_imageView_userAddContent_6,
             pollActivity_imageView_userAddContent_7, pollActivity_imageView_userAddContent_8,
-            pollActivity_imageView_userAddContent_9, pollActivity_imageView_userAddContent_10;
+            pollActivity_imageView_userAddContent_9, pollActivity_imageView_userAddContent_10,
+            pollActivity_imageView_replyView_1, pollActivity_imageView_replyView_2;
 
     ImageView pollActivity_imageView_choice_1, pollActivity_imageView_choice_2,
             pollActivity_imageView_choice_3, pollActivity_imageView_choice_4,
@@ -178,6 +180,8 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
         imageView_userClass1 = findViewById(R.id.imageView_userClass1);
         imageView_userClass2 = findViewById(R.id.imageView_userClass2);
 
+        pollActivity_imageView_replyView_1 = findViewById(R.id.pollActivity_imageView_replyView_1);
+        pollActivity_imageView_replyView_2 = findViewById(R.id.pollActivity_imageView_replyView_2);
 
         pollActivity_textView_replyCount = findViewById(R.id.pollActivity_textView_replyCount);
         pollActivity_imageView_userAddContent_1 = findViewById(R.id.pollActivity_imageView_userAddContent_1);
@@ -961,8 +965,8 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
         });
     }
 
-    private void settingUserIcon(String userId) {
-        firebaseDatabase.getReference().child("users").child(userId).child("userClass").addListenerForSingleValueEvent(new ValueEventListener() {
+    private void settingUserIcon(String uId) {
+        firebaseDatabase.getReference().child("users").child(uId).child("userClass").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 int userClass = Integer.parseInt(dataSnapshot.getValue().toString());
@@ -1161,6 +1165,8 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
             if (replyCount == 0) {
                 pollActivity_editText_reply.setHint("아직 댓글이 없습니다. 댓글을 달아보세요!");
             }
+            pollActivity_imageView_replyView_1.setVisibility(View.GONE);
+            pollActivity_imageView_replyView_2.setVisibility(View.VISIBLE);
             pollActivity_relativeLayout_reply.setFocusableInTouchMode(true);
             pollActivity_relativeLayout_reply.requestFocus();
             pollActivity_recyclerView_reply.setNestedScrollingEnabled(false);
@@ -1170,6 +1176,8 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
             pollActivity_fab_result.hide();
             ACTIVITY_REPLY_FLAG = true;
         } else {
+            pollActivity_imageView_replyView_1.setVisibility(View.VISIBLE);
+            pollActivity_imageView_replyView_2.setVisibility(View.GONE);
             pollActivity_editText_reply.setText(null);//editText 초기화
             InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE); //키보드 숨기기
             inputMethodManager.hideSoftInputFromWindow(pollActivity_editText_reply.getWindowToken(), 0); //키보드 숨기기

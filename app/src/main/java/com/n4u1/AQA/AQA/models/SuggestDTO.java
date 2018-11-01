@@ -7,7 +7,7 @@ import java.util.Map;
 
 public class SuggestDTO {
 
-    public String imageUrl_1, getImageUrl_2;
+    public String imageUrl_1, imageUrl_2;
 
     public String title;
     public String description;
@@ -49,12 +49,12 @@ public class SuggestDTO {
         this.imageUrl_1 = imageUrl_1;
     }
 
-    public String getGetImageUrl_2() {
-        return getImageUrl_2;
+    public String getImageUrl_2() {
+        return imageUrl_2;
     }
 
-    public void setGetImageUrl_2(String getImageUrl_2) {
-        this.getImageUrl_2 = getImageUrl_2;
+    public void setImageUrl_2(String imageUrl_2) {
+        this.imageUrl_2 = imageUrl_2;
     }
 
     public String getSuggestKey() {

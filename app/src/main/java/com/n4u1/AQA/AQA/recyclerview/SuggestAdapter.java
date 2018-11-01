@@ -21,6 +21,7 @@ import com.n4u1.AQA.AQA.models.SuggestDTO;
 import com.n4u1.AQA.AQA.views.PollRankingActivity;
 import com.n4u1.AQA.AQA.views.PollSingleActivity;
 import com.n4u1.AQA.AQA.views.SuggestActivity;
+import com.n4u1.AQA.AQA.views.SuggestDetailActivity;
 
 import java.util.ArrayList;
 
@@ -44,13 +45,26 @@ public class SuggestAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     }
 
     @Override
-    public void onBindViewHolder(@NonNull final RecyclerView.ViewHolder viewHolder, int i) {
+    public void onBindViewHolder(@NonNull final RecyclerView.ViewHolder viewHolder, final int i) {
         FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
         FirebaseUser mUser = FirebaseAuth.getInstance().getCurrentUser();
 
         //아이템 바인딩
-        ((SuggestViewHolder) viewHolder).textView_title.setText(suggestDTOS.get(i).getTitle());
+        if (suggestDTOS.get(i).getTitle().length() >= 13) {
+            ((SuggestViewHolder) viewHolder).textView_title.setText(suggestDTOS.get(i).getTitle().substring(0,13) + "...");
+        } else {
+            ((SuggestViewHolder) viewHolder).textView_title.setText(suggestDTOS.get(i).getTitle());
+        }
+
         ((SuggestViewHolder) viewHolder).textView_userName.setText(suggestDTOS.get(i).getUserID());
+        ((SuggestViewHolder) viewHolder).suggest_linearLayout_item.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                movePoll(i);
+
+            }
+        });
+
 
         //Q userClass 별로 색 세팅
         mDatabase.getReference().child("users").child(suggestDTOS.get(i).uid).child("userClass").addListenerForSingleValueEvent(new ValueEventListener() {
@@ -94,10 +108,10 @@ public class SuggestAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
 
     private void movePoll(int position) {
-//        String string = suggestDTOS.get(position).suggestKey;
-//        Intent intent = new Intent(mContext, SuggestItemActivity.class);
-//        intent.putExtra("suggestKey", string);
-//        mContext.startActivity(intent);
+        String string = suggestDTOS.get(position).suggestKey;
+        Intent intent = new Intent(mContext, SuggestDetailActivity.class);
+        intent.putExtra("suggestKey", string);
+        mContext.startActivity(intent);
     }
 
 

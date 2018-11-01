@@ -164,12 +164,14 @@ public class UserSuggestUploadActivity extends AppCompatActivity implements GoHo
         DatabaseReference mDatabaseRef;
         mDatabaseRef = FirebaseDatabase.getInstance().getReference();
         final String key = mDatabaseRef.child("suggest").push().getKey();
+        String currentDate = getDate();
 
         SuggestDTO suggestDTO = new SuggestDTO();
         suggestDTO.title = suggestActivity_editText_title.getText().toString();
         suggestDTO.description = suggestActivity_editText_description.getText().toString();
-        suggestDTO.uploadDate = getDate();
+        suggestDTO.uploadDate = currentDate;
         suggestDTO.uid = auth.getCurrentUser().getUid();
+        suggestDTO.contentId = getContentId(currentDate);
         suggestDTO.suggestKey = key;
         suggestDTO.userID = getIntent().getStringExtra("suggestUserId");
         suggestDTO.userEmail= auth.getCurrentUser().getEmail();
@@ -240,7 +242,7 @@ public class UserSuggestUploadActivity extends AppCompatActivity implements GoHo
         TimeZone timeZone;
         timeZone = TimeZone.getTimeZone("Asia/Seoul");
         Date date = new Date();
-        SimpleDateFormat df = new SimpleDateFormat("yyyy.MM.dd(E)HH:mm:ssSS", Locale.KOREAN);
+        SimpleDateFormat df = new SimpleDateFormat("yyyy.MM.dd(E)HH:mm:ss", Locale.KOREAN);
         df.setTimeZone(timeZone);
         String currentDate = df.format(date);
         return currentDate;
@@ -260,6 +262,12 @@ public class UserSuggestUploadActivity extends AppCompatActivity implements GoHo
 //        //1000 = 1M
 //        return sec;
 //    }
+
+
+    public String getContentId(String date) {
+        return date.replaceAll("[^0-9]", "");
+    }
+
 
     private int imageViewCheck() {
         int count = 0;
