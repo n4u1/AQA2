@@ -44,17 +44,20 @@ public class MyLikeContentsActivity extends AppCompatActivity {
 
         Toolbar myToolbar = findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
-        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_arrow_back_black_24dp);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
+
         if (getSupportActionBar() != null) {
             getSupportActionBar().setTitle(null);
+            getSupportActionBar().setSubtitle("좋아요 투표");
+            getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_arrow_back_black_24dp);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
         }
 
         mDatabase = FirebaseDatabase.getInstance();
         mDatabaseUser = FirebaseDatabase.getInstance();
         mFireBaseUser = FirebaseAuth.getInstance().getCurrentUser();
         swipeRFL = findViewById(R.id.swipeRFL);
+
         final RecyclerView recyclerViewList = findViewById(R.id.recyclerView_home);
         final PostAdapterMine postAdapterMine = new PostAdapterMine(this, contentDTOS, recyclerViewList);
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
@@ -62,6 +65,7 @@ public class MyLikeContentsActivity extends AppCompatActivity {
         mLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         mLayoutManager.isSmoothScrollbarEnabled();
         mLayoutManager.setStackFromEnd(true);
+        mLayoutManager.setReverseLayout(true);
         recyclerViewList.setLayoutManager(mLayoutManager);
 
         recyclerViewList.setAdapter(postAdapterMine);

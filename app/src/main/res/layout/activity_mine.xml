@@ -316,7 +316,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_weight="8"
-                    android:text="내가 올린 투표"
+                    android:text="내 투표"
                     android:textColor="#383838"
                     android:textSize="18dp" />
 
@@ -444,6 +444,22 @@
             </LinearLayout>
 
 
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#efefef" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#efefef" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#efefef" />
+
+
             <LinearLayout
                 android:id="@+id/mineActivity_linearLayout_notice"
                 android:layout_width="match_parent"
@@ -551,6 +567,21 @@
                     android:textColor="#808080"
                     android:textSize="12dp" />
             </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#efefef" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#efefef" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#efefef" />
 
 
             <LinearLayout

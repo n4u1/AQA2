@@ -47,6 +47,7 @@ public class ReplyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         mOnItemClickListener = onItemClickListener; //댓글 좋아요 클릭 리스너 PollSingleActivity, PollRankingActivity
     }
 
+
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -98,6 +99,10 @@ public class ReplyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             ((ReplyViewHolder)holder).imageView_userClass.setImageResource(R.drawable.q_class_blue_1);
         } else if (userClass >= 450 && userClass < 501) {
             ((ReplyViewHolder)holder).imageView_userClass.setImageResource(R.drawable.q_class_blue_2);
+        } else if (userClass == 1000) {
+            ((ReplyViewHolder)holder).imageView_userClass.setImageResource(R.drawable.q_class_black);
+        } else {
+            ((ReplyViewHolder)holder).imageView_userClass.setImageResource(R.drawable.q_class_red_1);
         }
 
 

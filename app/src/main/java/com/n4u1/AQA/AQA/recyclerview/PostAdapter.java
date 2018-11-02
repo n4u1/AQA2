@@ -393,6 +393,10 @@ public class PostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                             ((PostViewHolder1)holder).imageView_userClass.setImageResource(R.drawable.q_class_blue_1);
                         } else if (userClass >= 450 && userClass < 501) {
                             ((PostViewHolder1)holder).imageView_userClass.setImageResource(R.drawable.q_class_blue_2);
+                        } else if (userClass == 1000) {
+                            ((PostViewHolder1)holder).imageView_userClass.setImageResource(R.drawable.q_class_black);
+                        } else {
+                            ((PostViewHolder1)holder).imageView_userClass.setImageResource(R.drawable.q_class_red_1);
                         }
                     }
                     @Override
@@ -545,6 +549,10 @@ public class PostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                             ((PostViewHolder2)holder).imageView_userClass.setImageResource(R.drawable.q_class_blue_1);
                         } else if (userClass >= 450 && userClass < 501) {
                             ((PostViewHolder2)holder).imageView_userClass.setImageResource(R.drawable.q_class_blue_2);
+                        } else if (userClass == 1000) {
+                            ((PostViewHolder2)holder).imageView_userClass.setImageResource(R.drawable.q_class_black);
+                        } else {
+                            ((PostViewHolder2)holder).imageView_userClass.setImageResource(R.drawable.q_class_red_1);
                         }
                     }
                     @Override
@@ -707,6 +715,10 @@ public class PostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                             ((PostViewHolder3)holder).imageView_userClass.setImageResource(R.drawable.q_class_blue_1);
                         } else if (userClass >= 450 && userClass < 501) {
                             ((PostViewHolder3)holder).imageView_userClass.setImageResource(R.drawable.q_class_blue_2);
+                        } else if (userClass == 1000) {
+                            ((PostViewHolder3)holder).imageView_userClass.setImageResource(R.drawable.q_class_black);
+                        } else {
+                            ((PostViewHolder3)holder).imageView_userClass.setImageResource(R.drawable.q_class_red_1);
                         }
                     }
                     @Override

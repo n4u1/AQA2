@@ -1087,25 +1087,25 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
                 if (replyDTOS.get(1) != null && replyDTOS.get(1).likeCount > 0) {
                     int userClass = replyDTOS.get(1).getqPoint();
                     if (userClass >= 0 && userClass < 50) {
-                        imageView_userClass0.setImageResource(R.drawable.q_class_red_1);
+                        imageView_userClass1.setImageResource(R.drawable.q_class_red_1);
                     } else if (userClass >= 50 && userClass < 100) {
-                        imageView_userClass0.setImageResource(R.drawable.q_class_red_2);
+                        imageView_userClass1.setImageResource(R.drawable.q_class_red_2);
                     } else if (userClass >= 100 && userClass < 150) {
-                        imageView_userClass0.setImageResource(R.drawable.q_class_orange_1);
+                        imageView_userClass1.setImageResource(R.drawable.q_class_orange_1);
                     } else if (userClass >= 150 && userClass < 200) {
-                        imageView_userClass0.setImageResource(R.drawable.q_class_orange_2);
+                        imageView_userClass1.setImageResource(R.drawable.q_class_orange_2);
                     } else if (userClass >= 200 && userClass < 250) {
-                        imageView_userClass0.setImageResource(R.drawable.q_class_yellow_1);
+                        imageView_userClass1.setImageResource(R.drawable.q_class_yellow_1);
                     } else if (userClass >= 250 && userClass < 300) {
-                        imageView_userClass0.setImageResource(R.drawable.q_class_yellow_2);
+                        imageView_userClass1.setImageResource(R.drawable.q_class_yellow_2);
                     } else if (userClass >= 300 && userClass < 350) {
-                        imageView_userClass0.setImageResource(R.drawable.q_class_green_1);
+                        imageView_userClass1.setImageResource(R.drawable.q_class_green_1);
                     } else if (userClass >= 350 && userClass < 400) {
-                        imageView_userClass0.setImageResource(R.drawable.q_class_green_2);
+                        imageView_userClass1.setImageResource(R.drawable.q_class_green_2);
                     } else if (userClass >= 400 && userClass < 450) {
-                        imageView_userClass0.setImageResource(R.drawable.q_class_blue_1);
+                        imageView_userClass1.setImageResource(R.drawable.q_class_blue_1);
                     } else if (userClass >= 450 && userClass < 501) {
-                        imageView_userClass0.setImageResource(R.drawable.q_class_blue_2);
+                        imageView_userClass1.setImageResource(R.drawable.q_class_blue_2);
                     }
                     linearLayout_bestReply1.setVisibility(View.VISIBLE);
                     bestReply_id1.setText(replyDTOS.get(1).getId());
@@ -1117,25 +1117,25 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
                 if (replyDTOS.get(2) != null && replyDTOS.get(2).likeCount > 0) {
                     int userClass = replyDTOS.get(2).getqPoint();
                     if (userClass >= 0 && userClass < 50) {
-                        imageView_userClass0.setImageResource(R.drawable.q_class_red_1);
+                        imageView_userClass2.setImageResource(R.drawable.q_class_red_1);
                     } else if (userClass >= 50 && userClass < 100) {
-                        imageView_userClass0.setImageResource(R.drawable.q_class_red_2);
+                        imageView_userClass2.setImageResource(R.drawable.q_class_red_2);
                     } else if (userClass >= 100 && userClass < 150) {
-                        imageView_userClass0.setImageResource(R.drawable.q_class_orange_1);
+                        imageView_userClass2.setImageResource(R.drawable.q_class_orange_1);
                     } else if (userClass >= 150 && userClass < 200) {
-                        imageView_userClass0.setImageResource(R.drawable.q_class_orange_2);
+                        imageView_userClass2.setImageResource(R.drawable.q_class_orange_2);
                     } else if (userClass >= 200 && userClass < 250) {
-                        imageView_userClass0.setImageResource(R.drawable.q_class_yellow_1);
+                        imageView_userClass2.setImageResource(R.drawable.q_class_yellow_1);
                     } else if (userClass >= 250 && userClass < 300) {
-                        imageView_userClass0.setImageResource(R.drawable.q_class_yellow_2);
+                        imageView_userClass2.setImageResource(R.drawable.q_class_yellow_2);
                     } else if (userClass >= 300 && userClass < 350) {
-                        imageView_userClass0.setImageResource(R.drawable.q_class_green_1);
+                        imageView_userClass2.setImageResource(R.drawable.q_class_green_1);
                     } else if (userClass >= 350 && userClass < 400) {
-                        imageView_userClass0.setImageResource(R.drawable.q_class_green_2);
+                        imageView_userClass2.setImageResource(R.drawable.q_class_green_2);
                     } else if (userClass >= 400 && userClass < 450) {
-                        imageView_userClass0.setImageResource(R.drawable.q_class_blue_1);
+                        imageView_userClass2.setImageResource(R.drawable.q_class_blue_1);
                     } else if (userClass >= 450 && userClass < 501) {
-                        imageView_userClass0.setImageResource(R.drawable.q_class_blue_2);
+                        imageView_userClass2.setImageResource(R.drawable.q_class_blue_2);
                     }
                     linearLayout_bestReply2.setVisibility(View.VISIBLE);
                     bestReply_id2.setText(replyDTOS.get(2).getId());

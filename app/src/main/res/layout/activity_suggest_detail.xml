@@ -11,9 +11,7 @@
     <include layout="@layout/mytoolbar" />
 
 
-
-
-    <ScrollView
+    <android.support.v4.widget.NestedScrollView
         android:id="@+id/scrollView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -54,17 +52,17 @@
 
             <!--업로더 아이디-->
             <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 android:layout_marginBottom="4dp"
                 android:gravity="left"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="2"
+                    android:layout_weight="1.5"
                     android:text="게시자  :"
                     android:textColor="#636363"
                     android:textSize="12dp" />
@@ -93,16 +91,16 @@
 
             <!--게시글번호-->
             <LinearLayout
-                android:layout_marginTop="4dp"
-                android:layout_marginBottom="4dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="4dp"
                 android:orientation="horizontal">
 
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="2"
+                    android:layout_weight="1.5"
                     android:text="글번호  :"
                     android:textColor="#636363"
                     android:textSize="12dp" />
@@ -111,35 +109,21 @@
                     android:id="@+id/suggestDetailActivity_textView_contentId"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="10"
+                    android:layout_weight="5"
                     android:textColor="#636363"
                     android:textSize="12dp" />
-            </LinearLayout>
-
-
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="#efefef" />
-
-
-            <!--시간-->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:layout_marginBottom="4dp"
-                android:orientation="horizontal">
 
                 <TextView
                     android:id="@+id/suggestDetailActivity_textView_date"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
+                    android:layout_weight="5"
+                    android:gravity="right"
                     android:textColor="#636363"
                     android:textSize="12dp" />
+
             </LinearLayout>
+
 
             <View
                 android:layout_width="match_parent"
@@ -148,13 +132,14 @@
 
 
             <!--내용-->
-
             <TextView
                 android:id="@+id/suggestDetailActivity_textView_description"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 android:layout_marginBottom="4dp"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp"
                 android:textSize="16dp" />
 
             <View
@@ -173,24 +158,6 @@
 
 
                 <ImageView
-                    android:id="@+id/suggestDetailActivity_imageView_like"
-                    android:layout_width="0dp"
-                    android:layout_height="20dp"
-                    android:layout_weight="1"
-                    android:src="@drawable/ic_outline_thumb_up_24px" />
-
-                <TextView
-                    android:id="@+id/suggestDetailActivity_textView_likeCount"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="4dp"
-                    android:layout_weight="5"
-                    android:text="2291"
-                    android:textColor="#737373"
-                    android:textSize="14dp" />
-
-
-                <ImageView
                     android:id="@+id/suggestDetailActivity_imageView_reply"
                     android:layout_width="0dp"
                     android:layout_height="20dp"
@@ -202,10 +169,29 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="4dp"
-                    android:layout_weight="5"
+                    android:layout_weight="8"
                     android:text="2291"
                     android:textColor="#737373"
                     android:textSize="14dp" />
+
+
+                <ImageView
+                    android:id="@+id/suggestDetailActivity_imageView_like"
+                    android:layout_width="0dp"
+                    android:layout_height="20dp"
+                    android:layout_weight="1"
+                    android:src="@drawable/ic_suggest_up" />
+
+                <TextView
+                    android:id="@+id/suggestDetailActivity_textView_likeCount"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="4dp"
+                    android:layout_weight="2"
+                    android:text="2291"
+                    android:textColor="#737373"
+                    android:textSize="14dp" />
+
 
             </LinearLayout>
 
@@ -220,6 +206,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp">
+
                 <android.support.v7.widget.AppCompatImageView
                     android:id="@+id/suggestDetailActivity_imageView_userAddContent_1"
                     android:layout_width="match_parent"
@@ -232,6 +219,7 @@
                     android:layout_marginBottom="16dp"
                     android:scaleType="center"
                     android:visibility="gone" />
+
                 <android.support.v7.widget.AppCompatImageView
                     android:id="@+id/suggestDetailActivity_imageView_userAddContent_2"
                     android:layout_width="match_parent"
@@ -249,16 +237,13 @@
             </RelativeLayout>
 
 
-
-
-
-
             <!--댓글 리스트-->
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/suggestDetailActivity_recyclerView_reply"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:orientation="horizontal"
                 android:visibility="visible" />
 
             <View
@@ -296,6 +281,6 @@
 
         </LinearLayout>
 
-    </ScrollView>
+    </android.support.v4.widget.NestedScrollView>
 
 </RelativeLayout>

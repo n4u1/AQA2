@@ -70,15 +70,14 @@ public class MineActivity extends AppCompatActivity implements LogOutDialog.LogO
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mine);
 
-
         Toolbar myToolbar = findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
-        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_arrow_back_black_24dp);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
-
         if (getSupportActionBar() != null){
+            getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_arrow_back_black_24dp);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
             getSupportActionBar().setTitle(null);
+            getSupportActionBar().setSubtitle("설 정");
         }
 
         mFireBaseUser = FirebaseAuth.getInstance().getCurrentUser();

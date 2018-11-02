@@ -62,11 +62,11 @@
 
             <!--업로더 아이디-->
             <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 android:layout_marginBottom="4dp"
                 android:gravity="left"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
                 <TextView
@@ -88,9 +88,19 @@
                     android:id="@+id/pollActivity_textView_userId"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="9.5"
+                    android:layout_weight="5.5"
                     android:textColor="#636363"
                     android:textSize="14dp" />
+
+                <TextView
+                    android:id="@+id/pollActivity_textView_date"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="5"
+                    android:gravity="right"
+                    android:textColor="#636363"
+                    android:textSize="12dp" />
+
             </LinearLayout>
 
             <View
@@ -101,10 +111,10 @@
 
             <!--게시글번호-->
             <LinearLayout
-                android:layout_marginTop="4dp"
-                android:layout_marginBottom="4dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="4dp"
                 android:orientation="horizontal">
 
                 <TextView
@@ -119,7 +129,18 @@
                     android:id="@+id/pollActivity_textView_contentId"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="10"
+                    android:layout_weight="6"
+                    android:textColor="#636363"
+                    android:textSize="14dp" />
+
+
+                <TextView
+
+                    android:id="@+id/pollActivity_textView_pollMode"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="5"
+                    android:gravity="right"
                     android:textColor="#636363"
                     android:textSize="14dp" />
 
@@ -171,7 +192,6 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:id="@+id/pollActivity_textView_pollMode"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -179,7 +199,6 @@
                     android:textSize="14dp" />
 
                 <TextView
-                    android:id="@+id/pollActivity_textView_date"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -764,26 +783,26 @@
 
             <!--댓글 펼치기 -->
             <RelativeLayout
-                android:gravity="center_vertical"
                 android:id="@+id/pollActivity_relativeLayout_reply"
                 android:layout_width="match_parent"
-                android:layout_height="50dp">
+                android:layout_height="50dp"
+                android:gravity="center_vertical">
 
                 <ImageView
                     android:id="@+id/pollActivity_imageView_replyView_1"
-                    android:visibility="visible"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:layout_centerHorizontal="true"
-                    android:src="@drawable/ic_hambugger" />
+                    android:src="@drawable/ic_hambugger"
+                    android:visibility="visible" />
 
                 <ImageView
                     android:id="@+id/pollActivity_imageView_replyView_2"
                     android:layout_width="50dp"
                     android:layout_height="40dp"
-                    android:visibility="gone"
                     android:layout_centerHorizontal="true"
-                    android:src="@drawable/ic_show_more_button_gray" />
+                    android:src="@drawable/ic_show_more_button_gray"
+                    android:visibility="gone" />
             </RelativeLayout>
 
 

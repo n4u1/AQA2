@@ -48,20 +48,29 @@ public class SuggestAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     public void onBindViewHolder(@NonNull final RecyclerView.ViewHolder viewHolder, final int i) {
         FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
         FirebaseUser mUser = FirebaseAuth.getInstance().getCurrentUser();
+        String replyCount = " [" + String.valueOf(suggestDTOS.get(i).getReplyCount()) + "]";
 
         //아이템 바인딩
         if (suggestDTOS.get(i).getTitle().length() >= 13) {
-            ((SuggestViewHolder) viewHolder).textView_title.setText(suggestDTOS.get(i).getTitle().substring(0,13) + "...");
+            ((SuggestViewHolder) viewHolder).textView_title.setText(suggestDTOS.get(i).getTitle() + "..." + replyCount);
         } else {
-            ((SuggestViewHolder) viewHolder).textView_title.setText(suggestDTOS.get(i).getTitle());
+            ((SuggestViewHolder) viewHolder).textView_title.setText(suggestDTOS.get(i).getTitle() + replyCount);
         }
 
         ((SuggestViewHolder) viewHolder).textView_userName.setText(suggestDTOS.get(i).getUserID());
+        ((SuggestViewHolder) viewHolder).textView_likeCount.setText(String.valueOf(suggestDTOS.get(i).getLikeCount()));
+
+        if (suggestDTOS.get(i).likes.containsKey(mUser.getUid())) {
+            ((SuggestViewHolder) viewHolder).imageView_like.setImageResource(R.drawable.ic_suggest_up_fill);
+        } else {
+            ((SuggestViewHolder) viewHolder).imageView_like.setImageResource(R.drawable.ic_suggest_up);
+
+        }
+
         ((SuggestViewHolder) viewHolder).suggest_linearLayout_item.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 movePoll(i);
-
             }
         });
 
