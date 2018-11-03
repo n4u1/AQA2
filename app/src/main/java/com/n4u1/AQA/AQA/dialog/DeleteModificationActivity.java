@@ -18,9 +18,8 @@ public class DeleteModificationActivity extends AppCompatActivity {
         setContentView(R.layout.activity_del_modi);
 
 
-        TextView textView_delete, textView_modification;
+        TextView textView_delete;
         textView_delete = findViewById(R.id.textView_delete);
-        textView_modification = findViewById(R.id.textView_modification);
 
 
         String replyKey = getIntent().getStringExtra("replyKey");
@@ -43,15 +42,6 @@ public class DeleteModificationActivity extends AppCompatActivity {
             }
         });
 
-        textView_modification.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent resultIntent = new Intent();
-                resultIntent.putStringArrayListExtra("resultDelete", keyModify);
-                setResult(RESULT_OK, resultIntent);
-                finish();
-            }
-        });
 
     }
 }

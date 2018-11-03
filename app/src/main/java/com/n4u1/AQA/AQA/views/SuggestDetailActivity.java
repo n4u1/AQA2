@@ -3,6 +3,7 @@ package com.n4u1.AQA.AQA.views;
 import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -12,6 +13,7 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -75,7 +77,7 @@ public class SuggestDetailActivity extends AppCompatActivity {
         setSupportActionBar(myToolbar);
         if (getSupportActionBar() != null) {
             getSupportActionBar().setTitle(null);
-            getSupportActionBar().setSubtitle("건의사항");
+            getSupportActionBar().setSubtitle("건의 사항");
             getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_arrow_back_black_24dp);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
@@ -113,11 +115,11 @@ public class SuggestDetailActivity extends AppCompatActivity {
                 replyDatabase.getReference().child("users").child(mAuth.getCurrentUser().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        Map<String, Object> user = (Map<String, Object>)dataSnapshot.getValue();
+                        Map<String, Object> user = (Map<String, Object>) dataSnapshot.getValue();
                         if (replyDTOS.get(position).getuId().equals(user.get("userId").toString())) {
                             if (view.getTag().equals("replySuggestAdapter_relativeLayout_like")) {
                                 Toast.makeText(getApplicationContext(), user.get("userId").toString() + "님 댓글 입니다.", Toast.LENGTH_SHORT).show();
-                            } else if(view.getTag().equals("replySuggestAdapter_relativeLayout_main")) { //댓글 클릭, 삭제 또는 수정
+                            } else if (view.getTag().equals("replySuggestAdapter_relativeLayout_main")) { //댓글 클릭, 삭제 또는 수정
                                 firebaseDatabase.getReference().child("suggestReply").child(suggestKey).addListenerForSingleValueEvent(new ValueEventListener() {
                                     @Override
                                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -136,7 +138,7 @@ public class SuggestDetailActivity extends AppCompatActivity {
                                         //수정하기, 선택하기 액티비티(다이얼로그)띄우기
                                         Intent intent = new Intent(SuggestDetailActivity.this, DeleteModificationActivity.class);
                                         intent.putExtra("replyKey", replyKey);
-                                        startActivityForResult(intent, 10000);
+                                        startActivityForResult(intent, 11000);
                                     }
 
                                     @Override
@@ -145,8 +147,7 @@ public class SuggestDetailActivity extends AppCompatActivity {
                                     }
                                 });
                             }
-                        }
-                        else {
+                        } else {
                             if (view.getTag().equals("replySuggestAdapter_relativeLayout_like")) {
                                 firebaseDatabase.getReference().child("suggestReply").child(suggestKey).addListenerForSingleValueEvent(new ValueEventListener() {
                                     @Override
@@ -188,7 +189,6 @@ public class SuggestDetailActivity extends AppCompatActivity {
         });
 
 
-
         //suggestDTO 화면 초기세팅
         mDatabaseReference = FirebaseDatabase.getInstance().getReference();
         mDatabaseReference.child("suggest").child(suggestKey).addValueEventListener(new ValueEventListener() {
@@ -225,7 +225,6 @@ public class SuggestDetailActivity extends AppCompatActivity {
 
             }
         });
-
 
 
         //따봉버튼 클릭리스너,  좋아요(따봉) 이미지 클릭
@@ -267,8 +266,6 @@ public class SuggestDetailActivity extends AppCompatActivity {
         });
 
 
-
-
         //reply 초기세팅
         firebaseDatabase.getReference().child("suggestReply").child(suggestKey).addValueEventListener(new ValueEventListener() {
             @Override
@@ -291,10 +288,9 @@ public class SuggestDetailActivity extends AppCompatActivity {
         });
 
 
-
         //댓글 리사이클러뷰 스크롤
         suggestDetailActivity_recyclerView_reply.setNestedScrollingEnabled(false);
-        suggestDetailActivity_recyclerView_reply.setLayoutManager(new LinearLayoutManager(this){
+        suggestDetailActivity_recyclerView_reply.setLayoutManager(new LinearLayoutManager(this) {
             @Override
             public boolean canScrollVertically() {
                 return false;
@@ -311,8 +307,6 @@ public class SuggestDetailActivity extends AppCompatActivity {
 
         suggestDetailActivity_recyclerView_reply.setLayoutManager(mLayoutManager);
         suggestDetailActivity_recyclerView_reply.setAdapter(replySuggestAdapter);
-
-
 
 
         //댓글 달기
@@ -393,15 +387,49 @@ public class SuggestDetailActivity extends AppCompatActivity {
                 Log.d("lkjlkj", "postTransaction:onComplete:" + databaseError);
 
 
-
             }
         });
+    }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if (resultCode == RESULT_OK) {
+            switch (requestCode) {
+                case 10000:
+                    if (data.getStringArrayListExtra("resultDelete").get(1).equals("삭제하기")) {
+                        String contentKey = getIntent().getStringExtra("suggestKey");
+                        String replyKey = data.getStringArrayListExtra("resultDelete").get(0);
+
+                        firebaseDatabase.getReference().child("suggestReply").child(contentKey).child(replyKey).removeValue();
+                        Toast.makeText(getApplicationContext(), "삭제하기", Toast.LENGTH_SHORT).show();
+
+                    } else if (data.getStringArrayListExtra("resultDelete").get(1).equals("수정하기")) {
+                        Toast.makeText(getApplicationContext(), "수정하기", Toast.LENGTH_SHORT).show();
+                    } else break;
+                    break;
+            }
+        }
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.mine_menu, menu);
+        return true;
+
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int curId = item.getItemId();
         switch (curId) {
+            case R.id.menu_home:
+                Intent intentHome = new Intent(this, HomeActivity.class);
+                intentHome.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intentHome);
+                finish();
+                break;
             case android.R.id.home:
                 onBackPressed();
                 break;
@@ -492,7 +520,7 @@ public class SuggestDetailActivity extends AppCompatActivity {
         });
     }
 
-    private void likeClick () {
+    private void likeClick() {
         final String suggestKey = getIntent().getStringExtra("suggestKey");
         firebaseDatabase.getReference().child("suggest").child(suggestKey).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -518,6 +546,7 @@ public class SuggestDetailActivity extends AppCompatActivity {
                             suggestDetailActivity_textView_likeCount.setText(String.valueOf(suggestDTO_.likeCount));
                         }
                     }
+
                     @Override
                     public void onCancelled(@NonNull DatabaseError databaseError) {
 
@@ -533,8 +562,7 @@ public class SuggestDetailActivity extends AppCompatActivity {
     }
 
 
-
-//    게시물 좋아요 클릭 (따봉 이미지)
+    //    게시물 좋아요 클릭 (따봉 이미지)
     private void onLikeClicked(final DatabaseReference postRef) {
         postRef.runTransaction(new Transaction.Handler() {
             @Override
@@ -586,8 +614,6 @@ public class SuggestDetailActivity extends AppCompatActivity {
             }
         });
     }
-
-
 
 
 }

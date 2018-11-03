@@ -85,10 +85,10 @@ public class FileChoiceActivity extends AppCompatActivity
         TabLayout tabLayout = findViewById(R.id.tabLayout);
 
         viewPager = findViewById(R.id.viewPager);
-        Fragment[] arrFragments = new Fragment[3];
+        Fragment[] arrFragments = new Fragment[2];
         arrFragments[0] = new ImageFragment();
-        arrFragments[1] = new VideoFragment();
-        arrFragments[2] = new CameraFragment();
+        arrFragments[1] = new CameraFragment();
+//        arrFragments[2] = new CameraFragment();
         PagerAdapter pagerAdapter = new PagerAdapter(getSupportFragmentManager(), arrFragments);
         viewPager.setAdapter(pagerAdapter);
         tabLayout.setupWithViewPager(viewPager);
@@ -160,9 +160,9 @@ public class FileChoiceActivity extends AppCompatActivity
                 case 0:
                     return "사진";
                 case 1:
-                    return "동영상";
-                case 2:
                     return "카메라";
+//                case 2:
+//                    return "카메라";
                 default:
                     return "";
             }
@@ -237,6 +237,11 @@ public class FileChoiceActivity extends AppCompatActivity
 
     //upload할 파일의 경로를 리스너로 받음 → 현재프레그먼트에 따라서 → FireBase 에 업로드
     public void upload(final String[] uri) {
+        int imageCount = 0;
+        for (int i = 0; i < 10; i++) {
+            if (uri[i].length() != 0) imageCount++;
+        }
+        Log.d("lkj urilength", String.valueOf(imageCount));
         Map<String, Integer> myContentIntoId = new HashMap<>();
         myContentIntoId.put(auth.getCurrentUser().getUid(), 9999);
         Fragment page = getSupportFragmentManager().findFragmentByTag("android:switcher:" + R.id.viewPager + ":" + viewPager.getCurrentItem());
@@ -249,13 +254,19 @@ public class FileChoiceActivity extends AppCompatActivity
             mdatabaseRef = FirebaseDatabase.getInstance().getReference();
             key = mdatabaseRef.child("user_contents").push().getKey();
 
+
+
             //content input start into fireBase "user_contents"
             ContentDTO contentDTO = new ContentDTO();
+            if (imageCount == 2) {
+                contentDTO.pollMode = "단일 투표";
+            } else {
+                contentDTO.pollMode = userInputContents.get(2);
+            }
             contentDTO.uploadDate = getDate();
             contentDTO.contentKey = key;
             contentDTO.title = userInputContents.get(0);
             contentDTO.contentType = userInputContents.get(1);
-            contentDTO.pollMode = userInputContents.get(2);
             contentDTO.description = userInputContents.get(3);
             contentDTO.uid = auth.getCurrentUser().getUid();
             contentDTO.userID = auth.getCurrentUser().getEmail();
@@ -522,12 +533,17 @@ public class FileChoiceActivity extends AppCompatActivity
 
             //content input start into fireBase "user_contents"
             ContentDTO contentDTO = new ContentDTO();
+            Log.d("lkj imageCount", String.valueOf(imageCount));
+            if (imageCount == 2) {
+                contentDTO.pollMode = "단일 투표";
+            } else {
+                contentDTO.pollMode = userInputContents.get(2);
+            }
             contentDTO.uploadDate = currentDate_;
             contentDTO.contentId = getContentId(currentDate);
             contentDTO.contentKey = key;
             contentDTO.title = userInputContents.get(0);
             contentDTO.contentType = userInputContents.get(1);
-            contentDTO.pollMode = userInputContents.get(2);
             contentDTO.description = userInputContents.get(3);
             contentDTO.uid = auth.getCurrentUser().getUid();
             contentDTO.userID = userInputContents.get(4);
@@ -803,12 +819,16 @@ public class FileChoiceActivity extends AppCompatActivity
 
             //content input start into fireBase "user_contents"
             ContentDTO contentDTO = new ContentDTO();
+            if (imageCount == 2) {
+                contentDTO.pollMode = "단일 투표";
+            } else {
+                contentDTO.pollMode = userInputContents.get(2);
+            }
             contentDTO.uploadDate = currentDate_;
             contentDTO.contentId = getContentId(currentDate);
             contentDTO.contentKey = key;
             contentDTO.title = userInputContents.get(0);
             contentDTO.contentType = userInputContents.get(1);
-            contentDTO.pollMode = userInputContents.get(2);
             contentDTO.description = userInputContents.get(3);
             contentDTO.uid = auth.getCurrentUser().getUid();
             contentDTO.userID = userInputContents.get(4);

@@ -14,6 +14,7 @@ import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -668,9 +669,9 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
 
         //contentDTO 화면 초기세팅
         mDatabaseReferenceAlarm = FirebaseDatabase.getInstance().getReference();
-        mDatabaseReferenceAlarm.child("user_contents").child(contentKey).addListenerForSingleValueEvent(new ValueEventListener() {
+        mDatabaseReferenceAlarm.child("user_contents").child(contentKey).addValueEventListener(new ValueEventListener() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot)  {
                 ContentDTO contentDTO = dataSnapshot.getValue(ContentDTO.class);
                 pollActivity_textView_date.setText(contentDTO.getUploadDate());
                 pollActivity_textView_title.setText(contentDTO.getTitle());
@@ -2179,13 +2180,10 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
                     if (data.getStringArrayListExtra("resultDelete").get(1).equals("삭제하기")) {
                         String contentKey = getIntent().getStringExtra("contentKey");
                         String replyKey = data.getStringArrayListExtra("resultDelete").get(0);
-
                         firebaseDatabase.getReference().child("reply").child(contentKey).child(replyKey).removeValue();
+                        removeReplyCount(firebaseDatabase.getReference().child("user_contents").child(contentKey));
 
-                        Toast.makeText(getApplicationContext(), "삭제하기", Toast.LENGTH_SHORT).show();
-                    } else if (data.getStringArrayListExtra("resultDelete").get(1).equals("수정하기")){
-                        Toast.makeText(getApplicationContext(), "수정하기", Toast.LENGTH_SHORT).show();
-                    } else break;
+                    } 
                     break;
                 case 20000:
 //                    String alarmCount = getIntent().getStringExtra("resultAlarmCount");
@@ -2198,6 +2196,28 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
         super.onActivityResult(requestCode, resultCode, data);
     }
 
+    private void removeReplyCount(DatabaseReference ref) {
+        ref.runTransaction(new Transaction.Handler() {
+            @NonNull
+            @Override
+            public Transaction.Result doTransaction(@NonNull MutableData mutableData) {
+                ContentDTO contentDTO = mutableData.getValue(ContentDTO.class);
+
+                if (contentDTO == null) {
+                    return Transaction.success(mutableData);
+                }
+
+                contentDTO.replyCount = contentDTO.replyCount - 1;
+                mutableData.setValue(contentDTO);
+                return  Transaction.success(mutableData);
+            }
+
+            @Override
+            public void onComplete(@Nullable DatabaseError databaseError, boolean b, @Nullable DataSnapshot dataSnapshot) {
+                Toast.makeText(getApplicationContext(), "댓글 삭제 완료", Toast.LENGTH_LONG).show();
+            }
+        });
+    }
 
 
     public class ResultValueFormatter implements IValueFormatter {

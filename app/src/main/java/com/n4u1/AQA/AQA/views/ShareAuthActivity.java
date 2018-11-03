@@ -9,8 +9,6 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -21,79 +19,81 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.n4u1.AQA.AQA.R;
+import com.n4u1.AQA.AQA.models.ShareAuthDTO;
 import com.n4u1.AQA.AQA.models.SuggestDTO;
+import com.n4u1.AQA.AQA.recyclerview.ShareAuthAdapter;
 import com.n4u1.AQA.AQA.recyclerview.SuggestAdapter;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Map;
 
-
-public class SuggestActivity extends AppCompatActivity {
+public class ShareAuthActivity extends AppCompatActivity {
 
     FirebaseUser mUser;
     DatabaseReference mDatabaseReference;
     private FirebaseDatabase mDatabase;
     String userId = "";
-    final ArrayList<SuggestDTO> suggestDTOS = new ArrayList<>();
+    final ArrayList<ShareAuthDTO> shareAuthDTOS = new ArrayList<>();
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_suggest);
+        setContentView(R.layout.activity_share_auth);
+
 
         Toolbar myToolbar = findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
         if (getSupportActionBar() != null) {
             getSupportActionBar().setTitle(null);
-            getSupportActionBar().setSubtitle("건의 사항");
+            getSupportActionBar().setSubtitle("공유 인증 하기");
             getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_arrow_back_black_24dp);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
         }
+
 
         mDatabase = FirebaseDatabase.getInstance();
         mUser = FirebaseAuth.getInstance().getCurrentUser();
         mDatabaseReference = FirebaseDatabase.getInstance().getReference();
 
         final SwipeRefreshLayout mSwipeRefreshLayout = findViewById(R.id.swipeRFL);
-        final RecyclerView suggestActivity_recyclerView = findViewById(R.id.suggestActivity_recyclerView);
-        FloatingActionButton suggestActivity_fab_addContent = findViewById(R.id.suggestActivity_fab_addContent);
-        final SuggestAdapter suggestAdapter = new SuggestAdapter(this, suggestDTOS, suggestActivity_recyclerView);
-//        suggestActivity_recyclerView.setHasFixedSize(true);
+        final RecyclerView shareAuthActivity_recyclerView = findViewById(R.id.shareAuthActivity_recyclerView);
+        FloatingActionButton shareAuthActivity_fab_addContent = findViewById(R.id.shareAuthActivity_fab_addContent);
+        final ShareAuthAdapter shareAuthAdapter = new ShareAuthAdapter(this, shareAuthDTOS, shareAuthActivity_recyclerView);
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         mLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         mLayoutManager.isSmoothScrollbarEnabled();
         mLayoutManager.setStackFromEnd(true);
-        suggestActivity_recyclerView.setLayoutManager(mLayoutManager);
+        shareAuthActivity_recyclerView.setLayoutManager(mLayoutManager);
+
+        shareAuthActivity_recyclerView.setAdapter(shareAuthAdapter);
+        shareAuthAdapter.notifyDataSetChanged();
 
 
-        suggestActivity_recyclerView.setAdapter(suggestAdapter);
-        suggestAdapter.notifyDataSetChanged();
 
-
-//        onCreate시 액티비티 최초1회 바인딩
-        mDatabase.getReference().child("suggest").addListenerForSingleValueEvent(new ValueEventListener() {
+        //onCreate시 액티비티 최초1회 바인딩
+        mDatabase.getReference().child("shareAuth").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                suggestDTOS.clear();
-                ArrayList<SuggestDTO> suggestDTOSTemp = new ArrayList<>();
+                shareAuthDTOS.clear();
+                ArrayList<ShareAuthDTO> shareAuthDTOTemp = new ArrayList<>();
 
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    SuggestDTO suggestDTO = snapshot.getValue(SuggestDTO.class);
-                    suggestDTOSTemp.add(suggestDTO);
+                    ShareAuthDTO shareAuthDTO = snapshot.getValue(ShareAuthDTO.class);
+                    shareAuthDTOTemp.add(shareAuthDTO);
                 }
-                Collections.reverse(suggestDTOSTemp);
-                for (int i = 0; i < suggestDTOSTemp.size(); i++) {
+                Collections.reverse(shareAuthDTOTemp);
+                for (int i = 0; i < shareAuthDTOTemp.size(); i++) {
                     try {
-                        suggestDTOS.add(suggestDTOSTemp.get(i));
+                        shareAuthDTOS.add(shareAuthDTOTemp.get(i));
                     } catch (Exception e) {
 
                     }
                 }
-                suggestAdapter.notifyDataSetChanged();
-                suggestActivity_recyclerView.scrollToPosition(0);
+                shareAuthAdapter.notifyDataSetChanged();
+                shareAuthActivity_recyclerView.scrollToPosition(0);
             }
 
             @Override
@@ -122,28 +122,28 @@ public class SuggestActivity extends AppCompatActivity {
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                mDatabase.getReference().child("suggest").addListenerForSingleValueEvent(new ValueEventListener() {
+                mDatabase.getReference().child("shareAuth").addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        suggestDTOS.clear();
-                        ArrayList<SuggestDTO> suggestDTOSTemp = new ArrayList<>();
+                        shareAuthDTOS.clear();
+                        ArrayList<ShareAuthDTO> shareAuthDTOSTemp = new ArrayList<>();
 
                         for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                            SuggestDTO suggestDTO = snapshot.getValue(SuggestDTO.class);
-                            suggestDTOSTemp.add(suggestDTO);
+                            ShareAuthDTO shareAuthDTO = snapshot.getValue(ShareAuthDTO.class);
+                            shareAuthDTOSTemp.add(shareAuthDTO);
                         }
 
-                        Collections.reverse(suggestDTOSTemp);
+                        Collections.reverse(shareAuthDTOSTemp);
 
-                        for (int i = 0; i < suggestDTOSTemp.size(); i++) {
+                        for (int i = 0; i < shareAuthDTOSTemp.size(); i++) {
                             try {
-                                suggestDTOS.add(suggestDTOSTemp.get(i));
+                                shareAuthDTOS.add(shareAuthDTOSTemp.get(i));
                             } catch (Exception e) {
 
                             }
                         }
-                        suggestAdapter.notifyDataSetChanged();
-                        suggestActivity_recyclerView.scrollToPosition(0);
+                        shareAuthAdapter.notifyDataSetChanged();
+                        shareAuthActivity_recyclerView.scrollToPosition(0);
                     }
 
                     @Override
@@ -154,42 +154,19 @@ public class SuggestActivity extends AppCompatActivity {
             }
         });
 
-        //건의하기 글쓰기 클릭 floating action bar
-        suggestActivity_fab_addContent.setOnClickListener(new View.OnClickListener() {
+
+        //공유인증하기 글쓰기 클릭 floating action bar
+        shareAuthActivity_fab_addContent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                Intent intent = new Intent(SuggestActivity.this, UserSuggestUploadActivity.class);
-                intent.putExtra("suggestUserId", userId);
+                Intent intent = new Intent(ShareAuthActivity.this, UserShareAuthUploadActivity.class);
+                intent.putExtra("shareAuthUserId", userId);
                 startActivity(intent);
             }
         });
-    }
 
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.mine_menu, menu);
-        return true;
+
 
     }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int curId = item.getItemId();
-        switch (curId) {
-            case R.id.menu_home:
-                Intent intentHome = new Intent(SuggestActivity.this, HomeActivity.class);
-                intentHome.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intentHome);
-                finish();
-                break;
-            case android.R.id.home:
-                onBackPressed();
-                break;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
-
 }

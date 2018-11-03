@@ -28,6 +28,7 @@ import com.google.firebase.storage.UploadTask;
 import com.n4u1.AQA.AQA.R;
 import com.n4u1.AQA.AQA.dialog.GoHomeDialog;
 import com.n4u1.AQA.AQA.dialog.UploadLoadingActivity;
+import com.n4u1.AQA.AQA.models.ShareAuthDTO;
 import com.n4u1.AQA.AQA.models.SuggestDTO;
 import com.n4u1.AQA.AQA.util.GlideApp;
 
@@ -37,34 +38,31 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
 
-public class UserSuggestUploadActivity extends AppCompatActivity implements GoHomeDialog.GoHomeDialogListener {
+public class UserShareAuthUploadActivity extends AppCompatActivity implements GoHomeDialog.GoHomeDialogListener {
+
 
     private StorageReference storageRef;
     private FirebaseStorage mStorage;
     private StorageReference riversRef;
     private DatabaseReference mdatabaseRef;
 
-    int loadingSec = 0;
     private int GALLEY_CODE = 1100;
-    String[] fileStrings = {"", ""};
-    LinearLayout suggestActivity_linearLayout_addImage, suggestActivity_linearLayout_Image1, suggestActivity_linearLayout_Image2;
-    EditText suggestActivity_editText_title, suggestActivity_editText_description;
-    ImageView suggestActivity_imageView_Image1, suggestActivity_imageView_Image2;
+    String[] fileStrings = {""};
+    LinearLayout shareAuthUploadActivity_linearLayout_addImage, shareAuthUploadActivity_linearLayout_Image1;
+    EditText shareAuthUploadActivity_editText_title;
+    ImageView shareAuthUploadActivity_imageView_Image1;
 
     private FirebaseAuth auth;
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_user_suggest_upload);
-
+        setContentView(R.layout.activity_user_share_auth_upload);
 
         Toolbar myToolbar = findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
         if (getSupportActionBar() != null) {
-            getSupportActionBar().setSubtitle("건의 사항 작성");
+            getSupportActionBar().setSubtitle("공유 인증 하기");
             getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_arrow_back_black_24dp);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
@@ -76,17 +74,14 @@ public class UserSuggestUploadActivity extends AppCompatActivity implements GoHo
         mdatabaseRef = FirebaseDatabase.getInstance().getReference();
         mStorage = FirebaseStorage.getInstance();
 
-        suggestActivity_linearLayout_addImage = findViewById(R.id.suggestActivity_linearLayout_addImage);
-        suggestActivity_linearLayout_Image1 = findViewById(R.id.suggestActivity_linearLayout_Image1);
-        suggestActivity_linearLayout_Image2 = findViewById(R.id.suggestActivity_linearLayout_Image2);
-        suggestActivity_editText_title = findViewById(R.id.suggestActivity_editText_title);
-        suggestActivity_editText_description = findViewById(R.id.suggestActivity_editText_description);
-        suggestActivity_imageView_Image1 = findViewById(R.id.suggestActivity_imageView_Image1);
-        suggestActivity_imageView_Image2 = findViewById(R.id.suggestActivity_imageView_Image2);
+        shareAuthUploadActivity_linearLayout_addImage = findViewById(R.id.shareAuthUploadActivity_linearLayout_addImage);
+        shareAuthUploadActivity_linearLayout_Image1 = findViewById(R.id.shareAuthUploadActivity_linearLayout_Image1);        
+        shareAuthUploadActivity_editText_title = findViewById(R.id.shareAuthUploadActivity_editText_title);        
+        shareAuthUploadActivity_imageView_Image1 = findViewById(R.id.shareAuthUploadActivity_imageView_Image1);
 
 
         //이미지 추가하기
-        suggestActivity_linearLayout_addImage.setOnClickListener(new View.OnClickListener() {
+        shareAuthUploadActivity_linearLayout_addImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(Intent.ACTION_PICK);
@@ -97,7 +92,12 @@ public class UserSuggestUploadActivity extends AppCompatActivity implements GoHo
         });
 
 
+
+
+
+
     }
+
 
 
     @Override
@@ -109,20 +109,14 @@ public class UserSuggestUploadActivity extends AppCompatActivity implements GoHo
                 return;
             } else {
                 if (checkCount == 0) {
-                    suggestActivity_linearLayout_Image1.setVisibility(View.VISIBLE);
-                    suggestActivity_imageView_Image1.setVisibility(View.VISIBLE);
+                    shareAuthUploadActivity_linearLayout_Image1.setVisibility(View.VISIBLE);
+                    shareAuthUploadActivity_imageView_Image1.setVisibility(View.VISIBLE);
                     imgPath = getPath(data.getData());
-                    GlideApp.with(getApplicationContext()).load(imgPath).centerCrop().into(suggestActivity_imageView_Image1);
+                    GlideApp.with(getApplicationContext()).load(imgPath).centerCrop().into(shareAuthUploadActivity_imageView_Image1);
                     fileStrings[0] = imgPath;
+                    shareAuthUploadActivity_linearLayout_addImage.setVisibility(View.GONE);
                 }
-                if (checkCount == 1) {
-                    suggestActivity_linearLayout_Image2.setVisibility(View.VISIBLE);
-                    suggestActivity_imageView_Image2.setVisibility(View.VISIBLE);
-                    imgPath = getPath(data.getData());
-                    GlideApp.with(getApplicationContext()).load(imgPath).centerCrop().into(suggestActivity_imageView_Image2);
-                    fileStrings[1] = imgPath;
-                    suggestActivity_linearLayout_addImage.setVisibility(View.GONE);
-                }
+
             }
         }
 
@@ -164,20 +158,19 @@ public class UserSuggestUploadActivity extends AppCompatActivity implements GoHo
         UploadTask uploadTask;
         DatabaseReference mDatabaseRef;
         mDatabaseRef = FirebaseDatabase.getInstance().getReference();
-        final String key = mDatabaseRef.child("suggest").push().getKey();
+        final String key = mDatabaseRef.child("shareAuth").push().getKey();
         String currentDate = getDate();
 
-        SuggestDTO suggestDTO = new SuggestDTO();
-        suggestDTO.title = suggestActivity_editText_title.getText().toString();
-        suggestDTO.description = suggestActivity_editText_description.getText().toString();
-        suggestDTO.uploadDate = currentDate;
-        suggestDTO.uid = auth.getCurrentUser().getUid();
-        suggestDTO.contentId = getContentId(currentDate);
-        suggestDTO.suggestKey = key;
-        suggestDTO.userID = getIntent().getStringExtra("suggestUserId");
-        suggestDTO.userEmail= auth.getCurrentUser().getEmail();
-        mDatabaseRef.child("suggest").child(key).setValue(suggestDTO);
-        mDatabaseRef.child("users").child(auth.getCurrentUser().getUid()).child("suggest").child(key).setValue("true");
+        ShareAuthDTO shareAuthDTO = new ShareAuthDTO();
+        shareAuthDTO.title = shareAuthUploadActivity_editText_title.getText().toString();
+        shareAuthDTO.uploadDate = currentDate;
+        shareAuthDTO.uid = auth.getCurrentUser().getUid();
+        shareAuthDTO.contentId = getContentId(currentDate);
+        shareAuthDTO.shareAuthKey = key;
+        shareAuthDTO.userID = getIntent().getStringExtra("shareAuthUserId");
+        shareAuthDTO.userEmail= auth.getCurrentUser().getEmail();
+        mDatabaseRef.child("shareAuth").child(key).setValue(shareAuthDTO);
+        mDatabaseRef.child("users").child(auth.getCurrentUser().getUid()).child("shareAuth").child(key).setValue("true");
 
 
         if (uri[0].length() != 0) {
@@ -196,30 +189,7 @@ public class UserSuggestUploadActivity extends AppCompatActivity implements GoHo
                     riversRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                         @Override
                         public void onSuccess(Uri uri) {
-                            mdatabaseRef.child("suggest").child(key).child("imageUrl_1").setValue(uri.toString());
-                        }
-                    });
-                }
-            });
-        }
-
-        if (uri[1].length() != 0) {
-            Uri file_1 = Uri.fromFile(new File(uri[1]));
-            StorageReference storageRef = mStorage.getReferenceFromUrl("gs://test130-1068f.appspot.com");
-            final StorageReference riversRef = storageRef.child("videos/" + file_1.getLastPathSegment());
-            UploadTask uploadTask_ = riversRef.putFile(file_1);
-            uploadTask_.addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception exception) {
-                    // Handle unsuccessful uploads
-                }
-            }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                @Override
-                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                    riversRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                        @Override
-                        public void onSuccess(Uri uri) {
-                            mdatabaseRef.child("suggest").child(key).child("imageUrl_2").setValue(uri.toString());
+                            mdatabaseRef.child("shareAuth").child(key).child("imageUrl").setValue(uri.toString());
                         }
                     });
                 }
@@ -227,9 +197,10 @@ public class UserSuggestUploadActivity extends AppCompatActivity implements GoHo
         }
 
 
-        Intent progressIntent = new Intent(UserSuggestUploadActivity.this, UploadLoadingActivity.class);
+
+        Intent progressIntent = new Intent(UserShareAuthUploadActivity.this, ShareAuthActivity.class);
         progressIntent.putExtra("sec", 2000);
-        Intent intent = new Intent(UserSuggestUploadActivity.this, SuggestActivity.class);
+        Intent intent = new Intent(UserShareAuthUploadActivity.this, ShareAuthActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         progressIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
@@ -249,20 +220,6 @@ public class UserSuggestUploadActivity extends AppCompatActivity implements GoHo
         return currentDate;
     }
 
-//    private int getLoadingSec(String[] imgStrings) {
-//        int sec = 0;
-//        int file_size = 0;
-//        for (int i = 0; i < 2; i++) {
-//            if (imgStrings[i] != null) {
-//                imgStrings[i] = imgStrings[i];
-//                File file = new File(imgStrings[i]);
-//                file_size = Integer.parseInt(String.valueOf(file.length()/1024));
-//            }
-//            sec = sec + file_size;
-//        }
-//        //1000 = 1M
-//        return sec;
-//    }
 
 
     public String getContentId(String date) {
@@ -272,10 +229,7 @@ public class UserSuggestUploadActivity extends AppCompatActivity implements GoHo
 
     private int imageViewCheck() {
         int count = 0;
-        if (suggestActivity_imageView_Image1.getVisibility() == View.VISIBLE) {
-            count++;
-        }
-        if (suggestActivity_imageView_Image2.getVisibility() == View.VISIBLE) {
+        if (shareAuthUploadActivity_imageView_Image1.getVisibility() == View.VISIBLE) {
             count++;
         }
         return count;
@@ -304,6 +258,3 @@ public class UserSuggestUploadActivity extends AppCompatActivity implements GoHo
 
     }
 }
-
-
-

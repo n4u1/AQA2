@@ -68,7 +68,7 @@
             android:layout_gravity="top"
             android:layout_weight="8"
             android:gravity="top"
-            android:text="※로그인 및 정보변경에 사용됩니다."
+            android:text="※로그인, 이벤트, 정보변경에 사용됩니다."
             android:textSize="12dp" />
 
         <TextView

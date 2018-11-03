@@ -5,16 +5,19 @@ import com.google.firebase.database.Exclude;
 import java.util.HashMap;
 import java.util.Map;
 
-public class SuggestDTO {
+public class ShareAuthDTO {
 
-    public String imageUrl_1, imageUrl_2;
+    public ShareAuthDTO() {
+    }
+
+    public String imageUrl;
     public String title;
     public String description;
     public String uid;
     public String userID;
     public String contentId;
     public String uploadDate;
-    public String suggestKey;
+    public String shareAuthKey;
     public String replyDate;
     public String userEmail;
 
@@ -26,59 +29,21 @@ public class SuggestDTO {
     public Map<String, Boolean> likes = new HashMap<>();
 
 
-
-
     @Exclude
     public Map<String, Object> toMap() {
         HashMap<String, Object> result = new HashMap<>();
 //        result.put("contentPicker", contentPicker);
 
+
         return result;
     }
 
-    public SuggestDTO(){}
-
-
-    public String getImageUrl_1() {
-        return imageUrl_1;
+    public String getImageUrl() {
+        return imageUrl;
     }
 
-    public void setImageUrl_1(String imageUrl_1) {
-        this.imageUrl_1 = imageUrl_1;
-    }
-
-    public String getImageUrl_2() {
-        return imageUrl_2;
-    }
-
-    public void setImageUrl_2(String imageUrl_2) {
-        this.imageUrl_2 = imageUrl_2;
-    }
-
-    public String getSuggestKey() {
-        return suggestKey;
-    }
-
-    public void setSuggestKey(String suggestKey) {
-        this.suggestKey = suggestKey;
-    }
-
-    public String getUserEmail() {
-        return userEmail;
-    }
-
-    public void setUserEmail(String userEmail) {
-        this.userEmail = userEmail;
-    }
-
-
-
-    public Map<String, String> getReply() {
-        return reply;
-    }
-
-    public void setReply(Map<String, String> reply) {
-        this.reply = reply;
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 
     public String getTitle() {
@@ -129,7 +94,13 @@ public class SuggestDTO {
         this.uploadDate = uploadDate;
     }
 
+    public String getShareAuthKey() {
+        return shareAuthKey;
+    }
 
+    public void setShareAuthKey(String shareAuthKey) {
+        this.shareAuthKey = shareAuthKey;
+    }
 
     public String getReplyDate() {
         return replyDate;
@@ -139,6 +110,14 @@ public class SuggestDTO {
         this.replyDate = replyDate;
     }
 
+    public String getUserEmail() {
+        return userEmail;
+    }
+
+    public void setUserEmail(String userEmail) {
+        this.userEmail = userEmail;
+    }
+
     public boolean isUserLike() {
         return isUserLike;
     }
@@ -146,9 +125,6 @@ public class SuggestDTO {
     public void setUserLike(boolean userLike) {
         isUserLike = userLike;
     }
-
-
-
 
     public int getLikeCount() {
         return likeCount;
@@ -164,6 +140,14 @@ public class SuggestDTO {
 
     public void setReplyCount(int replyCount) {
         this.replyCount = replyCount;
+    }
+
+    public Map<String, String> getReply() {
+        return reply;
+    }
+
+    public void setReply(Map<String, String> reply) {
+        this.reply = reply;
     }
 
     public Map<String, Boolean> getLikes() {

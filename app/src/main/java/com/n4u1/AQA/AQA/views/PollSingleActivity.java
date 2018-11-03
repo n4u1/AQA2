@@ -8,6 +8,7 @@ import android.graphics.PorterDuff;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -641,9 +642,8 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
         //show more ; show or noShow
 
 
-        Log.d("lkj noti", contentKey);
         //contentDTO 화면 초기세팅
-        mDatabaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+        mDatabaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 ContentDTO contentDTO = dataSnapshot.getValue(ContentDTO.class);
@@ -956,6 +956,8 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
                         GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_9()).centerCrop().thumbnail(Glide.with(getApplicationContext()).load(R.drawable.loadingicon)).into(pollActivity_imageView_userAddContent_10).getView();
                         break;
                 }
+            } {
+
             }
 
             @Override
@@ -963,7 +965,13 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
 
             }
         });
+
     }
+
+
+    /*
+    onCreate();
+     */
 
     private void settingUserIcon(String uId) {
         firebaseDatabase.getReference().child("users").child(uId).child("userClass").addListenerForSingleValueEvent(new ValueEventListener() {
@@ -1447,13 +1455,10 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
                     if (data.getStringArrayListExtra("resultDelete").get(1).equals("삭제하기")) {
                         String contentKey = getIntent().getStringExtra("contentKey");
                         String replyKey = data.getStringArrayListExtra("resultDelete").get(0);
-
                         firebaseDatabase.getReference().child("reply").child(contentKey).child(replyKey).removeValue();
+                        removeReplyCount(firebaseDatabase.getReference().child("user_contents").child(contentKey));
 
-                        Toast.makeText(getApplicationContext(), "삭제하기", Toast.LENGTH_SHORT).show();
-                    } else if (data.getStringArrayListExtra("resultDelete").get(1).equals("수정하기")) {
-                        Toast.makeText(getApplicationContext(), "수정하기", Toast.LENGTH_SHORT).show();
-                    } else break;
+                    }
                     break;
                 case 20000:
                     String alarmCount = data.getStringExtra("resultAlarmCount");
@@ -1465,6 +1470,28 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
         super.onActivityResult(requestCode, resultCode, data);
     }
 
+    private void removeReplyCount(DatabaseReference ref) {
+        ref.runTransaction(new Transaction.Handler() {
+            @NonNull
+            @Override
+            public Transaction.Result doTransaction(@NonNull MutableData mutableData) {
+                ContentDTO contentDTO = mutableData.getValue(ContentDTO.class);
+
+                if (contentDTO == null) {
+                    return Transaction.success(mutableData);
+                }
+
+                contentDTO.replyCount = contentDTO.replyCount - 1;
+                mutableData.setValue(contentDTO);
+                return  Transaction.success(mutableData);
+            }
+
+            @Override
+            public void onComplete(@Nullable DatabaseError databaseError, boolean b, @Nullable DataSnapshot dataSnapshot) {
+                Toast.makeText(getApplicationContext(), "댓글 삭제 완료", Toast.LENGTH_LONG).show();
+            }
+        });
+    }
 
     public void checking_img_1() {
         pickCandidate = 1;

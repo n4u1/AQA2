@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/swipeRFL"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/homeActivity_relativeLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".views.ShareAuthActivity">
+
+        <include layout="@layout/mytoolbar" />
+
+        <LinearLayout
+            android:id="@+id/shareAuthActivity_linearLayout_main"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="58dp"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal">
+
+            <RelativeLayout
+                android:id="@+id/shareAuthActivity_relativeLayout_shareInfo"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:paddingTop="2dp"
+                android:paddingBottom="2dp">
+
+                <android.support.v7.widget.CardView
+                    android:id="@+id/shareAuthActivity_cardView_shareInfo"
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:elevation="10dp"
+                    app:cardCornerRadius="8dp">
+
+                    <TextView
+                        android:id="@+id/shareAuthActivity_textView_shareInfo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="4dp"
+                        android:layout_marginBottom="4dp"
+                        android:paddingTop="4dp"
+                        android:paddingBottom="4dp"
+                        android:text="공유 인증 하는 방법"
+                        android:textSize="14dp" />
+                </android.support.v7.widget.CardView>
+
+            </RelativeLayout>
+
+
+
+            <RelativeLayout
+                android:id="@+id/shareAuthActivity_relativeLayout_Winner"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:paddingTop="2dp"
+                android:paddingBottom="2dp">
+
+                <android.support.v7.widget.CardView
+                    android:id="@+id/shareAuthActivity_cardView_Winner"
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:elevation="10dp"
+                    app:cardCornerRadius="8dp">
+
+                    <TextView
+                        android:id="@+id/shareAuthActivity_textView_Winner"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="4dp"
+                        android:layout_marginBottom="4dp"
+                        android:paddingTop="4dp"
+                        android:paddingBottom="4dp"
+                        android:text="당첨자 확인"
+                        android:textSize="14dp" />
+                </android.support.v7.widget.CardView>
+
+            </RelativeLayout>
+
+        </LinearLayout>
+
+
+        <android.support.v7.widget.RecyclerView
+            android:layout_below="@+id/shareAuthActivity_linearLayout_main"
+            android:id="@+id/shareAuthActivity_recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/shareAuthActivity_fab_addContent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginRight="24dp"
+            android:layout_marginBottom="74dp"
+            android:src="@drawable/ic_create_black_24dp"
+            app:backgroundTint="#ffffff" />
+
+    </RelativeLayout>
+</android.support.v4.widget.SwipeRefreshLayout>

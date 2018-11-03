@@ -2,8 +2,12 @@ package com.n4u1.AQA.AQA.views;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -141,8 +145,6 @@ public class HomeActivity extends AppCompatActivity implements SwipeRefreshLayou
         AdRequest adRequest = new AdRequest.Builder()
                 .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)        // All emulators
                 .addTestDevice("C39C4F095E193D0C5E7BBCB91B89B469")  // TestDeviceId
-//                .addTestDevice("C39C4F095E193D0C5E7BBCB91B89B469")  // TestDeviceId
-
                 .build();
         adView.loadAd(adRequest);
 
@@ -644,10 +646,32 @@ public class HomeActivity extends AppCompatActivity implements SwipeRefreshLayou
         switch (string) {
             case "공유하기":
                 try {
+//                    test 버전
                     Toast toast = Toast.makeText(this, "정식 버전 되면 많이 해주세요!!", Toast.LENGTH_SHORT);
                     toast.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL, 0, 0);
                     toast.show();
 
+
+
+////                    real 버전
+//                    Intent intent = new Intent(android.content.Intent.ACTION_SEND);                    
+//                    intent.setType("text/plain");
+////                     Set default text message
+////                     카톡, 이메일, MMS 다 이걸로 설정 가능
+//                    String subject = "문자의 제목";
+//                    String text = "AQA\nFunny Trustly Purely\n골라봐!\nhttps://play.google.com/apps/testing/com.n4u1.AQA.AQA";
+//                    intent.putExtra(Intent.EXTRA_SUBJECT, subject);
+//                    intent.putExtra(Intent.EXTRA_TEXT, text);
+////                     Title of intent
+//                    Intent chooser = Intent.createChooser(intent, "친구에게 공유하기");
+//                    startActivity(chooser);
+
+
+
+
+
+
+//                    AQA이미지 공유기능
 //                    String type = "image/*";
 //                    Bitmap shareBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.aqacustom2);
 //                    File outputFile = new File(getApplicationContext().getCacheDir(), "AQA" + ".png");
@@ -670,7 +694,8 @@ public class HomeActivity extends AppCompatActivity implements SwipeRefreshLayou
                 break;
 
             case "인증하기":
-                Log.d("lkj auth", "auth");
+                Intent intentShareAuthIntent = new Intent(this, ShareAuthActivity.class);
+                startActivity(intentShareAuthIntent);
                 break;
         }
     }
