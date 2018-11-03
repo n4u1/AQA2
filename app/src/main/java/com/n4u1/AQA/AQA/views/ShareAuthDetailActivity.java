@@ -53,9 +53,6 @@ public class ShareAuthDetailActivity extends AppCompatActivity {
     private DatabaseReference mDatabaseReference;
     private FirebaseAuth mAuth;
     private FirebaseDatabase firebaseDatabase;
-    private FirebaseDatabase likeFirebaseDatabase;
-    private String replyKey;
-    final ArrayList<ReplyDTO> replyDTOS = new ArrayList<>();
 
 
     TextView shareAuthDetailActivity_textView_title, shareAuthDetailActivity_textView_userId,
@@ -85,17 +82,15 @@ public class ShareAuthDetailActivity extends AppCompatActivity {
         final String shareAuthKey = getIntent().getStringExtra("shareAuthKey");
         firebaseDatabase = FirebaseDatabase.getInstance();
         mAuth = FirebaseAuth.getInstance();
-        likeFirebaseDatabase = FirebaseDatabase.getInstance();
+
 
         shareAuthDetailActivity_textView_title = findViewById(R.id.shareAuthDetailActivity_textView_title);
         shareAuthDetailActivity_textView_userId = findViewById(R.id.shareAuthDetailActivity_textView_userId);
         shareAuthDetailActivity_textView_contentId = findViewById(R.id.shareAuthDetailActivity_textView_contentId);
         shareAuthDetailActivity_textView_date = findViewById(R.id.shareAuthDetailActivity_textView_date);
-        shareAuthDetailActivity_textView_replyCount = findViewById(R.id.shareAuthDetailActivity_textView_replyCount);
 
         shareAuthDetailActivity_imageView_userAddContent_1 = findViewById(R.id.shareAuthDetailActivity_imageView_userAddContent_1);
         shareAuthDetailActivity_imageView_userClass = findViewById(R.id.shareAuthDetailActivity_imageView_userClass);
-        shareAuthDetailActivity_imageView_reply = findViewById(R.id.shareAuthDetailActivity_imageView_reply);
 
 
 
@@ -110,27 +105,17 @@ public class ShareAuthDetailActivity extends AppCompatActivity {
                 shareAuthDetailActivity_textView_userId.setText(shareAuthDTO.getUserID());
                 shareAuthDetailActivity_textView_contentId.setText(shareAuthDTO.getContentId());
                 shareAuthDetailActivity_textView_date.setText(shareAuthDTO.getUploadDate());
-                shareAuthDetailActivity_textView_replyCount.setText(String.valueOf(shareAuthDTO.getReplyCount()));
 
                 if (shareAuthDTO.getImageUrl() != null) {
                     shareAuthDetailActivity_imageView_userAddContent_1.setVisibility(View.VISIBLE);
                     GlideApp.with(getApplicationContext()).load(shareAuthDTO.getImageUrl()).centerCrop().thumbnail(Glide.with(getApplicationContext()).load(R.drawable.loadingicon)).into(shareAuthDetailActivity_imageView_userAddContent_1).getView();
                 }
-
-
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
         });
-
-
-
-
-
-
 
     }
     /*
@@ -139,49 +124,14 @@ public class ShareAuthDetailActivity extends AppCompatActivity {
 
 
 
-    //댓글 좋아요 클릭
-    private void onReplyLikeClicked(final DatabaseReference postRef) {
-        postRef.runTransaction(new Transaction.Handler() {
-            @Override
-            public Transaction.Result doTransaction(MutableData mutableData) {
-                ReplyDTO replyDTO = mutableData.getValue(ReplyDTO.class);
-
-                if (replyDTO == null) {
-                    return Transaction.success(mutableData);
-                }
-                //좋아요 누른 이력 있으면 지우고 카운트-1
-                if (replyDTO.likes.containsKey(mAuth.getCurrentUser().getUid())) {
-                    replyDTO.likeCount = replyDTO.likeCount - 1;
-                    replyDTO.likes.remove(mAuth.getCurrentUser().getUid());
-                    //좋아요 누른 이력 없으면 더하고 카운트+1
-                } else {
-                    replyDTO.likeCount = replyDTO.likeCount + 1;
-                    replyDTO.likes.put(mAuth.getCurrentUser().getUid(), true);
-                }
-
-                // Set value and report transaction success
-                mutableData.setValue(replyDTO);
-                return Transaction.success(mutableData);
-            }
-
-            @Override
-            public void onComplete(DatabaseError databaseError, boolean b, DataSnapshot dataSnapshot) {
-                // Transaction completed
-                Log.d("lkjlkj", "postTransaction:onComplete:" + databaseError);
-
-
-
-            }
-        });
-    }
 
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.mine_menu, menu);
         return true;
-
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int curId = item.getItemId();

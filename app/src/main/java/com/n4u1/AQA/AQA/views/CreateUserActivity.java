@@ -154,6 +154,12 @@ public class CreateUserActivity extends AppCompatActivity implements CreateUserA
             shortIdDialog.show(getSupportFragmentManager(), "shortIdDialog");
             return false;
         }
+
+        if (createUser_editText_id.getText().toString().length() > 10) {
+            ShortIdDialog shortIdDialog = new ShortIdDialog();
+            shortIdDialog.show(getSupportFragmentManager(), "shortIdDialog");
+            return false;
+        }
         if (createUser_editText_password.getText().toString().length() < 6) {
             AgainPasswordDialog againPasswordDialog = new AgainPasswordDialog();
             againPasswordDialog.show(getSupportFragmentManager(), "againPasswordDialog");

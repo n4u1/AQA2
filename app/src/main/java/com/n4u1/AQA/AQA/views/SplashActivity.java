@@ -23,19 +23,16 @@ public class SplashActivity extends AppCompatActivity {
         setContentView(R.layout.activity_splash);
         mAuth = FirebaseAuth.getInstance();
 
-
-
         SharedPreferences pref = getSharedPreferences("com.n4u1.AQA", MODE_PRIVATE);
         String spUserEmail = pref.getString("com.n4u1.AQA.fireBaseUserEmail", null);
         String spUserPassword = pref.getString("com.n4u1.AQA.fireBaseUserPassword", null);
 
 
         if (spUserEmail != null || spUserPassword != null) {
-            Log.d("lkj SharedPreferences", spUserEmail + spUserPassword);
             loginUser(spUserEmail, spUserPassword);
         } else {
             Handler hd = new Handler();
-            hd.postDelayed(new splashhandlerLogin() , 1000);
+            hd.postDelayed(new splashhandlerLogin() , 3000);
         }
 
 
@@ -50,7 +47,7 @@ public class SplashActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
 
                             Handler hd = new Handler();
-                            hd.postDelayed(new splashhandlerHome() , 1000);
+                            hd.postDelayed(new splashhandlerHome() , 3000);
 //
 //                            SharedPreferences pref = getSharedPreferences("com.n4u1.AQA", MODE_PRIVATE);
 //                            SharedPreferences.Editor editor = pref.edit();

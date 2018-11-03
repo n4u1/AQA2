@@ -411,6 +411,7 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
             @Override
             public void onClick(View v) {
 
+
                 mDatabaseReferencePicker.child(auth.getCurrentUser().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -643,9 +644,10 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
 
 
         //contentDTO 화면 초기세팅
-        mDatabaseReference.addValueEventListener(new ValueEventListener() {
+
+        mDatabaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot)  {
                 ContentDTO contentDTO = dataSnapshot.getValue(ContentDTO.class);
                 pollActivity_textView_date.setText(contentDTO.getUploadDate());
                 pollActivity_textView_title.setText(contentDTO.getTitle());
@@ -956,8 +958,6 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
                         GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_9()).centerCrop().thumbnail(Glide.with(getApplicationContext()).load(R.drawable.loadingicon)).into(pollActivity_imageView_userAddContent_10).getView();
                         break;
                 }
-            } {
-
             }
 
             @Override
@@ -1357,6 +1357,9 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
                         pollResultDialog.setArguments(bundle);
                         pollResultDialog.show(getSupportFragmentManager(), "pollResultDialog");
 
+                        //포인트1점 추가
+                        userPointAdd(1);
+
                     } else { //투표 선택 안되있으면
                         runOnUiThread(new Runnable() {
                             @Override
@@ -1373,6 +1376,7 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
 
             @Override
             public void onComplete(DatabaseError databaseError, boolean b, DataSnapshot dataSnapshot) {
+
                 // Transaction completed
                 Log.d("lkjlkj", "postTransaction:onComplete:" + databaseError);
             }
@@ -2134,17 +2138,21 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
         builder.setPositiveButton("확 인", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
+
                 FirebaseUser mUser = FirebaseAuth.getInstance().getCurrentUser();
                 DatabaseReference mReference = FirebaseDatabase.getInstance().getReference();
                 String pollKey = getIntent().getStringExtra("contentKey");
                 mReference.child("user_contents").child(pollKey).removeValue();
                 mReference.child("users").child(mUser.getUid()).child("uploadContent").child(pollKey).removeValue();
-                Toast toast = Toast.makeText(getApplicationContext(), "삭제 되었습니다.", Toast.LENGTH_SHORT);
-                toast.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL, 0, 0);
-                toast.show();
-                onBackPressed();
-                HomeActivity homeActivity = new HomeActivity();
-                homeActivity.backRefresh();
+//                Toast toast = Toast.makeText(getApplicationContext(), "삭제 되었습니다.", Toast.LENGTH_SHORT);
+//                toast.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL, 0, 0);
+//                toast.show();
+                finish();
+
+//                Intent intentAqa = new Intent(PollSingleActivity.this, HomeActivity.class);
+//                intentAqa.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//                startActivity(intentAqa);
+
             }
         });
         builder.setNeutralButton("취 소", new DialogInterface.OnClickListener() {
@@ -3095,6 +3103,36 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
         });
     }
 
+    //userPoint(userClass) 점수추가
+    public void userPointAdd(final int point) {
+        FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        String uId = firebaseUser.getUid();
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("users").child(uId);
+
+        databaseReference.runTransaction(new Transaction.Handler() {
+            @NonNull
+            @Override
+            public Transaction.Result doTransaction(@NonNull MutableData mutableData) {
+//                User user = mutableData.getValue(User.class);
+                Map<String, Object> user = (Map<String, Object>) mutableData.getValue();
+                if (user == null) {
+                    return Transaction.success(mutableData);
+                }
+                int tmp = Integer.parseInt(user.get("userClass").toString());
+                tmp = tmp + point;
+                user.put("userClass", tmp);
+
+                mutableData.setValue(user);
+                return Transaction.success(mutableData);
+            }
+
+            @Override
+            public void onComplete(@Nullable DatabaseError databaseError, boolean b, @Nullable DataSnapshot dataSnapshot) {
+
+            }
+        });
+
+    }
 
     public void refreshActivity() {
         finish();

@@ -9,7 +9,10 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -19,6 +22,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.n4u1.AQA.AQA.R;
+import com.n4u1.AQA.AQA.dialog.ShareAuthInfoDialog;
+import com.n4u1.AQA.AQA.dialog.ShareDialog;
 import com.n4u1.AQA.AQA.models.ShareAuthDTO;
 import com.n4u1.AQA.AQA.models.SuggestDTO;
 import com.n4u1.AQA.AQA.recyclerview.ShareAuthAdapter;
@@ -58,6 +63,7 @@ public class ShareAuthActivity extends AppCompatActivity {
         mUser = FirebaseAuth.getInstance().getCurrentUser();
         mDatabaseReference = FirebaseDatabase.getInstance().getReference();
 
+        TextView shareAuthActivity_textView_shareInfo = findViewById(R.id.shareAuthActivity_textView_shareInfo);
         final SwipeRefreshLayout mSwipeRefreshLayout = findViewById(R.id.swipeRFL);
         final RecyclerView shareAuthActivity_recyclerView = findViewById(R.id.shareAuthActivity_recyclerView);
         FloatingActionButton shareAuthActivity_fab_addContent = findViewById(R.id.shareAuthActivity_fab_addContent);
@@ -70,7 +76,6 @@ public class ShareAuthActivity extends AppCompatActivity {
 
         shareAuthActivity_recyclerView.setAdapter(shareAuthAdapter);
         shareAuthAdapter.notifyDataSetChanged();
-
 
 
         //onCreate시 액티비티 최초1회 바인딩
@@ -102,6 +107,14 @@ public class ShareAuthActivity extends AppCompatActivity {
             }
         });
 
+        //공유 인증 하는방법
+        shareAuthActivity_textView_shareInfo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ShareAuthInfoDialog shareAuthInfoDialog = new ShareAuthInfoDialog();
+                shareAuthInfoDialog.show(getSupportFragmentManager(), "shareAuthInfoDialog");
+            }
+        });
 
         //userId 구하기
         mDatabaseReference.child("users").child(mUser.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
@@ -155,7 +168,7 @@ public class ShareAuthActivity extends AppCompatActivity {
         });
 
 
-        //공유인증하기 글쓰기 클릭 floating action bar
+        //공유인증하기 글쓰기 클릭 floating action button
         shareAuthActivity_fab_addContent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -166,7 +179,47 @@ public class ShareAuthActivity extends AppCompatActivity {
         });
 
 
+    }
 
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.share_auth_menu, menu);
+        return true;
+    }
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int curId = item.getItemId();
+        switch (curId) {
+            case R.id.menu_share:
+//                    real 버전
+                Intent intent = new Intent(android.content.Intent.ACTION_SEND);
+                intent.setType("text/plain");
+//                     Set default text message
+//                     카톡, 이메일, MMS 다 이걸로 설정 가능
+//                    String subject = "문자의 제목";
+                String text = "AQA\nFunny Trustly Purely\n골라봐!\nhttps://play.google.com/apps/testing/com.n4u1.AQA.AQA";
+//                    intent.putExtra(Intent.EXTRA_SUBJECT, subject);
+                intent.putExtra(Intent.EXTRA_TEXT, text);
+//                     Title of intent
+                    Intent chooser = Intent.createChooser(intent, "공유하기");
+                    startActivity(chooser);
+                break;
+
+            case R.id.menu_home:
+                Intent intentAqa = new Intent(ShareAuthActivity.this, HomeActivity.class);
+                overridePendingTransition(0, 0);
+                intentAqa.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                overridePendingTransition(0, 0);
+                startActivity(intentAqa);
+                break;
+
+            case android.R.id.home:
+                onBackPressed();
+                break;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

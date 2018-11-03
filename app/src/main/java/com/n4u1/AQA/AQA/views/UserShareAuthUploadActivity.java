@@ -10,18 +10,25 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.MutableData;
+import com.google.firebase.database.Transaction;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -36,6 +43,7 @@ import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+import java.util.Map;
 import java.util.TimeZone;
 
 public class UserShareAuthUploadActivity extends AppCompatActivity implements GoHomeDialog.GoHomeDialogListener {
@@ -136,8 +144,18 @@ public class UserShareAuthUploadActivity extends AppCompatActivity implements Go
         int curId = item.getItemId();
         switch (curId) {
             case R.id.menu_confirm:
-//                loadingSec = getLoadingSec(fileStrings);//1000 = 1M
-                upload(fileStrings);
+                if (fileStrings[0].length() == 0) {
+                    Toast toast = Toast.makeText(getApplicationContext(), "스크린샷을 첨부해주세요.", Toast.LENGTH_SHORT);
+                    toast.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL, 0, 0);
+                    toast.show();
+                } else if (shareAuthUploadActivity_editText_title.getText().toString().length() == 0) {
+                    Toast toast = Toast.makeText(getApplicationContext(), "제목을 써주세요 (인증)", Toast.LENGTH_SHORT);
+                    toast.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL, 0, 0);
+                    toast.show();
+                } else {
+                    upload(fileStrings);
+                }
+
                 break;
 
 
@@ -198,6 +216,7 @@ public class UserShareAuthUploadActivity extends AppCompatActivity implements Go
 
 
 
+        userPointAdd(5);
         Intent progressIntent = new Intent(UserShareAuthUploadActivity.this, ShareAuthActivity.class);
         progressIntent.putExtra("sec", 2000);
         Intent intent = new Intent(UserShareAuthUploadActivity.this, ShareAuthActivity.class);
@@ -207,6 +226,39 @@ public class UserShareAuthUploadActivity extends AppCompatActivity implements Go
         startActivity(progressIntent);
 //
     }
+
+
+    //userPoint(userClass) 점수추가
+    public void userPointAdd(final int point) {
+        FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        String uId = firebaseUser.getUid();
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("users").child(uId);
+
+        databaseReference.runTransaction(new Transaction.Handler() {
+            @NonNull
+            @Override
+            public Transaction.Result doTransaction(@NonNull MutableData mutableData) {
+//                User user = mutableData.getValue(User.class);
+                Map<String, Object> user = (Map<String, Object>) mutableData.getValue();
+                if (user == null) {
+                    return Transaction.success(mutableData);
+                }
+                int tmp = Integer.parseInt(user.get("userClass").toString());
+                tmp = tmp + point;
+                user.put("userClass", tmp);
+
+                mutableData.setValue(user);
+                return Transaction.success(mutableData);
+            }
+
+            @Override
+            public void onComplete(@Nullable DatabaseError databaseError, boolean b, @Nullable DataSnapshot dataSnapshot) {
+
+            }
+        });
+
+    }
+
 
 
 

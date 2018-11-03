@@ -13,6 +13,7 @@ public class UserClassInfoActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_class_info);
+
         TextView userClass_textView_done = findViewById(R.id.userClass_textView_done);
         userClass_textView_done.setOnClickListener(new View.OnClickListener() {
             @Override

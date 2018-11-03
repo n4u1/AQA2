@@ -116,7 +116,7 @@ public class SuggestDetailActivity extends AppCompatActivity {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         Map<String, Object> user = (Map<String, Object>) dataSnapshot.getValue();
-                        if (replyDTOS.get(position).getuId().equals(user.get("userId").toString())) {
+                        if (replyDTOS.get(position).getId().equals(user.get("userId").toString())) {
                             if (view.getTag().equals("replySuggestAdapter_relativeLayout_like")) {
                                 Toast.makeText(getApplicationContext(), user.get("userId").toString() + "님 댓글 입니다.", Toast.LENGTH_SHORT).show();
                             } else if (view.getTag().equals("replySuggestAdapter_relativeLayout_main")) { //댓글 클릭, 삭제 또는 수정
@@ -396,21 +396,41 @@ public class SuggestDetailActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if (resultCode == RESULT_OK) {
             switch (requestCode) {
-                case 10000:
+                case 11000:
                     if (data.getStringArrayListExtra("resultDelete").get(1).equals("삭제하기")) {
                         String contentKey = getIntent().getStringExtra("suggestKey");
                         String replyKey = data.getStringArrayListExtra("resultDelete").get(0);
 
                         firebaseDatabase.getReference().child("suggestReply").child(contentKey).child(replyKey).removeValue();
-                        Toast.makeText(getApplicationContext(), "삭제하기", Toast.LENGTH_SHORT).show();
+                        removeReplyCount(firebaseDatabase.getReference().child("suggest").child(contentKey));
 
-                    } else if (data.getStringArrayListExtra("resultDelete").get(1).equals("수정하기")) {
-                        Toast.makeText(getApplicationContext(), "수정하기", Toast.LENGTH_SHORT).show();
-                    } else break;
+                    }
                     break;
             }
         }
         super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    private void removeReplyCount(DatabaseReference ref) {
+        ref.runTransaction(new Transaction.Handler() {
+            @NonNull
+            @Override
+            public Transaction.Result doTransaction(@NonNull MutableData mutableData) {
+                SuggestDTO suggestDTO = mutableData.getValue(SuggestDTO.class);
+
+                if (suggestDTO == null) {
+                    return Transaction.success(mutableData);
+                }
+                suggestDTO.replyCount = suggestDTO.replyCount - 1;
+                mutableData.setValue(suggestDTO);
+                return  Transaction.success(mutableData);
+            }
+
+            @Override
+            public void onComplete(@Nullable DatabaseError databaseError, boolean b, @Nullable DataSnapshot dataSnapshot) {
+                Toast.makeText(getApplicationContext(), "댓글 삭제 완료", Toast.LENGTH_LONG).show();
+            }
+        });
     }
 
     @Override

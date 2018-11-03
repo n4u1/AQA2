@@ -654,7 +654,7 @@ public class HomeActivity extends AppCompatActivity implements SwipeRefreshLayou
 
 
 ////                    real 버전
-//                    Intent intent = new Intent(android.content.Intent.ACTION_SEND);                    
+//                    Intent intent = new Intent(android.content.Intent.ACTION_SEND);
 //                    intent.setType("text/plain");
 ////                     Set default text message
 ////                     카톡, 이메일, MMS 다 이걸로 설정 가능
@@ -663,7 +663,7 @@ public class HomeActivity extends AppCompatActivity implements SwipeRefreshLayou
 //                    intent.putExtra(Intent.EXTRA_SUBJECT, subject);
 //                    intent.putExtra(Intent.EXTRA_TEXT, text);
 ////                     Title of intent
-//                    Intent chooser = Intent.createChooser(intent, "친구에게 공유하기");
+//                    Intent chooser = Intent.createChooser(intent, "공유하기");
 //                    startActivity(chooser);
 
 

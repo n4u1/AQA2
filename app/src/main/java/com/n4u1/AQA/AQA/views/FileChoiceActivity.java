@@ -20,6 +20,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.MutableData;
+import com.google.firebase.database.Transaction;
 import com.n4u1.AQA.AQA.R;
 import com.n4u1.AQA.AQA.dialog.GoHomeDialog;
 import com.n4u1.AQA.AQA.dialog.RankingChoiceActivity;
@@ -235,8 +240,43 @@ public class FileChoiceActivity extends AppCompatActivity
     }
 
 
+
+
+    //userPoint(userClass) 점수추가
+    public void userPointAdd(final int point) {
+        FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        String uId = firebaseUser.getUid();
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("users").child(uId);
+
+        databaseReference.runTransaction(new Transaction.Handler() {
+            @NonNull
+            @Override
+            public Transaction.Result doTransaction(@NonNull MutableData mutableData) {
+//                User user = mutableData.getValue(User.class);
+                Map<String, Object> user = (Map<String, Object>) mutableData.getValue();
+                if (user == null) {
+                    return Transaction.success(mutableData);
+                }
+                int tmp = Integer.parseInt(user.get("userClass").toString());
+                tmp = tmp + point;
+                user.put("userClass", tmp);
+
+                mutableData.setValue(user);
+                return Transaction.success(mutableData);
+            }
+
+            @Override
+            public void onComplete(@Nullable DatabaseError databaseError, boolean b, @Nullable DataSnapshot dataSnapshot) {
+
+            }
+        });
+
+    }
+
+
     //upload할 파일의 경로를 리스너로 받음 → 현재프레그먼트에 따라서 → FireBase 에 업로드
     public void upload(final String[] uri) {
+        userPointAdd(3);
         int imageCount = 0;
         for (int i = 0; i < 10; i++) {
             if (uri[i].length() != 0) imageCount++;
