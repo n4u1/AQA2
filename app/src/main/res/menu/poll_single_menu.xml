@@ -22,27 +22,10 @@
     <item
         android:visible="false"
         android:title="더보기"
-        android:id="@+id/menu_showMore"
-        android:icon="@drawable/ic_show_more_button_with_three_dots"
+        android:id="@+id/menu_delete"
+        android:icon="@drawable/ic_delete_outline_24px"
         app:showAsAction="always">
 
-        <menu>
-
-            <item
-                android:title="삭제하기"
-                app:itemTextAppearance="@style/menu_text_style"
-                android:id="@+id/delete"
-                app:showAsAction="withText"/>
-
-            <item
-                android:title="알람설정"
-                app:itemTextAppearance="@style/menu_text_style"
-                android:id="@+id/alarm"
-                app:showAsAction="withText"/>
-
-
-
-        </menu>
 
 
 

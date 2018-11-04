@@ -10,7 +10,7 @@
     android:paddingTop="16dp"
     android:paddingRight="32dp"
     android:paddingBottom="16dp"
-    tools:context=".dialog.ShowMoreActivity">
+    tools:context=".dialog.UserAlarmDialog">
 
 
     <TextView

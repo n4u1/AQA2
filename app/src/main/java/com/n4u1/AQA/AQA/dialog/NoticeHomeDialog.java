@@ -8,38 +8,29 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
 
-public class SignOutDialog extends DialogFragment {
-    public SignOutDialog() {
+public class NoticeHomeDialog extends DialogFragment {
+    public NoticeHomeDialog() {
     }
 
 
-    public interface SignOutDialogListener {
-        public void SignOutDialogCallback(String string);
+    public interface NoticeHomeDialogListener {
+        public void NoticeHomeDialogCallback(String string);
     }
 
-    SignOutDialogListener mListener;
+    NoticeHomeDialogListener mListener;
 
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-//        builder.setTitle("사용해주셔서 감사합니다.");
-        builder.setMessage("힝...");
-        builder.setPositiveButton("탈퇴하기", new DialogInterface.OnClickListener() {
+        builder.setTitle("알려드립니다");
+        builder.setMessage(message());
+        builder.setPositiveButton("확인", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                mListener.SignOutDialogCallback("탈퇴하기");
-
+                mListener.NoticeHomeDialogCallback("확인");
             }
         });
-        builder.setNegativeButton("취소", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-
-            }
-        });
-
-
 
         return builder.create();
     }
@@ -58,7 +49,7 @@ public class SignOutDialog extends DialogFragment {
         try {
             // Instantiate the NoticeDialogListener so we can send events to the host
 //            mListener = (GoHomeDialog.GoHomeDialogListener) getActivity();
-            mListener = (SignOutDialog.SignOutDialogListener) getActivity();
+            mListener = (NoticeHomeDialog.NoticeHomeDialogListener) getActivity();
         } catch (ClassCastException e) {
             // The activity doesn't implement the interface, throw exception
             throw new ClassCastException(context.toString()
@@ -73,6 +64,10 @@ public class SignOutDialog extends DialogFragment {
         mListener = null;
     }
 
+    public String message() {
+        //firebase notice/message 가져오기
+        return null;
+    }
 
 
 }

@@ -52,7 +52,7 @@ public class AlarmDoneDialog extends DialogFragment {
         final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
         builder.setTitle("알람 설정 완료");
-        builder.setMessage("이제 " + count + "명이 투표하면 알람이 발생합니다!");
+        builder.setMessage(count + "명이 투표하면 알려 드릴게요!");
         builder.setPositiveButton("확인", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {

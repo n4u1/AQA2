@@ -8,7 +8,7 @@ import java.util.Map;
 public class User {
 
     private String tmpImgUrl_0,tmpImgUrl_1,tmpImgUrl_2,tmpImgUrl_3,tmpImgUrl_4,tmpImgUrl_5,tmpImgUrl_6,tmpImgUrl_7,tmpImgUrl_8,tmpImgUrl_9;
-    private String deviceName, sex, job, uid, email, userId;
+    private String deviceName, sex, job, uid, email, userId, guid;
     private String pickContent;
     private int age, userClass;
     private String search_flag_category, search_flag_title;
@@ -45,6 +45,7 @@ public class User {
     public Map<String, Object> toMap() {
         HashMap<String, Object> result = new HashMap<>();
         result.put("uid", uid);
+        result.put("guid", guid);
         result.put("userclass", userClass);
         result.put("userId", userId);
         result.put("likeContent", likeContent);
@@ -55,6 +56,14 @@ public class User {
         result.put("search_flag_title", search_flag_title);
 
         return result;
+    }
+
+    public String getGuid() {
+        return guid;
+    }
+
+    public void setGuid(String guid) {
+        this.guid = guid;
     }
 
     public int getUserClass() {

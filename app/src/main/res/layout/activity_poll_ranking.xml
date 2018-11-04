@@ -48,9 +48,19 @@
                     android:id="@+id/pollActivity_textView_title"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="9.5"
+                    android:layout_weight="9"
                     android:textSize="20dp"
                     android:textStyle="bold" />
+
+
+                <android.support.v7.widget.AppCompatImageView
+                    android:id="@+id/pollActivity_imageView_alarm"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:src="@drawable/ic_noti_fill"
+                    android:visibility="gone"/>
 
             </LinearLayout>
 

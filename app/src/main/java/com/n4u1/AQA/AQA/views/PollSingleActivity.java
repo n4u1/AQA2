@@ -4,9 +4,7 @@ package com.n4u1.AQA.AQA.views;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.PorterDuff;
 import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -17,7 +15,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
-import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Gravity;
@@ -40,12 +37,10 @@ import com.n4u1.AQA.AQA.dialog.AlarmDoneDialog;
 import com.n4u1.AQA.AQA.dialog.ContentDeleteDialog;
 import com.n4u1.AQA.AQA.dialog.DeleteModificationActivity;
 import com.n4u1.AQA.AQA.dialog.PollResultDialog;
-import com.n4u1.AQA.AQA.dialog.ShowMoreActivity;
+import com.n4u1.AQA.AQA.dialog.UserAlarmDialog;
 import com.n4u1.AQA.AQA.models.ContentDTO;
 import com.n4u1.AQA.AQA.models.ReplyDTO;
-import com.n4u1.AQA.AQA.models.User;
 import com.n4u1.AQA.AQA.recyclerview.ReplyAdapter;
-import com.n4u1.AQA.AQA.recyclerview.ReplyViewHolder;
 import com.n4u1.AQA.AQA.util.GlideApp;
 import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.data.Entry;
@@ -133,7 +128,7 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
             pollActivity_textView_check_9, pollActivity_textView_check_10, pollActivity_textView_userId;
 
     TextView pollActivity_textView_hitCount, pollActivity_textView_likeCount, pollActivity_textView_contentId, pollActivity_textView_replyCount;
-    ImageView pollActivity_imageView_state, pollActivity_imageView_like;
+    ImageView pollActivity_imageView_state, pollActivity_imageView_like, pollActivity_imageView_alarm;
 
 
     @Override
@@ -163,7 +158,7 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
         firebaseDatabase = FirebaseDatabase.getInstance();
         likeFirebaseDatabase = FirebaseDatabase.getInstance();
 
-
+        pollActivity_imageView_alarm = findViewById(R.id.pollActivity_imageView_alarm);
         pollActivity_imageView_around_1 = findViewById(R.id.pollActivity_imageView_around_1);
 
 
@@ -288,7 +283,7 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
 //            @Override
 //            public void onClick(View view) {
 //                Log.d("lkjshormore", "showmore");
-//                Intent intentShowMore = new Intent(PollSingleActivity.this, ShowMoreActivity.class);
+//                Intent intentShowMore = new Intent(PollSingleActivity.this, UserAlarmDialog.class);
 //                intentShowMore.putExtra("pollKey", contentKey);
 //                intentShowMore.putExtra("hitCount", contentHit);
 //                startActivityForResult(intentShowMore, 20000);
@@ -296,6 +291,17 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
 //        });
 //
 
+        //알람설정 클릭
+        pollActivity_imageView_alarm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String contentKey = getIntent().getStringExtra("contentKey");
+                Intent intentShowMore = new Intent(PollSingleActivity.this, UserAlarmDialog.class);
+                intentShowMore.putExtra("pollKey", contentKey);
+                intentShowMore.putExtra("hitCount", contentHit);
+                startActivityForResult(intentShowMore, 20000);
+            }
+        });
 
         //reply item click listener 댓글 클릭 리스너
         final ReplyAdapter replyAdapter = new ReplyAdapter(getApplicationContext(), replyDTOS, new ReplyAdapter.OnItemClickListener() {
@@ -644,7 +650,6 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
 
 
         //contentDTO 화면 초기세팅
-
         mDatabaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot)  {
@@ -660,6 +665,7 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
                 pollActivity_textView_replyCount.setText(String.valueOf(contentDTO.getReplyCount()));
                 pollActivity_textView_userId.setText(contentDTO.getUserID());
                 settingUserIcon(contentDTO.getUid());
+                settingUserAlarm(contentKey);
                 if (contentDTO.likes.containsKey(auth.getCurrentUser().getUid())) {
                     pollActivity_imageView_like.setImageResource(R.drawable.ic_thumb_up_blue);
                 } else {
@@ -972,6 +978,40 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
     /*
     onCreate();
      */
+
+    //알람 이미지 파란색 or 비어있는
+    private void settingUserAlarm(String key) {
+        firebaseDatabase.getReference().child("user_contents").child(key).child("alarm").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                try {
+                    String tmp = dataSnapshot.toString();
+                    int index = tmp.indexOf("C");//ContinueCount
+                    String temp = tmp.substring(index, tmp.length() - 2);
+                    int index_ = temp.indexOf("O");//OneCount
+//                                                        int continueCount = Integer.parseInt(temp.substring(1, index_));
+                    int oneCount = Integer.parseInt(temp.substring(index_ + 1, temp.length()));
+//
+                    if (oneCount == 0) {
+                        pollActivity_imageView_alarm.setImageResource(R.drawable.ic_noti_outline);
+                    } else {
+                        pollActivity_imageView_alarm.setImageResource(R.drawable.ic_noti_fill);
+                    }
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+
+    }
+
 
     private void settingUserIcon(String uId) {
         firebaseDatabase.getReference().child("users").child(uId).child("userClass").addListenerForSingleValueEvent(new ValueEventListener() {
@@ -2077,7 +2117,7 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
     @Override
     public boolean onCreateOptionsMenu(final Menu menu) {
         getMenuInflater().inflate(R.menu.poll_single_menu, menu);
-        final MenuItem item = menu.findItem(R.id.menu_showMore);
+        final MenuItem item = menu.findItem(R.id.menu_delete);
         final String contentKey = getIntent().getStringExtra("contentKey");
         firebaseDatabase.getReference().child("user_contents").child(contentKey).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -2085,8 +2125,11 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
                 ContentDTO contentDTO = dataSnapshot.getValue(ContentDTO.class);
                 if (contentDTO.getUid().equals(auth.getCurrentUser().getUid())) {
                     item.setVisible(true);
+                    pollActivity_imageView_alarm.setVisibility(View.VISIBLE);
+
                 } else {
                     item.setVisible(false);
+                    pollActivity_imageView_alarm.setVisibility(View.GONE);
                 }
             }
 
@@ -2110,20 +2153,20 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
                 break;
-            case R.id.delete:
+            case R.id.menu_delete:
                 openContentDeleteDialog();
                 Log.d("lkj delete", "dedete");
 
 
                 break;
-            case R.id.alarm:
-                Log.d("lkj alara", "dedete");
-                String contentKey = getIntent().getStringExtra("contentKey");
-                Intent intentShowMore = new Intent(PollSingleActivity.this, ShowMoreActivity.class);
-                intentShowMore.putExtra("pollKey", contentKey);
-                intentShowMore.putExtra("hitCount", contentHit);
-                startActivityForResult(intentShowMore, 20000);
-                break;
+//            case R.id.alarm:
+//                Log.d("lkj alara", "dedete");
+//                String contentKey = getIntent().getStringExtra("contentKey");
+//                Intent intentShowMore = new Intent(PollSingleActivity.this, UserAlarmDialog.class);
+//                intentShowMore.putExtra("pollKey", contentKey);
+//                intentShowMore.putExtra("hitCount", contentHit);
+//                startActivityForResult(intentShowMore, 20000);
+//                break;
             case android.R.id.home:
                 onBackPressed();
                 break;
@@ -2134,7 +2177,7 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
     private void openContentDeleteDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("삭제 알림");
-        builder.setMessage("정말 이 투표를 삭제 하시겠습니까?\n 삭제되면 복구는 불가능 합니다.");
+        builder.setMessage("정말 이 투표를 삭제 하시겠습니까?\n 삭제되면 복구할수 없습니다.");
         builder.setPositiveButton("확 인", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {

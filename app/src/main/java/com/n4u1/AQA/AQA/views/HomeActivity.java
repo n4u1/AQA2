@@ -44,6 +44,7 @@ import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
 import com.google.firebase.auth.FirebaseAuth;
 import com.n4u1.AQA.AQA.R;
+import com.n4u1.AQA.AQA.dialog.NoticeHomeDialog;
 import com.n4u1.AQA.AQA.dialog.ShareDialog;
 import com.n4u1.AQA.AQA.models.ContentDTO;
 import com.n4u1.AQA.AQA.recyclerview.PostAdapter;
@@ -66,6 +67,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 import jp.wasabeef.recyclerview.adapters.AlphaInAnimationAdapter;
@@ -74,7 +76,7 @@ import jp.wasabeef.recyclerview.animators.SlideInUpAnimator;
 
 
 public class HomeActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener,
-        ShareDialog.ShareDialogListener {
+        ShareDialog.ShareDialogListener, NoticeHomeDialog.NoticeHomeDialogListener {
 
     public static final int ACTIVITY_BACK_VERRIFICATION = 98765432;
     private FirebaseDatabase mDatabase;
@@ -102,12 +104,20 @@ public class HomeActivity extends AppCompatActivity implements SwipeRefreshLayou
 
         Toolbar myToolbar = findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
-        getSupportActionBar().setHomeAsUpIndicator(R.mipmap.ic_aqa_custom);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
+
         if (getSupportActionBar() != null) {
+            getSupportActionBar().setHomeAsUpIndicator(R.mipmap.ic_aqa_custom);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
             getSupportActionBar().setTitle(null);
         }
+
+
+
+        String uniqueID = UUID.randomUUID().toString();
+        Log.d("lkj uuid", uniqueID);
+
+
 
         final SwipeRefreshLayout mSwipeRefreshLayout = findViewById(R.id.swipeRFL);
         recyclerView_home = findViewById(R.id.recyclerView_home);
@@ -139,9 +149,29 @@ public class HomeActivity extends AppCompatActivity implements SwipeRefreshLayou
         //시작시 권한요청
         requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.CAMERA}, 0);
 
+
+        //공지사항 db/notice/flag true일때 공지 다이얼로그
+        firebaseDatabase.getReference().child("notice").child("flag").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                String flag = dataSnapshot.getValue().toString();
+                Log.d("lkj noticeFlag", flag);
+                if (flag.equals("true")) {
+                    NoticeHomeDialog noticeHomeDialog = new NoticeHomeDialog();
+                    noticeHomeDialog.show(getSupportFragmentManager(), "noticeHomeDialog");
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
         //노티 백그라운드 자동 실행
         backgroundNotify();
 
+        //광고넣기
         AdRequest adRequest = new AdRequest.Builder()
                 .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)        // All emulators
                 .addTestDevice("C39C4F095E193D0C5E7BBCB91B89B469")  // TestDeviceId
@@ -151,7 +181,7 @@ public class HomeActivity extends AppCompatActivity implements SwipeRefreshLayou
 
         //실시간 투표순위 5개
         //fadingTextview init
-        String[] tempString = {" ", "2", "3", "4", "5"};
+        String[] tempString = {" ", "1", "2", "3", "4"};
         fadingTextView.setTimeout(4, TimeUnit.SECONDS);
         if (!BuildConfig.DEBUG) {
             fadingTextView.setTexts(tempString);
@@ -193,15 +223,21 @@ public class HomeActivity extends AppCompatActivity implements SwipeRefreshLayou
                 }
 
                 long issueDate_ = getCurrentDate();
+                Log.d("lkj issueData", String.valueOf(issueDate_));
                 int filteringCount = 0;
                 ArrayList<String> filterIssueDate = new ArrayList<>();
 
-//                6000000 = 600 초 = 10 분
-//                60000000 = 6000 초 = 100 분 = 1 시간40분
-//                6000000
-//                999999999 = 약278시간 = 약11일13시간46분
+//                600000 = 600초 = 10분
+//                6000000 = 6000초 = 1시간40분
+//                3600000 = 3600초 = 1시간
+//                10800000 = 10800 = 3시간
+//                21600000 = 21600 = 6시간
+//                43200000 = 43200 = 12시간
+//                86400000 = 86400 = 1일
+//                259200000 = 259200 = 3일
+//                1209600000 = 1209600 = 14일
                 for (int i = 0; i < dataSnapshot.getChildrenCount(); i++) {
-                    if (issueLong.get(i) > issueDate_ - 999999999) {
+                    if (issueLong.get(i) > issueDate_ - 1209600000) {
                         filterIssueDate.add(String.valueOf(issueLong.get(i)));
                         filteringCount++;
                     }
@@ -753,4 +789,10 @@ public class HomeActivity extends AppCompatActivity implements SwipeRefreshLayou
         dispatcher.mustSchedule(myJob);
     }
 
+    @Override
+    public void NoticeHomeDialogCallback(String string) {
+        if (string.equals("확인")) {
+
+        }
+    }
 }

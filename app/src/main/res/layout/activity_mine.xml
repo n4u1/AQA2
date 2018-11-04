@@ -52,7 +52,7 @@
 
 
             <LinearLayout
-                android:id="@+id/mineActivity_linearLayout1"
+                android:id="@+id/mineActivity_linearLayout_email"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
@@ -564,6 +564,43 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="2"
                     android:text="하러가기"
+                    android:textColor="#808080"
+                    android:textSize="12dp" />
+            </LinearLayout>
+
+
+
+            <LinearLayout
+                android:id="@+id/mineActivity_linearLayout_version"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingLeft="12dp"
+                android:paddingTop="20dp"
+                android:paddingRight="12dp"
+                android:paddingBottom="20dp">
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:src="@drawable/ic_update_arrow" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="8"
+                    android:text="버전 확인"
+                    android:textColor="#383838"
+                    android:textSize="18dp" />
+
+                <TextView
+                    android:id="@+id/mineActivity_textView_version"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:text="보러가기"
                     android:textColor="#808080"
                     android:textSize="12dp" />
             </LinearLayout>

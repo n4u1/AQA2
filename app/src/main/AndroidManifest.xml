@@ -87,7 +87,7 @@
             android:name=".dialog.UploadLoadingActivity"
             android:theme="@style/Theme.DialogFragmentActivity" />
         <activity
-            android:name=".dialog.ShowMoreActivity"
+            android:name=".dialog.UserAlarmDialog"
             android:theme="@style/Theme.DialogFragmentActivity" />
         <activity android:name=".views.WhenNotiClickActivity" />
         <activity android:name=".views.SplashLoadingActivity" />
@@ -99,7 +99,8 @@
         <activity android:name=".views.SuggestDetailActivity" />
         <activity android:name=".views.ShareAuthActivity" />
         <activity android:name=".views.UserShareAuthUploadActivity" />
-        <activity android:name=".views.ShareAuthDetailActivity"></activity>
+        <activity android:name=".views.ShareAuthDetailActivity" />
+        <activity android:name=".views.VersionInfoActivity"></activity>
     </application>
 
 </manifest>

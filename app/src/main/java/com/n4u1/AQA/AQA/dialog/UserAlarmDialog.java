@@ -28,7 +28,7 @@ import org.w3c.dom.Text;
 
 import java.util.Map;
 
-public class ShowMoreActivity extends AppCompatActivity {
+public class UserAlarmDialog extends AppCompatActivity {
 
 
     DatabaseReference mReference = FirebaseDatabase.getInstance().getReference();

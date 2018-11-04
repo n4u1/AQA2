@@ -8,38 +8,29 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
 
-public class SignOutDialog extends DialogFragment {
-    public SignOutDialog() {
+public class GUIDFailDialog extends DialogFragment {
+    public GUIDFailDialog() {
     }
 
 
-    public interface SignOutDialogListener {
-        public void SignOutDialogCallback(String string);
+    public interface GUIDFailDialogListener {
+        public void GUIDFailDialogCallback(String string);
     }
 
-    SignOutDialogListener mListener;
+    GUIDFailDialogListener mListener;
 
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 //        builder.setTitle("사용해주셔서 감사합니다.");
-        builder.setMessage("힝...");
-        builder.setPositiveButton("탈퇴하기", new DialogInterface.OnClickListener() {
+        builder.setMessage("AQA는 공정성을 위해 하나의 기기에서 하나의 ID만 생성 가능합니다.\n\n혹시 모바일 기기를 변경하셨다면 초기화를 진행해주시기 바랍니다.");
+        builder.setPositiveButton("확인", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                mListener.SignOutDialogCallback("탈퇴하기");
-
+                mListener.GUIDFailDialogCallback("확인");
             }
         });
-        builder.setNegativeButton("취소", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-
-            }
-        });
-
-
 
         return builder.create();
     }
@@ -58,7 +49,7 @@ public class SignOutDialog extends DialogFragment {
         try {
             // Instantiate the NoticeDialogListener so we can send events to the host
 //            mListener = (GoHomeDialog.GoHomeDialogListener) getActivity();
-            mListener = (SignOutDialog.SignOutDialogListener) getActivity();
+            mListener = (GUIDFailDialog.GUIDFailDialogListener) getActivity();
         } catch (ClassCastException e) {
             // The activity doesn't implement the interface, throw exception
             throw new ClassCastException(context.toString()

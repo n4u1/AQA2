@@ -17,6 +17,7 @@ import android.os.Bundle;
 import android.support.v7.widget.SwitchCompat;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -24,6 +25,7 @@ import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.firebase.jobdispatcher.FirebaseJobDispatcher;
 import com.firebase.jobdispatcher.GooglePlayDriver;
@@ -89,6 +91,7 @@ public class MineActivity extends AppCompatActivity implements LogOutDialog.LogO
         TextView mineActivity_textView_account = findViewById(R.id.mineActivity_textView_account);
         final TextView mineActivity_textView_gender = findViewById(R.id.mineActivity_textView_gender);
         final TextView mineActivity_textView_age = findViewById(R.id.mineActivity_textView_age);
+        LinearLayout mineActivity_linearLayout_email = findViewById(R.id.mineActivity_linearLayout_email);
         LinearLayout mineActivity_linearLayout_like = findViewById(R.id.mineActivity_linearLayout_like);
         LinearLayout mineActivity_linearLayout_pickContent = findViewById(R.id.mineActivity_linearLayout_pickContent);
         LinearLayout mineActivity_linearLayout_reply = findViewById(R.id.mineActivity_linearLayout_reply);
@@ -96,10 +99,9 @@ public class MineActivity extends AppCompatActivity implements LogOutDialog.LogO
         LinearLayout mineActivity_linearLayout_logOut = findViewById(R.id.mineActivity_linearLayout_logOut);
         LinearLayout mineActivity_linearLayout_authOut = findViewById(R.id.mineActivity_linearLayout_authOut);
         LinearLayout mineActivity_linearLayout_suggest = findViewById(R.id.mineActivity_linearLayout_suggest);
+        LinearLayout mineActivity_linearLayout_version = findViewById(R.id.mineActivity_linearLayout_version);
         LinearLayout mineActivity_linearLayout_userClass = findViewById(R.id.mineActivity_linearLayout_userClass);
         final ImageView mineActivity_imageView_userClass = findViewById(R.id.mineActivity_imageView_userClass);
-
-
         LinearLayout mineActivity_linearLayout_password = findViewById(R.id.mineActivity_linearLayout_password);
 
 
@@ -115,20 +117,17 @@ public class MineActivity extends AppCompatActivity implements LogOutDialog.LogO
         mineActivity_textView_account.setText(mFireBaseUser.getEmail());
 
 
+        //이메일 변경하기
+        mineActivity_linearLayout_email.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
 
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        user.updateEmail(user.getEmail())
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        if (task.isSuccessful()) {
-                            Log.d("lkj email update", "User email address updated.");
-                        }
-                    }
-                });
+                Toast toast = Toast.makeText(getApplicationContext(), "만들고 있어요", Toast.LENGTH_SHORT);
+                toast.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL, 0, 0);
+                toast.show();
 
-
-
+            }
+        });
 
         //성별 나이 아이디 가져오기
         mDatabaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -173,6 +172,8 @@ public class MineActivity extends AppCompatActivity implements LogOutDialog.LogO
                     mineActivity_imageView_userClass.setImageResource(R.drawable.q_class_blue_1);
                 } else if (userClass >= 450 && userClass < 501) {
                     mineActivity_imageView_userClass.setImageResource(R.drawable.q_class_blue_2);
+                } else if (userClass >= 501) {
+                    mineActivity_imageView_userClass.setImageResource(R.drawable.q_class_black);
                 }
             }
             @Override
@@ -196,6 +197,16 @@ public class MineActivity extends AppCompatActivity implements LogOutDialog.LogO
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(MineActivity.this, SuggestActivity.class);
+                startActivity(intent);
+            }
+        });
+
+
+        //버전 확인
+        mineActivity_linearLayout_version.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MineActivity.this, VersionInfoActivity.class);
                 startActivity(intent);
             }
         });
@@ -423,11 +434,13 @@ public class MineActivity extends AppCompatActivity implements LogOutDialog.LogO
             FirebaseAuth.getInstance().signOut();
             SharedPreferences pref = getSharedPreferences("com.n4u1.AQA", MODE_PRIVATE);
             SharedPreferences.Editor editor = pref.edit();
-            editor.putString("com.n4u1.AQA.fireBaseUserEmail", null);
-            editor.putString("com.n4u1.AQA.fireBaseUserPassword", null);
+            editor.putString("com.n4u1.AQA.fireBaseUserEmail", "a");
+            editor.putString("com.n4u1.AQA.fireBaseUserPassword", "b");
             editor.commit();
             Intent intent = new Intent(MineActivity.this, LoginActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intent);
+
         }
     }
 

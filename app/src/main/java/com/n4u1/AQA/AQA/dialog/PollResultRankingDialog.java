@@ -15,6 +15,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import com.github.mikephil.charting.utils.ColorTemplate;
 import com.n4u1.AQA.AQA.R;
 import com.github.mikephil.charting.charts.HorizontalBarChart;
 import com.github.mikephil.charting.components.AxisBase;
@@ -299,13 +300,14 @@ public class PollResultRankingDialog extends DialogFragment {
 
                 BarDataSet set1 = new BarDataSet(yValue, null);
 //                set1.setColor(Color.GRAY);
-//                set1.setColors(ColorTemplate.MATERIAL_COLORS);
-                set1.setColors(0xff4485c9);
+                set1.setColors(ColorTemplate.LIBERTY_COLORS);
+//                set1.setColors(0xff4485c9);
 
                 BarData data1 = new BarData(set1);
                 data1.setBarWidth(0.5f); //바 크기
                 data1.setValueTextSize(15f); //결과값 크기
                 data1.setValueTextColor(Color.GRAY);
+
 
 
                 ResultValueFormatter resultValueFormatter = new ResultValueFormatter();
@@ -397,8 +399,8 @@ public class PollResultRankingDialog extends DialogFragment {
 
                 BarDataSet set1 = new BarDataSet(yValue, null);
 //                set1.setColor(Color.GRAY);
-//                set1.setColors(ColorTemplate.MATERIAL_COLORS);
-                set1.setColors(0xff4485c9);
+                set1.setColors(ColorTemplate.LIBERTY_COLORS);
+//                set1.setColors(0xff4485c9);
 
                 BarData data1 = new BarData(set1);
                 data1.setBarWidth(0.5f); //바 크기
