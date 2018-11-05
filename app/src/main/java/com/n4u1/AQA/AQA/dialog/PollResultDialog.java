@@ -291,7 +291,7 @@ public class PollResultDialog extends DialogFragment {
                 pollActivity_horizontalBarChart_result.setDoubleTapToZoomEnabled(false);
                 pollActivity_horizontalBarChart_result.setPinchZoom(false);
                 pollActivity_horizontalBarChart_result.setDescription(null);
-                pollActivity_horizontalBarChart_result.animateY(2500);
+                pollActivity_horizontalBarChart_result.animateY(1200);
                 pollActivity_horizontalBarChart_result.setFitBars(true);
                 pollActivity_horizontalBarChart_result.setDrawBarShadow(false);
                 pollActivity_horizontalBarChart_result.getAxisLeft().setEnabled(false);

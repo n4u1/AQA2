@@ -116,7 +116,7 @@ public class SplashActivity extends AppCompatActivity implements GUIDFailDialog.
                         Map<String, Object> user = (Map<String, Object>) dataSnapshot.getValue();
                         if (user.get("guid").toString().equals(advertId)) {
                             Handler hd = new Handler();
-                            hd.postDelayed(new splashhandlerHome() , 1000);
+                            hd.postDelayed(new splashhandlerHome() , 500);
                         } else {
                             GUIDFailDialog guidFailDialog = new GUIDFailDialog();
                             guidFailDialog.show(getSupportFragmentManager(), "guidFailDialog");

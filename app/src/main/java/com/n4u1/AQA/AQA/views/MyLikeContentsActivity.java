@@ -73,10 +73,10 @@ public class MyLikeContentsActivity extends AppCompatActivity {
 
 
         //onCreate시 좋아요 누른 게시글 추려서 리스트업
-        mDatabase.getReference().child("user_contents").addListenerForSingleValueEvent(new ValueEventListener() {
+
+        mDatabase.getReference().child("user_contents").addValueEventListener(new ValueEventListener() {
             ArrayList<String> key = new ArrayList<>();
             ArrayList<String> key_ = new ArrayList<>();
-
             @Override
             public void onDataChange(@NonNull final DataSnapshot dataSnapshot) {
 
@@ -126,7 +126,6 @@ public class MyLikeContentsActivity extends AppCompatActivity {
 
                     }
                 });
-
             }
 
             @Override
@@ -134,6 +133,10 @@ public class MyLikeContentsActivity extends AppCompatActivity {
 
             }
         });
+
+
+
+
 
 
         swipeRFL.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {

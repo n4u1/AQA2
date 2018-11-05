@@ -368,42 +368,46 @@ public class PostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 ((PostViewHolder1)holder).textView_replyCount.setText(" [" + String.valueOf(contentDTOS.get(position).replyCount) + "]");
 
                 //Q userClass 별로 색 세팅
-                firebaseDatabase.getReference().child("users").child(contentDTOS.get(position).uid).child("userClass").addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        int userClass = Integer.parseInt(dataSnapshot.getValue().toString());
-
-                        if (userClass >= 0 && userClass < 50) {
-                            ((PostViewHolder1)holder).imageView_userClass.setImageResource(R.drawable.q_class_red_1);
-                        } else if (userClass >= 50 && userClass < 100) {
-                            ((PostViewHolder1)holder).imageView_userClass.setImageResource(R.drawable.q_class_red_2);
-                        } else if (userClass >= 100 && userClass < 150) {
-                            ((PostViewHolder1)holder).imageView_userClass.setImageResource(R.drawable.q_class_orange_1);
-                        } else if (userClass >= 150 && userClass < 200) {
-                            ((PostViewHolder1)holder).imageView_userClass.setImageResource(R.drawable.q_class_orange_2);
-                        } else if (userClass >= 200 && userClass < 250) {
-                            ((PostViewHolder1)holder).imageView_userClass.setImageResource(R.drawable.q_class_yellow_1);
-                        } else if (userClass >= 250 && userClass < 300) {
-                            ((PostViewHolder1)holder).imageView_userClass.setImageResource(R.drawable.q_class_yellow_2);
-                        } else if (userClass >= 300 && userClass < 350) {
-                            ((PostViewHolder1)holder).imageView_userClass.setImageResource(R.drawable.q_class_green_1);
-                        } else if (userClass >= 350 && userClass < 400) {
-                            ((PostViewHolder1)holder).imageView_userClass.setImageResource(R.drawable.q_class_green_2);
-                        } else if (userClass >= 400 && userClass < 450) {
-                            ((PostViewHolder1)holder).imageView_userClass.setImageResource(R.drawable.q_class_blue_1);
-                        } else if (userClass >= 450 && userClass < 501) {
-                            ((PostViewHolder1)holder).imageView_userClass.setImageResource(R.drawable.q_class_blue_2);
-                        } else if (userClass == 1000) {
-                            ((PostViewHolder1)holder).imageView_userClass.setImageResource(R.drawable.q_class_black);
-                        } else {
-                            ((PostViewHolder1)holder).imageView_userClass.setImageResource(R.drawable.q_class_red_1);
+                try {
+                    firebaseDatabase.getReference().child("users").child(contentDTOS.get(position).uid).child("userClass").addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            int userClass = Integer.parseInt(dataSnapshot.getValue().toString());
+                            if (userClass >= 0 && userClass < 50) {
+                                ((PostViewHolder1)holder).imageView_userClass.setImageResource(R.drawable.q_class_red_1);
+                            } else if (userClass >= 50 && userClass < 100) {
+                                ((PostViewHolder1)holder).imageView_userClass.setImageResource(R.drawable.q_class_red_2);
+                            } else if (userClass >= 100 && userClass < 150) {
+                                ((PostViewHolder1)holder).imageView_userClass.setImageResource(R.drawable.q_class_orange_1);
+                            } else if (userClass >= 150 && userClass < 200) {
+                                ((PostViewHolder1)holder).imageView_userClass.setImageResource(R.drawable.q_class_orange_2);
+                            } else if (userClass >= 200 && userClass < 250) {
+                                ((PostViewHolder1)holder).imageView_userClass.setImageResource(R.drawable.q_class_yellow_1);
+                            } else if (userClass >= 250 && userClass < 300) {
+                                ((PostViewHolder1)holder).imageView_userClass.setImageResource(R.drawable.q_class_yellow_2);
+                            } else if (userClass >= 300 && userClass < 350) {
+                                ((PostViewHolder1)holder).imageView_userClass.setImageResource(R.drawable.q_class_green_1);
+                            } else if (userClass >= 350 && userClass < 400) {
+                                ((PostViewHolder1)holder).imageView_userClass.setImageResource(R.drawable.q_class_green_2);
+                            } else if (userClass >= 400 && userClass < 450) {
+                                ((PostViewHolder1)holder).imageView_userClass.setImageResource(R.drawable.q_class_blue_1);
+                            } else if (userClass >= 450 && userClass < 501) {
+                                ((PostViewHolder1)holder).imageView_userClass.setImageResource(R.drawable.q_class_blue_2);
+                            } else if (userClass == 1000) {
+                                ((PostViewHolder1)holder).imageView_userClass.setImageResource(R.drawable.q_class_black);
+                            } else {
+                                ((PostViewHolder1)holder).imageView_userClass.setImageResource(R.drawable.q_class_red_1);
+                            }
                         }
-                    }
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
 
-                    }
-                });
+                        }
+                    });
+                } catch (Exception e) {
+
+                }
+
 
                 GlideApp.with(holder.itemView.getContext()).load(contentDTOS.get(position).imageUrl_0).centerCrop().thumbnail(Glide.with(holder.itemView.getContext()).load(R.drawable.loadingicon)).into(((PostViewHolder1) holder).imageView_postImg_0);
                 GlideApp.with(holder.itemView.getContext()).load(contentDTOS.get(position).imageUrl_1).centerCrop().thumbnail(Glide.with(holder.itemView.getContext()).load(R.drawable.loadingicon)).into(((PostViewHolder1) holder).imageView_postImg_1);
@@ -525,41 +529,46 @@ public class PostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 ((PostViewHolder2)holder).textView_replyCount.setText(" [" + String.valueOf(contentDTOS.get(position).replyCount) + "]");
 
                 //Q userClass 별로 색 세팅
-                firebaseDatabase.getReference().child("users").child(contentDTOS.get(position).uid).child("userClass").addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        int userClass = Integer.parseInt(dataSnapshot.getValue().toString());
-                        if (userClass >= 0 && userClass < 50) {
-                            ((PostViewHolder2)holder).imageView_userClass.setImageResource(R.drawable.q_class_red_1);
-                        } else if (userClass >= 50 && userClass < 100) {
-                            ((PostViewHolder2)holder).imageView_userClass.setImageResource(R.drawable.q_class_red_2);
-                        } else if (userClass >= 100 && userClass < 150) {
-                            ((PostViewHolder2)holder).imageView_userClass.setImageResource(R.drawable.q_class_orange_1);
-                        } else if (userClass >= 150 && userClass < 200) {
-                            ((PostViewHolder2)holder).imageView_userClass.setImageResource(R.drawable.q_class_orange_2);
-                        } else if (userClass >= 200 && userClass < 250) {
-                            ((PostViewHolder2)holder).imageView_userClass.setImageResource(R.drawable.q_class_yellow_1);
-                        } else if (userClass >= 250 && userClass < 300) {
-                            ((PostViewHolder2)holder).imageView_userClass.setImageResource(R.drawable.q_class_yellow_2);
-                        } else if (userClass >= 300 && userClass < 350) {
-                            ((PostViewHolder2)holder).imageView_userClass.setImageResource(R.drawable.q_class_green_1);
-                        } else if (userClass >= 350 && userClass < 400) {
-                            ((PostViewHolder2)holder).imageView_userClass.setImageResource(R.drawable.q_class_green_2);
-                        } else if (userClass >= 400 && userClass < 450) {
-                            ((PostViewHolder2)holder).imageView_userClass.setImageResource(R.drawable.q_class_blue_1);
-                        } else if (userClass >= 450 && userClass < 501) {
-                            ((PostViewHolder2)holder).imageView_userClass.setImageResource(R.drawable.q_class_blue_2);
-                        } else if (userClass == 1000) {
-                            ((PostViewHolder2)holder).imageView_userClass.setImageResource(R.drawable.q_class_black);
-                        } else {
-                            ((PostViewHolder2)holder).imageView_userClass.setImageResource(R.drawable.q_class_red_1);
+                try {
+                    firebaseDatabase.getReference().child("users").child(contentDTOS.get(position).uid).child("userClass").addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            int userClass = Integer.parseInt(dataSnapshot.getValue().toString());
+                            if (userClass >= 0 && userClass < 50) {
+                                ((PostViewHolder2)holder).imageView_userClass.setImageResource(R.drawable.q_class_red_1);
+                            } else if (userClass >= 50 && userClass < 100) {
+                                ((PostViewHolder2)holder).imageView_userClass.setImageResource(R.drawable.q_class_red_2);
+                            } else if (userClass >= 100 && userClass < 150) {
+                                ((PostViewHolder2)holder).imageView_userClass.setImageResource(R.drawable.q_class_orange_1);
+                            } else if (userClass >= 150 && userClass < 200) {
+                                ((PostViewHolder2)holder).imageView_userClass.setImageResource(R.drawable.q_class_orange_2);
+                            } else if (userClass >= 200 && userClass < 250) {
+                                ((PostViewHolder2)holder).imageView_userClass.setImageResource(R.drawable.q_class_yellow_1);
+                            } else if (userClass >= 250 && userClass < 300) {
+                                ((PostViewHolder2)holder).imageView_userClass.setImageResource(R.drawable.q_class_yellow_2);
+                            } else if (userClass >= 300 && userClass < 350) {
+                                ((PostViewHolder2)holder).imageView_userClass.setImageResource(R.drawable.q_class_green_1);
+                            } else if (userClass >= 350 && userClass < 400) {
+                                ((PostViewHolder2)holder).imageView_userClass.setImageResource(R.drawable.q_class_green_2);
+                            } else if (userClass >= 400 && userClass < 450) {
+                                ((PostViewHolder2)holder).imageView_userClass.setImageResource(R.drawable.q_class_blue_1);
+                            } else if (userClass >= 450 && userClass < 501) {
+                                ((PostViewHolder2)holder).imageView_userClass.setImageResource(R.drawable.q_class_blue_2);
+                            } else if (userClass == 1000) {
+                                ((PostViewHolder2)holder).imageView_userClass.setImageResource(R.drawable.q_class_black);
+                            } else {
+                                ((PostViewHolder2)holder).imageView_userClass.setImageResource(R.drawable.q_class_red_1);
+                            }
                         }
-                    }
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
 
-                    }
-                });
+                        }
+                    });
+
+                }catch (Exception e) {
+
+                }
                 GlideApp.with(holder.itemView.getContext()).load(contentDTOS.get(position).imageUrl_0).centerCrop().thumbnail(Glide.with(holder.itemView.getContext()).load(R.drawable.loadingicon)).into(((PostViewHolder2) holder).imageView_postImg_0);
                 GlideApp.with(holder.itemView.getContext()).load(contentDTOS.get(position).imageUrl_1).centerCrop().thumbnail(Glide.with(holder.itemView.getContext()).load(R.drawable.loadingicon)).into(((PostViewHolder2) holder).imageView_postImg_1);
                 GlideApp.with(holder.itemView.getContext()).load(contentDTOS.get(position).imageUrl_2).centerCrop().thumbnail(Glide.with(holder.itemView.getContext()).load(R.drawable.loadingicon)).into(((PostViewHolder2) holder).imageView_postImg_2);
@@ -691,41 +700,46 @@ public class PostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 ((PostViewHolder3)holder).textView_replyCount.setText(" [" + String.valueOf(contentDTOS.get(position).replyCount) + "]");
 
                 //Q userClass 별로 색 세팅
-                firebaseDatabase.getReference().child("users").child(contentDTOS.get(position).uid).child("userClass").addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        int userClass = Integer.parseInt(dataSnapshot.getValue().toString());
-                        if (userClass >= 0 && userClass < 50) {
-                            ((PostViewHolder3)holder).imageView_userClass.setImageResource(R.drawable.q_class_red_1);
-                        } else if (userClass >= 50 && userClass < 100) {
-                            ((PostViewHolder3)holder).imageView_userClass.setImageResource(R.drawable.q_class_red_2);
-                        } else if (userClass >= 100 && userClass < 150) {
-                            ((PostViewHolder3)holder).imageView_userClass.setImageResource(R.drawable.q_class_orange_1);
-                        } else if (userClass >= 150 && userClass < 200) {
-                            ((PostViewHolder3)holder).imageView_userClass.setImageResource(R.drawable.q_class_orange_2);
-                        } else if (userClass >= 200 && userClass < 250) {
-                            ((PostViewHolder3)holder).imageView_userClass.setImageResource(R.drawable.q_class_yellow_1);
-                        } else if (userClass >= 250 && userClass < 300) {
-                            ((PostViewHolder3)holder).imageView_userClass.setImageResource(R.drawable.q_class_yellow_2);
-                        } else if (userClass >= 300 && userClass < 350) {
-                            ((PostViewHolder3)holder).imageView_userClass.setImageResource(R.drawable.q_class_green_1);
-                        } else if (userClass >= 350 && userClass < 400) {
-                            ((PostViewHolder3)holder).imageView_userClass.setImageResource(R.drawable.q_class_green_2);
-                        } else if (userClass >= 400 && userClass < 450) {
-                            ((PostViewHolder3)holder).imageView_userClass.setImageResource(R.drawable.q_class_blue_1);
-                        } else if (userClass >= 450 && userClass < 501) {
-                            ((PostViewHolder3)holder).imageView_userClass.setImageResource(R.drawable.q_class_blue_2);
-                        } else if (userClass == 1000) {
-                            ((PostViewHolder3)holder).imageView_userClass.setImageResource(R.drawable.q_class_black);
-                        } else {
-                            ((PostViewHolder3)holder).imageView_userClass.setImageResource(R.drawable.q_class_red_1);
+                try {
+                    firebaseDatabase.getReference().child("users").child(contentDTOS.get(position).uid).child("userClass").addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            int userClass = Integer.parseInt(dataSnapshot.getValue().toString());
+                            if (userClass >= 0 && userClass < 50) {
+                                ((PostViewHolder3)holder).imageView_userClass.setImageResource(R.drawable.q_class_red_1);
+                            } else if (userClass >= 50 && userClass < 100) {
+                                ((PostViewHolder3)holder).imageView_userClass.setImageResource(R.drawable.q_class_red_2);
+                            } else if (userClass >= 100 && userClass < 150) {
+                                ((PostViewHolder3)holder).imageView_userClass.setImageResource(R.drawable.q_class_orange_1);
+                            } else if (userClass >= 150 && userClass < 200) {
+                                ((PostViewHolder3)holder).imageView_userClass.setImageResource(R.drawable.q_class_orange_2);
+                            } else if (userClass >= 200 && userClass < 250) {
+                                ((PostViewHolder3)holder).imageView_userClass.setImageResource(R.drawable.q_class_yellow_1);
+                            } else if (userClass >= 250 && userClass < 300) {
+                                ((PostViewHolder3)holder).imageView_userClass.setImageResource(R.drawable.q_class_yellow_2);
+                            } else if (userClass >= 300 && userClass < 350) {
+                                ((PostViewHolder3)holder).imageView_userClass.setImageResource(R.drawable.q_class_green_1);
+                            } else if (userClass >= 350 && userClass < 400) {
+                                ((PostViewHolder3)holder).imageView_userClass.setImageResource(R.drawable.q_class_green_2);
+                            } else if (userClass >= 400 && userClass < 450) {
+                                ((PostViewHolder3)holder).imageView_userClass.setImageResource(R.drawable.q_class_blue_1);
+                            } else if (userClass >= 450 && userClass < 501) {
+                                ((PostViewHolder3)holder).imageView_userClass.setImageResource(R.drawable.q_class_blue_2);
+                            } else if (userClass == 1000) {
+                                ((PostViewHolder3)holder).imageView_userClass.setImageResource(R.drawable.q_class_black);
+                            } else {
+                                ((PostViewHolder3)holder).imageView_userClass.setImageResource(R.drawable.q_class_red_1);
+                            }
                         }
-                    }
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
 
-                    }
-                });
+                        }
+                    });
+
+                } catch (Exception e) {
+
+                }
                 GlideApp.with(holder.itemView.getContext()).load(contentDTOS.get(position).imageUrl_0).centerCrop().thumbnail(Glide.with(holder.itemView.getContext()).load(R.drawable.loadingicon)).into(((PostViewHolder3) holder).imageView_postImg_0);
                 GlideApp.with(holder.itemView.getContext()).load(contentDTOS.get(position).imageUrl_1).centerCrop().thumbnail(Glide.with(holder.itemView.getContext()).load(R.drawable.loadingicon)).into(((PostViewHolder3) holder).imageView_postImg_1);
                 GlideApp.with(holder.itemView.getContext()).load(contentDTOS.get(position).imageUrl_2).centerCrop().thumbnail(Glide.with(holder.itemView.getContext()).load(R.drawable.loadingicon)).into(((PostViewHolder3) holder).imageView_postImg_2);

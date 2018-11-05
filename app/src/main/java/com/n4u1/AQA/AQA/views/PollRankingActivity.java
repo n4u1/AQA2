@@ -1021,6 +1021,8 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
                     pollActivity_imageView_userClass.setImageResource(R.drawable.q_class_blue_1);
                 } else if (userClass >= 450 && userClass < 501) {
                     pollActivity_imageView_userClass.setImageResource(R.drawable.q_class_blue_2);
+                } else if (userClass == 1000) {
+                    pollActivity_imageView_userClass.setImageResource(R.drawable.q_class_black);
                 }
             }
             @Override

@@ -79,9 +79,8 @@ public class MyPollActivity extends AppCompatActivity {
 
 
         //onCreate시 참여한 게시물 추려서 최초1회 바인딩
-        mDatabase.getReference().child("user_contents").addListenerForSingleValueEvent(new ValueEventListener() {
+        mDatabase.getReference().child("user_contents").addValueEventListener(new ValueEventListener() {
             ArrayList<String> key = new ArrayList<>();
-
             @Override
             public void onDataChange(@NonNull final DataSnapshot dataSnapshot) {
                 mDatabaseUser.getReference().child("users").child(mFireBaseUser.getUid()).child("pickContent").addListenerForSingleValueEvent(new ValueEventListener() {
@@ -127,7 +126,6 @@ public class MyPollActivity extends AppCompatActivity {
 
                     }
                 });
-
             }
 
             @Override
@@ -135,6 +133,8 @@ public class MyPollActivity extends AppCompatActivity {
 
             }
         });
+
+
 
 
         swipeRFL.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {

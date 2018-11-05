@@ -361,6 +361,7 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
+        android:visibility="gone"
         android:id="@+id/textView_hidden"
         android:layout_width="30dp"
         android:layout_height="wrap_content"
@@ -386,6 +387,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textInputLayout2" />
+
 
 
     <!--<pl.droidsonroids.gif.GifImageView-->

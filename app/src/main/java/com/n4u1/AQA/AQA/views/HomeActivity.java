@@ -44,6 +44,8 @@ import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
 import com.google.firebase.auth.FirebaseAuth;
 import com.n4u1.AQA.AQA.R;
+import com.n4u1.AQA.AQA.dialog.NotEmailDialog;
+import com.n4u1.AQA.AQA.dialog.NotFoundGUIDDialog;
 import com.n4u1.AQA.AQA.dialog.NoticeHomeDialog;
 import com.n4u1.AQA.AQA.dialog.ShareDialog;
 import com.n4u1.AQA.AQA.models.ContentDTO;
@@ -237,7 +239,7 @@ public class HomeActivity extends AppCompatActivity implements SwipeRefreshLayou
 //                259200000 = 259200 = 3일
 //                1209600000 = 1209600 = 14일
                 for (int i = 0; i < dataSnapshot.getChildrenCount(); i++) {
-                    if (issueLong.get(i) > issueDate_ - 1209600000) {
+                    if (issueLong.get(i) > issueDate_ - 259200000) {
                         filterIssueDate.add(String.valueOf(issueLong.get(i)));
                         filteringCount++;
                     }
@@ -267,7 +269,7 @@ public class HomeActivity extends AppCompatActivity implements SwipeRefreshLayou
                 //resultMap_.size()-5 이면 4개 가져옴
                 //tempKey에는 해당 컨텐츠의 key 가 들어감
                 try {
-                    for (int i = resultMap_.size() - 1; i > resultMap_.size() - 6; i--) {
+                    for (int i = resultMap_.size() - 1; i > resultMap_.size() - 11; i--) {
                         tempKey.add(key.toArray()[i].toString());
                     }
                 } catch (Exception e) {
@@ -590,11 +592,6 @@ public class HomeActivity extends AppCompatActivity implements SwipeRefreshLayou
         }
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.home_menu, menu);
-        return true;
-    }
 
     @Override
     protected void onResume() {
@@ -621,6 +618,14 @@ public class HomeActivity extends AppCompatActivity implements SwipeRefreshLayou
 
         super.onActivityResult(requestCode, resultCode, data);
     }
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.home_menu, menu);
+        return true;
+    }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -760,6 +765,13 @@ public class HomeActivity extends AppCompatActivity implements SwipeRefreshLayou
         } else {
             return false;
         }
+    }
+
+
+    //test dialog
+    public void testDialog() {
+        NotFoundGUIDDialog notFoundGUIDDialog = new NotFoundGUIDDialog();
+        notFoundGUIDDialog.show(getSupportFragmentManager(), "notFoundGUIDDialog");
     }
 
 

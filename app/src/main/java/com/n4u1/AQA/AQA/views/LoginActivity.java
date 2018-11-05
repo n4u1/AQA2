@@ -54,6 +54,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.n4u1.AQA.AQA.dialog.AgainPasswordDialog;
+import com.n4u1.AQA.AQA.dialog.BaseLoadingActivity;
 import com.n4u1.AQA.AQA.dialog.GUIDFailDialog;
 import com.n4u1.AQA.AQA.dialog.NotEmailDialog;
 import com.n4u1.AQA.AQA.dialog.NotInputDialog;
@@ -91,8 +92,6 @@ public class LoginActivity extends AppCompatActivity implements PreviewDialog.Pr
 
 //        Bitmap shareBitmap;
         //테스트용
-
-
         ImageView imageView_createUser = findViewById(R.id.imageView_createUser);
         ImageView imageView_loginUser = findViewById(R.id.imageView_loginUser);
         ImageView imageView_findUser = findViewById(R.id.imageView_findUser);

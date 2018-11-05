@@ -16,6 +16,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -188,7 +189,16 @@ public class FileChoiceActivity extends AppCompatActivity
             case R.id.menu_confirm:
                 loadingSec = getLoadingSec(imgStrings);//1000 = 1M
                 Log.d("lkjsec", String.valueOf(loadingSec));
-                upload(imgStrings);
+                if (imgStrings[1].length()==0) {
+                    Toast toast = Toast.makeText(getApplicationContext(), "최소 2장의 이미지는 업로드 되야 합니다.", Toast.LENGTH_SHORT);
+                    toast.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL, 0, 0);
+                    toast.show();
+                } else {
+                    upload(imgStrings);
+                }
+
+
+
                 break;
 
 

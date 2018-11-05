@@ -80,12 +80,10 @@ public class MyUploadActivity extends AppCompatActivity {
 
 
         //onCreate시 업로드한 게시물 추려서 리스트업
-        mDatabase.getReference().child("user_contents").addListenerForSingleValueEvent(new ValueEventListener() {
+         mDatabase.getReference().child("user_contents").addValueEventListener(new ValueEventListener() {
             ArrayList<String> key = new ArrayList<>();
-
             @Override
             public void onDataChange(@NonNull final DataSnapshot dataSnapshot) {
-
                 mDatabaseUser.getReference().child("users").child(mFireBaseUser.getUid()).child("uploadContent").addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshots) {
@@ -127,7 +125,6 @@ public class MyUploadActivity extends AppCompatActivity {
 
                     }
                 });
-
             }
 
             @Override

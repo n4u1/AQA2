@@ -58,6 +58,7 @@
         </service>
 
         <activity android:name=".views.LoginActivity" />
+        <activity android:name=".dialog.BaseLoadingActivity" />
         <activity android:name=".views.HomeActivity" />
         <activity android:name=".views.UserContentsUploadActivity" />
         <activity
@@ -105,7 +106,9 @@
             android:name=".dialog.PrivacyPolicyActivity"
             android:theme="@style/Theme.DialogFragmentActivity" />
         <activity android:name=".views.PrivacyPolicyDetailActivity" />
-        <activity android:name=".views.ServicePolicyActivity"></activity>
+        <activity android:name=".views.ServicePolicyActivity" />
+        <activity android:name=".views.SplashCreateUserActivity" />
+        <activity android:name=".views.AqaIsActivity"></activity>
     </application>
 
 </manifest>

@@ -429,9 +429,9 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
                         onResultClicked(firebaseDatabase.getReference().child("user_contents").child(contentKey), currentAge, currentGender);
 
 //                        issueContents 테스트 디비 입력용
-                        long issueDate = getCurrentDate();
-                        issueMap.put(String.valueOf(issueDate), contentKey);
-                        firebaseDatabase.getReference().child("issueContents").child(String.valueOf(issueDate)).setValue(issueMap);
+//                        long issueDate = getCurrentDate();
+//                        issueMap.put(String.valueOf(issueDate), contentKey);
+//                        firebaseDatabase.getReference().child("issueContents").child(String.valueOf(issueDate)).setValue(issueMap);
                     }
 
                     @Override
@@ -731,7 +731,7 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
                         pollActivity_textView_check_3.setVisibility(View.VISIBLE);
                         pollActivity_textView_check_4.setVisibility(View.VISIBLE);
                         pollActivity_textView_check_5.setVisibility(View.VISIBLE);
-                        pollActivity_textView_check_6.setVisibility(View.VISIBLE);
+
                         pollActivity_imageView_around_1.setVisibility(View.VISIBLE);
                         pollActivity_imageView_around_2.setVisibility(View.VISIBLE);
                         pollActivity_imageView_around_3.setVisibility(View.VISIBLE);
@@ -1038,6 +1038,8 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
                     pollActivity_imageView_userClass.setImageResource(R.drawable.q_class_blue_1);
                 } else if (userClass >= 450 && userClass < 501) {
                     pollActivity_imageView_userClass.setImageResource(R.drawable.q_class_blue_2);
+                }else if (userClass == 1000) {
+                    pollActivity_imageView_userClass.setImageResource(R.drawable.q_class_black);
                 }
             }
 

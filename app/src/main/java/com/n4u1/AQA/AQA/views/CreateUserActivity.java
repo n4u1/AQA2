@@ -1,23 +1,34 @@
 package com.n4u1.AQA.AQA.views;
 
 import android.content.Intent;
+import android.os.AsyncTask;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Html;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.ads.identifier.AdvertisingIdClient;
+import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
+import com.google.android.gms.common.GooglePlayServicesRepairableException;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.ValueEventListener;
 import com.n4u1.AQA.AQA.R;
 import com.n4u1.AQA.AQA.dialog.AgainPasswordDialog;
+import com.n4u1.AQA.AQA.dialog.BaseLoadingActivity;
 import com.n4u1.AQA.AQA.dialog.ConfirmPasswordFailDialog;
 import com.n4u1.AQA.AQA.dialog.CreateUserAgeDialog;
 import com.n4u1.AQA.AQA.dialog.CreateUserGenderDialog;
 import com.n4u1.AQA.AQA.dialog.FindPasswordFailDialog;
+import com.n4u1.AQA.AQA.dialog.GUIDFailDialog;
 import com.n4u1.AQA.AQA.dialog.NotEmailDialog;
 import com.n4u1.AQA.AQA.dialog.NotGenderDialog;
 import com.n4u1.AQA.AQA.dialog.NotIdlDialog;
@@ -33,9 +44,11 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+import java.util.Map;
 import java.util.TimeZone;
 import java.util.UUID;
 import java.util.regex.Matcher;
@@ -44,13 +57,12 @@ import java.util.regex.Pattern;
 public class CreateUserActivity extends AppCompatActivity implements CreateUserAgeDialog.CreateUserAgeDialogListener,
         CreateUserGenderDialog.CreateUserGenderDialogListener {
 
-    private FirebaseAuth mAuth;
-    private DatabaseReference mDatabase;
     private EditText createUser_editText_email, createUser_editText_password, createUser_editText_confirmPassword,
             createUser_editText_birth, createUser_editText_gender, createUser_editText_id;
 
 
-    private String gender, email, uid, userId, password;
+
+    private String gender, email,  userId, password;
     private int age;
 
 
@@ -59,10 +71,7 @@ public class CreateUserActivity extends AppCompatActivity implements CreateUserA
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_user);
 
-
-        mAuth = FirebaseAuth.getInstance();
         ImageView createUser_imageView_start = findViewById(R.id.createUser_imageView_start);
-        mDatabase = FirebaseDatabase.getInstance().getReference();
         createUser_editText_id = findViewById(R.id.createUser_editText_id);
         createUser_editText_email = findViewById(R.id.createUser_editText_email);
         createUser_editText_password = findViewById(R.id.createUser_editText_password);
@@ -98,14 +107,21 @@ public class CreateUserActivity extends AppCompatActivity implements CreateUserA
         createUser_imageView_start.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 if (checkingCreateUser()){
                     gender = createUser_editText_gender.getText().toString();
                     userId = createUser_editText_id.getText().toString();
                     email = createUser_editText_email.getText().toString();
                     age = getYear() + 1 - Integer.parseInt(createUser_editText_birth.getText().toString());
                     password = createUser_editText_password.getText().toString();
-                    createUser(email, password);
+
+                    Intent intent = new Intent(CreateUserActivity.this, SplashCreateUserActivity.class);
+                    intent.putExtra("gender", gender);
+                    intent.putExtra("userId", userId);
+                    intent.putExtra("email", email);
+                    intent.putExtra("age", age);
+                    intent.putExtra("password", password);
+                    startActivity(intent);
+
                 }
             }
         });
@@ -123,26 +139,6 @@ public class CreateUserActivity extends AppCompatActivity implements CreateUserA
         });
 
 
-    }
-
-    private void createUser(String email, String password) {
-        mAuth.createUserWithEmailAndPassword(email, password)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            // Sign in success, update UI with the signed-in user's information
-                            Toast.makeText(getApplicationContext(), "User Create Success", Toast.LENGTH_LONG).show();
-                            String email = mAuth.getCurrentUser().getEmail();
-                            String uid = mAuth.getCurrentUser().getUid();
-                            writeNewUser(null, gender, uid, email, age, userId);
-                        } else {
-                            // If sign in fails, display a message to the user.
-                            Toast.makeText(getApplicationContext(), "User Create Fail : " + task.getException(), Toast.LENGTH_LONG).show();
-                            Log.d("getException", "createUserWithEmail:failure", task.getException());
-                        }
-                    }
-                });
     }
 
     private boolean checkingCreateUser() {
@@ -199,22 +195,6 @@ public class CreateUserActivity extends AppCompatActivity implements CreateUserA
         return true;
     }
 
-    private void writeNewUser(String deviceName, String sex, String uid, String email, int age, String userId) {
-        User user = new User();
-        user.setUserId(userId);
-        user.setAge(age);
-        user.setSex(sex);
-//        user.setJob(job);
-        user.setUid(uid);
-        user.setEmail(email);
-        user.setUserClass(0);
-        mDatabase.child("users").child(uid).setValue(user);
-        Intent intent = new Intent(CreateUserActivity.this, HomeActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        startActivity(intent);
-        finish();
-
-    }
 
     private boolean checkEmail(String inputUserEmail) {
         String regex = "^[_a-zA-Z0-9-\\.]+@[\\.a-zA-Z0-9-]+\\.[a-zA-Z]+$";
@@ -236,7 +216,11 @@ public class CreateUserActivity extends AppCompatActivity implements CreateUserA
         return Integer.parseInt(currentYear);
     }
 
-    //ContentTypeDialog choiceItemCallback
+
+
+
+
+
     @Override
     public void choiceItemCallback(String string) {
         createUser_editText_birth.setText(string);

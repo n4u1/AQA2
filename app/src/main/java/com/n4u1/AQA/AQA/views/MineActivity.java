@@ -99,7 +99,9 @@ public class MineActivity extends AppCompatActivity implements LogOutDialog.LogO
         LinearLayout mineActivity_linearLayout_upload = findViewById(R.id.mineActivity_linearLayout_upload);
         LinearLayout mineActivity_linearLayout_logOut = findViewById(R.id.mineActivity_linearLayout_logOut);
         LinearLayout mineActivity_linearLayout_authOut = findViewById(R.id.mineActivity_linearLayout_authOut);
+        LinearLayout mineActivity_linearLayout_notice = findViewById(R.id.mineActivity_linearLayout_notice);
         LinearLayout mineActivity_linearLayout_suggest = findViewById(R.id.mineActivity_linearLayout_suggest);
+        LinearLayout mineActivity_linearLayout_aqa = findViewById(R.id.mineActivity_linearLayout_aqa);
         LinearLayout mineActivity_linearLayout_servicePolicy = findViewById(R.id.mineActivity_linearLayout_servicePolicy);
         LinearLayout mineActivity_linearLayout_privacyPolicy = findViewById(R.id.mineActivity_linearLayout_privacyPolicy);
         LinearLayout mineActivity_linearLayout_version = findViewById(R.id.mineActivity_linearLayout_version);
@@ -184,6 +186,26 @@ public class MineActivity extends AppCompatActivity implements LogOutDialog.LogO
 
             }
         });
+
+        //공지사항
+        mineActivity_linearLayout_notice.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast toast = Toast.makeText(getApplicationContext(), "아직 공지사항이 없습니다 :)", Toast.LENGTH_SHORT);
+                toast.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL, 0, 0);
+                toast.show();
+            }
+        });
+
+        //aqa...
+        mineActivity_linearLayout_aqa.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MineActivity.this, AqaIsActivity.class);
+                startActivity(intent);
+            }
+        });
+
 
         //Q포인트 점수 알아보기
         mineActivity_linearLayout_userClass.setOnClickListener(new View.OnClickListener() {
@@ -318,102 +340,6 @@ public class MineActivity extends AppCompatActivity implements LogOutDialog.LogO
 
     }
 
-    private void backgroundNotify() {
-        String id = "aa";
-        FirebaseJobDispatcher dispatcher = new FirebaseJobDispatcher(new GooglePlayDriver(this));
-        Job myJob = dispatcher.newJobBuilder()
-                // the JobService that will be called
-                .setService(NotificationJobService.class)
-                // uniquely identifies the job
-                .setTag("NotificationJobService")
-                // one-off job
-                .setRecurring(true)
-                // don't persist past a device reboot
-                .setLifetime(Lifetime.FOREVER)
-                // start between 0 and 60 seconds from now
-                .setTrigger(Trigger.executionWindow(10, 20))
-                // don't overwrite an existing job with the same tag
-                .setReplaceCurrent(true)
-                // retry with exponential backoff
-                .setRetryStrategy(RetryStrategy.DEFAULT_LINEAR)
-                // constraints that need to be satisfied for the job to run
-
-
-                .build();
-
-        dispatcher.mustSchedule(myJob);
-    }
-
-    private void notificationShow() {
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, "default");
-        builder.setSmallIcon(R.mipmap.ic_aqa_custom);
-        builder.setContentTitle("100명이 투표했어요!");
-        builder.setContentText("클릭해서 확인하기!");
-        Intent intentHome = new Intent(this, HomeActivity.class);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intentHome, PendingIntent.FLAG_UPDATE_CURRENT);
-        builder.setContentIntent(pendingIntent);
-
-        Bitmap largeIcon = BitmapFactory.decodeResource(getResources(), R.mipmap.ic_aqa_custom);
-        builder.setLargeIcon(largeIcon);
-
-        Uri ringtoneUri = RingtoneManager.getActualDefaultRingtoneUri(this, RingtoneManager.TYPE_NOTIFICATION);
-        builder.setSound(ringtoneUri);
-
-        long[] vibrate = {0, 100, 200, 300};
-        builder.setVibrate(vibrate);
-        builder.setAutoCancel(true);
-
-        NotificationManager manager = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            manager.createNotificationChannel(new NotificationChannel("default", "기본채널", NotificationManager.IMPORTANCE_DEFAULT));
-        }
-        manager.notify(1, builder.build());
-
-
-    }
-
-
-    private Map<String, String> getAlarmList(final ArrayList<String> contentList) {
-//        ArrayList<String> alarmList = new ArrayList<>();
-
-        mDatabase.child("user_contents").addListenerForSingleValueEvent(new ValueEventListener() {
-
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-//
-//                ArrayList<String> tmp = new ArrayList<>();
-//
-//                Iterator<DataSnapshot> contentDTOIterator = dataSnapshot.getChildren().iterator();
-//
-//                while (contentDTOIterator.hasNext()) {
-//                    final ContentDTO contentDTO = contentDTOIterator.next().getValue(ContentDTO.class);
-//                    tmp.add(contentDTO.title);
-//                }
-                final HashMap<String, String> list = new HashMap<>();
-                Iterator<DataSnapshot> listIterator = dataSnapshot.getChildren().iterator();
-                while (listIterator.hasNext()) {
-                    ContentDTO contentDTO = listIterator.next().getValue(ContentDTO.class);
-
-                    for (int i = 0; i < contentList.size(); i++) {
-                        if (contentDTO.contentKey.equals(contentList.get(i))) {
-                            Log.d("lkj", String.valueOf(i) + " : " + contentDTO.contentKey);
-                            Log.d("lkj", String.valueOf(i) + " : " + contentList.get(i));
-                            list.put(contentDTO.contentKey, contentDTO.title);
-                        }
-                    }
-                }
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-
-        return null;
-
-    }
 
 
 

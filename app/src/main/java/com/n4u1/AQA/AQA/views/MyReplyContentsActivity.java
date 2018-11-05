@@ -75,7 +75,7 @@ public class MyReplyContentsActivity extends AppCompatActivity {
 
 
         //onCreate시 리플단 게시글 추려서 리스트업
-        mDatabase.getReference().child("user_contents").addListenerForSingleValueEvent(new ValueEventListener() {
+        mDatabase.getReference().child("user_contents").addValueEventListener(new ValueEventListener() {
             int tempCount = 0;
             @Override
             public void onDataChange(@NonNull final DataSnapshot dataSnapshot) {
@@ -114,7 +114,6 @@ public class MyReplyContentsActivity extends AppCompatActivity {
 
                     }
                 });
-
             }
 
             @Override
@@ -122,8 +121,6 @@ public class MyReplyContentsActivity extends AppCompatActivity {
 
             }
         });
-
-
 
         swipeRFL.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
