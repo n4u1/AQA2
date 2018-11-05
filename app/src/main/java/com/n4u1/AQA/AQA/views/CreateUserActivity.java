@@ -4,10 +4,12 @@ import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Html;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.n4u1.AQA.AQA.R;
@@ -21,6 +23,7 @@ import com.n4u1.AQA.AQA.dialog.NotGenderDialog;
 import com.n4u1.AQA.AQA.dialog.NotIdlDialog;
 import com.n4u1.AQA.AQA.dialog.NotInputDialog;
 import com.n4u1.AQA.AQA.dialog.NullEmailDialog;
+import com.n4u1.AQA.AQA.dialog.PrivacyPolicyActivity;
 import com.n4u1.AQA.AQA.dialog.ShortIdDialog;
 import com.n4u1.AQA.AQA.models.User;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -45,7 +48,7 @@ public class CreateUserActivity extends AppCompatActivity implements CreateUserA
     private DatabaseReference mDatabase;
     private EditText createUser_editText_email, createUser_editText_password, createUser_editText_confirmPassword,
             createUser_editText_birth, createUser_editText_gender, createUser_editText_id;
-    private ImageView createUser_imageView_start;
+
 
     private String gender, email, uid, userId, password;
     private int age;
@@ -57,17 +60,16 @@ public class CreateUserActivity extends AppCompatActivity implements CreateUserA
         setContentView(R.layout.activity_create_user);
 
 
-        ImageView createUser_button_createUser;
         mAuth = FirebaseAuth.getInstance();
-
+        ImageView createUser_imageView_start = findViewById(R.id.createUser_imageView_start);
         mDatabase = FirebaseDatabase.getInstance().getReference();
         createUser_editText_id = findViewById(R.id.createUser_editText_id);
-        createUser_imageView_start = findViewById(R.id.createUser_imageView_start);
         createUser_editText_email = findViewById(R.id.createUser_editText_email);
         createUser_editText_password = findViewById(R.id.createUser_editText_password);
         createUser_editText_gender = findViewById(R.id.createUser_editText_gender);
         createUser_editText_birth = findViewById(R.id.createUser_editText_birth);
         createUser_editText_confirmPassword = findViewById(R.id.createUser_editText_confirmPassword);
+        TextView createUser_textView_privacyPolicy = findViewById(R.id.createUser_textView_privacyPolicy);
 //
 //
         //나이 선택
@@ -105,6 +107,18 @@ public class CreateUserActivity extends AppCompatActivity implements CreateUserA
                     password = createUser_editText_password.getText().toString();
                     createUser(email, password);
                 }
+            }
+        });
+
+
+        //개인정보처리방침
+        String htmlString = "<u>개인정보처리방침</u>";
+        createUser_textView_privacyPolicy.setText(Html.fromHtml(htmlString));
+        createUser_textView_privacyPolicy.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(CreateUserActivity.this, PrivacyPolicyActivity.class);
+                startActivity(intent);
             }
         });
 

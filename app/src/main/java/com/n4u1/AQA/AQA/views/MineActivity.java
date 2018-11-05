@@ -46,6 +46,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.n4u1.AQA.AQA.dialog.FindEmailDialog;
+import com.n4u1.AQA.AQA.dialog.PrivacyPolicyActivity;
 import com.n4u1.AQA.AQA.dialog.SignOutDialog;
 import com.n4u1.AQA.AQA.dialog.LogOutDialog;
 import com.n4u1.AQA.AQA.models.ContentDTO;
@@ -99,6 +100,8 @@ public class MineActivity extends AppCompatActivity implements LogOutDialog.LogO
         LinearLayout mineActivity_linearLayout_logOut = findViewById(R.id.mineActivity_linearLayout_logOut);
         LinearLayout mineActivity_linearLayout_authOut = findViewById(R.id.mineActivity_linearLayout_authOut);
         LinearLayout mineActivity_linearLayout_suggest = findViewById(R.id.mineActivity_linearLayout_suggest);
+        LinearLayout mineActivity_linearLayout_servicePolicy = findViewById(R.id.mineActivity_linearLayout_servicePolicy);
+        LinearLayout mineActivity_linearLayout_privacyPolicy = findViewById(R.id.mineActivity_linearLayout_privacyPolicy);
         LinearLayout mineActivity_linearLayout_version = findViewById(R.id.mineActivity_linearLayout_version);
         LinearLayout mineActivity_linearLayout_userClass = findViewById(R.id.mineActivity_linearLayout_userClass);
         final ImageView mineActivity_imageView_userClass = findViewById(R.id.mineActivity_imageView_userClass);
@@ -281,6 +284,25 @@ public class MineActivity extends AppCompatActivity implements LogOutDialog.LogO
                 LogOutDialog logOutDialog = new LogOutDialog();
                 logOutDialog.show(getSupportFragmentManager(), "logOutDialog");
 
+            }
+        });
+
+        //이용약관
+        mineActivity_linearLayout_servicePolicy.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MineActivity.this, ServicePolicyActivity.class);
+                startActivity(intent);
+            }
+        });
+
+
+        //개인정보처리방침
+        mineActivity_linearLayout_privacyPolicy.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MineActivity.this, PrivacyPolicyActivity.class);
+                startActivity(intent);
             }
         });
 

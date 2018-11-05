@@ -460,6 +460,7 @@
                 android:background="#efefef" />
 
 
+            <!--notice-->
             <LinearLayout
                 android:id="@+id/mineActivity_linearLayout_notice"
                 android:layout_width="match_parent"
@@ -496,7 +497,9 @@
             </LinearLayout>
 
 
+            <!--aqa is...-->
             <LinearLayout
+                android:visibility="gone"
                 android:id="@+id/mineActivity_linearLayout_aqa"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -533,6 +536,7 @@
 
 
 
+            <!--건의-->
             <LinearLayout
                 android:id="@+id/mineActivity_linearLayout_suggest"
                 android:layout_width="match_parent"
@@ -569,7 +573,83 @@
             </LinearLayout>
 
 
+            <!--이용약관-->
+            <LinearLayout
+                android:id="@+id/mineActivity_linearLayout_servicePolicy"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingLeft="12dp"
+                android:paddingTop="20dp"
+                android:paddingRight="12dp"
+                android:paddingBottom="20dp">
 
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:src="@drawable/ic_service_policy" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="8"
+                    android:text="이용약관"
+                    android:textColor="#383838"
+                    android:textSize="18dp" />
+
+                <TextView
+                    android:id="@+id/mineActivity_textView_servicePolicy"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:text="보러가기"
+                    android:textColor="#808080"
+                    android:textSize="12dp" />
+            </LinearLayout>
+
+
+
+            <!--개인정보처리방침-->
+            <LinearLayout
+                android:id="@+id/mineActivity_linearLayout_privacyPolicy"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingLeft="12dp"
+                android:paddingTop="20dp"
+                android:paddingRight="12dp"
+                android:paddingBottom="20dp">
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:src="@drawable/ic_outline_security_24px" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="8"
+                    android:text="개인정보 처리방침"
+                    android:textColor="#383838"
+                    android:textSize="18dp" />
+
+                <TextView
+                    android:id="@+id/mineActivity_textView_privacyPolicy"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:text="보러가기"
+                    android:textColor="#808080"
+                    android:textSize="12dp" />
+            </LinearLayout>
+
+
+
+            <!--version-->
             <LinearLayout
                 android:id="@+id/mineActivity_linearLayout_version"
                 android:layout_width="match_parent"

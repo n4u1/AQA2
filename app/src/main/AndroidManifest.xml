@@ -100,7 +100,12 @@
         <activity android:name=".views.ShareAuthActivity" />
         <activity android:name=".views.UserShareAuthUploadActivity" />
         <activity android:name=".views.ShareAuthDetailActivity" />
-        <activity android:name=".views.VersionInfoActivity"></activity>
+        <activity android:name=".views.VersionInfoActivity" />
+        <activity
+            android:name=".dialog.PrivacyPolicyActivity"
+            android:theme="@style/Theme.DialogFragmentActivity" />
+        <activity android:name=".views.PrivacyPolicyDetailActivity" />
+        <activity android:name=".views.ServicePolicyActivity"></activity>
     </application>
 
 </manifest>
