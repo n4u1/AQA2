@@ -25,7 +25,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:text="1. 3자제공 및 위탁을 하지 않습니다." />
+        android:text="  1. 3자제공 및 위탁을 하지 않습니다." />
 
     <TextView
         android:layout_gravity="left"
@@ -34,7 +34,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:text="2. 투표결과에만 사용하고, 회원탈퇴시 즉시 파기합니다." />
+        android:text="  2. 투표결과외에는 사용되지 않습니다." />
 
     <TextView
         android:layout_gravity="left"
@@ -43,7 +43,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:text="3. 안전하고 철저하게 관리합니다." />
+        android:text="  3. 회원탈퇴 즉시 파기합니다." />
 
 
     <TextView

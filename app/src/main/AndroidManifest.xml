@@ -108,7 +108,9 @@
         <activity android:name=".views.PrivacyPolicyDetailActivity" />
         <activity android:name=".views.ServicePolicyActivity" />
         <activity android:name=".views.SplashCreateUserActivity" />
-        <activity android:name=".views.AqaIsActivity"></activity>
+        <activity android:name=".views.AqaIsActivity" />
+        <activity android:name=".views.CreateUserEmailActivity" />
+        <activity android:name=".views.CreateUserIdActivity"></activity>
     </application>
 
 </manifest>

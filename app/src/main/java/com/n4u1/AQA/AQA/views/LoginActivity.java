@@ -28,6 +28,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 //
@@ -59,9 +60,12 @@ import com.n4u1.AQA.AQA.dialog.GUIDFailDialog;
 import com.n4u1.AQA.AQA.dialog.NotEmailDialog;
 import com.n4u1.AQA.AQA.dialog.NotInputDialog;
 import com.n4u1.AQA.AQA.dialog.PreviewDialog;
+import com.n4u1.AQA.AQA.dialog.PrivacyPolicyActivity;
 import com.n4u1.AQA.AQA.util.Common;
 import com.n4u1.AQA.AQA.util.ImageSaver;
 
+
+import org.w3c.dom.Text;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -88,37 +92,23 @@ public class LoginActivity extends AppCompatActivity implements PreviewDialog.Pr
         setContentView(R.layout.activity_login);
 
         TextView textView_hidden = findViewById(R.id.textView_hidden);
+        TextView textView_privacy_policy = findViewById(R.id.textView_privacy_policy);
 
-
-//        Bitmap shareBitmap;
-        //테스트용
-        ImageView imageView_createUser = findViewById(R.id.imageView_createUser);
-        ImageView imageView_loginUser = findViewById(R.id.imageView_loginUser);
-        ImageView imageView_findUser = findViewById(R.id.imageView_findUser);
-        Button button_aLogin = findViewById(R.id.button_aLogin);
-        Button button_bLogin = findViewById(R.id.button_bLogin);
-        Button button_cLogin = findViewById(R.id.button_cLogin);
-        Button button_dLogin = findViewById(R.id.button_dLogin);
-        Button button_eLogin = findViewById(R.id.button_eLogin);
-        Button button_fLogin = findViewById(R.id.button_fLogin);
-        Button button_gLogin = findViewById(R.id.button_gLogin);
-        Button button_hLogin = findViewById(R.id.button_hLogin);
+        LinearLayout linearLayout_createUser = findViewById(R.id.linearLayout_createUser);
+        LinearLayout linearLayout_loginUser = findViewById(R.id.linearLayout_loginUser);
+        LinearLayout linearLayout_findUser = findViewById(R.id.linearLayout_findUser);
         TextView textView_preview = findViewById(R.id.textView_preview);
-        String htmlString = "<u>둘러보기</u>";
+//        String htmlString = "<u>둘러보기</u>";
 
 
         mAuth = FirebaseAuth.getInstance();
-//        mFirebaseUser = mAuth.getCurrentUser();
         mDatabase = FirebaseDatabase.getInstance();
-//        mEmailDatabaseReference = mDatabase.getReference("users");
-//        storage = FirebaseStorage.getInstance();
-
         editTextEmail = findViewById(R.id.editText_email);
         editTextPassword = findViewById(R.id.editText_password);
 
 
         //둘러보기
-        textView_preview.setText(Html.fromHtml(htmlString));
+//        textView_preview.setText(Html.fromHtml(htmlString));
         textView_preview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -127,6 +117,15 @@ public class LoginActivity extends AppCompatActivity implements PreviewDialog.Pr
             }
         });
 
+
+        //개인정보 처리방침
+        textView_privacy_policy.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(LoginActivity.this, PrivacyPolicyActivity.class);
+                startActivity(intent);
+            }
+        });
 
         //히든
         textView_hidden.setOnClickListener(new View.OnClickListener() {
@@ -140,17 +139,17 @@ public class LoginActivity extends AppCompatActivity implements PreviewDialog.Pr
 
 
         //계정 만들기
-        imageView_createUser.setOnClickListener(new View.OnClickListener() {
+        linearLayout_createUser.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(LoginActivity.this, CreateUserActivity.class);
+                Intent intent = new Intent(LoginActivity.this, CreateUserEmailActivity.class);
                 startActivity(intent);
             }
         });
 
 
         //계정 찾기
-        imageView_findUser.setOnClickListener(new View.OnClickListener() {
+        linearLayout_findUser.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent findIntent = new Intent(LoginActivity.this, FindUserActivity.class);
@@ -160,7 +159,7 @@ public class LoginActivity extends AppCompatActivity implements PreviewDialog.Pr
 
 
         //로그인하기
-        imageView_loginUser.setOnClickListener(new View.OnClickListener() {
+        linearLayout_loginUser.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String userId;
@@ -182,93 +181,7 @@ public class LoginActivity extends AppCompatActivity implements PreviewDialog.Pr
             }
         });
 
-        button_aLogin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                loginUser("a@a.com", "aaaaaa");
-            }
-        });
-
-        button_bLogin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                loginUser("b@b.com", "bbbbbb");
-            }
-        });
-
-        button_cLogin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                loginUser("c@c.com", "cccccc");
-            }
-        });
-
-        button_dLogin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                loginUser("d@d.com", "dddddd");
-            }
-        });
-
-        button_eLogin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                loginUser("e@e.com", "eeeeee");
-            }
-        });
-
-        button_fLogin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                loginUser("f@f.com", "ffffff");
-            }
-        });
-
-        button_gLogin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                loginUser("g@g.com", "gggggg");
-            }
-        });
-
-        button_hLogin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                loginUser("lkj840211@gmail.com", "dltjsdn2@");
-            }
-        });
-
-//        button_uploadTest.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//
-//                Intent intent = new Intent(Intent.ACTION_PICK);
-//                intent.setType(MediaStore.Images.Media.CONTENT_TYPE);
-//                startActivityForResult(intent, GALLEY_CODE);
-//
-//            }
-//        });
-//
-//        findViewById(R.id.button_uploadTestActivity).setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Intent intent = new Intent(LoginActivity.this, TestActivity.class);
-//                startActivity(intent);
-//
-//            }
-//        });
-
     }
-
-//
-//    //정규표현식으로 이메일 체킹
-//    private boolean checkEmail(String inputUserEmail) {
-//        String regex = "^[_a-zA-Z0-9-\\.]+@[\\.a-zA-Z0-9-]+\\.[a-zA-Z]+$";
-//        Pattern p = Pattern.compile(regex);
-//        Matcher m = p.matcher(inputUserEmail);
-//        boolean isNormal = m.matches();
-//        return isNormal;
-//    }
 
 
     private void loginUser(final String email, final String password) {

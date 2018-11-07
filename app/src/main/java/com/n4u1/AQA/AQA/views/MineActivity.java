@@ -387,6 +387,7 @@ public class MineActivity extends AppCompatActivity implements LogOutDialog.LogO
             editor.commit();
             Intent intent = new Intent(MineActivity.this, LoginActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            finish();
             startActivity(intent);
 
         }

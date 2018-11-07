@@ -175,8 +175,13 @@ public class SplashLoadingActivity extends AppCompatActivity implements GUIDFail
 
     private class splashhandlerHome implements Runnable {
         public void run() {
-            startActivity(new Intent(getApplication(), HomeActivity.class)); // 로딩이 끝난후 이동할 Activity
-            SplashLoadingActivity.this.finish(); // 로딩페이지 Activity Stack에서 제거
+            Intent intent = new Intent(SplashLoadingActivity.this, HomeActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            finish();
+            startActivity(intent);
+
+//            startActivity(new Intent(getApplication(), HomeActivity.class)); // 로딩이 끝난후 이동할 Activity
+//            SplashLoadingActivity.this.finish(); // 로딩페이지 Activity Stack에서 제거
         }
     }
 
