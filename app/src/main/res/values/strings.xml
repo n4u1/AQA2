@@ -21,8 +21,17 @@
     </string-array>
 
 
+
+    <string-array name="BirthInputFail">
+        <item>태어난 연도를 입력 해주세요.</item>
+        <item>나이는 투표 통계 외에는 절대 사용하지 않습니다.</item>
+    </string-array>
+
+
     <string-array name="NullEmail">
         <item>이메일을 입력해주세요.</item>
+        <item>이메일은 공개되지 않습니다.</item>
+        <item>이벤트, 로그인, 개인정보 변경에만 사용됩니다.</item>
     </string-array>
 
 
@@ -53,6 +62,7 @@
 
     <string-array name="NotGender">
         <item>성별을 입력해주세요.</item>
+        <item>성별은 투표 통계 외에는 절대 사용하지 않습니다.</item>
     </string-array>
 
 

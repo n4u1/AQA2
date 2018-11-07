@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import com.n4u1.AQA.AQA.R;
 import com.n4u1.AQA.AQA.dialog.AgainPasswordDialog;
+import com.n4u1.AQA.AQA.dialog.BirthInputFailDialog;
 import com.n4u1.AQA.AQA.dialog.ConfirmPasswordFailDialog;
 import com.n4u1.AQA.AQA.dialog.CreateUserAgeDialog;
 import com.n4u1.AQA.AQA.dialog.CreateUserGenderDialog;
@@ -151,8 +152,8 @@ public class CreateUserActivity extends AppCompatActivity implements CreateUserA
             return false;
         }
         if (createUser_editText_birth.getText().toString().equals("")) {
-            FindPasswordFailDialog findPasswordFailDialog = new FindPasswordFailDialog();
-            findPasswordFailDialog.show(getSupportFragmentManager(), "findPasswordFailDialog");
+            BirthInputFailDialog birthInputFailDialog = new BirthInputFailDialog();
+            birthInputFailDialog.show(getSupportFragmentManager(), "birthInputFailDialog");
             return false;
         }
         if (!createUser_editText_confirmPassword.getText().toString().equals(createUser_editText_password.getText().toString())) {

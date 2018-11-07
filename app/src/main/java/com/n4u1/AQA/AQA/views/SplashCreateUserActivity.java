@@ -1,6 +1,7 @@
 package com.n4u1.AQA.AQA.views;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -53,7 +54,7 @@ public class SplashCreateUserActivity extends AppCompatActivity implements GUIDF
         uid = getIntent().getStringExtra("uid");
         userId = getIntent().getStringExtra("userId");
         password = getIntent().getStringExtra("password");
-        age = getIntent().getIntExtra("password", 0);
+        age = getIntent().getIntExtra("age", 0);
 
         createUser(email, password);
 
@@ -95,6 +96,13 @@ public class SplashCreateUserActivity extends AppCompatActivity implements GUIDF
         user.setEmail(email);
         user.setUserClass(0);
         mDatabase.child("users").child(uid).setValue(user);
+
+        SharedPreferences pref = getSharedPreferences("com.n4u1.AQA", MODE_PRIVATE);
+        SharedPreferences.Editor editor = pref.edit();
+        editor.putString("com.n4u1.AQA.fireBaseUserEmail", email);
+        editor.putString("com.n4u1.AQA.fireBaseUserPassword", password);
+        editor.commit();
+
         Intent intent = new Intent(SplashCreateUserActivity.this, HomeActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
