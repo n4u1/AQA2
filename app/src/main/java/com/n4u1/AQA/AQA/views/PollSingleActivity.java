@@ -1304,7 +1304,7 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
 
         postRef.runTransaction(new Transaction.Handler() {
             @Override
-            public Transaction.Result doTransaction(MutableData mutableData) {
+            public Transaction.Result doTransaction(@NonNull MutableData mutableData) {
                 final ContentDTO contentDTO = mutableData.getValue(ContentDTO.class);
                 if (contentDTO == null) {
                     return Transaction.success(mutableData);
@@ -1313,7 +1313,6 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
                     //투표가 되어있으면 PollResultDialog
                     PollResultDialog pollResultDialog = new PollResultDialog();
                     Bundle bundle = new Bundle();
-
                     bundle.putInt("imagePick", currentPick());
                     bundle.putInt("imageN", getIntent().getIntExtra("itemViewType", 100));
                     bundle.putInt("contentHits", contentHit);

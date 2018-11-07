@@ -1,56 +1,30 @@
 package com.n4u1.AQA.AQA.views;
 
 import android.content.Intent;
-import android.os.AsyncTask;
-import android.os.Handler;
-import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Html;
-import android.util.Log;
-import android.view.Gravity;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import com.google.android.gms.ads.identifier.AdvertisingIdClient;
-import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
-import com.google.android.gms.common.GooglePlayServicesRepairableException;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.ValueEventListener;
 import com.n4u1.AQA.AQA.R;
 import com.n4u1.AQA.AQA.dialog.AgainPasswordDialog;
-import com.n4u1.AQA.AQA.dialog.BaseLoadingActivity;
 import com.n4u1.AQA.AQA.dialog.ConfirmPasswordFailDialog;
 import com.n4u1.AQA.AQA.dialog.CreateUserAgeDialog;
 import com.n4u1.AQA.AQA.dialog.CreateUserGenderDialog;
 import com.n4u1.AQA.AQA.dialog.FindPasswordFailDialog;
-import com.n4u1.AQA.AQA.dialog.GUIDFailDialog;
 import com.n4u1.AQA.AQA.dialog.NotEmailDialog;
 import com.n4u1.AQA.AQA.dialog.NotGenderDialog;
 import com.n4u1.AQA.AQA.dialog.NotIdlDialog;
-import com.n4u1.AQA.AQA.dialog.NotInputDialog;
 import com.n4u1.AQA.AQA.dialog.NullEmailDialog;
 import com.n4u1.AQA.AQA.dialog.PrivacyPolicyActivity;
 import com.n4u1.AQA.AQA.dialog.ShortIdDialog;
-import com.n4u1.AQA.AQA.models.User;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 
-import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
-import java.util.Map;
 import java.util.TimeZone;
-import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -79,8 +53,7 @@ public class CreateUserActivity extends AppCompatActivity implements CreateUserA
         createUser_editText_birth = findViewById(R.id.createUser_editText_birth);
         createUser_editText_confirmPassword = findViewById(R.id.createUser_editText_confirmPassword);
         TextView createUser_textView_privacyPolicy = findViewById(R.id.createUser_textView_privacyPolicy);
-//
-//
+
         //나이 선택
         createUser_editText_birth.setFocusable(false);
         createUser_editText_birth.setClickable(false);
