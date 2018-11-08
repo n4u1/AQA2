@@ -23,14 +23,14 @@
 
     <string-array name="BirthInputFail">
         <item>태어난 연도를 입력 해주세요.</item>
-        <item>나이는 투표 통계 외에는 절대 사용하지 않습니다.</item>
+        <item>나이와 성별은 투표 통계 외에는 절대 사용하지 않습니다.</item>
     </string-array>
 
 
     <string-array name="NullEmail">
         <item>이메일을 입력해주세요.</item>
         <item>이메일은 공개되지 않습니다.</item>
-        <item>이벤트, 로그인, 개인정보 변경에만 사용됩니다.</item>
+        <item>이벤트, 로그인, 개인정보 변경에만 사용 됩니다.</item>
     </string-array>
 
 
@@ -50,7 +50,7 @@
 
 
     <string-array name="ShortEmail">
-        <item>아이디는 영문 3~10 글자 사이로 입력해주세요.</item>
+        <item>아이디는 영소문 혹은 숫자, 3~10 글자 사이로 입력해주세요.</item>
     </string-array>
 
 
@@ -61,8 +61,18 @@
 
     <string-array name="NotGender">
         <item>성별을 입력해주세요.</item>
-        <item>성별은 투표 통계 외에는 절대 사용하지 않습니다.</item>
+        <item>나의와 성별은 투표 통계 외에는 절대 사용하지 않습니다.</item>
     </string-array>
+
+
+    <string-array name="LiveEmail">
+        <item>이메일이 이미 존재합니다.</item>
+    </string-array>
+
+    <string-array name="LiveId">
+        <item>아이디가 이미 존재합니다.</item>
+    </string-array>
+
 
 
     <string-array name="ConfirmPasswordFail">

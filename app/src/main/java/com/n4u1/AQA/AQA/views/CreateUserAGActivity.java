@@ -45,19 +45,7 @@ public class CreateUserAGActivity extends AppCompatActivity {
         createUserAG_textView_start.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                gender = createUser_editText_gender.getText().toString();
-//                userId = createUser_editText_id.getText().toString();
-//                email = createUser_editText_email.getText().toString();
-//                age = getYear() + 1 - Integer.parseInt(createUser_editText_birth.getText().toString());
-//                password = createUser_editText_password.getText().toString();
 //
-//                Intent intent = new Intent(CreateUserActivity.this, SplashCreateUserActivity.class);
-//                intent.putExtra("gender", gender);
-//                intent.putExtra("userId", userId);
-//                intent.putExtra("email", email);
-//                intent.putExtra("age", age);
-//                intent.putExtra("password", password);
-//                startActivity(intent);
             }
         });
 

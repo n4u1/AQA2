@@ -44,6 +44,7 @@ public class User {
     @Exclude
     public Map<String, Object> toMap() {
         HashMap<String, Object> result = new HashMap<>();
+        result.put("email", email);
         result.put("uid", uid);
         result.put("guid", guid);
         result.put("userclass", userClass);

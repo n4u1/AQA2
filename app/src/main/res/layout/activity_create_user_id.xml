@@ -32,7 +32,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="아이디"
-            android:inputType="textEmailAddress"
+            android:digits="abcdefghijklmnopqrstuvwxyz1234567890"
+            android:ems="10"
+            android:inputType="textVisiblePassword"
+            android:maxLength="12"
             android:theme="@style/TextLabel" />
     </android.support.design.widget.TextInputLayout>
 
@@ -50,35 +53,6 @@
         android:text="ID는 AQA에서 사용할 이름입니다."
         android:textSize="12dp" />
 
-
-    <android.support.design.widget.TextInputLayout
-        android:layout_width="match_parent"
-        android:layout_height="64dp"
-        android:gravity="center"
-        android:theme="@style/TextLabel">
-        <android.support.design.widget.TextInputEditText
-            android:id="@+id/createUserId_editText_pw"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="비밀번호"
-            android:inputType="textEmailAddress"
-            android:theme="@style/TextLabel" />
-    </android.support.design.widget.TextInputLayout>
-
-
-    <android.support.design.widget.TextInputLayout
-        android:layout_width="match_parent"
-        android:layout_height="64dp"
-        android:gravity="center"
-        android:theme="@style/TextLabel">
-        <android.support.design.widget.TextInputEditText
-            android:id="@+id/createUserId_editText_pwComfirm"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="비밀번호 확인"
-            android:inputType="textEmailAddress"
-            android:theme="@style/TextLabel" />
-    </android.support.design.widget.TextInputLayout>
 
     <TextView
         android:id="@+id/createUserId_textView_next"
