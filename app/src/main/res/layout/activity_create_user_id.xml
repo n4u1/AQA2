@@ -8,29 +8,30 @@
     android:orientation="vertical"
     tools:context=".views.CreateUserEmailActivity">
 
+    <ImageView
+        android:id="@+id/createUserId_imageView_back"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_arrow_back_gray_24dp" />
 
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="106dp"
         android:layout_height="80dp"
         android:layout_gravity="center"
-        android:layout_marginTop="40dp"
         app:srcCompat="@drawable/aqacustom2" />
-
-
 
 
     <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="64dp"
-        android:layout_marginTop="16dp"
         android:gravity="center"
         android:theme="@style/TextLabel">
         <android.support.design.widget.TextInputEditText
-            android:id="@+id/createUser_editText_id"
+            android:id="@+id/createUserId_editText_id"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="ID"
+            android:hint="아이디"
             android:inputType="textEmailAddress"
             android:theme="@style/TextLabel" />
     </android.support.design.widget.TextInputLayout>
@@ -39,29 +40,60 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="입력하신 모든 정보는 통계에만 사용 됩니다."
+        android:text="입력하신 모든 정보는 투표결과 에만 사용 됩니다."
         android:textSize="16dp"
         android:textStyle="bold" />
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="ID는 AQA에서 여러분의 이름입니다."
+        android:text="ID는 AQA에서 사용할 이름입니다."
         android:textSize="12dp" />
 
 
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="64dp"
+        android:gravity="center"
+        android:theme="@style/TextLabel">
+        <android.support.design.widget.TextInputEditText
+            android:id="@+id/createUserId_editText_pw"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="비밀번호"
+            android:inputType="textEmailAddress"
+            android:theme="@style/TextLabel" />
+    </android.support.design.widget.TextInputLayout>
+
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="64dp"
+        android:gravity="center"
+        android:theme="@style/TextLabel">
+        <android.support.design.widget.TextInputEditText
+            android:id="@+id/createUserId_editText_pwComfirm"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="비밀번호 확인"
+            android:inputType="textEmailAddress"
+            android:theme="@style/TextLabel" />
+    </android.support.design.widget.TextInputLayout>
+
     <TextView
-        android:layout_marginTop="80dp"
+        android:id="@+id/createUserId_textView_next"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
         android:gravity="center"
+        android:text="다음"
         android:textColor="#4485c9"
-        android:text="N E X T"
         android:textSize="24dp" />
 
     <TextView
-        android:gravity="center"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:gravity="center"
         android:text="2/3"
         android:textSize="12dp" />
 

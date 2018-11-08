@@ -1,4 +1,4 @@
-package com.n4u1.AQA.AQA.views;
+package com.n4u1.AQA.AQA.splash;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -25,37 +25,40 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.n4u1.AQA.AQA.R;
 import com.n4u1.AQA.AQA.dialog.GUIDFailDialog;
+import com.n4u1.AQA.AQA.views.HomeActivity;
+import com.n4u1.AQA.AQA.views.LoginActivity;
 
 import java.io.IOException;
 import java.util.Map;
-import java.util.Timer;
-import java.util.TimerTask;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
-public class SplashLoadingActivity extends AppCompatActivity implements GUIDFailDialog.GUIDFailDialogListener {
+public class SplashActivity extends AppCompatActivity implements GUIDFailDialog.GUIDFailDialogListener {
+    private FirebaseAuth mAuth;
 
-    String email, password;
-    FirebaseAuth mAuth;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_splash_loading);
-
+        setContentView(R.layout.activity_splash);
         mAuth = FirebaseAuth.getInstance();
 
-        email = getIntent().getStringExtra("id");
-        password = getIntent().getStringExtra("pw");
+
+        SharedPreferences pref = getSharedPreferences("com.n4u1.AQA", MODE_PRIVATE);
+        String spUserEmail = pref.getString("com.n4u1.AQA.fireBaseUserEmail", "a");
+        String spUserPassword = pref.getString("com.n4u1.AQA.fireBaseUserPassword", "b");
+
+        loginUser(spUserEmail, spUserPassword);
 
 
+    }
+
+    private void loginUser(final String email, final String password) {
         mAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             try {
-
                                 Log.d("lkj current uid", mAuth.getCurrentUser().getUid());
                                 GUIDAsyncTask guidAsyncTask = new GUIDAsyncTask();
                                 guidAsyncTask.execute();
@@ -64,42 +67,15 @@ public class SplashLoadingActivity extends AppCompatActivity implements GUIDFail
                                 e.printStackTrace();
                             }
 
-//                            Intent intent = new Intent(LoginActivity.this, SplashLoadingActivity.class);
-//                            startActivity(intent);
-//                            finish();
                         } else {
                             // If sign in fails, display a message to the user.
                             Handler hd = new Handler();
-                            hd.postDelayed(new splashhandlerLogin(), 500);
-                            Toast.makeText(getApplicationContext(), "User Login Fail", Toast.LENGTH_LONG).show();
+                            hd.postDelayed(new splashhandlerLogin(), 1000);
+
                         }
                     }
                 });
-
-
-//        Thread thread = new Thread(new Runnable() {
-//            @Override
-//            public void run() {
-//                // 3초가 지나면
-//                TimerTask task = new TimerTask() {
-//                    @Override
-//                    public void run() {
-//                        Intent intent = new Intent(SplashLoadingActivity.this, HomeActivity.class);
-//                        startActivity(intent);
-//                        finish();
-//                    }
-//                };
-//
-//                Timer timer = new Timer();
-//                timer.schedule(task, 3000);
-//            }
-//        });
-//        thread.start();
-
     }
-    /*
-    onCreate();
-     */
 
 
     private class GUIDAsyncTask extends AsyncTask<Void, Void, String> {
@@ -140,14 +116,8 @@ public class SplashLoadingActivity extends AppCompatActivity implements GUIDFail
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         Map<String, Object> user = (Map<String, Object>) dataSnapshot.getValue();
                         if (user.get("guid").toString().equals(advertId)) {
-                            SharedPreferences pref = getSharedPreferences("com.n4u1.AQA", MODE_PRIVATE);
-                            SharedPreferences.Editor editor = pref.edit();
-                            editor.putString("com.n4u1.AQA.fireBaseUserEmail", email);
-                            editor.putString("com.n4u1.AQA.fireBaseUserPassword", password);
-                            editor.commit();
-
                             Handler hd = new Handler();
-                            hd.postDelayed(new splashhandlerHome(), 500);
+                            hd.postDelayed(new splashhandlerHome() , 500);
                         } else {
                             GUIDFailDialog guidFailDialog = new GUIDFailDialog();
                             guidFailDialog.show(getSupportFragmentManager(), "guidFailDialog");
@@ -167,7 +137,7 @@ public class SplashLoadingActivity extends AppCompatActivity implements GUIDFail
     private class splashhandlerLogin implements Runnable {
         public void run() {
             startActivity(new Intent(getApplication(), LoginActivity.class)); // 로딩이 끝난후 이동할 Activity
-            SplashLoadingActivity.this.finish(); // 로딩페이지 Activity Stack에서 제거
+            SplashActivity.this.finish(); // 로딩페이지 Activity Stack에서 제거
         }
 
     }
@@ -175,19 +145,20 @@ public class SplashLoadingActivity extends AppCompatActivity implements GUIDFail
 
     private class splashhandlerHome implements Runnable {
         public void run() {
-            Intent intent = new Intent(SplashLoadingActivity.this, HomeActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            finish();
-            startActivity(intent);
+            startActivity(new Intent(getApplication(), HomeActivity.class)); // 로딩이 끝난후 이동할 Activity
+            SplashActivity.this.finish(); // 로딩페이지 Activity Stack에서 제거
+        }
 
-//            startActivity(new Intent(getApplication(), HomeActivity.class)); // 로딩이 끝난후 이동할 Activity
-//            SplashLoadingActivity.this.finish(); // 로딩페이지 Activity Stack에서 제거
+    }
+
+    @Override
+    public void GUIDFailDialogCallback(String string) {
+        if (string.equals("확인")) {
+            startActivity(new Intent(getApplication(), LoginActivity.class)); // 로딩이 끝난후 이동할 Activity
+            SplashActivity.this.finish(); // 로딩페이지 Activity Stack에서 제거
         }
     }
 
 
-    @Override
-    public void GUIDFailDialogCallback(String string) {
-        if (string.equals("확인")) finish();
-    }
+
 }

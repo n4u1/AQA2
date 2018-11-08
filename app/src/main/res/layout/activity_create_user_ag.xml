@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="16dp"
+    android:orientation="vertical"
+    tools:context=".views.CreateUserAGActivity">
+
+    <ImageView
+        android:id="@+id/createUserAG_imageView_back"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_arrow_back_gray_24dp" />
+
+    <ImageView
+        android:layout_width="106dp"
+        android:layout_height="80dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="16dp"
+        app:srcCompat="@drawable/aqacustom2" />
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="64dp"
+            android:layout_marginTop="16dp"
+            android:gravity="center"
+            android:theme="@style/TextLabel">
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/createUserAG_editText_age"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="나이"
+                android:inputType="textEmailAddress"
+                android:theme="@style/TextLabel" />
+        </android.support.design.widget.TextInputLayout>
+
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="64dp"
+            android:layout_marginTop="16dp"
+            android:gravity="center"
+            android:theme="@style/TextLabel">
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/createUserAG_editText_gender"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="성별"
+                android:inputType="textEmailAddress"
+                android:theme="@style/TextLabel" />
+        </android.support.design.widget.TextInputLayout>
+    </LinearLayout>
+
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="입력하신 모든 정보는 투표결과 에만 사용 됩니다."
+        android:textSize="16dp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="나이,성별은 투표 결과 외 사용하지 않습니다."
+        android:textSize="12dp" />
+
+
+    <TextView
+        android:id="@+id/createUserAG_textView_start"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:gravity="center"
+        android:text="시작하기"
+        android:textColor="#4485c9"
+        android:textSize="24dp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="3/3"
+        android:textSize="12dp" />
+
+
+</LinearLayout>

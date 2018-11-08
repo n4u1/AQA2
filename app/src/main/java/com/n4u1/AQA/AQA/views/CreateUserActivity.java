@@ -14,13 +14,13 @@ import com.n4u1.AQA.AQA.dialog.BirthInputFailDialog;
 import com.n4u1.AQA.AQA.dialog.ConfirmPasswordFailDialog;
 import com.n4u1.AQA.AQA.dialog.CreateUserAgeDialog;
 import com.n4u1.AQA.AQA.dialog.CreateUserGenderDialog;
-import com.n4u1.AQA.AQA.dialog.FindPasswordFailDialog;
 import com.n4u1.AQA.AQA.dialog.NotEmailDialog;
 import com.n4u1.AQA.AQA.dialog.NotGenderDialog;
 import com.n4u1.AQA.AQA.dialog.NotIdlDialog;
 import com.n4u1.AQA.AQA.dialog.NullEmailDialog;
 import com.n4u1.AQA.AQA.dialog.PrivacyPolicyActivity;
 import com.n4u1.AQA.AQA.dialog.ShortIdDialog;
+import com.n4u1.AQA.AQA.splash.SplashCreateUserActivity;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;

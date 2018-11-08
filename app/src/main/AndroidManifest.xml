@@ -26,7 +26,7 @@
             android:name="com.google.android.gms.ads.AD_MANAGER_APP"
             android:value="true" />
 
-        <activity android:name=".views.SplashActivity">
+        <activity android:name=".splash.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -91,7 +91,7 @@
             android:name=".dialog.UserAlarmDialog"
             android:theme="@style/Theme.DialogFragmentActivity" />
         <activity android:name=".views.WhenNotiClickActivity" />
-        <activity android:name=".views.SplashLoadingActivity" />
+        <activity android:name=".splash.SplashLoadingActivity" />
         <activity
             android:name=".views.UserClassInfoActivity"
             android:theme="@style/Theme.DialogFragmentActivity" />
@@ -107,10 +107,12 @@
             android:theme="@style/Theme.DialogFragmentActivity" />
         <activity android:name=".views.PrivacyPolicyDetailActivity" />
         <activity android:name=".views.ServicePolicyActivity" />
-        <activity android:name=".views.SplashCreateUserActivity" />
+        <activity android:name=".splash.SplashCreateUserActivity" />
         <activity android:name=".views.AqaIsActivity" />
         <activity android:name=".views.CreateUserEmailActivity" />
-        <activity android:name=".views.CreateUserIdActivity"></activity>
+        <activity android:name=".views.CreateUserIdActivity" />
+        <activity android:name=".views.CreateUserAGActivity" />
+        <activity android:name=".splash.SplashGuidActivity"></activity>
     </application>
 
 </manifest>

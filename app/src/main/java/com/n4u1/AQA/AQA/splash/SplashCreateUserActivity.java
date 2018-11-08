@@ -1,4 +1,4 @@
-package com.n4u1.AQA.AQA.views;
+package com.n4u1.AQA.AQA.splash;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -7,7 +7,6 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.google.android.gms.ads.identifier.AdvertisingIdClient;
@@ -22,14 +21,9 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.n4u1.AQA.AQA.R;
 import com.n4u1.AQA.AQA.dialog.GUIDFailDialog;
 import com.n4u1.AQA.AQA.models.User;
+import com.n4u1.AQA.AQA.views.HomeActivity;
 
 import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
-import java.util.TimeZone;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class SplashCreateUserActivity extends AppCompatActivity implements GUIDFailDialog.GUIDFailDialogListener {
 

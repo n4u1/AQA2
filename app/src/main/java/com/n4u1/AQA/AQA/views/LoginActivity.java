@@ -1,33 +1,17 @@
 package com.n4u1.AQA.AQA.views;
 
-import android.Manifest;
 import android.app.Activity;
-import android.content.Context;
-import android.content.CursorLoader;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.os.AsyncTask;
-import android.os.Build;
-import android.os.Environment;
 import android.os.Handler;
-import android.provider.MediaStore;
 import android.support.annotation.NonNull;
-import android.support.design.widget.Snackbar;
-import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
-import android.text.Html;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -38,49 +22,31 @@ import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.iid.FirebaseInstanceId;
 import com.n4u1.AQA.AQA.R;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
 import com.n4u1.AQA.AQA.dialog.AgainPasswordDialog;
-import com.n4u1.AQA.AQA.dialog.BaseLoadingActivity;
 import com.n4u1.AQA.AQA.dialog.GUIDFailDialog;
 import com.n4u1.AQA.AQA.dialog.NotEmailDialog;
 import com.n4u1.AQA.AQA.dialog.NotInputDialog;
 import com.n4u1.AQA.AQA.dialog.PreviewDialog;
 import com.n4u1.AQA.AQA.dialog.PrivacyPolicyActivity;
-import com.n4u1.AQA.AQA.util.Common;
-import com.n4u1.AQA.AQA.util.ImageSaver;
+import com.n4u1.AQA.AQA.splash.SplashGuidActivity;
+import com.n4u1.AQA.AQA.splash.SplashLoadingActivity;
 
 
-import org.w3c.dom.Text;
-
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static java.security.AccessController.getContext;
-
 
 public class LoginActivity extends AppCompatActivity implements PreviewDialog.PreviewDialogListener,
         GUIDFailDialog.GUIDFailDialogListener {
     private FirebaseAuth mAuth;
-    private FirebaseDatabase mDatabase;
+
     private long backPressedTime = 0;
     EditText editTextEmail;
     EditText editTextPassword;
@@ -93,7 +59,6 @@ public class LoginActivity extends AppCompatActivity implements PreviewDialog.Pr
 
         TextView textView_hidden = findViewById(R.id.textView_hidden);
         TextView textView_privacy_policy = findViewById(R.id.textView_privacy_policy);
-
         LinearLayout linearLayout_createUser = findViewById(R.id.linearLayout_createUser);
         LinearLayout linearLayout_loginUser = findViewById(R.id.linearLayout_loginUser);
         LinearLayout linearLayout_findUser = findViewById(R.id.linearLayout_findUser);
@@ -102,7 +67,6 @@ public class LoginActivity extends AppCompatActivity implements PreviewDialog.Pr
 
 
         mAuth = FirebaseAuth.getInstance();
-        mDatabase = FirebaseDatabase.getInstance();
         editTextEmail = findViewById(R.id.editText_email);
         editTextPassword = findViewById(R.id.editText_password);
 
@@ -142,7 +106,7 @@ public class LoginActivity extends AppCompatActivity implements PreviewDialog.Pr
         linearLayout_createUser.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(LoginActivity.this, CreateUserEmailActivity.class);
+                Intent intent = new Intent(LoginActivity.this, SplashGuidActivity.class);
                 startActivity(intent);
             }
         });
