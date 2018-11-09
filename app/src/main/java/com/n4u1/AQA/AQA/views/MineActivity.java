@@ -11,6 +11,7 @@ import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -89,9 +90,10 @@ public class MineActivity extends AppCompatActivity implements LogOutDialog.LogO
 //        AdView adView = findViewById(R.id.adView);
         final TextView mineActivity_textView_id = findViewById(R.id.mineActivity_textView_id);
         final TextView mineActivity_textView_userClass = findViewById(R.id.mineActivity_textView_userClass);
-        TextView mineActivity_textView_account = findViewById(R.id.mineActivity_textView_account);
         final TextView mineActivity_textView_gender = findViewById(R.id.mineActivity_textView_gender);
         final TextView mineActivity_textView_age = findViewById(R.id.mineActivity_textView_age);
+        final ImageView mineActivity_imageView_userClass = findViewById(R.id.mineActivity_imageView_userClass);
+        TextView mineActivity_textView_account = findViewById(R.id.mineActivity_textView_account);
         LinearLayout mineActivity_linearLayout_email = findViewById(R.id.mineActivity_linearLayout_email);
         LinearLayout mineActivity_linearLayout_like = findViewById(R.id.mineActivity_linearLayout_like);
         LinearLayout mineActivity_linearLayout_pickContent = findViewById(R.id.mineActivity_linearLayout_pickContent);
@@ -106,7 +108,6 @@ public class MineActivity extends AppCompatActivity implements LogOutDialog.LogO
         LinearLayout mineActivity_linearLayout_privacyPolicy = findViewById(R.id.mineActivity_linearLayout_privacyPolicy);
         LinearLayout mineActivity_linearLayout_version = findViewById(R.id.mineActivity_linearLayout_version);
         LinearLayout mineActivity_linearLayout_userClass = findViewById(R.id.mineActivity_linearLayout_userClass);
-        final ImageView mineActivity_imageView_userClass = findViewById(R.id.mineActivity_imageView_userClass);
         LinearLayout mineActivity_linearLayout_password = findViewById(R.id.mineActivity_linearLayout_password);
 
 
@@ -137,16 +138,21 @@ public class MineActivity extends AppCompatActivity implements LogOutDialog.LogO
         //성별 나이 아이디 가져오기
         mDatabaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                Map<String, Object> users = (Map<String, Object>) dataSnapshot.getValue();
+            public void onDataChange(@Nullable DataSnapshot dataSnapshot) {
+                try {
+                    Map<String, Object> users = (Map<String, Object>) dataSnapshot.getValue();
+                    mineActivity_textView_gender.setText(String.valueOf(users.get("sex")));
+                    mineActivity_textView_age.setText(String.valueOf(users.get("age")));
+                    mineActivity_textView_id.setText(String.valueOf(users.get("userId")));
+                } catch (Exception e) {
 
-                mineActivity_textView_gender.setText(String.valueOf(users.get("sex")));
-                mineActivity_textView_age.setText(String.valueOf(users.get("age")));
-                mineActivity_textView_id.setText(String.valueOf(users.get("userId")));
+                }
+
+
 
             }
             @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
+            public void onCancelled(@Nullable DatabaseError databaseError) {
 
             }
         });
@@ -154,35 +160,40 @@ public class MineActivity extends AppCompatActivity implements LogOutDialog.LogO
         //Q포인트 점수,
         mDatabaseReference.child("userClass").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                int userClass = Integer.parseInt(dataSnapshot.getValue().toString());
-                mineActivity_textView_userClass.setText(String.valueOf(userClass));
-                if (userClass >= 0 && userClass < 50) {
-                    mineActivity_imageView_userClass.setImageResource(R.drawable.q_class_red_1);
-                } else if (userClass >= 50 && userClass < 100) {
-                    mineActivity_imageView_userClass.setImageResource(R.drawable.q_class_red_2);
-                } else if (userClass >= 100 && userClass < 150) {
-                    mineActivity_imageView_userClass.setImageResource(R.drawable.q_class_orange_1);
-                } else if (userClass >= 150 && userClass < 200) {
-                    mineActivity_imageView_userClass.setImageResource(R.drawable.q_class_orange_2);
-                } else if (userClass >= 200 && userClass < 250) {
-                    mineActivity_imageView_userClass.setImageResource(R.drawable.q_class_yellow_1);
-                } else if (userClass >= 250 && userClass < 300) {
-                    mineActivity_imageView_userClass.setImageResource(R.drawable.q_class_yellow_2);
-                } else if (userClass >= 300 && userClass < 350) {
-                    mineActivity_imageView_userClass.setImageResource(R.drawable.q_class_green_1);
-                } else if (userClass >= 350 && userClass < 400) {
-                    mineActivity_imageView_userClass.setImageResource(R.drawable.q_class_green_2);
-                } else if (userClass >= 400 && userClass < 450) {
-                    mineActivity_imageView_userClass.setImageResource(R.drawable.q_class_blue_1);
-                } else if (userClass >= 450 && userClass < 501) {
-                    mineActivity_imageView_userClass.setImageResource(R.drawable.q_class_blue_2);
-                } else if (userClass >= 501) {
-                    mineActivity_imageView_userClass.setImageResource(R.drawable.q_class_black);
+            public void onDataChange(@Nullable DataSnapshot dataSnapshot) {
+                try {
+                    int userClass = Integer.parseInt(dataSnapshot.getValue().toString());
+                    mineActivity_textView_userClass.setText(String.valueOf(userClass));
+                    if (userClass >= 0 && userClass < 50) {
+                        mineActivity_imageView_userClass.setImageResource(R.drawable.q_class_red_1);
+                    } else if (userClass >= 50 && userClass < 100) {
+                        mineActivity_imageView_userClass.setImageResource(R.drawable.q_class_red_2);
+                    } else if (userClass >= 100 && userClass < 150) {
+                        mineActivity_imageView_userClass.setImageResource(R.drawable.q_class_orange_1);
+                    } else if (userClass >= 150 && userClass < 200) {
+                        mineActivity_imageView_userClass.setImageResource(R.drawable.q_class_orange_2);
+                    } else if (userClass >= 200 && userClass < 250) {
+                        mineActivity_imageView_userClass.setImageResource(R.drawable.q_class_yellow_1);
+                    } else if (userClass >= 250 && userClass < 300) {
+                        mineActivity_imageView_userClass.setImageResource(R.drawable.q_class_yellow_2);
+                    } else if (userClass >= 300 && userClass < 350) {
+                        mineActivity_imageView_userClass.setImageResource(R.drawable.q_class_green_1);
+                    } else if (userClass >= 350 && userClass < 400) {
+                        mineActivity_imageView_userClass.setImageResource(R.drawable.q_class_green_2);
+                    } else if (userClass >= 400 && userClass < 450) {
+                        mineActivity_imageView_userClass.setImageResource(R.drawable.q_class_blue_1);
+                    } else if (userClass >= 450 && userClass < 501) {
+                        mineActivity_imageView_userClass.setImageResource(R.drawable.q_class_blue_2);
+                    } else if (userClass >= 501) {
+                        mineActivity_imageView_userClass.setImageResource(R.drawable.q_class_black);
+                    }
+                } catch (Exception e) {
+
                 }
+
             }
             @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
+            public void onCancelled(@Nullable DatabaseError databaseError) {
 
             }
         });
@@ -349,7 +360,6 @@ public class MineActivity extends AppCompatActivity implements LogOutDialog.LogO
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.mine_menu, menu);
         return true;
-
     }
 
     @Override

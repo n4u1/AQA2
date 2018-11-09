@@ -95,7 +95,7 @@ public class WhenNotiClickActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            Log.d("lkj auth successsssssssssss", "login successssssssssss  ");
+                            Log.d("lkj auth successsssss", "login successssssssssss  ");
 //
 //                            SharedPreferences.Editor editor = sharedPref.edit();
 //                            editor.putString("com.n4u1.AQA.fireBaseUid", email);
@@ -113,7 +113,7 @@ public class WhenNotiClickActivity extends AppCompatActivity {
 
                         } else {
                             // If sign in fails, display a message to the user.
-                            Toast.makeText(getApplicationContext(), "User Login Failllllllllllllllll", Toast.LENGTH_LONG).show();
+                            Toast.makeText(getApplicationContext(), "User Login Faillllllllllll", Toast.LENGTH_LONG).show();
                         }
                     }
                 });

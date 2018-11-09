@@ -1,5 +1,6 @@
 package com.n4u1.AQA.AQA.dialog;
 
+import android.app.Dialog;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -14,8 +15,6 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-import com.github.mikephil.charting.utils.ColorTemplate;
-import com.n4u1.AQA.AQA.R;
 import com.github.mikephil.charting.charts.HorizontalBarChart;
 import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.XAxis;
@@ -26,13 +25,15 @@ import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 import com.github.mikephil.charting.formatter.IValueFormatter;
+import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.utils.ViewPortHandler;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.n4u1.AQA.AQA.views.PollSingleActivity;
+import com.n4u1.AQA.AQA.R;
+import com.n4u1.AQA.AQA.views.PollRankingActivity;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -40,8 +41,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-public class PollResultDialog extends DialogFragment {
-    public PollResultDialog() {
+public class PollResultAnonymousDialog extends DialogFragment {
+    public PollResultAnonymousDialog() {
     }
 
     private DatabaseReference mDatabaseReference;
@@ -52,18 +53,24 @@ public class PollResultDialog extends DialogFragment {
     String contentKey;
     String statisticsCode;
     String selectedDivide = "전 체";
-    AppCompatSpinner pollResultDialog_spinner_divide;
-    TextView pollResultDialog_close;
+    //    String ageRange = "전 체";
     List<String> divideList = new ArrayList<>();
+    TextView pollResultDialog_close;
 
+
+    @NonNull
+    @Override
+    public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
+        return super.onCreateDialog(savedInstanceState);
+    }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_dialog_pollresult, container);
+        View view = inflater.inflate(R.layout.fragment_dialog_anonymous_pollresult, container);
         HorizontalBarChart pollActivity_horizontalBarChart_result = view.findViewById(R.id.pollActivity_horizontalBarChart_result);
 //        pollResultDialog_spinner_age = view.findViewById(R.id.pollResultDialog_spinner_age);
-        pollResultDialog_spinner_divide = view.findViewById(R.id.pollResultDialog_spinner_divide);
+        AppCompatSpinner pollResultDialog_spinner_divide = view.findViewById(R.id.pollResultDialog_spinner_divide);
         pollResultDialog_close = view.findViewById(R.id.pollResultDialog_close);
 
         divideList.add("전 체");
@@ -114,6 +121,7 @@ public class PollResultDialog extends DialogFragment {
         pollResultDialog_spinner_divide.setAdapter(selectedDivideAdapter);
 
 
+        //스피너클릭해서 차트재설정
         pollResultDialog_spinner_divide.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -128,38 +136,20 @@ public class PollResultDialog extends DialogFragment {
             }
         });
 
-//
-//        pollResultDialog_spinner_age.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-//            @Override
-//            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-//                ageRange = ageRangeList.get(position);
-//                Log.d("lkj in ag", ageRange);
-//                Log.d("lkj in ag_", selectedDivide);
-//                parsingData(selectedDivide, ageRange);
-//            }
-//
-//            @Override
-//            public void onNothingSelected(AdapterView<?> parent) {
-//
-//            }
-//        });
-
         //차트클릭시 다이얼로그 닫기
         pollActivity_horizontalBarChart_result.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                PollRankingActivity pollRankingActivity = (PollRankingActivity)getActivity();
-//                pollRankingActivity.refreshActivity();
-                PollSingleActivity pollSingleActivity = (PollSingleActivity)getActivity();
-                pollSingleActivity.refreshActivity();
+                PollRankingActivity pollRankingActivity = (PollRankingActivity)getActivity();
+                pollRankingActivity.refreshActivity();
                 dismiss();
             }
         });
         pollResultDialog_close.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                PollSingleActivity pollSingleActivity = (PollSingleActivity)getActivity();
-                pollSingleActivity.refreshActivity();
+                PollRankingActivity pollRankingActivity = (PollRankingActivity)getActivity();
+                pollRankingActivity.refreshActivity();
                 dismiss();
             }
         });
@@ -309,12 +299,12 @@ public class PollResultDialog extends DialogFragment {
 //                set1.setColor(Color.GRAY);
                 set1.setColors(ColorTemplate.LIBERTY_COLORS);
 //                set1.setColors(0xff4485c9);
-//                set1.setColors(0xFF949494);
 
                 BarData data1 = new BarData(set1);
-                data1.setBarWidth(0.7f); //바 크기
-                data1.setValueTextSize(12f); //결과값 크기
+                data1.setBarWidth(0.5f); //바 크기
+                data1.setValueTextSize(15f); //결과값 크기
                 data1.setValueTextColor(Color.GRAY);
+
 
 
                 ResultValueFormatter resultValueFormatter = new ResultValueFormatter();
@@ -442,6 +432,7 @@ public class PollResultDialog extends DialogFragment {
 
         if (gR.equals("전 체")) {
             setChartFullData(imageN, contentKey, getView());
+            Log.d("lkj parsingData", "초기상태"); //처음 onCreate에서 차트 만들지 말고 여기서 한번만 만들면 될듯
             //10대전체, 20대전체 만들고 선택시 초중후 합치는 로직으로?
         } else {
             int[] tmpStatistics_divide = new int[30];

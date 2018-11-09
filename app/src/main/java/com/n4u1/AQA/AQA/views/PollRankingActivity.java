@@ -2255,40 +2255,6 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
     }
 
 
-    public class ResultValueFormatter implements IValueFormatter {
-        private DecimalFormat mFormat;
-
-        public ResultValueFormatter() {
-            mFormat = new DecimalFormat("###,###,##0");
-        }
-
-        @Override
-        public String getFormattedValue(float value, Entry entry, int dataSetIndex, ViewPortHandler viewPortHandler) {
-            return mFormat.format(value) + "표";
-        }
-    }
-
-    public class CategoryBarChartXaxisFormatter implements IAxisValueFormatter {
-        ArrayList<String> mValues;
-
-        public CategoryBarChartXaxisFormatter(ArrayList<String> values) {
-            this.mValues = values;
-        }
-
-        @Override
-        public String getFormattedValue(float value, AxisBase axis) {
-
-            int val = (int) value;
-            String label = "";
-            if (val >= 0 && val < mValues.size()) {
-                label = mValues.get(val);
-            } else {
-                label = "";
-            }
-
-            return label;
-        }
-    }
 
     //userPoint(userClass) 점수추가
     public void userPointAdd(final int point) {
@@ -2861,6 +2827,7 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
 
     @Override
     public void ContentDeleteDialogCallback(String string) {
+        //게시글 삭제
         if (string.equals("확인")) {
             FirebaseUser mUser = FirebaseAuth.getInstance().getCurrentUser();
             DatabaseReference mReference = FirebaseDatabase.getInstance().getReference();

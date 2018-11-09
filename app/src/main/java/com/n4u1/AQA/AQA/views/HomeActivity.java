@@ -44,6 +44,7 @@ import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.n4u1.AQA.AQA.R;
 import com.n4u1.AQA.AQA.dialog.NotEmailDialog;
 import com.n4u1.AQA.AQA.dialog.NotFoundGUIDDialog;
@@ -116,9 +117,6 @@ public class HomeActivity extends AppCompatActivity implements SwipeRefreshLayou
         }
 
 
-
-        String uniqueID = UUID.randomUUID().toString();
-        Log.d("lkj uuid", uniqueID);
 
 
 

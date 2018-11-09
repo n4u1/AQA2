@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.widget.Toast;
 
 import com.google.android.gms.ads.identifier.AdvertisingIdClient;
@@ -26,30 +27,35 @@ import com.n4u1.AQA.AQA.views.LoginActivity;
 import java.io.IOException;
 
 public class SplashGuidActivity extends AppCompatActivity {
-    private FirebaseAuth mAuth;
-    private DatabaseReference mDatabaseRef;
+
+    String userLoginFlag = "";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash_guid);
-        mAuth = FirebaseAuth.getInstance();
-        mDatabaseRef = FirebaseDatabase.getInstance().getReference();
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+
+        userLoginFlag = getIntent().getStringExtra("userLoginFlag");
 
         mAuth.signInAnonymously().addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                if (task.isSuccessful()) {
 
-                            GUIDAsyncTask guidAsyncTask = new GUIDAsyncTask();
-                            guidAsyncTask.execute();
+                    GUIDAsyncTask guidAsyncTask = new GUIDAsyncTask();
+                    guidAsyncTask.execute();
 
-                        } else {
+                } else {
+                    Toast toast = Toast.makeText(getApplicationContext(), "일시적 오류입니다. 다시 시도 해주세요.", Toast.LENGTH_SHORT);
+                    toast.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL, 0, 0);
+                    toast.show();
+                    finish();
+                }
+            }
+        });
 
-                        }
-                    }
-                });
     }
-
 
 
     private class GUIDAsyncTask extends AsyncTask<Void, Void, String> {
@@ -77,16 +83,25 @@ public class SplashGuidActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(final String advertId) {
             Log.d("lkj advertId", advertId);
-            if (advertId != null && advertId.trim().isEmpty()) {
-                Toast.makeText(getApplicationContext(), "다시 시도해주세요.", Toast.LENGTH_LONG).show();
-                onBackPressed();
-            } else {
-                //guid 찾음
-                Intent intent = new Intent(SplashGuidActivity.this, CreateUserEmailActivity.class);
-                intent.putExtra("guid", advertId);
+            if (userLoginFlag.equals("preView")) {
+                Intent intent = new Intent(SplashGuidActivity.this, HomeActivity.class);
                 SplashGuidActivity.this.finish();
                 startActivity(intent);
+            } else {
+                if (advertId != null && advertId.trim().isEmpty()) {
+                    Toast.makeText(getApplicationContext(), "다시 시도해주세요.", Toast.LENGTH_LONG).show();
+                    onBackPressed();
+                } else {
+                    //guid 찾음
+                    Intent intent = new Intent(SplashGuidActivity.this, CreateUserEmailActivity.class);
+                    intent.putExtra("guid", advertId);
+                    SplashGuidActivity.this.finish();
+                    startActivity(intent);
+                }
             }
+
         }
+
+
     }
 }

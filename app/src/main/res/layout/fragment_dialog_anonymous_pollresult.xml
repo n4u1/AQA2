@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="350dp"
+    android:layout_height="480dp"
+    android:orientation="vertical"
+    >
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <android.support.v7.widget.AppCompatSpinner
+            android:id="@+id/pollResultDialog_spinner_divide"
+            android:layout_width="280dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="34dp"/>
+        <TextView
+            android:text="결과 예 입니다.\n 로그인하시면 확인할 수 있습니다."
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <com.github.mikephil.charting.charts.HorizontalBarChart
+            android:id="@+id/pollActivity_horizontalBarChart_result"
+            android:paddingRight="8dp"
+            android:layout_width="300dp"
+            android:layout_height="350dp"
+            android:layout_gravity="center"/>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#efefef"/>
+        <TextView
+            android:id="@+id/pollResultDialog_close"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:textSize="16dp"
+            android:text="닫 기"
+            android:textColor="#6c6c6c"
+            android:layout_width="match_parent"
+            android:layout_height="48dp" />
+
+
+        <!--<com.github.mikephil.charting.charts.HorizontalBarChart-->
+        <!--android:id="@+id/pollActivity_horizontalBarChart_result1"-->
+        <!--android:layout_width="300dp"-->
+        <!--android:layout_height="300dp" />-->
+
+    </LinearLayout>
+
+
+</LinearLayout>

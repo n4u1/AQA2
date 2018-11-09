@@ -99,6 +99,7 @@ public class CreateUserIdActivity extends AppCompatActivity {
                     }
 
                 }
+                CURRENT_ID_CHECK_FLAG = true;
                 return true;
 
             }

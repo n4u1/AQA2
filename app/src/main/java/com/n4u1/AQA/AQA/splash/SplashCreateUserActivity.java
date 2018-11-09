@@ -30,8 +30,7 @@ public class SplashCreateUserActivity extends AppCompatActivity implements GUIDF
 
     private FirebaseAuth mAuth;
     private DatabaseReference mDatabase;
-
-    private String gender, email, uid, userId, password;
+    private String gender, userId, password;
     private int age;
 
 
@@ -43,9 +42,8 @@ public class SplashCreateUserActivity extends AppCompatActivity implements GUIDF
         mAuth = FirebaseAuth.getInstance();
         mDatabase = FirebaseDatabase.getInstance().getReference();
 
+        String email = getIntent().getStringExtra("email");
         gender = getIntent().getStringExtra("gender");
-        email = getIntent().getStringExtra("email");
-        uid = getIntent().getStringExtra("uid");
         userId = getIntent().getStringExtra("userId");
         password = getIntent().getStringExtra("password");
         age = getIntent().getIntExtra("age", 0);
@@ -62,30 +60,28 @@ public class SplashCreateUserActivity extends AppCompatActivity implements GUIDF
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            // Sign in success, update UI with the signed-in user's information
-//                            Toast.makeText(getApplicationContext(), "User Create Success", Toast.LENGTH_LONG).show();
                             String email = mAuth.getCurrentUser().getEmail();
                             String uid = mAuth.getCurrentUser().getUid();
                             GUIDAsyncTask guidAsyncTask = new GUIDAsyncTask();
                             guidAsyncTask.execute();
-                            writeNewUser(null, gender, uid, email, age, userId);
+                            writeNewUser(gender, uid, email, age, userId);
 
                         } else {
                             // If sign in fails, display a message to the user.
                             Toast.makeText(getApplicationContext(), "User Create Fail : " + task.getException(), Toast.LENGTH_LONG).show();
                             Log.d("getException", "createUserWithEmail:failure", task.getException());
+                            finish();
                         }
                     }
                 });
     }
 
 
-    private void writeNewUser(String deviceName, String sex, String uid, String email, int age, String userId) {
+    private void writeNewUser(String sex, String uid, String email, int age, String userId) {
         User user = new User();
         user.setUserId(userId);
         user.setAge(age);
         user.setSex(sex);
-//        user.setJob(job);
         user.setUid(uid);
         user.setEmail(email);
         user.setUserClass(0);

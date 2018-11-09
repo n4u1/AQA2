@@ -107,6 +107,7 @@ public class LoginActivity extends AppCompatActivity implements PreviewDialog.Pr
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(LoginActivity.this, SplashGuidActivity.class);
+                intent.putExtra("userLoginFlag", "createUser");
                 startActivity(intent);
             }
         });
@@ -120,6 +121,7 @@ public class LoginActivity extends AppCompatActivity implements PreviewDialog.Pr
                 startActivity(findIntent);
             }
         });
+
 
 
         //로그인하기
@@ -153,33 +155,6 @@ public class LoginActivity extends AppCompatActivity implements PreviewDialog.Pr
         loadingIntent.putExtra("id", email);
         loadingIntent.putExtra("pw", password);
         startActivity(loadingIntent);
-
-//        mAuth.signInWithEmailAndPassword(email, password)
-//                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-//                    @Override
-//                    public void onComplete(@NonNull Task<AuthResult> task) {
-//                        if (task.isSuccessful()) {
-//                            try {
-//
-//                                Log.d("lkj current uid", mAuth.getCurrentUser().getUid());
-//                                GUIDAsyncTask guidAsyncTask = new GUIDAsyncTask();
-//                                guidAsyncTask.execute();
-//
-//                            } catch (Exception e) {
-//                                e.printStackTrace();
-//                            }
-//
-////                            Intent intent = new Intent(LoginActivity.this, SplashLoadingActivity.class);
-////                            startActivity(intent);
-////                            finish();
-//                        } else {
-//                            // If sign in fails, display a message to the user.
-//                            Handler hd = new Handler();
-//                            hd.postDelayed(new splashhandlerLogin(), 3500);
-//                            Toast.makeText(getApplicationContext(), "User Login Fail", Toast.LENGTH_LONG).show();
-//                        }
-//                    }
-//                });
     }
 
 
@@ -195,89 +170,12 @@ public class LoginActivity extends AppCompatActivity implements PreviewDialog.Pr
     @Override
     public void PreviewDialogCallback(String string) {
         if (string.equals("확인")) {
-            Toast toast = Toast.makeText(this, "준비중 입니다.", Toast.LENGTH_SHORT);
-            toast.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL, 0, 0);
-            toast.show();
-        }
-    }
-
-
-
-    private class GUIDAsyncTask extends AsyncTask<Void, Void, String> {
-        @Override
-        protected String doInBackground(Void... voids) {
-            AdvertisingIdClient.Info idInfo = null;
-            try {
-                idInfo = AdvertisingIdClient.getAdvertisingIdInfo(getApplicationContext());
-            } catch (GooglePlayServicesNotAvailableException e) {
-                e.printStackTrace();
-            } catch (GooglePlayServicesRepairableException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            String advertId = null;
-            try {
-                advertId = idInfo.getId();
-            } catch (NullPointerException e) {
-                e.printStackTrace();
-            }
-            Log.d("lkj advertId1", advertId);
-            return advertId;
-        }
-
-        @Override
-        protected void onPostExecute(final String advertId) {
-            Log.d("lkj advertId2", advertId);
-            if (advertId != null && advertId.trim().isEmpty()) {
-                Toast toast = Toast.makeText(getApplicationContext(), "구글 광고ID를 찾을 수 없습니다.", Toast.LENGTH_SHORT);
-                toast.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL, 0, 0);
-                toast.show();
-            } else {
-                DatabaseReference mDatabaseRef;
-                mDatabaseRef = FirebaseDatabase.getInstance().getReference();
-                mDatabaseRef.child("users").child(mAuth.getCurrentUser().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        Map<String, Object> user = (Map<String, Object>) dataSnapshot.getValue();
-                        if (user.get("guid").toString().equals(advertId)) {
-                            SharedPreferences pref = getSharedPreferences("com.n4u1.AQA", MODE_PRIVATE);
-                            SharedPreferences.Editor editor = pref.edit();
-                            editor.putString("com.n4u1.AQA.fireBaseUserEmail", editTextEmail.getText().toString());
-                            editor.putString("com.n4u1.AQA.fireBaseUserPassword", editTextPassword.getText().toString());
-                            editor.commit();
-
-                            Handler hd = new Handler();
-                            hd.postDelayed(new splashhandlerHome(), 3500);
-                        } else {
-                            GUIDFailDialog guidFailDialog = new GUIDFailDialog();
-                            guidFailDialog.show(getSupportFragmentManager(), "guidFailDialog");
-                        }
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                    }
-                });
-            }
-        }
-    }
-
-
-    private class splashhandlerLogin implements Runnable {
-        public void run() {
-            startActivity(new Intent(getApplication(), LoginActivity.class)); // 로딩이 끝난후 이동할 Activity
-            LoginActivity.this.finish(); // 로딩페이지 Activity Stack에서 제거
-        }
-
-    }
-
-
-    private class splashhandlerHome implements Runnable {
-        public void run() {
-            startActivity(new Intent(getApplication(), HomeActivity.class)); // 로딩이 끝난후 이동할 Activity
-            LoginActivity.this.finish(); // 로딩페이지 Activity Stack에서 제거
+            Intent intent = new Intent(LoginActivity.this, SplashGuidActivity.class);
+            intent.putExtra("userLoginFlag", "preView");
+            startActivity(intent);
+//            Toast toast = Toast.makeText(this, "준비중 입니다.", Toast.LENGTH_SHORT);
+//            toast.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL, 0, 0);
+//            toast.show();
         }
     }
 

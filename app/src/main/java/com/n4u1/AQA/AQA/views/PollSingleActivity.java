@@ -42,6 +42,7 @@ import com.n4u1.AQA.AQA.R;
 import com.n4u1.AQA.AQA.dialog.AlarmDoneDialog;
 import com.n4u1.AQA.AQA.dialog.ContentDeleteDialog;
 import com.n4u1.AQA.AQA.dialog.DeleteModificationActivity;
+import com.n4u1.AQA.AQA.dialog.PollResultAnonymousDialog;
 import com.n4u1.AQA.AQA.dialog.PollResultDialog;
 import com.n4u1.AQA.AQA.dialog.UserAlarmDialog;
 import com.n4u1.AQA.AQA.models.ContentDTO;
@@ -152,20 +153,20 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
             getSupportActionBar().setDisplayShowHomeEnabled(true);
         }
 
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
-        SharedPreferences pref = getSharedPreferences("com.n4u1.AQA", MODE_PRIVATE);
-        String spUserEmail = pref.getString("com.n4u1.AQA.fireBaseUserEmail", "a");
-        String spUserPassword = pref.getString("com.n4u1.AQA.fireBaseUserPassword", "b");
-
-        AuthCredential authCredential = EmailAuthProvider.getCredential(spUserEmail, spUserPassword);
-
-        user.reauthenticate(authCredential).addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                Log.d("lkj reauthenticate", "User re-authenticated.");
-            }
-        });
+//        SharedPreferences pref = getSharedPreferences("com.n4u1.AQA", MODE_PRIVATE);
+//        String spUserEmail = pref.getString("com.n4u1.AQA.fireBaseUserEmail", "a");
+//        String spUserPassword = pref.getString("com.n4u1.AQA.fireBaseUserPassword", "b");
+//
+//        AuthCredential authCredential = EmailAuthProvider.getCredential(spUserEmail, spUserPassword);
+//
+//        user.reauthenticate(authCredential).addOnCompleteListener(new OnCompleteListener<Void>() {
+//            @Override
+//            public void onComplete(@NonNull Task<Void> task) {
+//                Log.d("lkj reauthenticate", "User re-authenticated.");
+//            }
+//        });
 
 
 
@@ -438,29 +439,31 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
         pollActivity_fab_result.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                FirebaseAuth mAuth = FirebaseAuth.getInstance();
+                FirebaseUser mUser = mAuth.getCurrentUser();
+                if (mUser.getEmail().isEmpty()) {
+                    PollResultAnonymousDialog pollResultAnonymousDialog = new PollResultAnonymousDialog();
+                    pollResultAnonymousDialog.show(getSupportFragmentManager(), "pollResultAnonymousDialog ");
+                } else {
+                    mDatabaseReferencePicker.child(auth.getCurrentUser().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            Map<String, Object> user = (Map<String, Object>) dataSnapshot.getValue();
+                            Object object = user.get("age");
+                            int currentAge = Integer.parseInt(object.toString());
+                            String currentGender = user.get("sex").toString();
 
+                            onResultClicked(firebaseDatabase.getReference().child("user_contents").child(contentKey), currentAge, currentGender);
 
-                mDatabaseReferencePicker.child(auth.getCurrentUser().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        Map<String, Object> user = (Map<String, Object>) dataSnapshot.getValue();
-                        Object object = user.get("age");
-                        int currentAge = Integer.parseInt(object.toString());
-                        String currentGender = user.get("sex").toString();
+                        }
 
-                        onResultClicked(firebaseDatabase.getReference().child("user_contents").child(contentKey), currentAge, currentGender);
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
 
-//                        issueContents 테스트 디비 입력용
-//                        long issueDate = getCurrentDate();
-//                        issueMap.put(String.valueOf(issueDate), contentKey);
-//                        firebaseDatabase.getReference().child("issueContents").child(String.valueOf(issueDate)).setValue(issueMap);
-                    }
+                        }
+                    });
+                }
 
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                    }
-                });
 
             }
         });
@@ -3269,6 +3272,7 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
 
     @Override
     public void ContentDeleteDialogCallback(String string) {
+        //게시글 삭제
         if (string.equals("확인")) {
             FirebaseUser mUser = FirebaseAuth.getInstance().getCurrentUser();
             DatabaseReference mReference = FirebaseDatabase.getInstance().getReference();

@@ -61,7 +61,7 @@ public class CreateUserEmailActivity extends AppCompatActivity implements GuidCh
                     Map<String, Object> user = (Map<String, Object>) usersIterator.next().getValue();
                     String guid_ = String.valueOf(user.get("guid"));
                     if (guid_.equals(guid)) {
-                        GUID_CHECK_FLAG = false;
+                        GUID_CHECK_FLAG = true;
                     }
                 }
             }
@@ -136,11 +136,11 @@ public class CreateUserEmailActivity extends AppCompatActivity implements GuidCh
 
     //이메일 체크
     private boolean checkEmail() {
-//        if (!GUID_CHECK_FLAG) {
-//            GuidCheckDialog guidCheckDialog = new GuidCheckDialog();
-//            guidCheckDialog.show(getSupportFragmentManager(), "guidCheckDialog");
-//            return false;
-//        }
+        if (!GUID_CHECK_FLAG) {
+            GuidCheckDialog guidCheckDialog = new GuidCheckDialog();
+            guidCheckDialog.show(getSupportFragmentManager(), "guidCheckDialog");
+            return false;
+        }
         if (createUserEmail_editText_email.getText().toString().isEmpty()) {
             NullEmailDialog nullEmailDialog = new NullEmailDialog();
             nullEmailDialog.show(getSupportFragmentManager(), "nullEmailDialog");
