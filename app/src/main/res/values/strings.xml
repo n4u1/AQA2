@@ -90,6 +90,11 @@
     </string-array>
 
 
+    <string-array name="MustLogin">
+        <item>로그인 해야합니다.</item>
+    </string-array>
+
+
     <string-array name="ShareAuthInfo">
         <item></item>
     </string-array>

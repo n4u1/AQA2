@@ -21,6 +21,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.n4u1.AQA.AQA.R;
+import com.n4u1.AQA.AQA.dialog.MustLoginDialog;
 import com.n4u1.AQA.AQA.models.SuggestDTO;
 import com.n4u1.AQA.AQA.recyclerview.SuggestAdapter;
 
@@ -107,8 +108,13 @@ public class SuggestActivity extends AppCompatActivity {
         mDatabaseReference.child("users").child(mUser.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                Map<String, Object> user = (Map<String, Object>) dataSnapshot.getValue();
-                userId = user.get("userId").toString();
+                if (mUser.isAnonymous()) {
+                    userId = "손님";
+                } else {
+                    Map<String, Object> user = (Map<String, Object>) dataSnapshot.getValue();
+                    userId = user.get("userId").toString();
+                }
+
             }
 
             @Override
@@ -158,10 +164,16 @@ public class SuggestActivity extends AppCompatActivity {
         suggestActivity_fab_addContent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (mUser.isAnonymous()) {
+                    MustLoginDialog mustLoginDialog = new MustLoginDialog();
+                    mustLoginDialog.show(getSupportFragmentManager(), "mustLoginDialog");
+                } else {
+                    Intent intent = new Intent(SuggestActivity.this, UserSuggestUploadActivity.class);
+                    intent.putExtra("suggestUserId", userId);
+                    startActivity(intent);
+                }
 
-                Intent intent = new Intent(SuggestActivity.this, UserSuggestUploadActivity.class);
-                intent.putExtra("suggestUserId", userId);
-                startActivity(intent);
+
             }
         });
     }
