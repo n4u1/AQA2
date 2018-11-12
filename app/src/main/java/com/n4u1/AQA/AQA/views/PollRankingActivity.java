@@ -40,6 +40,7 @@ import com.n4u1.AQA.AQA.R;
 import com.n4u1.AQA.AQA.dialog.AlarmDoneDialog;
 import com.n4u1.AQA.AQA.dialog.ContentDeleteDialog;
 import com.n4u1.AQA.AQA.dialog.DeleteModificationActivity;
+import com.n4u1.AQA.AQA.dialog.PollButtonInfoDialog;
 import com.n4u1.AQA.AQA.dialog.PollResultAnonymousDialog;
 import com.n4u1.AQA.AQA.dialog.PollResultRankingDialog;
 import com.n4u1.AQA.AQA.dialog.RankingChoiceActivity;
@@ -74,7 +75,8 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.TimeZone;
 
-public class PollRankingActivity extends AppCompatActivity implements View.OnClickListener, ContentDeleteDialog.ContentDeleteDialogListener {
+public class PollRankingActivity extends AppCompatActivity implements View.OnClickListener,
+        ContentDeleteDialog.ContentDeleteDialogListener, PollButtonInfoDialog.PollButtonInfoDialogListener {
 
     private boolean ACTIVITY_REPLY_FLAG;
     private boolean ACTIVITY_BESTREPLY_FLAG;
@@ -83,7 +85,7 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
 
     private FirebaseAuth auth;
     private DatabaseReference mDatabaseReference;
-    private DatabaseReference mDatabaseReferenceAlarm;
+
 
 
     private DatabaseReference mDatabaseReferencePicker;
@@ -139,6 +141,8 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
     TextView pollActivity_textView_hitCount, pollActivity_textView_likeCount, pollActivity_textView_contentId, pollActivity_textView_replyCount;
     ImageView pollActivity_imageView_state, pollActivity_imageView_like, pollActivity_imageView_alarm;
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -146,10 +150,11 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
 
         Toolbar myToolbar = findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
-        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_arrow_back_black_24dp);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
+
         if (getSupportActionBar() != null) {
+            getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_arrow_back_black_24dp);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
             getSupportActionBar().setTitle(null);
         }
 
@@ -165,6 +170,7 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
 //        Log.d("lkj mode", mode);
 //        Log.d("lkj itemViewType", String.valueOf(itemViewType));
 
+        DatabaseReference mDatabaseReferenceAlarm;
         mDatabaseReference = FirebaseDatabase.getInstance().getReference("user_contents").child(contentKey);
 
         mDatabaseReferencePicker = FirebaseDatabase.getInstance().getReference("users");
@@ -296,17 +302,18 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
         loginUser(spUserEmail, spUserPassword);
 
 
-        //제목옆에 더보기 클릭
-//        pollActivity_imageView_showMore.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Log.d("lkjshormore", "showmore");
-//                Intent intentShowMore = new Intent(PollRankingActivity.this, UserAlarmDialog.class);
-//                intentShowMore.putExtra("pollKey", contentKey);
-//                intentShowMore.putExtra("hitCount", contentHit);
-//                startActivityForResult(intentShowMore, 20000);
-//            }
-//        });
+        //최초 알림 다이얼로그 - 투표버튼 위치 확인 다이얼로그
+        firebaseDatabase.getReference().child("users").child(auth.getCurrentUser().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                Map<String, Object> user = (Map<String, Object>) dataSnapshot.getValue();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
 
 
         //알람설정 클릭
@@ -2847,6 +2854,14 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
         }
     }
 
+    @Override
+    public void PollButtonInfoDialogCallback(String string) {
+        if (string.equals("확인")) {
+
+        } else if (string.equals("다시보지않기")) {
+
+        }
+    }
 }
 
 

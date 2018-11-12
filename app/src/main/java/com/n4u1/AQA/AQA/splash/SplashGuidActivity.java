@@ -25,10 +25,14 @@ import com.n4u1.AQA.AQA.views.HomeActivity;
 import com.n4u1.AQA.AQA.views.LoginActivity;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 public class SplashGuidActivity extends AppCompatActivity {
 
-    String userLoginFlag = "";
+    private String userLoginFlag = "";
+    private DatabaseReference mDatabaseReference;
+    private boolean GUID_CHECK_FLAG = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +40,7 @@ public class SplashGuidActivity extends AppCompatActivity {
         setContentView(R.layout.activity_splash_guid);
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
+        mDatabaseReference = FirebaseDatabase.getInstance().getReference();
         userLoginFlag = getIntent().getStringExtra("userLoginFlag");
 
         mAuth.signInAnonymously().addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
@@ -82,11 +87,33 @@ public class SplashGuidActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(final String advertId) {
+            Map<String, String> previewerMap = new HashMap<>();
+            String previewerValue = "true";
+            String tempKey;
+
+
+//            issueMap.put(String.valueOf(issueDate), key);
+//            firebaseDatabase.getReference().child("issueContents").child(String.valueOf(issueDate)).setValue(issueMap);
+
             Log.d("lkj advertId", advertId);
             if (userLoginFlag.equals("preView")) {
-                Intent intent = new Intent(SplashGuidActivity.this, HomeActivity.class);
-                SplashGuidActivity.this.finish();
-                startActivity(intent);
+                if (advertId != null && advertId.trim().isEmpty()) {
+                    Toast.makeText(getApplicationContext(), "다시 시도해주세요.", Toast.LENGTH_LONG).show();
+                    onBackPressed();
+                } else {
+                    try {
+                        previewerMap.put(advertId, previewerValue);
+                        mDatabaseReference.child("previewerGuid").child(advertId).setValue(previewerMap);
+                        Intent intent = new Intent(SplashGuidActivity.this, HomeActivity.class);
+                        SplashGuidActivity.this.finish();
+                        startActivity(intent);
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
+                }
+
             } else {
                 if (advertId != null && advertId.trim().isEmpty()) {
                     Toast.makeText(getApplicationContext(), "다시 시도해주세요.", Toast.LENGTH_LONG).show();
