@@ -19,7 +19,9 @@
             android:layout_gravity="center"
             android:layout_marginTop="34dp"/>
         <TextView
-            android:text="결과 예 입니다.\n 로그인하시면 확인할 수 있습니다."
+            android:layout_marginTop="8dp"
+            android:gravity="center"
+            android:text="결과 예시 입니다.\n로그인 하시면 확인할 수 있습니다."
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
         <com.github.mikephil.charting.charts.HorizontalBarChart

@@ -232,6 +232,7 @@ public class HomeActivity extends AppCompatActivity implements SwipeRefreshLayou
                 int filteringCount = 0;
                 ArrayList<String> filterIssueDate = new ArrayList<>();
 
+
 //                600000 = 600초 = 10분
 //                6000000 = 6000초 = 1시간40분
 //                3600000 = 3600초 = 1시간
@@ -240,9 +241,9 @@ public class HomeActivity extends AppCompatActivity implements SwipeRefreshLayou
 //                43200000 = 43200 = 12시간
 //                86400000 = 86400 = 1일
 //                259200000 = 259200 = 3일
-//                1209600000 = 1209600 = 14일
+//                1909600000 = 1909600 = 22일2시간
                 for (int i = 0; i < dataSnapshot.getChildrenCount(); i++) {
-                    if (issueLong.get(i) > issueDate_ - 259200000) {
+                    if (issueLong.get(i) > issueDate_ - 1909600000) {
                         filterIssueDate.add(String.valueOf(issueLong.get(i)));
                         filteringCount++;
                     }

@@ -40,6 +40,7 @@ import com.n4u1.AQA.AQA.R;
 import com.n4u1.AQA.AQA.dialog.AlarmDoneDialog;
 import com.n4u1.AQA.AQA.dialog.ContentDeleteDialog;
 import com.n4u1.AQA.AQA.dialog.DeleteModificationActivity;
+import com.n4u1.AQA.AQA.dialog.PollResultAnonymousDialog;
 import com.n4u1.AQA.AQA.dialog.PollResultRankingDialog;
 import com.n4u1.AQA.AQA.dialog.RankingChoiceActivity;
 import com.n4u1.AQA.AQA.dialog.UserAlarmDialog;
@@ -125,7 +126,7 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
     RelativeLayout pollActivity_relativeLayout_reply;
 
     LinearLayout linearLayout_bestReply0, linearLayout_bestReply1, linearLayout_bestReply2;
-    TextView bestReply_id0, bestReply_id1,bestReply_id2, bestReply_reply0, bestReply_reply1, bestReply_reply2,
+    TextView bestReply_id0, bestReply_id1, bestReply_id2, bestReply_reply0, bestReply_reply1, bestReply_reply2,
             bestReply_date0, bestReply_date1, bestReply_date2, bestReply_likeCount0, bestReply_likeCount1, bestReply_likeCount2;
     ImageView bestReply_thumbImg0, bestReply_thumbImg1, bestReply_thumbImg2;
 
@@ -148,15 +149,14 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_arrow_back_black_24dp);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
-        if (getSupportActionBar() != null){
+        if (getSupportActionBar() != null) {
             getSupportActionBar().setTitle(null);
         }
 
 
-
+        final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         final String contentKey = getIntent().getStringExtra("contentKey");
         contentHit = getIntent().getIntExtra("contentHit", 999999);
-
 
 
         Log.d("lkj hitCount!!!", String.valueOf(contentHit));
@@ -322,12 +322,10 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
         });
 
 
-
         //reply item click listener 댓글 클릭 리스너
         final ReplyAdapter replyAdapter = new ReplyAdapter(getApplicationContext(), replyDTOS, new ReplyAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(final View view, final int position) {
-
                 FirebaseDatabase replyDatabase;
                 replyDatabase = FirebaseDatabase.getInstance();
                 replyDatabase.getReference().child("users").child(auth.getCurrentUser().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
@@ -403,7 +401,6 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
         });
 
 
-
         //이미투표했는지 여부 확인해서 floating action button 색 넣기
         fabCheck(firebaseDatabase.getReference().child("user_contents").child(contentKey));
 
@@ -411,25 +408,31 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
         pollActivity_imageView_state.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mDatabaseReferencePicker.child(auth.getCurrentUser().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        Map<String, Object> user = (Map<String, Object>) dataSnapshot.getValue();
-                        Object object = user.get("age");
-                        int currentAge = Integer.parseInt(object.toString());
-                        String currentGender = user.get("sex").toString();
-                        onResultClicked(firebaseDatabase.getReference().child("user_contents").child(contentKey), currentAge, currentGender);
+                if (user.isAnonymous()) {
+                    PollResultAnonymousDialog pollResultAnonymousDialog = new PollResultAnonymousDialog();
+                    pollResultAnonymousDialog.show(getSupportFragmentManager(), "pollResultAnonymousDialog ");
+                } else {
+                    mDatabaseReferencePicker.child(auth.getCurrentUser().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            Map<String, Object> user = (Map<String, Object>) dataSnapshot.getValue();
+                            Object object = user.get("age");
+                            int currentAge = Integer.parseInt(object.toString());
+                            String currentGender = user.get("sex").toString();
+                            onResultClicked(firebaseDatabase.getReference().child("user_contents").child(contentKey), currentAge, currentGender);
 //                        issueContents 테스트 디비 입력용
 //                        long issueDate = getCurrentDate();
 //                        issueMap.put(String.valueOf(issueDate), contentKey);
 //                        firebaseDatabase.getReference().child("issueContents").child(String.valueOf(issueDate)).setValue(issueMap);
-                    }
+                        }
 
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
 
-                    }
-                });
+                        }
+                    });
+                }
+
             }
         });
 
@@ -437,25 +440,30 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
         pollActivity_fab_result.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mDatabaseReferencePicker.child(auth.getCurrentUser().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        Map<String, Object> user = (Map<String, Object>) dataSnapshot.getValue();
-                        Object object = user.get("age");
-                        int currentAge = Integer.parseInt(object.toString());
-                        String currentGender = user.get("sex").toString();
-                        onResultClicked(firebaseDatabase.getReference().child("user_contents").child(contentKey), currentAge, currentGender);
+                if (user.isAnonymous()) {
+                    PollResultAnonymousDialog pollResultAnonymousDialog = new PollResultAnonymousDialog();
+                    pollResultAnonymousDialog.show(getSupportFragmentManager(), "pollResultAnonymousDialog ");
+                } else {
+                    mDatabaseReferencePicker.child(auth.getCurrentUser().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            Map<String, Object> user = (Map<String, Object>) dataSnapshot.getValue();
+                            Object object = user.get("age");
+                            int currentAge = Integer.parseInt(object.toString());
+                            String currentGender = user.get("sex").toString();
+                            onResultClicked(firebaseDatabase.getReference().child("user_contents").child(contentKey), currentAge, currentGender);
 //                        issueContents 테스트 디비 입력용
 //                        long issueDate = getCurrentDate();
 //                        issueMap.put(String.valueOf(issueDate), contentKey);
 //                        firebaseDatabase.getReference().child("issueContents").child(String.valueOf(issueDate)).setValue(issueMap);
-                    }
+                        }
 
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
 
-                    }
-                });
+                        }
+                    });
+                }
             }
         });
 
@@ -493,6 +501,7 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
                         int replyCount = contentDTO.getReplyCount();
                         openReply(replyCount);
                     }
+
                     @Override
                     public void onCancelled(@NonNull DatabaseError databaseError) {
 
@@ -573,6 +582,7 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
                         }
                         replyAdapter.notifyDataSetChanged();
                     }
+
                     @Override
                     public void onCancelled(@NonNull DatabaseError databaseError) {
 
@@ -581,7 +591,6 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
 
             }
         });
-
 
 
         //따봉버튼 클릭리스너,  좋아요(따봉) 이미지 클릭
@@ -601,10 +610,9 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
         });
 
 
-
         //댓글 리사이클러뷰 스크롤은 PollSingleActivity에 포함되도록
         pollActivity_recyclerView_reply.setNestedScrollingEnabled(false);
-        pollActivity_recyclerView_reply.setLayoutManager(new LinearLayoutManager(this){
+        pollActivity_recyclerView_reply.setLayoutManager(new LinearLayoutManager(this) {
             @Override
             public boolean canScrollVertically() {
                 return false;
@@ -620,7 +628,6 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
         mLayoutManager.setReverseLayout(false);
         pollActivity_recyclerView_reply.setLayoutManager(mLayoutManager);
         pollActivity_recyclerView_reply.setAdapter(replyAdapter);
-
 
 
         //reply button click, 댓글달기버튼
@@ -664,12 +671,11 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
         });
 
 
-
         //contentDTO 화면 초기세팅
         mDatabaseReferenceAlarm = FirebaseDatabase.getInstance().getReference();
         mDatabaseReferenceAlarm.child("user_contents").child(contentKey).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot)  {
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 ContentDTO contentDTO = dataSnapshot.getValue(ContentDTO.class);
                 pollActivity_textView_date.setText(contentDTO.getUploadDate());
                 pollActivity_textView_title.setText(contentDTO.getTitle());
@@ -1025,6 +1031,7 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
                     pollActivity_imageView_userClass.setImageResource(R.drawable.q_class_black);
                 }
             }
+
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
@@ -1072,7 +1079,7 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
     }
 
 
-    private void likeClick () {
+    private void likeClick() {
         final String contentKey = getIntent().getStringExtra("contentKey");
         firebaseDatabase.getReference().child("user_contents").child(contentKey).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -1099,6 +1106,7 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
                             pollActivity_textView_likeCount.setText(String.valueOf(contentDTO_.likeCount));
                         }
                     }
+
                     @Override
                     public void onCancelled(@NonNull DatabaseError databaseError) {
 
@@ -1228,7 +1236,7 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
     //댓글펼치기
     private void openReply(int replyCount) {
         if (!ACTIVITY_REPLY_FLAG) {
-            if (replyCount == 0){
+            if (replyCount == 0) {
                 pollActivity_editText_reply.setHint("아직 댓글이 없습니다. 댓글을 달아보세요!");
             }
             pollActivity_imageView_replyView_1.setVisibility(View.GONE);
@@ -1307,7 +1315,7 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
                 }
                 if (contentDTO.contentPicker.containsKey(auth.getCurrentUser().getUid())) {
                     //투표가 되어있으면 PollResultRankingDialog
-                    PollResultRankingDialog pollResultRankingDialog= new PollResultRankingDialog();
+                    PollResultRankingDialog pollResultRankingDialog = new PollResultRankingDialog();
                     Bundle bundle = new Bundle();
 
                     bundle.putInt("imagePick", currentPick());
@@ -1397,7 +1405,6 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
                             contentDTO.candidateScore_8 = contentDTO.candidateScore_8 + currentRankingPick().get(8);
                             contentDTO.candidateScore_9 = contentDTO.candidateScore_9 + currentRankingPick().get(9);
                         }
-
 
 
                         contentDTO.statistics_code = addStatistics(contentDTO.statistics_code, currentRankingPick(), currentGender, currentAge);
@@ -1559,16 +1566,26 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
     private int pollChecking() {
 
         int pickCount = 0;
-        if (((ColorDrawable) pollActivity_imageView_choice_1.getBackground()).getColor() == 0xff4485c9) pickCount++;
-        if (((ColorDrawable) pollActivity_imageView_choice_2.getBackground()).getColor() == 0xff4485c9) pickCount++;
-        if (((ColorDrawable) pollActivity_imageView_choice_3.getBackground()).getColor() == 0xff4485c9) pickCount++;
-        if (((ColorDrawable) pollActivity_imageView_choice_4.getBackground()).getColor() == 0xff4485c9) pickCount++;
-        if (((ColorDrawable) pollActivity_imageView_choice_5.getBackground()).getColor() == 0xff4485c9) pickCount++;
-        if (((ColorDrawable) pollActivity_imageView_choice_6.getBackground()).getColor() == 0xff4485c9) pickCount++;
-        if (((ColorDrawable) pollActivity_imageView_choice_7.getBackground()).getColor() == 0xff4485c9) pickCount++;
-        if (((ColorDrawable) pollActivity_imageView_choice_8.getBackground()).getColor() == 0xff4485c9) pickCount++;
-        if (((ColorDrawable) pollActivity_imageView_choice_9.getBackground()).getColor() == 0xff4485c9) pickCount++;
-        if (((ColorDrawable) pollActivity_imageView_choice_10.getBackground()).getColor() == 0xff4485c9) pickCount++;
+        if (((ColorDrawable) pollActivity_imageView_choice_1.getBackground()).getColor() == 0xff4485c9)
+            pickCount++;
+        if (((ColorDrawable) pollActivity_imageView_choice_2.getBackground()).getColor() == 0xff4485c9)
+            pickCount++;
+        if (((ColorDrawable) pollActivity_imageView_choice_3.getBackground()).getColor() == 0xff4485c9)
+            pickCount++;
+        if (((ColorDrawable) pollActivity_imageView_choice_4.getBackground()).getColor() == 0xff4485c9)
+            pickCount++;
+        if (((ColorDrawable) pollActivity_imageView_choice_5.getBackground()).getColor() == 0xff4485c9)
+            pickCount++;
+        if (((ColorDrawable) pollActivity_imageView_choice_6.getBackground()).getColor() == 0xff4485c9)
+            pickCount++;
+        if (((ColorDrawable) pollActivity_imageView_choice_7.getBackground()).getColor() == 0xff4485c9)
+            pickCount++;
+        if (((ColorDrawable) pollActivity_imageView_choice_8.getBackground()).getColor() == 0xff4485c9)
+            pickCount++;
+        if (((ColorDrawable) pollActivity_imageView_choice_9.getBackground()).getColor() == 0xff4485c9)
+            pickCount++;
+        if (((ColorDrawable) pollActivity_imageView_choice_10.getBackground()).getColor() == 0xff4485c9)
+            pickCount++;
 
         return pickCount;
 
@@ -1970,7 +1987,6 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
                 break;
 
 
-
             case R.id.pollActivity_textView_check_1:
                 if (checkUserHitContent) {
                     Toast.makeText(getApplicationContext(), "투표하셨거나 자신의 투표입니다.!", Toast.LENGTH_SHORT).show();
@@ -2219,7 +2235,7 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
                         firebaseDatabase.getReference().child("reply").child(contentKey).child(replyKey).removeValue();
                         removeReplyCount(firebaseDatabase.getReference().child("user_contents").child(contentKey));
 
-                    } 
+                    }
                     break;
                 case 20000:
                     String alarmCount = data.getStringExtra("resultAlarmCount");
@@ -2244,7 +2260,7 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
 
                 contentDTO.replyCount = contentDTO.replyCount - 1;
                 mutableData.setValue(contentDTO);
-                return  Transaction.success(mutableData);
+                return Transaction.success(mutableData);
             }
 
             @Override
@@ -2253,7 +2269,6 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
             }
         });
     }
-
 
 
     //userPoint(userClass) 점수추가
@@ -2301,7 +2316,7 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
                     new Thread(new Runnable() {
                         @Override
                         public void run() {
-                            runOnUiThread(new Runnable(){
+                            runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
                                     pollActivity_fab_result.setImageResource(R.drawable.q);//fab 파란색
@@ -2317,7 +2332,7 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
                     new Thread(new Runnable() {
                         @Override
                         public void run() {
-                            runOnUiThread(new Runnable(){
+                            runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
                                     pollActivity_fab_result.setImageResource(R.drawable.q_bg_w);//fab 흰색
@@ -2331,14 +2346,12 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
                 }
                 return Transaction.success(mutableData);
             }
+
             @Override
             public void onComplete(DatabaseError databaseError, boolean b, DataSnapshot dataSnapshot) {
             }
         });
     }
-
-
-
 
 
     @Override
@@ -2353,7 +2366,7 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
                 if (contentDTO.getUid().equals(auth.getCurrentUser().getUid())) {
                     item.setVisible(true);
                     pollActivity_imageView_alarm.setVisibility(View.VISIBLE);
-                    
+
                 } else {
                     item.setVisible(false);
                     pollActivity_imageView_alarm.setVisibility(View.GONE);
@@ -2368,7 +2381,6 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
 
         return true;
     }
-
 
 
     @Override
@@ -2469,7 +2481,7 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
         if (gender.equals("남")) {
             try {
                 for (int i = 10; i < 20; i++) {
-                    tmpStatistics[i] = tmpStatistics[i] + currentPickScore.get(i-10);
+                    tmpStatistics[i] = tmpStatistics[i] + currentPickScore.get(i - 10);
                 }
             } catch (Exception e) {
                 Log.w("lkj exception", e);
@@ -2478,7 +2490,7 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
         if (age == 10 || age == 11 || age == 12) {
             try {
                 for (int i = 20; i < 30; i++) {
-                    tmpStatistics[i] = tmpStatistics[i] + currentPickScore.get(i-20);
+                    tmpStatistics[i] = tmpStatistics[i] + currentPickScore.get(i - 20);
                 }
             } catch (Exception e) {
                 Log.w("lkj exception", e);
@@ -2487,7 +2499,7 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
         if (age == 13 || age == 14 || age == 15 || age == 16) {
             try {
                 for (int i = 30; i < 40; i++) {
-                    tmpStatistics[i] = tmpStatistics[i] + currentPickScore.get(i-30);
+                    tmpStatistics[i] = tmpStatistics[i] + currentPickScore.get(i - 30);
                 }
             } catch (Exception e) {
                 Log.w("lkj exception", e);
@@ -2496,7 +2508,7 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
         if (age == 17 || age == 18 || age == 19) {
             try {
                 for (int i = 40; i < 50; i++) {
-                    tmpStatistics[i] = tmpStatistics[i] + currentPickScore.get(i-40);
+                    tmpStatistics[i] = tmpStatistics[i] + currentPickScore.get(i - 40);
                 }
             } catch (Exception e) {
                 Log.w("lkj exception", e);
@@ -2505,7 +2517,7 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
         if (age == 20 || age == 21 || age == 22) {
             try {
                 for (int i = 50; i < 60; i++) {
-                    tmpStatistics[i] = tmpStatistics[i] + currentPickScore.get(i-50);
+                    tmpStatistics[i] = tmpStatistics[i] + currentPickScore.get(i - 50);
                 }
             } catch (Exception e) {
                 Log.w("lkj exception", e);
@@ -2514,7 +2526,7 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
         if (age == 23 || age == 24 || age == 25 || age == 26) {
             try {
                 for (int i = 60; i < 70; i++) {
-                    tmpStatistics[i] = tmpStatistics[i] + currentPickScore.get(i-60);
+                    tmpStatistics[i] = tmpStatistics[i] + currentPickScore.get(i - 60);
                 }
             } catch (Exception e) {
                 Log.w("lkj exception", e);
@@ -2523,7 +2535,7 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
         if (age == 27 || age == 28 || age == 29) {
             try {
                 for (int i = 70; i < 80; i++) {
-                    tmpStatistics[i] = tmpStatistics[i] + currentPickScore.get(i-70);
+                    tmpStatistics[i] = tmpStatistics[i] + currentPickScore.get(i - 70);
                 }
             } catch (Exception e) {
                 Log.w("lkj exception", e);
@@ -2532,7 +2544,7 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
         if (age == 30 || age == 31 || age == 32) {
             try {
                 for (int i = 80; i < 90; i++) {
-                    tmpStatistics[i] = tmpStatistics[i] + currentPickScore.get(i-80);
+                    tmpStatistics[i] = tmpStatistics[i] + currentPickScore.get(i - 80);
                 }
             } catch (Exception e) {
                 Log.w("lkj exception", e);
@@ -2541,7 +2553,7 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
         if (age == 33 || age == 34 || age == 35 || age == 36) {
             try {
                 for (int i = 90; i < 100; i++) {
-                    tmpStatistics[i] = tmpStatistics[i] + currentPickScore.get(i-90);
+                    tmpStatistics[i] = tmpStatistics[i] + currentPickScore.get(i - 90);
                 }
             } catch (Exception e) {
                 Log.w("lkj exception", e);
@@ -2550,7 +2562,7 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
         if (age == 37 || age == 38 || age == 39) {
             try {
                 for (int i = 100; i < 110; i++) {
-                    tmpStatistics[i] = tmpStatistics[i] + currentPickScore.get(i-100);
+                    tmpStatistics[i] = tmpStatistics[i] + currentPickScore.get(i - 100);
                 }
             } catch (Exception e) {
                 Log.w("lkj exception", e);
@@ -2559,7 +2571,7 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
         if (age == 40 || age == 41 || age == 42) {
             try {
                 for (int i = 110; i < 120; i++) {
-                    tmpStatistics[i] = tmpStatistics[i] + currentPickScore.get(i-110);
+                    tmpStatistics[i] = tmpStatistics[i] + currentPickScore.get(i - 110);
                 }
             } catch (Exception e) {
                 Log.w("lkj exception", e);
@@ -2568,7 +2580,7 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
         if (age == 43 || age == 44 || age == 45 || age == 46) {
             try {
                 for (int i = 120; i < 130; i++) {
-                    tmpStatistics[i] = tmpStatistics[i] + currentPickScore.get(i-120);
+                    tmpStatistics[i] = tmpStatistics[i] + currentPickScore.get(i - 120);
                 }
             } catch (Exception e) {
                 Log.w("lkj exception", e);
@@ -2577,7 +2589,7 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
         if (age == 47 || age == 48 || age == 49) {
             try {
                 for (int i = 130; i < 140; i++) {
-                    tmpStatistics[i] = tmpStatistics[i] + currentPickScore.get(i-130);
+                    tmpStatistics[i] = tmpStatistics[i] + currentPickScore.get(i - 130);
                 }
             } catch (Exception e) {
                 Log.w("lkj exception", e);
@@ -2586,7 +2598,7 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
         if (age == 50 || age == 51 || age == 52) {
             try {
                 for (int i = 140; i < 150; i++) {
-                    tmpStatistics[i] = tmpStatistics[i] + currentPickScore.get(i-140);
+                    tmpStatistics[i] = tmpStatistics[i] + currentPickScore.get(i - 140);
                 }
             } catch (Exception e) {
                 Log.w("lkj exception", e);
@@ -2595,7 +2607,7 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
         if (age == 53 || age == 54 || age == 55 || age == 56) {
             try {
                 for (int i = 150; i < 160; i++) {
-                    tmpStatistics[i] = tmpStatistics[i] + currentPickScore.get(i-150);
+                    tmpStatistics[i] = tmpStatistics[i] + currentPickScore.get(i - 150);
                 }
             } catch (Exception e) {
                 Log.w("lkj exception", e);
@@ -2604,7 +2616,7 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
         if (age == 57 || age == 58 || age == 59) {
             try {
                 for (int i = 160; i < 170; i++) {
-                    tmpStatistics[i] = tmpStatistics[i] + currentPickScore.get(i-160);
+                    tmpStatistics[i] = tmpStatistics[i] + currentPickScore.get(i - 160);
                 }
             } catch (Exception e) {
                 Log.w("lkj exception", e);
@@ -2613,7 +2625,7 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
         if (age == 60 || age == 61 || age == 62) {
             try {
                 for (int i = 170; i < 180; i++) {
-                    tmpStatistics[i] = tmpStatistics[i] + currentPickScore.get(i-170);
+                    tmpStatistics[i] = tmpStatistics[i] + currentPickScore.get(i - 170);
                 }
             } catch (Exception e) {
                 Log.w("lkj exception", e);
@@ -2622,7 +2634,7 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
         if (age == 63 || age == 64 || age == 65 || age == 66) {
             try {
                 for (int i = 180; i < 190; i++) {
-                    tmpStatistics[i] = tmpStatistics[i] + currentPickScore.get(i-180);
+                    tmpStatistics[i] = tmpStatistics[i] + currentPickScore.get(i - 180);
                 }
             } catch (Exception e) {
                 Log.w("lkj exception", e);
@@ -2631,7 +2643,7 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
         if (age == 67 || age == 68 || age == 69) {
             try {
                 for (int i = 190; i < 200; i++) {
-                    tmpStatistics[i] = tmpStatistics[i] + currentPickScore.get(i-190);
+                    tmpStatistics[i] = tmpStatistics[i] + currentPickScore.get(i - 190);
                 }
             } catch (Exception e) {
                 Log.w("lkj exception", e);
@@ -2640,7 +2652,7 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
         if (age == 70 || age == 71 || age == 72) {
             try {
                 for (int i = 200; i < 210; i++) {
-                    tmpStatistics[i] = tmpStatistics[i] + currentPickScore.get(i-200);
+                    tmpStatistics[i] = tmpStatistics[i] + currentPickScore.get(i - 200);
                 }
             } catch (Exception e) {
                 Log.w("lkj exception", e);
@@ -2649,7 +2661,7 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
         if (age == 73 || age == 74 || age == 75 || age == 76) {
             try {
                 for (int i = 210; i < 220; i++) {
-                    tmpStatistics[i] = tmpStatistics[i] + currentPickScore.get(i-210);
+                    tmpStatistics[i] = tmpStatistics[i] + currentPickScore.get(i - 210);
                 }
             } catch (Exception e) {
                 Log.w("lkj exception", e);
@@ -2658,7 +2670,7 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
         if (age == 77 || age == 78 || age == 79) {
             try {
                 for (int i = 220; i < 230; i++) {
-                    tmpStatistics[i] = tmpStatistics[i] + currentPickScore.get(i-220);
+                    tmpStatistics[i] = tmpStatistics[i] + currentPickScore.get(i - 220);
                 }
             } catch (Exception e) {
                 Log.w("lkj exception", e);
@@ -2667,7 +2679,7 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
         if (age == 80 || age == 81 || age == 82) {
             try {
                 for (int i = 230; i < 240; i++) {
-                    tmpStatistics[i] = tmpStatistics[i] + currentPickScore.get(i-230);
+                    tmpStatistics[i] = tmpStatistics[i] + currentPickScore.get(i - 230);
                 }
             } catch (Exception e) {
                 Log.w("lkj exception", e);
@@ -2676,7 +2688,7 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
         if (age == 83 || age == 84 || age == 85 || age == 86) {
             try {
                 for (int i = 240; i < 250; i++) {
-                    tmpStatistics[i] = tmpStatistics[i] + currentPickScore.get(i-240);
+                    tmpStatistics[i] = tmpStatistics[i] + currentPickScore.get(i - 240);
                 }
             } catch (Exception e) {
                 Log.w("lkj exception", e);
@@ -2685,7 +2697,7 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
         if (age == 87 || age == 88 || age == 89) {
             try {
                 for (int i = 250; i < 260; i++) {
-                    tmpStatistics[i] = tmpStatistics[i] + currentPickScore.get(i-250);
+                    tmpStatistics[i] = tmpStatistics[i] + currentPickScore.get(i - 250);
                 }
             } catch (Exception e) {
                 Log.w("lkj exception", e);
@@ -2705,8 +2717,6 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
     protected void onResume() {
         super.onResume();
     }
-
-
 
 
     //댓글 좋아요 클릭
@@ -2738,7 +2748,6 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
             public void onComplete(DatabaseError databaseError, boolean b, DataSnapshot dataSnapshot) {
                 // Transaction completed
                 Log.d("lkjlkj", "postTransaction:onComplete:" + databaseError);
-
 
 
             }

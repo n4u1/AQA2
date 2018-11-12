@@ -155,19 +155,6 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
 
         final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
-//        SharedPreferences pref = getSharedPreferences("com.n4u1.AQA", MODE_PRIVATE);
-//        String spUserEmail = pref.getString("com.n4u1.AQA.fireBaseUserEmail", "a");
-//        String spUserPassword = pref.getString("com.n4u1.AQA.fireBaseUserPassword", "b");
-//
-//        AuthCredential authCredential = EmailAuthProvider.getCredential(spUserEmail, spUserPassword);
-//
-//        user.reauthenticate(authCredential).addOnCompleteListener(new OnCompleteListener<Void>() {
-//            @Override
-//            public void onComplete(@NonNull Task<Void> task) {
-//                Log.d("lkj reauthenticate", "User re-authenticated.");
-//            }
-//        });
-
 
 
         final String contentKey = getIntent().getStringExtra("contentKey");
@@ -413,25 +400,31 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
         pollActivity_imageView_state.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mDatabaseReferencePicker.child(auth.getCurrentUser().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        Map<String, Object> user = (Map<String, Object>) dataSnapshot.getValue();
-                        Object object = user.get("age");
-                        int currentAge = Integer.parseInt(object.toString());
-                        String currentGender = user.get("sex").toString();
-                        onResultClicked(firebaseDatabase.getReference().child("user_contents").child(contentKey), currentAge, currentGender);
+                if (user.isAnonymous()) {
+                    PollResultAnonymousDialog pollResultAnonymousDialog = new PollResultAnonymousDialog();
+                    pollResultAnonymousDialog.show(getSupportFragmentManager(), "pollResultAnonymousDialog ");
+                } else {
+                    mDatabaseReferencePicker.child(auth.getCurrentUser().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            Map<String, Object> user = (Map<String, Object>) dataSnapshot.getValue();
+                            Object object = user.get("age");
+                            int currentAge = Integer.parseInt(object.toString());
+                            String currentGender = user.get("sex").toString();
+                            onResultClicked(firebaseDatabase.getReference().child("user_contents").child(contentKey), currentAge, currentGender);
 //                        issueContents 테스트 디비 입력용
 //                        long issueDate = getCurrentDate();
 //                        issueMap.put(String.valueOf(issueDate), contentKey);
 //                        firebaseDatabase.getReference().child("issueContents").child(String.valueOf(issueDate)).setValue(issueMap);
-                    }
+                        }
 
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
 
-                    }
-                });
+                        }
+                    });
+                }
+
             }
         });
 
@@ -439,9 +432,7 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
         pollActivity_fab_result.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                FirebaseAuth mAuth = FirebaseAuth.getInstance();
-                FirebaseUser mUser = mAuth.getCurrentUser();
-                if (mUser.getEmail().isEmpty()) {
+                if (user.isAnonymous()) {
                     PollResultAnonymousDialog pollResultAnonymousDialog = new PollResultAnonymousDialog();
                     pollResultAnonymousDialog.show(getSupportFragmentManager(), "pollResultAnonymousDialog ");
                 } else {

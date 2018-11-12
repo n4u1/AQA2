@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -147,7 +148,50 @@ public class LoginActivity extends AppCompatActivity implements PreviewDialog.Pr
             }
         });
 
+        //test login
+        Button buttona = findViewById(R.id.buttona);
+        Button buttonb = findViewById(R.id.buttonb);
+        Button buttonc = findViewById(R.id.buttonc);
+        Button buttond = findViewById(R.id.buttond);
+        Button buttonl = findViewById(R.id.buttonl);
+        buttona.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                loginUser("a@a.com", "aaaaaa");
+            }
+        });
+        buttonb.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                loginUser("b@b.com", "bbbbbb");
+            }
+        });
+        buttonc.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                loginUser("c@c.com", "cccccc");
+            }
+        });
+        buttond.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                loginUser("d@d.com", "dddddd");
+            }
+        });
+        buttonl.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                loginUser("lkj840211@gmail.com", "dltjsdn2@");
+            }
+        });
+
+
+
+
     }
+    /*
+    onCreate();
+     */
 
 
     private void loginUser(final String email, final String password) {
