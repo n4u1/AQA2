@@ -5,7 +5,9 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -32,6 +34,7 @@ import android.widget.Toast;
 
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -49,11 +52,6 @@ import com.n4u1.AQA.AQA.models.ContentDTO;
 import com.n4u1.AQA.AQA.models.ReplyDTO;
 import com.n4u1.AQA.AQA.recyclerview.ReplyAdapter;
 import com.n4u1.AQA.AQA.util.GlideApp;
-import com.github.mikephil.charting.components.AxisBase;
-import com.github.mikephil.charting.data.Entry;
-import com.github.mikephil.charting.formatter.IAxisValueFormatter;
-import com.github.mikephil.charting.formatter.IValueFormatter;
-import com.github.mikephil.charting.utils.ViewPortHandler;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -63,7 +61,6 @@ import com.google.firebase.database.MutableData;
 import com.google.firebase.database.Transaction;
 import com.google.firebase.database.ValueEventListener;
 
-import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -74,6 +71,8 @@ import java.util.Iterator;
 import java.util.Locale;
 import java.util.Map;
 import java.util.TimeZone;
+
+import jp.wasabeef.glide.transformations.BlurTransformation;
 
 public class PollRankingActivity extends AppCompatActivity implements View.OnClickListener,
         ContentDeleteDialog.ContentDeleteDialogListener, PollButtonInfoDialog.PollButtonInfoDialogListener {
@@ -87,7 +86,6 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
     private DatabaseReference mDatabaseReference;
 
 
-
     private DatabaseReference mDatabaseReferencePicker;
     private FirebaseDatabase firebaseDatabase;
     private FirebaseDatabase likeFirebaseDatabase;
@@ -96,10 +94,12 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
 
     final ArrayList<ReplyDTO> replyDTOS = new ArrayList<>();
     private HashMap<String, String> issueMap = new HashMap<>();
+    private HashMap<ImageView, String> userChoiceMap = new HashMap<>();
 
     boolean checkUserHitContent = false;
     int contentHit;
 
+    RelativeLayout pollActivity_relativeLayout_addImage_1;
     FloatingActionButton pollActivity_fab_result;
     TextView pollActivity_textView_title, pollActivity_textView_description,
             pollActivity_textView_pollMode, pollActivity_textView_contentType, pollActivity_textView_date;
@@ -108,6 +108,12 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
             pollActivity_imageView_userAddContent_5, pollActivity_imageView_userAddContent_6,
             pollActivity_imageView_userAddContent_7, pollActivity_imageView_userAddContent_8,
             pollActivity_imageView_userAddContent_9, pollActivity_imageView_userAddContent_10;
+
+    ImageView pollActivity_imageView_userAddContent_n1, pollActivity_imageView_userAddContent_n2,
+            pollActivity_imageView_userAddContent_n3, pollActivity_imageView_userAddContent_n4,
+            pollActivity_imageView_userAddContent_n5, pollActivity_imageView_userAddContent_n6,
+            pollActivity_imageView_userAddContent_n7, pollActivity_imageView_userAddContent_n8,
+            pollActivity_imageView_userAddContent_n9, pollActivity_imageView_userAddContent_n10;
 
     ImageView pollActivity_imageView_choice_1, pollActivity_imageView_choice_2,
             pollActivity_imageView_choice_3, pollActivity_imageView_choice_4,
@@ -177,7 +183,7 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
         auth = FirebaseAuth.getInstance();
         firebaseDatabase = FirebaseDatabase.getInstance();
         likeFirebaseDatabase = FirebaseDatabase.getInstance();
-
+        pollActivity_relativeLayout_addImage_1 = findViewById(R.id.pollActivity_relativeLayout_addImage_1);
         pollActivity_imageView_alarm = findViewById(R.id.pollActivity_imageView_alarm);
         pollActivity_imageView_around_1 = findViewById(R.id.pollActivity_imageView_around_1);
         pollActivity_imageView_replyView_1 = findViewById(R.id.pollActivity_imageView_replyView_1);
@@ -270,6 +276,10 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
         pollActivity_textView_likeCount = findViewById(R.id.pollActivity_textView_likeCount);
         pollActivity_imageView_state = findViewById(R.id.pollActivity_imageView_state);
         pollActivity_imageView_like = findViewById(R.id.pollActivity_imageView_like);
+
+
+        pollActivity_imageView_userAddContent_n1 = findViewById(R.id.pollActivity_imageView_userAddContent_n1);
+        pollActivity_imageView_userAddContent_n2 = findViewById(R.id.pollActivity_imageView_userAddContent_n2);
 
 
         pollActivity_imageView_userAddContent_1.setOnClickListener(this);
@@ -417,7 +427,7 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
             public void onClick(View v) {
                 if (user.isAnonymous()) {
                     PollResultAnonymousDialog pollResultAnonymousDialog = new PollResultAnonymousDialog();
-                    pollResultAnonymousDialog.show(getSupportFragmentManager(), "pollResultAnonymousDialog ");
+                    pollResultAnonymousDialog.show(getSupportFragmentManager(), "pollResultAnonymousDialog");
                 } else {
                     mDatabaseReferencePicker.child(auth.getCurrentUser().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
@@ -1312,7 +1322,6 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
     //투표 시작
     private void onResultClicked(final DatabaseReference postRef, final int currentAge, final String currentGender) {
         contentAmount = getIntent().getIntExtra("itemViewType", 0);
-        Log.d("lkj contentAmount", String.valueOf(contentAmount));
         postRef.runTransaction(new Transaction.Handler() {
             @Override
             public Transaction.Result doTransaction(MutableData mutableData) {
@@ -1334,7 +1343,8 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
                     pollResultRankingDialog.setArguments(bundle);
                     pollResultRankingDialog.show(getSupportFragmentManager(), "PollResultRankingDialog");
 
-                    //투표가 안되어있으면 투표하고 PollResultRankingDialog
+
+                //투표가 안되어있으면 투표하고 PollResultRankingDialog
                 } else {
                     //선택한 후보의 순위를 각 후보에 더해줌
                     if (pollChecking() == contentAmount) {
@@ -1491,11 +1501,25 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
     private long getCurrentDate() {
         long currentTimeMillis = System.currentTimeMillis();
         return currentTimeMillis;
-
     }
 
     private ArrayList<String> rankingTextChecking() {
         ArrayList<String> stringArrayList = new ArrayList<>();
+
+
+
+        if (pollActivity_imageView_userAddContent_n1.getDrawable() != null) {
+            String string = pollActivity_imageView_userAddContent_n1.getDrawable().toString();
+            Log.d("lkj strign", "string");
+        }
+
+
+
+        if (pollActivity_imageView_userAddContent_n1.getVisibility() == View.VISIBLE) {
+            stringArrayList.add(pollActivity_textView_check_1.getText().toString());
+        }
+
+
         if (((ColorDrawable) pollActivity_imageView_choice_1.getBackground()).getColor() == 0xff4485c9) {
             stringArrayList.add(pollActivity_textView_check_1.getText().toString());
         }
@@ -1571,46 +1595,18 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
 
     //현재 Activity 에서의 투표 체크 유무
     private int pollChecking() {
-
         int pickCount = 0;
-        if (((ColorDrawable) pollActivity_imageView_choice_1.getBackground()).getColor() == 0xff4485c9)
-            pickCount++;
-        if (((ColorDrawable) pollActivity_imageView_choice_2.getBackground()).getColor() == 0xff4485c9)
-            pickCount++;
-        if (((ColorDrawable) pollActivity_imageView_choice_3.getBackground()).getColor() == 0xff4485c9)
-            pickCount++;
-        if (((ColorDrawable) pollActivity_imageView_choice_4.getBackground()).getColor() == 0xff4485c9)
-            pickCount++;
-        if (((ColorDrawable) pollActivity_imageView_choice_5.getBackground()).getColor() == 0xff4485c9)
-            pickCount++;
-        if (((ColorDrawable) pollActivity_imageView_choice_6.getBackground()).getColor() == 0xff4485c9)
-            pickCount++;
-        if (((ColorDrawable) pollActivity_imageView_choice_7.getBackground()).getColor() == 0xff4485c9)
-            pickCount++;
-        if (((ColorDrawable) pollActivity_imageView_choice_8.getBackground()).getColor() == 0xff4485c9)
-            pickCount++;
-        if (((ColorDrawable) pollActivity_imageView_choice_9.getBackground()).getColor() == 0xff4485c9)
-            pickCount++;
-        if (((ColorDrawable) pollActivity_imageView_choice_10.getBackground()).getColor() == 0xff4485c9)
-            pickCount++;
-
+        if (pollActivity_imageView_userAddContent_n1.getVisibility() == View.VISIBLE) pickCount++;
+        if (pollActivity_imageView_userAddContent_n2.getVisibility() == View.VISIBLE) pickCount++;
+        if (pollActivity_imageView_userAddContent_n3.getVisibility() == View.VISIBLE) pickCount++;
+        if (pollActivity_imageView_userAddContent_n4.getVisibility() == View.VISIBLE) pickCount++;
+        if (pollActivity_imageView_userAddContent_n5.getVisibility() == View.VISIBLE) pickCount++;
+        if (pollActivity_imageView_userAddContent_n6.getVisibility() == View.VISIBLE) pickCount++;
+        if (pollActivity_imageView_userAddContent_n7.getVisibility() == View.VISIBLE) pickCount++;
+        if (pollActivity_imageView_userAddContent_n8.getVisibility() == View.VISIBLE) pickCount++;
+        if (pollActivity_imageView_userAddContent_n9.getVisibility() == View.VISIBLE) pickCount++;
+        if (pollActivity_imageView_userAddContent_n10.getVisibility() == View.VISIBLE) pickCount++;
         return pickCount;
-
-
-//        if (((ColorDrawable) pollActivity_imageView_choice_1.getBackground()).getColor() == 0xff4485c9
-//                || ((ColorDrawable) pollActivity_imageView_choice_2.getBackground()).getColor() == 0xff4485c9
-//                || ((ColorDrawable) pollActivity_imageView_choice_3.getBackground()).getColor() == 0xff4485c9
-//                || ((ColorDrawable) pollActivity_imageView_choice_4.getBackground()).getColor() == 0xff4485c9
-//                || ((ColorDrawable) pollActivity_imageView_choice_5.getBackground()).getColor() == 0xff4485c9
-//                || ((ColorDrawable) pollActivity_imageView_choice_6.getBackground()).getColor() == 0xff4485c9
-//                || ((ColorDrawable) pollActivity_imageView_choice_7.getBackground()).getColor() == 0xff4485c9
-//                || ((ColorDrawable) pollActivity_imageView_choice_8.getBackground()).getColor() == 0xff4485c9
-//                || ((ColorDrawable) pollActivity_imageView_choice_9.getBackground()).getColor() == 0xff4485c9
-//                || ((ColorDrawable) pollActivity_imageView_choice_10.getBackground()).getColor() == 0xff4485c9) {
-//            return true;
-//        } else {
-//            return false;
-//        }
     }
 
     //1위선택한것 찾기
@@ -1993,7 +1989,6 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
                 });
                 break;
 
-
             case R.id.pollActivity_textView_check_1:
                 if (checkUserHitContent) {
                     Toast.makeText(getApplicationContext(), "투표하셨거나 자신의 투표입니다.!", Toast.LENGTH_SHORT).show();
@@ -2086,70 +2081,7 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
                 break;
         }
     }
-//
-//    private void aqaShare() {
-////##############스샷찍어 공유하기 > 이건 7.0이상에선 동작 안함################
-////        View container;
-////        container = getWindow().getDecorView();
-////        container.buildDrawingCache();
-////        Bitmap captureView = container.getDrawingCache();
-////        String adress = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Android/data/com.AQA/shareCapture" + "/capture.jpeg";
-////        FileOutputStream fos;
-////        try {
-////            fos = new FileOutputStream(adress);
-////            captureView.compress(Bitmap.CompressFormat.JPEG, 100, fos);
-////        } catch (FileNotFoundException e) {
-////            e.printStackTrace();
-////        }
-////        Uri uri = Uri.fromFile(new File(adress));
-////        Intent shareIntent = new Intent(Intent.ACTION_SEND);
-////        shareIntent.putExtra(Intent.EXTRA_STREAM, uri);
-////        shareIntent.setType("image/*");
-////        startActivity(Intent.createChooser(shareIntent, "공유"));
-////##############스샷찍어 공유하기 > 이건 7.0이상에선 동작 안함################
-//
-////##############인스타에 이미지 공유하기... 부족함################
-////        Uri file = Uri.parse("android.resource://com.n4u1.AQA.AQA/"+R.drawable.aqacustom2);
-////        Intent shareIntent = new Intent(android.content.Intent.ACTION_SEND);
-////        shareIntent.setType("image/*");
-////        shareIntent.putExtra(Intent.EXTRA_STREAM,file);
-////        shareIntent.putExtra(Intent.EXTRA_TITLE, "YOUR TEXT HERE");
-////        shareIntent.setPackage("com.instagram.android");
-////        startActivity(shareIntent);
-////##############인스타에 이미지 공유하기... 부족함################
-//
-////##############공유하기 기본################
-//        Intent intent = new Intent();
-//        intent.setAction(Intent.ACTION_SEND);
-//        intent.setType("text/plain");
-//        intent.putExtra(Intent.EXTRA_SUBJECT, "AQA 시작하기");
-//        intent.putExtra(Intent.EXTRA_TEXT, "\n" + "https://play.google.com/apps/testing/com.n4u1.AQA.AQA");
-//        Intent chooser = Intent.createChooser(intent, "친구에게 공유하기");
-//        startActivity(chooser);
-////##############공유하기 기본################
-//
-////        PackageManager packManager = getApplicationContext().getPackageManager();
-////        List<ResolveInfo> resolvedInfoList = packManager.queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY);
-////
-////        boolean resolved = false;
-////        for(ResolveInfo resolveInfo: resolvedInfoList) {
-////            if(resolveInfo.activityInfo.packageName.startsWith("com.facebook.katana")){
-////                intent.setClassName(
-////                        resolveInfo.activityInfo.packageName,
-////                        resolveInfo.activityInfo.name );
-////                resolved = true;
-////                break;
-////            }
-////        }
-////
-////        if(resolved) {
-////            startActivity(intent);
-////
-////        } else {
-////            Toast.makeText(PollRankingActivity.this, "페이스북 앱이 없습니다.", Toast.LENGTH_SHORT).show();
-////        }
-//
-//    }
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -2158,9 +2090,40 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
                 case 100:
                     if (data.getStringExtra("result").equals("refresh")) {
                         refreshActivity();
+                    } else if (data.getStringExtra("result").equals("원본 보기")){
+                        mDatabaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                Map<String, Object> contentInfo = (Map<String, Object>) dataSnapshot.getValue();
+                                String url = contentInfo.get("imageUrl_0").toString();
+                                Intent intent = new Intent(PollRankingActivity.this, FullImageActivity.class);
+                                intent.putExtra("imgUrl", url);
+                                startActivity(intent);
+                            }
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
+                            }
+                        });
                     } else {
                         pollActivity_textView_check_1.setText(data.getStringExtra("result"));
-                        checking_img_1();
+                        String userChoice = data.getStringExtra("result");
+                        userChoiceMap.put(pollActivity_imageView_userAddContent_1, userChoice);
+                        pollActivity_imageView_userAddContent_n1.setVisibility(View.VISIBLE);
+                        imageChoiceNumber(userChoice, pollActivity_imageView_userAddContent_n1);
+                        firebaseDatabase.getReference().child("user_contents").child(getIntent().getStringExtra("contentKey")).addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                ContentDTO contentDTO = dataSnapshot.getValue(ContentDTO.class);
+                                GlideApp.with(PollRankingActivity.this)
+                                        .load(contentDTO.getImageUrl_0())
+                                        .apply(RequestOptions.bitmapTransform(new BlurTransformation(30,1)))
+                                        .into(pollActivity_imageView_userAddContent_1);
+                            }
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                            }
+                        });
                     }
                     break;
                 case 200:
@@ -2252,6 +2215,31 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
             }
         }
         super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    private void imageChoiceNumber(String userChoice, ImageView imageView) {
+        switch (userChoice) {
+            case "1 위" : Glide.with(PollRankingActivity.this).load(R.drawable.ic_n_one).into(imageView);
+                break;
+            case "2 위" : Glide.with(PollRankingActivity.this).load(R.drawable.ic_n_two).into(imageView);
+                break;
+            case "3 위" : Glide.with(PollRankingActivity.this).load(R.drawable.ic_n_three).into(imageView);
+                break;
+            case "4 위" : Glide.with(PollRankingActivity.this).load(R.drawable.ic_n_four).into(imageView);
+                break;
+            case "5 위" : Glide.with(PollRankingActivity.this).load(R.drawable.ic_n_five).into(imageView);
+                break;
+            case "6 위" : Glide.with(PollRankingActivity.this).load(R.drawable.ic_n_six).into(imageView);
+                break;
+            case "7 위" : Glide.with(PollRankingActivity.this).load(R.drawable.ic_n_seven).into(imageView);
+                break;
+            case "8 위" : Glide.with(PollRankingActivity.this).load(R.drawable.ic_n_eight).into(imageView);
+                break;
+            case "9 위" : Glide.with(PollRankingActivity.this).load(R.drawable.ic_n_nine).into(imageView);
+                break;
+            case "10 위" : Glide.with(PollRankingActivity.this).load(R.drawable.ic_n_ten).into(imageView);
+                break;
+        }
     }
 
     private void removeReplyCount(DatabaseReference ref) {

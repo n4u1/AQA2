@@ -22,7 +22,7 @@ public class RankingChoiceActivity extends AppCompatActivity {
 
         TextView textView_1, textView_2, textView_3, textView_4,
                 textView_5, textView_6, textView_7, textView_8,
-                textView_9, textView_10, textView_11;
+                textView_9, textView_10, textView_11, textView_12;
 
         textView_1 = findViewById(R.id.textView_1);
         textView_2 = findViewById(R.id.textView_2);
@@ -35,6 +35,7 @@ public class RankingChoiceActivity extends AppCompatActivity {
         textView_9 = findViewById(R.id.textView_9);
         textView_10 = findViewById(R.id.textView_10);
         textView_11 = findViewById(R.id.textView_11);
+        textView_12 = findViewById(R.id.textView_12);
 
 
         //데이터 가져오기
@@ -53,6 +54,7 @@ public class RankingChoiceActivity extends AppCompatActivity {
         rankingArrayLists.add("9위로 선택");
         rankingArrayLists.add("10위로 선택");
         rankingArrayLists.add("모두 다시 선택");
+        rankingArrayLists.add("원본 보기");
         textView_1.setVisibility(View.VISIBLE);
         textView_2.setVisibility(View.VISIBLE);
         textView_3.setVisibility(View.VISIBLE);
@@ -64,6 +66,7 @@ public class RankingChoiceActivity extends AppCompatActivity {
         textView_9.setVisibility(View.VISIBLE);
         textView_10.setVisibility(View.VISIBLE);
         textView_11.setVisibility(View.VISIBLE);
+        textView_12.setVisibility(View.VISIBLE);
         textView_1.setText(rankingArrayLists.get(0));
         textView_2.setText(rankingArrayLists.get(1));
         textView_3.setText(rankingArrayLists.get(2));
@@ -75,6 +78,7 @@ public class RankingChoiceActivity extends AppCompatActivity {
         textView_9.setText(rankingArrayLists.get(8));
         textView_10.setText(rankingArrayLists.get(9));
         textView_11.setText(rankingArrayLists.get(10));
+        textView_12.setText(rankingArrayLists.get(11));
 
 
         //현재 선택되어있는 순위 빼고 남기기
@@ -292,6 +296,16 @@ public class RankingChoiceActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent resultIntent = new Intent();
                 resultIntent.putExtra("result", "refresh");
+                setResult(RESULT_OK, resultIntent);
+                finish();
+            }
+        });
+
+        textView_12.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent resultIntent = new Intent();
+                resultIntent.putExtra("result", "원본 보기");
                 setResult(RESULT_OK, resultIntent);
                 finish();
             }
