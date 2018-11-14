@@ -32,6 +32,7 @@ import android.widget.Toast;
 
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
@@ -42,8 +43,10 @@ import com.n4u1.AQA.AQA.R;
 import com.n4u1.AQA.AQA.dialog.AlarmDoneDialog;
 import com.n4u1.AQA.AQA.dialog.ContentDeleteDialog;
 import com.n4u1.AQA.AQA.dialog.DeleteModificationActivity;
+import com.n4u1.AQA.AQA.dialog.PollRankingChoiceActivity;
 import com.n4u1.AQA.AQA.dialog.PollResultAnonymousDialog;
 import com.n4u1.AQA.AQA.dialog.PollResultDialog;
+import com.n4u1.AQA.AQA.dialog.PollSingleChoiceActivity;
 import com.n4u1.AQA.AQA.dialog.UserAlarmDialog;
 import com.n4u1.AQA.AQA.models.ContentDTO;
 import com.n4u1.AQA.AQA.models.ReplyDTO;
@@ -74,6 +77,8 @@ import java.util.Iterator;
 import java.util.Locale;
 import java.util.Map;
 import java.util.TimeZone;
+
+import jp.wasabeef.glide.transformations.BlurTransformation;
 
 public class PollSingleActivity extends AppCompatActivity implements View.OnClickListener, ContentDeleteDialog.ContentDeleteDialogListener {
 
@@ -106,16 +111,12 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
             pollActivity_imageView_userAddContent_9, pollActivity_imageView_userAddContent_10,
             pollActivity_imageView_replyView_1, pollActivity_imageView_replyView_2;
 
-    ImageView pollActivity_imageView_choice_1, pollActivity_imageView_choice_2,
-            pollActivity_imageView_choice_3, pollActivity_imageView_choice_4,
-            pollActivity_imageView_choice_5, pollActivity_imageView_choice_6,
-            pollActivity_imageView_choice_7, pollActivity_imageView_choice_8,
-            pollActivity_imageView_choice_9, pollActivity_imageView_choice_10,
-            pollActivity_imageView_around_1, pollActivity_imageView_around_2,
-            pollActivity_imageView_around_3, pollActivity_imageView_around_4,
-            pollActivity_imageView_around_5, pollActivity_imageView_around_6,
-            pollActivity_imageView_around_7, pollActivity_imageView_around_8,
-            pollActivity_imageView_around_9, pollActivity_imageView_around_10;
+    ImageView pollActivity_imageView_userAddContent_n1, pollActivity_imageView_userAddContent_n2,
+            pollActivity_imageView_userAddContent_n3, pollActivity_imageView_userAddContent_n4,
+            pollActivity_imageView_userAddContent_n5, pollActivity_imageView_userAddContent_n6,
+            pollActivity_imageView_userAddContent_n7, pollActivity_imageView_userAddContent_n8,
+            pollActivity_imageView_userAddContent_n9, pollActivity_imageView_userAddContent_n10;
+
 
     ImageView pollActivity_imageView_userClass, imageView_userClass0, imageView_userClass1, imageView_userClass2;
     ImageView pollActivity_button_replySend;
@@ -156,7 +157,6 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
         final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
 
-
         final String contentKey = getIntent().getStringExtra("contentKey");
         contentHit = getIntent().getIntExtra("contentHit", 999999);
 
@@ -169,7 +169,6 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
         likeFirebaseDatabase = FirebaseDatabase.getInstance();
 
         pollActivity_imageView_alarm = findViewById(R.id.pollActivity_imageView_alarm);
-        pollActivity_imageView_around_1 = findViewById(R.id.pollActivity_imageView_around_1);
 
 
 //        scrollView = findViewById(R.id.scrollView);
@@ -226,16 +225,6 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
         pollActivity_editText_reply = findViewById(R.id.pollActivity_editText_reply);
         pollActivity_button_replySend = findViewById(R.id.pollActivity_button_replySend);
 
-        pollActivity_imageView_choice_1 = findViewById(R.id.pollActivity_imageView_choice_1);
-        pollActivity_imageView_choice_2 = findViewById(R.id.pollActivity_imageView_choice_2);
-        pollActivity_imageView_choice_3 = findViewById(R.id.pollActivity_imageView_choice_3);
-        pollActivity_imageView_choice_4 = findViewById(R.id.pollActivity_imageView_choice_4);
-        pollActivity_imageView_choice_5 = findViewById(R.id.pollActivity_imageView_choice_5);
-        pollActivity_imageView_choice_6 = findViewById(R.id.pollActivity_imageView_choice_6);
-        pollActivity_imageView_choice_7 = findViewById(R.id.pollActivity_imageView_choice_7);
-        pollActivity_imageView_choice_8 = findViewById(R.id.pollActivity_imageView_choice_8);
-        pollActivity_imageView_choice_9 = findViewById(R.id.pollActivity_imageView_choice_9);
-        pollActivity_imageView_choice_10 = findViewById(R.id.pollActivity_imageView_choice_10);
 
         pollActivity_textView_check_1 = findViewById(R.id.pollActivity_textView_check_1);
         pollActivity_textView_check_2 = findViewById(R.id.pollActivity_textView_check_2);
@@ -248,22 +237,21 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
         pollActivity_textView_check_9 = findViewById(R.id.pollActivity_textView_check_9);
         pollActivity_textView_check_10 = findViewById(R.id.pollActivity_textView_check_10);
 
-        pollActivity_imageView_around_1 = findViewById(R.id.pollActivity_imageView_around_1);
-        pollActivity_imageView_around_2 = findViewById(R.id.pollActivity_imageView_around_2);
-        pollActivity_imageView_around_3 = findViewById(R.id.pollActivity_imageView_around_3);
-        pollActivity_imageView_around_4 = findViewById(R.id.pollActivity_imageView_around_4);
-        pollActivity_imageView_around_5 = findViewById(R.id.pollActivity_imageView_around_5);
-        pollActivity_imageView_around_6 = findViewById(R.id.pollActivity_imageView_around_6);
-        pollActivity_imageView_around_7 = findViewById(R.id.pollActivity_imageView_around_7);
-        pollActivity_imageView_around_8 = findViewById(R.id.pollActivity_imageView_around_8);
-        pollActivity_imageView_around_9 = findViewById(R.id.pollActivity_imageView_around_9);
-        pollActivity_imageView_around_10 = findViewById(R.id.pollActivity_imageView_around_10);
-
-
         pollActivity_textView_hitCount = findViewById(R.id.pollActivity_textView_hitCount);
         pollActivity_textView_likeCount = findViewById(R.id.pollActivity_textView_likeCount);
         pollActivity_imageView_state = findViewById(R.id.pollActivity_imageView_state);
         pollActivity_imageView_like = findViewById(R.id.pollActivity_imageView_like);
+
+        pollActivity_imageView_userAddContent_n1 = findViewById(R.id.pollActivity_imageView_userAddContent_n1);
+        pollActivity_imageView_userAddContent_n2 = findViewById(R.id.pollActivity_imageView_userAddContent_n2);
+        pollActivity_imageView_userAddContent_n3 = findViewById(R.id.pollActivity_imageView_userAddContent_n3);
+        pollActivity_imageView_userAddContent_n4 = findViewById(R.id.pollActivity_imageView_userAddContent_n4);
+        pollActivity_imageView_userAddContent_n5 = findViewById(R.id.pollActivity_imageView_userAddContent_n5);
+        pollActivity_imageView_userAddContent_n6 = findViewById(R.id.pollActivity_imageView_userAddContent_n6);
+        pollActivity_imageView_userAddContent_n7 = findViewById(R.id.pollActivity_imageView_userAddContent_n7);
+        pollActivity_imageView_userAddContent_n8 = findViewById(R.id.pollActivity_imageView_userAddContent_n8);
+        pollActivity_imageView_userAddContent_n9 = findViewById(R.id.pollActivity_imageView_userAddContent_n9);
+        pollActivity_imageView_userAddContent_n10 = findViewById(R.id.pollActivity_imageView_userAddContent_n10);
 
 
         pollActivity_imageView_userAddContent_1.setOnClickListener(this);
@@ -668,7 +656,7 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
         //contentDTO 화면 초기세팅
         mDatabaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot)  {
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
                 ContentDTO contentDTO = dataSnapshot.getValue(ContentDTO.class);
                 try {
@@ -693,27 +681,12 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
 
                     switch (contentDTO.getItemViewType()) {
                         case 2:
-                            pollActivity_textView_check_1.setVisibility(View.VISIBLE);
-                            pollActivity_textView_check_2.setVisibility(View.VISIBLE);
-                            pollActivity_imageView_around_1.setVisibility(View.VISIBLE);
-                            pollActivity_imageView_around_2.setVisibility(View.VISIBLE);
-                            pollActivity_imageView_choice_1.setVisibility(View.VISIBLE);
-                            pollActivity_imageView_choice_2.setVisibility(View.VISIBLE);
                             pollActivity_imageView_userAddContent_1.setVisibility(View.VISIBLE);
                             pollActivity_imageView_userAddContent_2.setVisibility(View.VISIBLE);
                             GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_0()).centerCrop().thumbnail(Glide.with(getApplicationContext()).load(R.drawable.loadingicon)).into(pollActivity_imageView_userAddContent_1).getView();
                             GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_1()).centerCrop().thumbnail(Glide.with(getApplicationContext()).load(R.drawable.loadingicon)).into(pollActivity_imageView_userAddContent_2).getView();
                             break;
                         case 3:
-                            pollActivity_textView_check_1.setVisibility(View.VISIBLE);
-                            pollActivity_textView_check_2.setVisibility(View.VISIBLE);
-                            pollActivity_textView_check_3.setVisibility(View.VISIBLE);
-                            pollActivity_imageView_around_1.setVisibility(View.VISIBLE);
-                            pollActivity_imageView_around_2.setVisibility(View.VISIBLE);
-                            pollActivity_imageView_around_3.setVisibility(View.VISIBLE);
-                            pollActivity_imageView_choice_1.setVisibility(View.VISIBLE);
-                            pollActivity_imageView_choice_2.setVisibility(View.VISIBLE);
-                            pollActivity_imageView_choice_3.setVisibility(View.VISIBLE);
                             pollActivity_imageView_userAddContent_1.setVisibility(View.VISIBLE);
                             pollActivity_imageView_userAddContent_2.setVisibility(View.VISIBLE);
                             pollActivity_imageView_userAddContent_3.setVisibility(View.VISIBLE);
@@ -722,18 +695,6 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
                             GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_2()).centerCrop().thumbnail(Glide.with(getApplicationContext()).load(R.drawable.loadingicon)).into(pollActivity_imageView_userAddContent_3).getView();
                             break;
                         case 4:
-                            pollActivity_textView_check_1.setVisibility(View.VISIBLE);
-                            pollActivity_textView_check_2.setVisibility(View.VISIBLE);
-                            pollActivity_textView_check_3.setVisibility(View.VISIBLE);
-                            pollActivity_textView_check_4.setVisibility(View.VISIBLE);
-                            pollActivity_imageView_around_1.setVisibility(View.VISIBLE);
-                            pollActivity_imageView_around_2.setVisibility(View.VISIBLE);
-                            pollActivity_imageView_around_3.setVisibility(View.VISIBLE);
-                            pollActivity_imageView_around_4.setVisibility(View.VISIBLE);
-                            pollActivity_imageView_choice_1.setVisibility(View.VISIBLE);
-                            pollActivity_imageView_choice_2.setVisibility(View.VISIBLE);
-                            pollActivity_imageView_choice_3.setVisibility(View.VISIBLE);
-                            pollActivity_imageView_choice_4.setVisibility(View.VISIBLE);
                             pollActivity_imageView_userAddContent_1.setVisibility(View.VISIBLE);
                             pollActivity_imageView_userAddContent_2.setVisibility(View.VISIBLE);
                             pollActivity_imageView_userAddContent_3.setVisibility(View.VISIBLE);
@@ -744,22 +705,6 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
                             GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_3()).centerCrop().thumbnail(Glide.with(getApplicationContext()).load(R.drawable.loadingicon)).into(pollActivity_imageView_userAddContent_4).getView();
                             break;
                         case 5:
-                            pollActivity_textView_check_1.setVisibility(View.VISIBLE);
-                            pollActivity_textView_check_2.setVisibility(View.VISIBLE);
-                            pollActivity_textView_check_3.setVisibility(View.VISIBLE);
-                            pollActivity_textView_check_4.setVisibility(View.VISIBLE);
-                            pollActivity_textView_check_5.setVisibility(View.VISIBLE);
-
-                            pollActivity_imageView_around_1.setVisibility(View.VISIBLE);
-                            pollActivity_imageView_around_2.setVisibility(View.VISIBLE);
-                            pollActivity_imageView_around_3.setVisibility(View.VISIBLE);
-                            pollActivity_imageView_around_4.setVisibility(View.VISIBLE);
-                            pollActivity_imageView_around_5.setVisibility(View.VISIBLE);
-                            pollActivity_imageView_choice_1.setVisibility(View.VISIBLE);
-                            pollActivity_imageView_choice_2.setVisibility(View.VISIBLE);
-                            pollActivity_imageView_choice_3.setVisibility(View.VISIBLE);
-                            pollActivity_imageView_choice_4.setVisibility(View.VISIBLE);
-                            pollActivity_imageView_choice_5.setVisibility(View.VISIBLE);
                             pollActivity_imageView_userAddContent_1.setVisibility(View.VISIBLE);
                             pollActivity_imageView_userAddContent_2.setVisibility(View.VISIBLE);
                             pollActivity_imageView_userAddContent_3.setVisibility(View.VISIBLE);
@@ -772,24 +717,6 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
                             GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_4()).centerCrop().thumbnail(Glide.with(getApplicationContext()).load(R.drawable.loadingicon)).into(pollActivity_imageView_userAddContent_5).getView();
                             break;
                         case 6:
-                            pollActivity_textView_check_1.setVisibility(View.VISIBLE);
-                            pollActivity_textView_check_2.setVisibility(View.VISIBLE);
-                            pollActivity_textView_check_3.setVisibility(View.VISIBLE);
-                            pollActivity_textView_check_4.setVisibility(View.VISIBLE);
-                            pollActivity_textView_check_5.setVisibility(View.VISIBLE);
-                            pollActivity_textView_check_6.setVisibility(View.VISIBLE);
-                            pollActivity_imageView_around_1.setVisibility(View.VISIBLE);
-                            pollActivity_imageView_around_2.setVisibility(View.VISIBLE);
-                            pollActivity_imageView_around_3.setVisibility(View.VISIBLE);
-                            pollActivity_imageView_around_4.setVisibility(View.VISIBLE);
-                            pollActivity_imageView_around_5.setVisibility(View.VISIBLE);
-                            pollActivity_imageView_around_6.setVisibility(View.VISIBLE);
-                            pollActivity_imageView_choice_1.setVisibility(View.VISIBLE);
-                            pollActivity_imageView_choice_2.setVisibility(View.VISIBLE);
-                            pollActivity_imageView_choice_3.setVisibility(View.VISIBLE);
-                            pollActivity_imageView_choice_4.setVisibility(View.VISIBLE);
-                            pollActivity_imageView_choice_5.setVisibility(View.VISIBLE);
-                            pollActivity_imageView_choice_6.setVisibility(View.VISIBLE);
                             pollActivity_imageView_userAddContent_1.setVisibility(View.VISIBLE);
                             pollActivity_imageView_userAddContent_2.setVisibility(View.VISIBLE);
                             pollActivity_imageView_userAddContent_3.setVisibility(View.VISIBLE);
@@ -804,27 +731,6 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
                             GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_5()).centerCrop().thumbnail(Glide.with(getApplicationContext()).load(R.drawable.loadingicon)).into(pollActivity_imageView_userAddContent_6).getView();
                             break;
                         case 7:
-                            pollActivity_textView_check_1.setVisibility(View.VISIBLE);
-                            pollActivity_textView_check_2.setVisibility(View.VISIBLE);
-                            pollActivity_textView_check_3.setVisibility(View.VISIBLE);
-                            pollActivity_textView_check_4.setVisibility(View.VISIBLE);
-                            pollActivity_textView_check_5.setVisibility(View.VISIBLE);
-                            pollActivity_textView_check_6.setVisibility(View.VISIBLE);
-                            pollActivity_textView_check_7.setVisibility(View.VISIBLE);
-                            pollActivity_imageView_around_1.setVisibility(View.VISIBLE);
-                            pollActivity_imageView_around_2.setVisibility(View.VISIBLE);
-                            pollActivity_imageView_around_3.setVisibility(View.VISIBLE);
-                            pollActivity_imageView_around_4.setVisibility(View.VISIBLE);
-                            pollActivity_imageView_around_5.setVisibility(View.VISIBLE);
-                            pollActivity_imageView_around_6.setVisibility(View.VISIBLE);
-                            pollActivity_imageView_around_7.setVisibility(View.VISIBLE);
-                            pollActivity_imageView_choice_1.setVisibility(View.VISIBLE);
-                            pollActivity_imageView_choice_2.setVisibility(View.VISIBLE);
-                            pollActivity_imageView_choice_3.setVisibility(View.VISIBLE);
-                            pollActivity_imageView_choice_4.setVisibility(View.VISIBLE);
-                            pollActivity_imageView_choice_5.setVisibility(View.VISIBLE);
-                            pollActivity_imageView_choice_6.setVisibility(View.VISIBLE);
-                            pollActivity_imageView_choice_7.setVisibility(View.VISIBLE);
                             pollActivity_imageView_userAddContent_1.setVisibility(View.VISIBLE);
                             pollActivity_imageView_userAddContent_2.setVisibility(View.VISIBLE);
                             pollActivity_imageView_userAddContent_3.setVisibility(View.VISIBLE);
@@ -841,30 +747,6 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
                             GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_6()).centerCrop().thumbnail(Glide.with(getApplicationContext()).load(R.drawable.loadingicon)).into(pollActivity_imageView_userAddContent_7).getView();
                             break;
                         case 8:
-                            pollActivity_textView_check_1.setVisibility(View.VISIBLE);
-                            pollActivity_textView_check_2.setVisibility(View.VISIBLE);
-                            pollActivity_textView_check_3.setVisibility(View.VISIBLE);
-                            pollActivity_textView_check_4.setVisibility(View.VISIBLE);
-                            pollActivity_textView_check_5.setVisibility(View.VISIBLE);
-                            pollActivity_textView_check_6.setVisibility(View.VISIBLE);
-                            pollActivity_textView_check_7.setVisibility(View.VISIBLE);
-                            pollActivity_textView_check_8.setVisibility(View.VISIBLE);
-                            pollActivity_imageView_around_1.setVisibility(View.VISIBLE);
-                            pollActivity_imageView_around_2.setVisibility(View.VISIBLE);
-                            pollActivity_imageView_around_3.setVisibility(View.VISIBLE);
-                            pollActivity_imageView_around_4.setVisibility(View.VISIBLE);
-                            pollActivity_imageView_around_5.setVisibility(View.VISIBLE);
-                            pollActivity_imageView_around_6.setVisibility(View.VISIBLE);
-                            pollActivity_imageView_around_7.setVisibility(View.VISIBLE);
-                            pollActivity_imageView_around_8.setVisibility(View.VISIBLE);
-                            pollActivity_imageView_choice_1.setVisibility(View.VISIBLE);
-                            pollActivity_imageView_choice_2.setVisibility(View.VISIBLE);
-                            pollActivity_imageView_choice_3.setVisibility(View.VISIBLE);
-                            pollActivity_imageView_choice_4.setVisibility(View.VISIBLE);
-                            pollActivity_imageView_choice_5.setVisibility(View.VISIBLE);
-                            pollActivity_imageView_choice_6.setVisibility(View.VISIBLE);
-                            pollActivity_imageView_choice_7.setVisibility(View.VISIBLE);
-                            pollActivity_imageView_choice_8.setVisibility(View.VISIBLE);
                             pollActivity_imageView_userAddContent_1.setVisibility(View.VISIBLE);
                             pollActivity_imageView_userAddContent_2.setVisibility(View.VISIBLE);
                             pollActivity_imageView_userAddContent_3.setVisibility(View.VISIBLE);
@@ -883,33 +765,6 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
                             GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_7()).centerCrop().thumbnail(Glide.with(getApplicationContext()).load(R.drawable.loadingicon)).into(pollActivity_imageView_userAddContent_8).getView();
                             break;
                         case 9:
-                            pollActivity_textView_check_1.setVisibility(View.VISIBLE);
-                            pollActivity_textView_check_2.setVisibility(View.VISIBLE);
-                            pollActivity_textView_check_3.setVisibility(View.VISIBLE);
-                            pollActivity_textView_check_4.setVisibility(View.VISIBLE);
-                            pollActivity_textView_check_5.setVisibility(View.VISIBLE);
-                            pollActivity_textView_check_6.setVisibility(View.VISIBLE);
-                            pollActivity_textView_check_7.setVisibility(View.VISIBLE);
-                            pollActivity_textView_check_8.setVisibility(View.VISIBLE);
-                            pollActivity_textView_check_9.setVisibility(View.VISIBLE);
-                            pollActivity_imageView_around_1.setVisibility(View.VISIBLE);
-                            pollActivity_imageView_around_2.setVisibility(View.VISIBLE);
-                            pollActivity_imageView_around_3.setVisibility(View.VISIBLE);
-                            pollActivity_imageView_around_4.setVisibility(View.VISIBLE);
-                            pollActivity_imageView_around_5.setVisibility(View.VISIBLE);
-                            pollActivity_imageView_around_6.setVisibility(View.VISIBLE);
-                            pollActivity_imageView_around_7.setVisibility(View.VISIBLE);
-                            pollActivity_imageView_around_8.setVisibility(View.VISIBLE);
-                            pollActivity_imageView_around_9.setVisibility(View.VISIBLE);
-                            pollActivity_imageView_choice_1.setVisibility(View.VISIBLE);
-                            pollActivity_imageView_choice_2.setVisibility(View.VISIBLE);
-                            pollActivity_imageView_choice_3.setVisibility(View.VISIBLE);
-                            pollActivity_imageView_choice_4.setVisibility(View.VISIBLE);
-                            pollActivity_imageView_choice_5.setVisibility(View.VISIBLE);
-                            pollActivity_imageView_choice_6.setVisibility(View.VISIBLE);
-                            pollActivity_imageView_choice_7.setVisibility(View.VISIBLE);
-                            pollActivity_imageView_choice_8.setVisibility(View.VISIBLE);
-                            pollActivity_imageView_choice_9.setVisibility(View.VISIBLE);
                             pollActivity_imageView_userAddContent_1.setVisibility(View.VISIBLE);
                             pollActivity_imageView_userAddContent_2.setVisibility(View.VISIBLE);
                             pollActivity_imageView_userAddContent_3.setVisibility(View.VISIBLE);
@@ -930,36 +785,6 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
                             GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_8()).centerCrop().thumbnail(Glide.with(getApplicationContext()).load(R.drawable.loadingicon)).into(pollActivity_imageView_userAddContent_9).getView();
                             break;
                         case 10:
-                            pollActivity_textView_check_1.setVisibility(View.VISIBLE);
-                            pollActivity_textView_check_2.setVisibility(View.VISIBLE);
-                            pollActivity_textView_check_3.setVisibility(View.VISIBLE);
-                            pollActivity_textView_check_4.setVisibility(View.VISIBLE);
-                            pollActivity_textView_check_5.setVisibility(View.VISIBLE);
-                            pollActivity_textView_check_6.setVisibility(View.VISIBLE);
-                            pollActivity_textView_check_7.setVisibility(View.VISIBLE);
-                            pollActivity_textView_check_8.setVisibility(View.VISIBLE);
-                            pollActivity_textView_check_9.setVisibility(View.VISIBLE);
-                            pollActivity_textView_check_10.setVisibility(View.VISIBLE);
-                            pollActivity_imageView_around_1.setVisibility(View.VISIBLE);
-                            pollActivity_imageView_around_2.setVisibility(View.VISIBLE);
-                            pollActivity_imageView_around_3.setVisibility(View.VISIBLE);
-                            pollActivity_imageView_around_4.setVisibility(View.VISIBLE);
-                            pollActivity_imageView_around_5.setVisibility(View.VISIBLE);
-                            pollActivity_imageView_around_6.setVisibility(View.VISIBLE);
-                            pollActivity_imageView_around_7.setVisibility(View.VISIBLE);
-                            pollActivity_imageView_around_8.setVisibility(View.VISIBLE);
-                            pollActivity_imageView_around_9.setVisibility(View.VISIBLE);
-                            pollActivity_imageView_around_10.setVisibility(View.VISIBLE);
-                            pollActivity_imageView_choice_1.setVisibility(View.VISIBLE);
-                            pollActivity_imageView_choice_2.setVisibility(View.VISIBLE);
-                            pollActivity_imageView_choice_3.setVisibility(View.VISIBLE);
-                            pollActivity_imageView_choice_4.setVisibility(View.VISIBLE);
-                            pollActivity_imageView_choice_5.setVisibility(View.VISIBLE);
-                            pollActivity_imageView_choice_6.setVisibility(View.VISIBLE);
-                            pollActivity_imageView_choice_7.setVisibility(View.VISIBLE);
-                            pollActivity_imageView_choice_8.setVisibility(View.VISIBLE);
-                            pollActivity_imageView_choice_9.setVisibility(View.VISIBLE);
-                            pollActivity_imageView_choice_10.setVisibility(View.VISIBLE);
                             pollActivity_imageView_userAddContent_1.setVisibility(View.VISIBLE);
                             pollActivity_imageView_userAddContent_2.setVisibility(View.VISIBLE);
                             pollActivity_imageView_userAddContent_3.setVisibility(View.VISIBLE);
@@ -1061,7 +886,7 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
                     pollActivity_imageView_userClass.setImageResource(R.drawable.q_class_blue_1);
                 } else if (userClass >= 450 && userClass < 501) {
                     pollActivity_imageView_userClass.setImageResource(R.drawable.q_class_blue_2);
-                }else if (userClass == 1000) {
+                } else if (userClass == 1000) {
                     pollActivity_imageView_userClass.setImageResource(R.drawable.q_class_black);
                 }
             }
@@ -1266,16 +1091,17 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
 
     //현재 Activity 에서의 투표 체크 유무
     private boolean pollChecking() {
-        if (((ColorDrawable) pollActivity_imageView_choice_1.getBackground()).getColor() == 0xff4485c9
-                || ((ColorDrawable) pollActivity_imageView_choice_2.getBackground()).getColor() == 0xff4485c9
-                || ((ColorDrawable) pollActivity_imageView_choice_3.getBackground()).getColor() == 0xff4485c9
-                || ((ColorDrawable) pollActivity_imageView_choice_4.getBackground()).getColor() == 0xff4485c9
-                || ((ColorDrawable) pollActivity_imageView_choice_5.getBackground()).getColor() == 0xff4485c9
-                || ((ColorDrawable) pollActivity_imageView_choice_6.getBackground()).getColor() == 0xff4485c9
-                || ((ColorDrawable) pollActivity_imageView_choice_7.getBackground()).getColor() == 0xff4485c9
-                || ((ColorDrawable) pollActivity_imageView_choice_8.getBackground()).getColor() == 0xff4485c9
-                || ((ColorDrawable) pollActivity_imageView_choice_9.getBackground()).getColor() == 0xff4485c9
-                || ((ColorDrawable) pollActivity_imageView_choice_10.getBackground()).getColor() == 0xff4485c9) {
+        if (pollActivity_imageView_userAddContent_n1.getVisibility() == View.VISIBLE ||
+                pollActivity_imageView_userAddContent_n2.getVisibility() == View.VISIBLE ||
+                pollActivity_imageView_userAddContent_n3.getVisibility() == View.VISIBLE ||
+                pollActivity_imageView_userAddContent_n4.getVisibility() == View.VISIBLE ||
+                pollActivity_imageView_userAddContent_n5.getVisibility() == View.VISIBLE ||
+                pollActivity_imageView_userAddContent_n6.getVisibility() == View.VISIBLE ||
+                pollActivity_imageView_userAddContent_n7.getVisibility() == View.VISIBLE ||
+                pollActivity_imageView_userAddContent_n8.getVisibility() == View.VISIBLE ||
+                pollActivity_imageView_userAddContent_n9.getVisibility() == View.VISIBLE ||
+                pollActivity_imageView_userAddContent_n9.getVisibility() == View.VISIBLE ||
+                pollActivity_imageView_userAddContent_n9.getVisibility() == View.VISIBLE ) {
             return true;
         } else {
             return false;
@@ -1492,40 +1318,447 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
 
 
     private int currentPick() {
-        if (((ColorDrawable) pollActivity_imageView_choice_1.getBackground()).getColor() == 0xff4485c9) {
-            return 0;
-        } else if (((ColorDrawable) pollActivity_imageView_choice_2.getBackground()).getColor() == 0xff4485c9) {
-            return 1;
-        } else if (((ColorDrawable) pollActivity_imageView_choice_3.getBackground()).getColor() == 0xff4485c9) {
-            return 2;
-        } else if (((ColorDrawable) pollActivity_imageView_choice_4.getBackground()).getColor() == 0xff4485c9) {
-            return 3;
-        } else if (((ColorDrawable) pollActivity_imageView_choice_5.getBackground()).getColor() == 0xff4485c9) {
-            return 4;
-        } else if (((ColorDrawable) pollActivity_imageView_choice_6.getBackground()).getColor() == 0xff4485c9) {
-            return 5;
-        } else if (((ColorDrawable) pollActivity_imageView_choice_7.getBackground()).getColor() == 0xff4485c9) {
-            return 6;
-        } else if (((ColorDrawable) pollActivity_imageView_choice_8.getBackground()).getColor() == 0xff4485c9) {
-            return 7;
-        } else if (((ColorDrawable) pollActivity_imageView_choice_9.getBackground()).getColor() == 0xff4485c9) {
-            return 8;
-        } else if (((ColorDrawable) pollActivity_imageView_choice_10.getBackground()).getColor() == 0xff4485c9) {
-            return 9;
-        } else return 100;
+        if (pollActivity_imageView_userAddContent_n1.getVisibility() == View.VISIBLE) return 0;
+        if (pollActivity_imageView_userAddContent_n2.getVisibility() == View.VISIBLE) return 1;
+        if (pollActivity_imageView_userAddContent_n3.getVisibility() == View.VISIBLE) return 2;
+        if (pollActivity_imageView_userAddContent_n4.getVisibility() == View.VISIBLE) return 3;
+        if (pollActivity_imageView_userAddContent_n5.getVisibility() == View.VISIBLE) return 4;
+        if (pollActivity_imageView_userAddContent_n6.getVisibility() == View.VISIBLE) return 5;
+        if (pollActivity_imageView_userAddContent_n7.getVisibility() == View.VISIBLE) return 6;
+        if (pollActivity_imageView_userAddContent_n8.getVisibility() == View.VISIBLE) return 7;
+        if (pollActivity_imageView_userAddContent_n9.getVisibility() == View.VISIBLE) return 8;
+        if (pollActivity_imageView_userAddContent_n10.getVisibility() == View.VISIBLE) return 9;
+        return 100;
     }
+
+
+    //이미지 선택시 전체화면으로 보여주기
+    //N선택 선택시 파란색으로 바뀌면서 체크
+    @Override
+    public void onClick(View v) {
+        Intent intent = new Intent(PollSingleActivity.this, PollSingleChoiceActivity.class);
+        if (checkUserHitContent) {
+            intent.putExtra("contentsCount", 1);
+        } else {
+            intent.putExtra("contentsCount", getIntent().getIntExtra("itemViewType", 100));
+        }
+
+        switch (v.getId()) {
+            case R.id.pollActivity_imageView_userAddContent_1:
+                startActivityForResult(intent, 100);
+                break;
+            case R.id.pollActivity_imageView_userAddContent_2:
+                startActivityForResult(intent, 200);
+                break;
+            case R.id.pollActivity_imageView_userAddContent_3:
+                startActivityForResult(intent, 300);
+                break;
+            case R.id.pollActivity_imageView_userAddContent_4:
+                startActivityForResult(intent, 400);
+                break;
+            case R.id.pollActivity_imageView_userAddContent_5:
+                startActivityForResult(intent, 500);
+                break;
+            case R.id.pollActivity_imageView_userAddContent_6:
+                startActivityForResult(intent, 600);
+                break;
+            case R.id.pollActivity_imageView_userAddContent_7:
+                startActivityForResult(intent, 700);
+                break;
+            case R.id.pollActivity_imageView_userAddContent_8:
+                startActivityForResult(intent, 800);
+                break;
+            case R.id.pollActivity_imageView_userAddContent_9:
+                startActivityForResult(intent, 900);
+                break;
+            case R.id.pollActivity_imageView_userAddContent_10:
+                startActivityForResult(intent, 1000);
+                break;
+        }
+    }
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == RESULT_OK) {
             switch (requestCode) {
+                case 100:
+                    if (data.getStringExtra("result").equals("원본 보기")) {
+                        mDatabaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                Map<String, Object> contentInfo = (Map<String, Object>) dataSnapshot.getValue();
+                                String url = contentInfo.get("imageUrl_0").toString();
+                                Intent intent = new Intent(PollSingleActivity.this, FullImageActivity.class);
+                                intent.putExtra("imgUrl", url);
+                                startActivity(intent);
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
+                            }
+                        });
+                    } else if (data.getStringExtra("result").equals("선택 하기")) {
+
+                        pollActivity_textView_check_1.setText(data.getStringExtra("result"));
+                        pollActivity_imageView_userAddContent_n1.setVisibility(View.VISIBLE);
+                        imageChoice(pollActivity_imageView_userAddContent_n1);
+                        firebaseDatabase.getReference().child("user_contents").child(getIntent().getStringExtra("contentKey")).addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                ContentDTO contentDTO = dataSnapshot.getValue(ContentDTO.class);
+                                GlideApp.with(PollSingleActivity.this)
+                                        .load(contentDTO.getImageUrl_0())
+                                        .apply(RequestOptions.bitmapTransform(new BlurTransformation(30, 1)))
+                                        .into(pollActivity_imageView_userAddContent_1);
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                            }
+                        });
+                    }
+                    break;
+                case 200:
+                    if (data.getStringExtra("result").equals("원본 보기")) {
+                        mDatabaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                Map<String, Object> contentInfo = (Map<String, Object>) dataSnapshot.getValue();
+                                String url = contentInfo.get("imageUrl_1").toString();
+                                Intent intent = new Intent(PollSingleActivity.this, FullImageActivity.class);
+                                intent.putExtra("imgUrl", url);
+                                startActivity(intent);
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
+                            }
+                        });
+                    } else if (data.getStringExtra("result").equals("선택 하기")) {
+                        pollActivity_textView_check_2.setText(data.getStringExtra("result"));
+                        pollActivity_imageView_userAddContent_n2.setVisibility(View.VISIBLE);
+                        imageChoice(pollActivity_imageView_userAddContent_n2);
+                        firebaseDatabase.getReference().child("user_contents").child(getIntent().getStringExtra("contentKey")).addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                ContentDTO contentDTO = dataSnapshot.getValue(ContentDTO.class);
+                                GlideApp.with(PollSingleActivity.this)
+                                        .load(contentDTO.getImageUrl_1())
+                                        .apply(RequestOptions.bitmapTransform(new BlurTransformation(30, 1)))
+                                        .into(pollActivity_imageView_userAddContent_2);
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                            }
+                        });
+                    }
+                    break;
+                case 300:
+                    if (data.getStringExtra("result").equals("원본 보기")) {
+                        mDatabaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                Map<String, Object> contentInfo = (Map<String, Object>) dataSnapshot.getValue();
+                                String url = contentInfo.get("imageUrl_2").toString();
+                                Intent intent = new Intent(PollSingleActivity.this, FullImageActivity.class);
+                                intent.putExtra("imgUrl", url);
+                                startActivity(intent);
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
+                            }
+                        });
+                    } else if (data.getStringExtra("result").equals("선택 하기")) {
+                        pollActivity_textView_check_3.setText(data.getStringExtra("result"));
+                        pollActivity_imageView_userAddContent_n3.setVisibility(View.VISIBLE);
+                        imageChoice(pollActivity_imageView_userAddContent_n3);
+                        firebaseDatabase.getReference().child("user_contents").child(getIntent().getStringExtra("contentKey")).addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                ContentDTO contentDTO = dataSnapshot.getValue(ContentDTO.class);
+                                GlideApp.with(PollSingleActivity.this)
+                                        .load(contentDTO.getImageUrl_2())
+                                        .apply(RequestOptions.bitmapTransform(new BlurTransformation(30, 1)))
+                                        .into(pollActivity_imageView_userAddContent_3);
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                            }
+                        });
+                    }
+                    break;
+                case 400:
+                    if (data.getStringExtra("result").equals("원본 보기")) {
+                        mDatabaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                Map<String, Object> contentInfo = (Map<String, Object>) dataSnapshot.getValue();
+                                String url = contentInfo.get("imageUrl_3").toString();
+                                Intent intent = new Intent(PollSingleActivity.this, FullImageActivity.class);
+                                intent.putExtra("imgUrl", url);
+                                startActivity(intent);
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
+                            }
+                        });
+                    } else if (data.getStringExtra("result").equals("선택 하기")) {
+                        pollActivity_textView_check_4.setText(data.getStringExtra("result"));
+                        pollActivity_imageView_userAddContent_n4.setVisibility(View.VISIBLE);
+                        imageChoice(pollActivity_imageView_userAddContent_n4);
+                        firebaseDatabase.getReference().child("user_contents").child(getIntent().getStringExtra("contentKey")).addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                ContentDTO contentDTO = dataSnapshot.getValue(ContentDTO.class);
+                                GlideApp.with(PollSingleActivity.this)
+                                        .load(contentDTO.getImageUrl_3())
+                                        .apply(RequestOptions.bitmapTransform(new BlurTransformation(30, 1)))
+                                        .into(pollActivity_imageView_userAddContent_4);
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                            }
+                        });
+                    }
+                    break;
+                case 500:
+                    if (data.getStringExtra("result").equals("원본 보기")) {
+                        mDatabaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                Map<String, Object> contentInfo = (Map<String, Object>) dataSnapshot.getValue();
+                                String url = contentInfo.get("imageUrl_4").toString();
+                                Intent intent = new Intent(PollSingleActivity.this, FullImageActivity.class);
+                                intent.putExtra("imgUrl", url);
+                                startActivity(intent);
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
+                            }
+                        });
+                    } else if (data.getStringExtra("result").equals("선택 하기")) {
+                        pollActivity_textView_check_5.setText(data.getStringExtra("result"));
+                        pollActivity_imageView_userAddContent_n5.setVisibility(View.VISIBLE);
+                        imageChoice(pollActivity_imageView_userAddContent_n5);
+                        firebaseDatabase.getReference().child("user_contents").child(getIntent().getStringExtra("contentKey")).addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                ContentDTO contentDTO = dataSnapshot.getValue(ContentDTO.class);
+                                GlideApp.with(PollSingleActivity.this)
+                                        .load(contentDTO.getImageUrl_4())
+                                        .apply(RequestOptions.bitmapTransform(new BlurTransformation(30, 1)))
+                                        .into(pollActivity_imageView_userAddContent_5);
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                            }
+                        });
+                    }
+                    break;
+                case 600:
+                    if (data.getStringExtra("result").equals("원본 보기")) {
+                        mDatabaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                Map<String, Object> contentInfo = (Map<String, Object>) dataSnapshot.getValue();
+                                String url = contentInfo.get("imageUrl_5").toString();
+                                Intent intent = new Intent(PollSingleActivity.this, FullImageActivity.class);
+                                intent.putExtra("imgUrl", url);
+                                startActivity(intent);
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
+                            }
+                        });
+                    } else if (data.getStringExtra("result").equals("선택 하기")) {
+                        pollActivity_textView_check_6.setText(data.getStringExtra("result"));
+                        pollActivity_imageView_userAddContent_n6.setVisibility(View.VISIBLE);
+                        imageChoice(pollActivity_imageView_userAddContent_n6);
+                        firebaseDatabase.getReference().child("user_contents").child(getIntent().getStringExtra("contentKey")).addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                ContentDTO contentDTO = dataSnapshot.getValue(ContentDTO.class);
+                                GlideApp.with(PollSingleActivity.this)
+                                        .load(contentDTO.getImageUrl_5())
+                                        .apply(RequestOptions.bitmapTransform(new BlurTransformation(30, 1)))
+                                        .into(pollActivity_imageView_userAddContent_6);
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                            }
+                        });
+                    }
+                    break;
+                case 700:
+                    if (data.getStringExtra("result").equals("원본 보기")) {
+                        mDatabaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                Map<String, Object> contentInfo = (Map<String, Object>) dataSnapshot.getValue();
+                                String url = contentInfo.get("imageUrl_6").toString();
+                                Intent intent = new Intent(PollSingleActivity.this, FullImageActivity.class);
+                                intent.putExtra("imgUrl", url);
+                                startActivity(intent);
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
+                            }
+                        });
+                    } else if (data.getStringExtra("result").equals("선택 하기")) {
+                        pollActivity_textView_check_7.setText(data.getStringExtra("result"));
+                        pollActivity_imageView_userAddContent_n7.setVisibility(View.VISIBLE);
+                        imageChoice(pollActivity_imageView_userAddContent_n7);
+                        firebaseDatabase.getReference().child("user_contents").child(getIntent().getStringExtra("contentKey")).addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                ContentDTO contentDTO = dataSnapshot.getValue(ContentDTO.class);
+                                GlideApp.with(PollSingleActivity.this)
+                                        .load(contentDTO.getImageUrl_6())
+                                        .apply(RequestOptions.bitmapTransform(new BlurTransformation(30, 1)))
+                                        .into(pollActivity_imageView_userAddContent_7);
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                            }
+                        });
+                    }
+                    break;
+                case 800:
+                    if (data.getStringExtra("result").equals("원본 보기")) {
+                        mDatabaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                Map<String, Object> contentInfo = (Map<String, Object>) dataSnapshot.getValue();
+                                String url = contentInfo.get("imageUrl_7").toString();
+                                Intent intent = new Intent(PollSingleActivity.this, FullImageActivity.class);
+                                intent.putExtra("imgUrl", url);
+                                startActivity(intent);
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
+                            }
+                        });
+                    } else if (data.getStringExtra("result").equals("선택 하기")) {
+                        pollActivity_textView_check_8.setText(data.getStringExtra("result"));
+                        pollActivity_imageView_userAddContent_n8.setVisibility(View.VISIBLE);
+                        imageChoice(pollActivity_imageView_userAddContent_n8);
+                        firebaseDatabase.getReference().child("user_contents").child(getIntent().getStringExtra("contentKey")).addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                ContentDTO contentDTO = dataSnapshot.getValue(ContentDTO.class);
+                                GlideApp.with(PollSingleActivity.this)
+                                        .load(contentDTO.getImageUrl_7())
+                                        .apply(RequestOptions.bitmapTransform(new BlurTransformation(30, 1)))
+                                        .into(pollActivity_imageView_userAddContent_8);
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                            }
+                        });
+                    }
+                    break;
+                case 900:
+                    if (data.getStringExtra("result").equals("원본 보기")) {
+                        mDatabaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                Map<String, Object> contentInfo = (Map<String, Object>) dataSnapshot.getValue();
+                                String url = contentInfo.get("imageUrl_8").toString();
+                                Intent intent = new Intent(PollSingleActivity.this, FullImageActivity.class);
+                                intent.putExtra("imgUrl", url);
+                                startActivity(intent);
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
+                            }
+                        });
+                    } else if (data.getStringExtra("result").equals("선택 하기")) {
+                        pollActivity_textView_check_9.setText(data.getStringExtra("result"));
+                        pollActivity_imageView_userAddContent_n9.setVisibility(View.VISIBLE);
+                        imageChoice(pollActivity_imageView_userAddContent_n9);
+                        firebaseDatabase.getReference().child("user_contents").child(getIntent().getStringExtra("contentKey")).addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                ContentDTO contentDTO = dataSnapshot.getValue(ContentDTO.class);
+                                GlideApp.with(PollSingleActivity.this)
+                                        .load(contentDTO.getImageUrl_8())
+                                        .apply(RequestOptions.bitmapTransform(new BlurTransformation(30, 1)))
+                                        .into(pollActivity_imageView_userAddContent_9);
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                            }
+                        });
+                    }
+                    break;
+                case 1000:
+                    if (data.getStringExtra("result").equals("원본 보기")) {
+                        mDatabaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                Map<String, Object> contentInfo = (Map<String, Object>) dataSnapshot.getValue();
+                                String url = contentInfo.get("imageUrl_9").toString();
+                                Intent intent = new Intent(PollSingleActivity.this, FullImageActivity.class);
+                                intent.putExtra("imgUrl", url);
+                                startActivity(intent);
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
+                            }
+                        });
+                    } else if (data.getStringExtra("result").equals("선택 하기")) {
+                        pollActivity_textView_check_10.setText(data.getStringExtra("result"));
+                        pollActivity_imageView_userAddContent_n10.setVisibility(View.VISIBLE);
+                        imageChoice(pollActivity_imageView_userAddContent_n10);
+                        firebaseDatabase.getReference().child("user_contents").child(getIntent().getStringExtra("contentKey")).addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                ContentDTO contentDTO = dataSnapshot.getValue(ContentDTO.class);
+                                GlideApp.with(PollSingleActivity.this)
+                                        .load(contentDTO.getImageUrl_9())
+                                        .apply(RequestOptions.bitmapTransform(new BlurTransformation(30, 1)))
+                                        .into(pollActivity_imageView_userAddContent_10);
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                            }
+                        });
+                    }
+                    break;
                 case 10000:
                     if (data.getStringArrayListExtra("resultDelete").get(1).equals("삭제하기")) {
                         String contentKey = getIntent().getStringExtra("contentKey");
                         String replyKey = data.getStringArrayListExtra("resultDelete").get(0);
                         firebaseDatabase.getReference().child("reply").child(contentKey).child(replyKey).removeValue();
                         removeReplyCount(firebaseDatabase.getReference().child("user_contents").child(contentKey));
-
                     }
                     break;
                 case 20000:
@@ -1551,7 +1784,7 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
 
                 contentDTO.replyCount = contentDTO.replyCount - 1;
                 mutableData.setValue(contentDTO);
-                return  Transaction.success(mutableData);
+                return Transaction.success(mutableData);
             }
 
             @Override
@@ -1559,582 +1792,6 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
                 Toast.makeText(getApplicationContext(), "댓글 삭제 완료", Toast.LENGTH_LONG).show();
             }
         });
-    }
-
-    public void checking_img_1() {
-        pickCandidate = 1;
-        pollActivity_imageView_around_1.setBackgroundColor(0xff4485c9);
-        pollActivity_imageView_choice_1.setBackgroundColor(0xff4485c9);
-    }
-
-
-    public void checking_img_1_rt() {
-        pickCandidate = 0;
-        pollActivity_imageView_around_1.setBackgroundColor(0xfff2f2f2);
-        pollActivity_imageView_choice_1.setBackgroundColor(0xfff2f2f2);
-    }
-
-
-    public void checking_img_2() {
-        pickCandidate = 2;
-        pollActivity_imageView_around_2.setBackgroundColor(0xff4485c9);
-        pollActivity_imageView_choice_2.setBackgroundColor(0xff4485c9);
-    }
-
-
-    public void checking_img_2_rt() {
-        pickCandidate = 0;
-        pollActivity_imageView_around_2.setBackgroundColor(0xfff2f2f2);
-        pollActivity_imageView_choice_2.setBackgroundColor(0xfff2f2f2);
-    }
-
-
-    public void checking_img_3() {
-        pickCandidate = 3;
-        pollActivity_imageView_around_3.setBackgroundColor(0xff4485c9);
-        pollActivity_imageView_choice_3.setBackgroundColor(0xff4485c9);
-    }
-
-
-    public void checking_img_3_rt() {
-        pickCandidate = 0;
-        pollActivity_imageView_around_3.setBackgroundColor(0xfff2f2f2);
-        pollActivity_imageView_choice_3.setBackgroundColor(0xfff2f2f2);
-    }
-
-
-    public void checking_img_4() {
-        pickCandidate = 4;
-        pollActivity_imageView_around_4.setBackgroundColor(0xff4485c9);
-        pollActivity_imageView_choice_4.setBackgroundColor(0xff4485c9);
-    }
-
-
-    public void checking_img_4_rt() {
-        pickCandidate = 0;
-        pollActivity_imageView_around_4.setBackgroundColor(0xfff2f2f2);
-        pollActivity_imageView_choice_4.setBackgroundColor(0xfff2f2f2);
-    }
-
-
-    public void checking_img_5() {
-        pickCandidate = 5;
-        pollActivity_imageView_around_5.setBackgroundColor(0xff4485c9);
-        pollActivity_imageView_choice_5.setBackgroundColor(0xff4485c9);
-    }
-
-
-    public void checking_img_5_rt() {
-        pickCandidate = 0;
-        pollActivity_imageView_around_5.setBackgroundColor(0xfff2f2f2);
-        pollActivity_imageView_choice_5.setBackgroundColor(0xfff2f2f2);
-    }
-
-
-    public void checking_img_6() {
-        pickCandidate = 6;
-        pollActivity_imageView_around_6.setBackgroundColor(0xff4485c9);
-        pollActivity_imageView_choice_6.setBackgroundColor(0xff4485c9);
-    }
-
-
-    public void checking_img_6_rt() {
-        pickCandidate = 0;
-        pollActivity_imageView_around_6.setBackgroundColor(0xfff2f2f2);
-        pollActivity_imageView_choice_6.setBackgroundColor(0xfff2f2f2);
-    }
-
-
-    public void checking_img_7() {
-        pickCandidate = 7;
-        pollActivity_imageView_around_7.setBackgroundColor(0xff4485c9);
-        pollActivity_imageView_choice_7.setBackgroundColor(0xff4485c9);
-    }
-
-
-    public void checking_img_7_rt() {
-        pickCandidate = 0;
-        pollActivity_imageView_around_7.setBackgroundColor(0xfff2f2f2);
-        pollActivity_imageView_choice_7.setBackgroundColor(0xfff2f2f2);
-    }
-
-
-    public void checking_img_8() {
-        pickCandidate = 8;
-        pollActivity_imageView_around_8.setBackgroundColor(0xff4485c9);
-        pollActivity_imageView_choice_8.setBackgroundColor(0xff4485c9);
-    }
-
-
-    public void checking_img_8_rt() {
-        pickCandidate = 0;
-        pollActivity_imageView_around_8.setBackgroundColor(0xfff2f2f2);
-        pollActivity_imageView_choice_8.setBackgroundColor(0xfff2f2f2);
-    }
-
-
-    public void checking_img_9() {
-        pickCandidate = 9;
-        pollActivity_imageView_around_9.setBackgroundColor(0xff4485c9);
-        pollActivity_imageView_choice_9.setBackgroundColor(0xff4485c9);
-    }
-
-
-    public void checking_img_9_rt() {
-        pickCandidate = 0;
-        pollActivity_imageView_around_9.setBackgroundColor(0xfff2f2f2);
-        pollActivity_imageView_choice_9.setBackgroundColor(0xfff2f2f2);
-    }
-
-
-    public void checking_img_10() {
-        pickCandidate = 10;
-        pollActivity_imageView_around_10.setBackgroundColor(0xff4485c9);
-        pollActivity_imageView_choice_10.setBackgroundColor(0xff4485c9);
-    }
-
-
-    public void checking_img_10_rt() {
-        pickCandidate = 0;
-        pollActivity_imageView_around_10.setBackgroundColor(0xfff2f2f2);
-        pollActivity_imageView_choice_10.setBackgroundColor(0xfff2f2f2);
-    }
-
-
-    //이미지 선택시 전체화면으로 보여주기
-    //N선택 선택시 파란색으로 바뀌면서 체크
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.pollActivity_imageView_userAddContent_1:
-                mDatabaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        Map<String, Object> contentInfo = (Map<String, Object>) dataSnapshot.getValue();
-
-                        String url = contentInfo.get("imageUrl_0").toString();
-
-                        Intent intent = new Intent(PollSingleActivity.this, FullImageActivity.class);
-                        intent.putExtra("imgUrl", url);
-                        startActivity(intent);
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-                    }
-                });
-                break;
-            case R.id.pollActivity_imageView_userAddContent_2:
-                mDatabaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        Map<String, Object> contentInfo = (Map<String, Object>) dataSnapshot.getValue();
-
-                        String url = contentInfo.get("imageUrl_1").toString();
-
-                        Intent intent = new Intent(PollSingleActivity.this, FullImageActivity.class);
-                        intent.putExtra("imgUrl", url);
-                        startActivity(intent);
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-                    }
-                });
-                break;
-            case R.id.pollActivity_imageView_userAddContent_3:
-                mDatabaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        Map<String, Object> contentInfo = (Map<String, Object>) dataSnapshot.getValue();
-
-                        String url = contentInfo.get("imageUrl_2").toString();
-
-                        Intent intent = new Intent(PollSingleActivity.this, FullImageActivity.class);
-                        intent.putExtra("imgUrl", url);
-                        startActivity(intent);
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-                    }
-                });
-                break;
-            case R.id.pollActivity_imageView_userAddContent_4:
-                mDatabaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        Map<String, Object> contentInfo = (Map<String, Object>) dataSnapshot.getValue();
-
-                        String url = contentInfo.get("imageUrl_3").toString();
-
-                        Intent intent = new Intent(PollSingleActivity.this, FullImageActivity.class);
-                        intent.putExtra("imgUrl", url);
-                        startActivity(intent);
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-                    }
-                });
-                break;
-            case R.id.pollActivity_imageView_userAddContent_5:
-                mDatabaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        Map<String, Object> contentInfo = (Map<String, Object>) dataSnapshot.getValue();
-
-                        String url = contentInfo.get("imageUrl_4").toString();
-
-                        Intent intent = new Intent(PollSingleActivity.this, FullImageActivity.class);
-                        intent.putExtra("imgUrl", url);
-                        startActivity(intent);
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-                    }
-                });
-                break;
-            case R.id.pollActivity_imageView_userAddContent_6:
-                mDatabaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        Map<String, Object> contentInfo = (Map<String, Object>) dataSnapshot.getValue();
-
-                        String url = contentInfo.get("imageUrl_5").toString();
-
-                        Intent intent = new Intent(PollSingleActivity.this, FullImageActivity.class);
-                        intent.putExtra("imgUrl", url);
-                        startActivity(intent);
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-                    }
-                });
-                break;
-            case R.id.pollActivity_imageView_userAddContent_7:
-                mDatabaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        Map<String, Object> contentInfo = (Map<String, Object>) dataSnapshot.getValue();
-
-                        String url = contentInfo.get("imageUrl_6").toString();
-
-                        Intent intent = new Intent(PollSingleActivity.this, FullImageActivity.class);
-                        intent.putExtra("imgUrl", url);
-                        startActivity(intent);
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-                    }
-                });
-                break;
-            case R.id.pollActivity_imageView_userAddContent_8:
-                mDatabaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        Map<String, Object> contentInfo = (Map<String, Object>) dataSnapshot.getValue();
-
-                        String url = contentInfo.get("imageUrl_7").toString();
-
-                        Intent intent = new Intent(PollSingleActivity.this, FullImageActivity.class);
-                        intent.putExtra("imgUrl", url);
-                        startActivity(intent);
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-                    }
-                });
-                break;
-            case R.id.pollActivity_imageView_userAddContent_9:
-                mDatabaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        Map<String, Object> contentInfo = (Map<String, Object>) dataSnapshot.getValue();
-
-                        String url = contentInfo.get("imageUrl_8").toString();
-
-                        Intent intent = new Intent(PollSingleActivity.this, FullImageActivity.class);
-                        intent.putExtra("imgUrl", url);
-                        startActivity(intent);
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-                    }
-                });
-                break;
-            case R.id.pollActivity_imageView_userAddContent_10:
-                mDatabaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        Map<String, Object> contentInfo = (Map<String, Object>) dataSnapshot.getValue();
-
-                        String url = contentInfo.get("imageUrl_9").toString();
-
-                        Intent intent = new Intent(PollSingleActivity.this, FullImageActivity.class);
-                        intent.putExtra("imgUrl", url);
-                        startActivity(intent);
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-                    }
-                });
-                break;
-
-            case R.id.pollActivity_textView_check_1:
-                if (checkUserHitContent) {
-                    Toast.makeText(getApplicationContext(), "투표하셨거나 자신의 투표입니다.", Toast.LENGTH_SHORT).show();
-                } else {
-                    if (((ColorDrawable) pollActivity_imageView_choice_1.getBackground()).getColor() == 0xff4485c9) {
-                        checking_img_1_rt();
-                    } else if (((ColorDrawable) pollActivity_imageView_choice_1.getBackground()).getColor() == 0xfff2f2f2) {
-                        checking_img_1();
-                        checking_img_2_rt();
-                        checking_img_3_rt();
-                        checking_img_4_rt();
-                        checking_img_5_rt();
-                        checking_img_6_rt();
-                        checking_img_7_rt();
-                        checking_img_8_rt();
-                        checking_img_9_rt();
-                        checking_img_10_rt();
-                    }
-                }
-                break;
-
-            case R.id.pollActivity_textView_check_2:
-                if (checkUserHitContent) {
-                    Toast.makeText(getApplicationContext(), "투표하셨거나 자신의 투표입니다.", Toast.LENGTH_SHORT).show();
-                } else {
-                    if (((ColorDrawable) pollActivity_imageView_choice_2.getBackground()).getColor() == 0xff4485c9) {
-                        checking_img_2_rt();
-                    } else if (((ColorDrawable) pollActivity_imageView_choice_2.getBackground()).getColor() == 0xfff2f2f2) {
-                        checking_img_2();
-                        checking_img_1_rt();
-                        checking_img_3_rt();
-                        checking_img_4_rt();
-                        checking_img_5_rt();
-                        checking_img_6_rt();
-                        checking_img_7_rt();
-                        checking_img_8_rt();
-                        checking_img_9_rt();
-                        checking_img_10_rt();
-                    }
-                }
-                break;
-
-            case R.id.pollActivity_textView_check_3:
-                if (checkUserHitContent) {
-                    Toast.makeText(getApplicationContext(), "투표하셨거나 자신의 투표입니다.", Toast.LENGTH_SHORT).show();
-                } else {
-                    if (((ColorDrawable) pollActivity_imageView_choice_3.getBackground()).getColor() == 0xff4485c9) {
-                        checking_img_3_rt();
-                    } else if (((ColorDrawable) pollActivity_imageView_choice_3.getBackground()).getColor() == 0xfff2f2f2) {
-                        checking_img_3();
-                        checking_img_1_rt();
-                        checking_img_2_rt();
-                        checking_img_4_rt();
-                        checking_img_5_rt();
-                        checking_img_6_rt();
-                        checking_img_7_rt();
-                        checking_img_8_rt();
-                        checking_img_9_rt();
-                        checking_img_10_rt();
-                    }
-                }
-                break;
-
-            case R.id.pollActivity_textView_check_4:
-                if (checkUserHitContent) {
-                    Toast.makeText(getApplicationContext(), "투표하셨거나 자신의 투표입니다.", Toast.LENGTH_SHORT).show();
-                } else {
-                    if (((ColorDrawable) pollActivity_imageView_choice_4.getBackground()).getColor() == 0xff4485c9) {
-                        checking_img_4_rt();
-                    } else if (((ColorDrawable) pollActivity_imageView_choice_4.getBackground()).getColor() == 0xfff2f2f2) {
-                        checking_img_4();
-                        checking_img_1_rt();
-                        checking_img_2_rt();
-                        checking_img_3_rt();
-                        checking_img_5_rt();
-                        checking_img_6_rt();
-                        checking_img_7_rt();
-                        checking_img_8_rt();
-                        checking_img_9_rt();
-                        checking_img_10_rt();
-                    }
-                }
-                break;
-
-            case R.id.pollActivity_textView_check_5:
-                if (checkUserHitContent) {
-                    Toast.makeText(getApplicationContext(), "투표하셨거나 자신의 투표입니다.", Toast.LENGTH_SHORT).show();
-                } else {
-                    if (((ColorDrawable) pollActivity_imageView_choice_5.getBackground()).getColor() == 0xff4485c9) {
-                        checking_img_5_rt();
-                    } else if (((ColorDrawable) pollActivity_imageView_choice_5.getBackground()).getColor() == 0xfff2f2f2) {
-                        checking_img_5();
-                        checking_img_1_rt();
-                        checking_img_2_rt();
-                        checking_img_3_rt();
-                        checking_img_4_rt();
-                        checking_img_6_rt();
-                        checking_img_7_rt();
-                        checking_img_8_rt();
-                        checking_img_9_rt();
-                        checking_img_10_rt();
-                    }
-                }
-                break;
-
-            case R.id.pollActivity_textView_check_6:
-                if (checkUserHitContent) {
-                    Toast.makeText(getApplicationContext(), "투표하셨거나 자신의 투표입니다.", Toast.LENGTH_SHORT).show();
-                } else {
-                    if (((ColorDrawable) pollActivity_imageView_choice_6.getBackground()).getColor() == 0xff4485c9) {
-                        checking_img_6_rt();
-                    } else if (((ColorDrawable) pollActivity_imageView_choice_6.getBackground()).getColor() == 0xfff2f2f2) {
-                        checking_img_6();
-                        checking_img_1_rt();
-                        checking_img_2_rt();
-                        checking_img_3_rt();
-                        checking_img_4_rt();
-                        checking_img_5_rt();
-                        checking_img_7_rt();
-                        checking_img_8_rt();
-                        checking_img_9_rt();
-                        checking_img_10_rt();
-                    }
-                }
-                break;
-
-            case R.id.pollActivity_textView_check_7:
-                if (checkUserHitContent) {
-                    Toast.makeText(getApplicationContext(), "투표하셨거나 자신의 투표입니다.", Toast.LENGTH_SHORT).show();
-                } else {
-                    if (((ColorDrawable) pollActivity_imageView_choice_7.getBackground()).getColor() == 0xff4485c9) {
-                        checking_img_7_rt();
-                    } else if (((ColorDrawable) pollActivity_imageView_choice_7.getBackground()).getColor() == 0xfff2f2f2) {
-                        checking_img_7();
-                        checking_img_1_rt();
-                        checking_img_2_rt();
-                        checking_img_3_rt();
-                        checking_img_4_rt();
-                        checking_img_5_rt();
-                        checking_img_6_rt();
-                        checking_img_8_rt();
-                        checking_img_9_rt();
-                        checking_img_10_rt();
-                    }
-                }
-                break;
-
-            case R.id.pollActivity_textView_check_8:
-                if (checkUserHitContent) {
-                    Toast.makeText(getApplicationContext(), "투표하셨거나 자신의 투표입니다.", Toast.LENGTH_SHORT).show();
-                } else {
-                    if (((ColorDrawable) pollActivity_imageView_choice_8.getBackground()).getColor() == 0xff4485c9) {
-                        checking_img_8_rt();
-                    } else if (((ColorDrawable) pollActivity_imageView_choice_8.getBackground()).getColor() == 0xfff2f2f2) {
-                        checking_img_8();
-                        checking_img_1_rt();
-                        checking_img_2_rt();
-                        checking_img_3_rt();
-                        checking_img_4_rt();
-                        checking_img_5_rt();
-                        checking_img_6_rt();
-                        checking_img_7_rt();
-                        checking_img_9_rt();
-                        checking_img_10_rt();
-                    }
-                }
-                break;
-
-            case R.id.pollActivity_textView_check_9:
-                if (checkUserHitContent) {
-                    Toast.makeText(getApplicationContext(), "투표하셨거나 자신의 투표입니다.", Toast.LENGTH_SHORT).show();
-                } else {
-                    if (((ColorDrawable) pollActivity_imageView_choice_9.getBackground()).getColor() == 0xff4485c9) {
-                        checking_img_9_rt();
-                    } else if (((ColorDrawable) pollActivity_imageView_choice_9.getBackground()).getColor() == 0xfff2f2f2) {
-                        checking_img_9();
-                        checking_img_1_rt();
-                        checking_img_2_rt();
-                        checking_img_3_rt();
-                        checking_img_4_rt();
-                        checking_img_5_rt();
-                        checking_img_6_rt();
-                        checking_img_7_rt();
-                        checking_img_8_rt();
-                        checking_img_10_rt();
-                    }
-                }
-
-                break;
-
-            case R.id.pollActivity_textView_check_10:
-                if (checkUserHitContent) {
-                    Toast.makeText(getApplicationContext(), "투표하셨거나 자신의 투표입니다.", Toast.LENGTH_SHORT).show();
-                } else {
-                    if (((ColorDrawable) pollActivity_imageView_choice_10.getBackground()).getColor() == 0xff4485c9) {
-                        checking_img_10_rt();
-                    } else if (((ColorDrawable) pollActivity_imageView_choice_10.getBackground()).getColor() == 0xfff2f2f2) {
-                        checking_img_10();
-                        checking_img_1_rt();
-                        checking_img_2_rt();
-                        checking_img_3_rt();
-                        checking_img_4_rt();
-                        checking_img_5_rt();
-                        checking_img_6_rt();
-                        checking_img_7_rt();
-                        checking_img_8_rt();
-                        checking_img_9_rt();
-                    }
-                }
-
-                break;
-        }
-    }
-
-
-    public class ResultValueFormatter implements IValueFormatter {
-        private DecimalFormat mFormat;
-
-        public ResultValueFormatter() {
-            mFormat = new DecimalFormat("###,###,##0");
-        }
-
-        @Override
-        public String getFormattedValue(float value, Entry entry, int dataSetIndex, ViewPortHandler viewPortHandler) {
-            return mFormat.format(value) + "표";
-        }
-    }
-
-    public class CategoryBarChartXaxisFormatter implements IAxisValueFormatter {
-        ArrayList<String> mValues;
-
-        public CategoryBarChartXaxisFormatter(ArrayList<String> values) {
-            this.mValues = values;
-        }
-
-        @Override
-        public String getFormattedValue(float value, AxisBase axis) {
-
-            int val = (int) value;
-            String label = "";
-            if (val >= 0 && val < mValues.size()) {
-                label = mValues.get(val);
-            } else {
-                label = "";
-            }
-
-            return label;
-        }
     }
 
 
@@ -2180,17 +1837,7 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
             case R.id.menu_delete:
                 openContentDeleteDialog();
                 Log.d("lkj delete", "dedete");
-
-
                 break;
-//            case R.id.alarm:
-//                Log.d("lkj alara", "dedete");
-//                String contentKey = getIntent().getStringExtra("contentKey");
-//                Intent intentShowMore = new Intent(PollSingleActivity.this, UserAlarmDialog.class);
-//                intentShowMore.putExtra("pollKey", contentKey);
-//                intentShowMore.putExtra("hitCount", contentHit);
-//                startActivityForResult(intentShowMore, 20000);
-//                break;
             case android.R.id.home:
                 onBackPressed();
                 break;
@@ -3168,6 +2815,52 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
 
             }
         });
+    }
+
+    //선택한 이미지에 순위 표시
+    private void imageChoice(ImageView imageView) {
+
+        firebaseDatabase.getReference().child("user_contents").child(getIntent().getStringExtra("contentKey")).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                ContentDTO contentDTO = dataSnapshot.getValue(ContentDTO.class);
+                try {
+                    GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_0()).centerCrop().thumbnail(Glide.with(getApplicationContext()).load(R.drawable.loadingicon)).into(pollActivity_imageView_userAddContent_1).getView();
+                    GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_1()).centerCrop().thumbnail(Glide.with(getApplicationContext()).load(R.drawable.loadingicon)).into(pollActivity_imageView_userAddContent_2).getView();
+                    GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_2()).centerCrop().thumbnail(Glide.with(getApplicationContext()).load(R.drawable.loadingicon)).into(pollActivity_imageView_userAddContent_3).getView();
+                    GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_3()).centerCrop().thumbnail(Glide.with(getApplicationContext()).load(R.drawable.loadingicon)).into(pollActivity_imageView_userAddContent_4).getView();
+                    GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_4()).centerCrop().thumbnail(Glide.with(getApplicationContext()).load(R.drawable.loadingicon)).into(pollActivity_imageView_userAddContent_5).getView();
+                    GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_5()).centerCrop().thumbnail(Glide.with(getApplicationContext()).load(R.drawable.loadingicon)).into(pollActivity_imageView_userAddContent_6).getView();
+                    GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_6()).centerCrop().thumbnail(Glide.with(getApplicationContext()).load(R.drawable.loadingicon)).into(pollActivity_imageView_userAddContent_7).getView();
+                    GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_7()).centerCrop().thumbnail(Glide.with(getApplicationContext()).load(R.drawable.loadingicon)).into(pollActivity_imageView_userAddContent_8).getView();
+                    GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_8()).centerCrop().thumbnail(Glide.with(getApplicationContext()).load(R.drawable.loadingicon)).into(pollActivity_imageView_userAddContent_9).getView();
+                    GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_9()).centerCrop().thumbnail(Glide.with(getApplicationContext()).load(R.drawable.loadingicon)).into(pollActivity_imageView_userAddContent_10).getView();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+        pollActivity_imageView_userAddContent_n1.setVisibility(View.GONE);
+        pollActivity_imageView_userAddContent_n2.setVisibility(View.GONE);
+        pollActivity_imageView_userAddContent_n3.setVisibility(View.GONE);
+        pollActivity_imageView_userAddContent_n4.setVisibility(View.GONE);
+        pollActivity_imageView_userAddContent_n5.setVisibility(View.GONE);
+        pollActivity_imageView_userAddContent_n6.setVisibility(View.GONE);
+        pollActivity_imageView_userAddContent_n7.setVisibility(View.GONE);
+        pollActivity_imageView_userAddContent_n8.setVisibility(View.GONE);
+        pollActivity_imageView_userAddContent_n9.setVisibility(View.GONE);
+        pollActivity_imageView_userAddContent_n10.setVisibility(View.GONE);
+
+        imageView.setVisibility(View.VISIBLE);
+
+        Glide.with(PollSingleActivity.this).load(R.drawable.ic_check_blue_300dp).into(imageView);
     }
 
     //userPoint(userClass) 점수추가

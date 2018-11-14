@@ -283,6 +283,20 @@
                 android:layout_height="1dp"
                 android:background="#efefef" />
 
+            <TextView
+                android:id="@+id/pollActivity_textView_state"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:textColor="#636363"
+                android:textSize="14sp" />
+
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#efefef" />
+
             <!--&lt;!&ndash;투표하지 않은 게시물 입니다&ndash;&gt;-->
             <!--<View-->
             <!--android:layout_width="match_parent"-->
@@ -305,30 +319,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp">
 
-                <android.support.v7.widget.AppCompatImageView
-                    android:id="@+id/pollActivity_imageView_userAddContent_1"
-                    android:layout_width="match_parent"
-                    android:layout_height="400dp"
-                    android:layout_marginStart="4dp"
-                    android:layout_marginLeft="4dp"
-                    android:layout_marginTop="4dp"
-                    android:layout_marginEnd="4dp"
-                    android:layout_marginRight="4dp"
-                    android:layout_marginBottom="16dp"
-                    android:scaleType="center"
-                    android:visibility="visible" />
-                <android.support.v7.widget.AppCompatImageView
-                    android:id="@+id/pollActivity_imageView_userAddContent_n1"
-                    android:layout_width="match_parent"
-                    android:layout_height="400dp"
-                    android:layout_marginStart="4dp"
-                    android:layout_marginLeft="4dp"
-                    android:layout_marginTop="4dp"
-                    android:layout_marginEnd="4dp"
-                    android:layout_marginRight="4dp"
-                    android:layout_marginBottom="16dp"
-                    android:adjustViewBounds="false"
-                    android:visibility="visible" />
                 <TextView
                     android:id="@+id/pollActivity_textView_check_1"
                     android:layout_width="match_parent"
@@ -341,11 +331,8 @@
                     android:textSize="20dp"
                     android:visibility="gone" />
 
-
-
                 <android.support.v7.widget.AppCompatImageView
-                    android:id="@+id/pollActivity_imageView_userAddContent_2"
-                    android:layout_below="@+id/pollActivity_imageView_userAddContent_1"
+                    android:id="@+id/pollActivity_imageView_userAddContent_1"
                     android:layout_width="match_parent"
                     android:layout_height="400dp"
                     android:layout_marginStart="4dp"
@@ -356,8 +343,9 @@
                     android:layout_marginBottom="16dp"
                     android:scaleType="center"
                     android:visibility="gone" />
+
                 <android.support.v7.widget.AppCompatImageView
-                    android:id="@+id/pollActivity_imageView_userAddContent_n2"
+                    android:id="@+id/pollActivity_imageView_userAddContent_n1"
                     android:layout_width="match_parent"
                     android:layout_height="400dp"
                     android:layout_marginStart="4dp"
@@ -368,6 +356,36 @@
                     android:layout_marginBottom="16dp"
                     android:adjustViewBounds="false"
                     android:visibility="gone" />
+
+
+                <android.support.v7.widget.AppCompatImageView
+                    android:id="@+id/pollActivity_imageView_userAddContent_2"
+                    android:layout_width="match_parent"
+                    android:layout_height="400dp"
+                    android:layout_below="@+id/pollActivity_imageView_userAddContent_1"
+                    android:layout_marginStart="4dp"
+                    android:layout_marginLeft="4dp"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginEnd="4dp"
+                    android:layout_marginRight="4dp"
+                    android:layout_marginBottom="16dp"
+                    android:scaleType="center"
+                    android:visibility="gone" />
+
+                <android.support.v7.widget.AppCompatImageView
+                    android:id="@+id/pollActivity_imageView_userAddContent_n2"
+                    android:layout_width="match_parent"
+                    android:layout_height="400dp"
+                    android:layout_below="@+id/pollActivity_imageView_userAddContent_1"
+                    android:layout_marginStart="4dp"
+                    android:layout_marginLeft="4dp"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginEnd="4dp"
+                    android:layout_marginRight="4dp"
+                    android:layout_marginBottom="16dp"
+                    android:adjustViewBounds="false"
+                    android:visibility="gone" />
+
                 <TextView
                     android:id="@+id/pollActivity_textView_check_2"
                     android:layout_width="match_parent"
@@ -383,9 +401,9 @@
 
                 <android.support.v7.widget.AppCompatImageView
                     android:id="@+id/pollActivity_imageView_userAddContent_3"
-                    android:layout_below="@+id/pollActivity_imageView_userAddContent_2"
                     android:layout_width="match_parent"
                     android:layout_height="400dp"
+                    android:layout_below="@+id/pollActivity_imageView_userAddContent_2"
                     android:layout_marginStart="4dp"
                     android:layout_marginLeft="4dp"
                     android:layout_marginTop="4dp"
@@ -394,10 +412,12 @@
                     android:layout_marginBottom="16dp"
                     android:scaleType="center"
                     android:visibility="gone" />
+
                 <android.support.v7.widget.AppCompatImageView
                     android:id="@+id/pollActivity_imageView_userAddContent_n3"
                     android:layout_width="match_parent"
                     android:layout_height="400dp"
+                    android:layout_below="@+id/pollActivity_imageView_userAddContent_2"
                     android:layout_marginStart="4dp"
                     android:layout_marginLeft="4dp"
                     android:layout_marginTop="4dp"
@@ -406,6 +426,7 @@
                     android:layout_marginBottom="16dp"
                     android:adjustViewBounds="false"
                     android:visibility="gone" />
+
                 <TextView
                     android:id="@+id/pollActivity_textView_check_3"
                     android:layout_width="match_parent"
@@ -421,9 +442,9 @@
 
                 <android.support.v7.widget.AppCompatImageView
                     android:id="@+id/pollActivity_imageView_userAddContent_4"
-                    android:layout_below="@+id/pollActivity_imageView_userAddContent_3"
                     android:layout_width="match_parent"
                     android:layout_height="400dp"
+                    android:layout_below="@+id/pollActivity_imageView_userAddContent_3"
                     android:layout_marginStart="4dp"
                     android:layout_marginLeft="4dp"
                     android:layout_marginTop="4dp"
@@ -432,10 +453,12 @@
                     android:layout_marginBottom="16dp"
                     android:scaleType="center"
                     android:visibility="gone" />
+
                 <android.support.v7.widget.AppCompatImageView
                     android:id="@+id/pollActivity_imageView_userAddContent_n4"
                     android:layout_width="match_parent"
                     android:layout_height="400dp"
+                    android:layout_below="@+id/pollActivity_imageView_userAddContent_3"
                     android:layout_marginStart="4dp"
                     android:layout_marginLeft="4dp"
                     android:layout_marginTop="4dp"
@@ -444,6 +467,7 @@
                     android:layout_marginBottom="16dp"
                     android:adjustViewBounds="false"
                     android:visibility="gone" />
+
                 <TextView
                     android:id="@+id/pollActivity_textView_check_4"
                     android:layout_width="match_parent"
@@ -459,9 +483,9 @@
 
                 <android.support.v7.widget.AppCompatImageView
                     android:id="@+id/pollActivity_imageView_userAddContent_5"
-                    android:layout_below="@+id/pollActivity_imageView_userAddContent_4"
                     android:layout_width="match_parent"
                     android:layout_height="400dp"
+                    android:layout_below="@+id/pollActivity_imageView_userAddContent_4"
                     android:layout_marginStart="4dp"
                     android:layout_marginLeft="4dp"
                     android:layout_marginTop="4dp"
@@ -470,10 +494,12 @@
                     android:layout_marginBottom="16dp"
                     android:scaleType="center"
                     android:visibility="gone" />
+
                 <android.support.v7.widget.AppCompatImageView
                     android:id="@+id/pollActivity_imageView_userAddContent_n5"
                     android:layout_width="match_parent"
                     android:layout_height="400dp"
+                    android:layout_below="@+id/pollActivity_imageView_userAddContent_4"
                     android:layout_marginStart="4dp"
                     android:layout_marginLeft="4dp"
                     android:layout_marginTop="4dp"
@@ -482,6 +508,7 @@
                     android:layout_marginBottom="16dp"
                     android:adjustViewBounds="false"
                     android:visibility="gone" />
+
                 <TextView
                     android:id="@+id/pollActivity_textView_check_5"
                     android:layout_width="match_parent"
@@ -497,9 +524,9 @@
 
                 <android.support.v7.widget.AppCompatImageView
                     android:id="@+id/pollActivity_imageView_userAddContent_6"
-                    android:layout_below="@+id/pollActivity_imageView_userAddContent_5"
                     android:layout_width="match_parent"
                     android:layout_height="400dp"
+                    android:layout_below="@+id/pollActivity_imageView_userAddContent_5"
                     android:layout_marginStart="4dp"
                     android:layout_marginLeft="4dp"
                     android:layout_marginTop="4dp"
@@ -508,10 +535,12 @@
                     android:layout_marginBottom="16dp"
                     android:scaleType="center"
                     android:visibility="gone" />
+
                 <android.support.v7.widget.AppCompatImageView
                     android:id="@+id/pollActivity_imageView_userAddContent_n6"
                     android:layout_width="match_parent"
                     android:layout_height="400dp"
+                    android:layout_below="@+id/pollActivity_imageView_userAddContent_5"
                     android:layout_marginStart="4dp"
                     android:layout_marginLeft="4dp"
                     android:layout_marginTop="4dp"
@@ -520,6 +549,7 @@
                     android:layout_marginBottom="16dp"
                     android:adjustViewBounds="false"
                     android:visibility="gone" />
+
                 <TextView
                     android:id="@+id/pollActivity_textView_check_6"
                     android:layout_width="match_parent"
@@ -535,9 +565,9 @@
 
                 <android.support.v7.widget.AppCompatImageView
                     android:id="@+id/pollActivity_imageView_userAddContent_7"
-                    android:layout_below="@+id/pollActivity_imageView_userAddContent_6"
                     android:layout_width="match_parent"
                     android:layout_height="400dp"
+                    android:layout_below="@+id/pollActivity_imageView_userAddContent_6"
                     android:layout_marginStart="4dp"
                     android:layout_marginLeft="4dp"
                     android:layout_marginTop="4dp"
@@ -546,10 +576,12 @@
                     android:layout_marginBottom="16dp"
                     android:scaleType="center"
                     android:visibility="gone" />
+
                 <android.support.v7.widget.AppCompatImageView
                     android:id="@+id/pollActivity_imageView_userAddContent_n7"
                     android:layout_width="match_parent"
                     android:layout_height="400dp"
+                    android:layout_below="@+id/pollActivity_imageView_userAddContent_6"
                     android:layout_marginStart="4dp"
                     android:layout_marginLeft="4dp"
                     android:layout_marginTop="4dp"
@@ -558,6 +590,7 @@
                     android:layout_marginBottom="16dp"
                     android:adjustViewBounds="false"
                     android:visibility="gone" />
+
                 <TextView
                     android:id="@+id/pollActivity_textView_check_7"
                     android:layout_width="match_parent"
@@ -573,9 +606,9 @@
 
                 <android.support.v7.widget.AppCompatImageView
                     android:id="@+id/pollActivity_imageView_userAddContent_8"
-                    android:layout_below="@+id/pollActivity_imageView_userAddContent_7"
                     android:layout_width="match_parent"
                     android:layout_height="400dp"
+                    android:layout_below="@+id/pollActivity_imageView_userAddContent_7"
                     android:layout_marginStart="4dp"
                     android:layout_marginLeft="4dp"
                     android:layout_marginTop="4dp"
@@ -584,10 +617,12 @@
                     android:layout_marginBottom="16dp"
                     android:scaleType="center"
                     android:visibility="gone" />
+
                 <android.support.v7.widget.AppCompatImageView
                     android:id="@+id/pollActivity_imageView_userAddContent_n8"
                     android:layout_width="match_parent"
                     android:layout_height="400dp"
+                    android:layout_below="@+id/pollActivity_imageView_userAddContent_7"
                     android:layout_marginStart="4dp"
                     android:layout_marginLeft="4dp"
                     android:layout_marginTop="4dp"
@@ -596,6 +631,7 @@
                     android:layout_marginBottom="16dp"
                     android:adjustViewBounds="false"
                     android:visibility="gone" />
+
                 <TextView
                     android:id="@+id/pollActivity_textView_check_8"
                     android:layout_width="match_parent"
@@ -611,9 +647,9 @@
 
                 <android.support.v7.widget.AppCompatImageView
                     android:id="@+id/pollActivity_imageView_userAddContent_9"
-                    android:layout_below="@+id/pollActivity_imageView_userAddContent_8"
                     android:layout_width="match_parent"
                     android:layout_height="400dp"
+                    android:layout_below="@+id/pollActivity_imageView_userAddContent_8"
                     android:layout_marginStart="4dp"
                     android:layout_marginLeft="4dp"
                     android:layout_marginTop="4dp"
@@ -622,10 +658,12 @@
                     android:layout_marginBottom="16dp"
                     android:scaleType="center"
                     android:visibility="gone" />
+
                 <android.support.v7.widget.AppCompatImageView
                     android:id="@+id/pollActivity_imageView_userAddContent_n9"
                     android:layout_width="match_parent"
                     android:layout_height="400dp"
+                    android:layout_below="@+id/pollActivity_imageView_userAddContent_8"
                     android:layout_marginStart="4dp"
                     android:layout_marginLeft="4dp"
                     android:layout_marginTop="4dp"
@@ -634,6 +672,7 @@
                     android:layout_marginBottom="16dp"
                     android:adjustViewBounds="false"
                     android:visibility="gone" />
+
                 <TextView
                     android:id="@+id/pollActivity_textView_check_9"
                     android:layout_width="match_parent"
@@ -649,9 +688,9 @@
 
                 <android.support.v7.widget.AppCompatImageView
                     android:id="@+id/pollActivity_imageView_userAddContent_10"
-                    android:layout_below="@+id/pollActivity_imageView_userAddContent_9"
                     android:layout_width="match_parent"
                     android:layout_height="400dp"
+                    android:layout_below="@+id/pollActivity_imageView_userAddContent_9"
                     android:layout_marginStart="4dp"
                     android:layout_marginLeft="4dp"
                     android:layout_marginTop="4dp"
@@ -660,10 +699,12 @@
                     android:layout_marginBottom="16dp"
                     android:scaleType="center"
                     android:visibility="gone" />
+
                 <android.support.v7.widget.AppCompatImageView
                     android:id="@+id/pollActivity_imageView_userAddContent_n10"
                     android:layout_width="match_parent"
                     android:layout_height="400dp"
+                    android:layout_below="@+id/pollActivity_imageView_userAddContent_9"
                     android:layout_marginStart="4dp"
                     android:layout_marginLeft="4dp"
                     android:layout_marginTop="4dp"
@@ -672,6 +713,7 @@
                     android:layout_marginBottom="16dp"
                     android:adjustViewBounds="false"
                     android:visibility="gone" />
+
                 <TextView
                     android:id="@+id/pollActivity_textView_check_10"
                     android:layout_width="match_parent"

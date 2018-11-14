@@ -11,13 +11,13 @@ import com.n4u1.AQA.AQA.R;
 
 import java.util.ArrayList;
 
-public class RankingChoiceActivity extends AppCompatActivity {
+public class PollRankingChoiceActivity extends AppCompatActivity {
     ArrayList<String> rankingArrayLists = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_ranking_choice);
+        setContentView(R.layout.activity_poll_ranking_choice);
 //        requestWindowFeature(Window.FEATURE_NO_TITLE);
 
         TextView textView_1, textView_2, textView_3, textView_4,
@@ -135,6 +135,19 @@ public class RankingChoiceActivity extends AppCompatActivity {
 
         //후보갯수만큼 순위 리스트 보여주기
         switch (contentsCount) {
+            case 1 : //이미 투표한 경우 사진클릭했을때 원본 보기 만 띄우기
+                textView_1.setVisibility(View.GONE);
+                textView_2.setVisibility(View.GONE);
+                textView_3.setVisibility(View.GONE);
+                textView_4.setVisibility(View.GONE);
+                textView_5.setVisibility(View.GONE);
+                textView_6.setVisibility(View.GONE);
+                textView_7.setVisibility(View.GONE);
+                textView_8.setVisibility(View.GONE);
+                textView_9.setVisibility(View.GONE);
+                textView_10.setVisibility(View.GONE);
+                textView_11.setVisibility(View.GONE);
+                break;
             case 2 :
                 textView_3.setVisibility(View.GONE);
                 textView_4.setVisibility(View.GONE);
@@ -314,7 +327,7 @@ public class RankingChoiceActivity extends AppCompatActivity {
 
 //        requestWindowFeature(Window.FEATURE_NO_TITLE);
 //        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-//        this.setContentView(R.layout.activity_ranking_choice);
+//        this.setContentView(R.layout.activity_poll_ranking_choice);
 
 
     }

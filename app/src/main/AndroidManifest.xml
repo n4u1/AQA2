@@ -70,7 +70,7 @@
         <activity android:name=".views.PollSingleActivity" />
         <activity android:name=".views.CreateUserActivity" />
         <activity
-            android:name=".dialog.RankingChoiceActivity"
+            android:name=".dialog.PollRankingChoiceActivity"
             android:theme="@style/Theme.DialogFragmentActivity" />
         <activity android:name=".views.SearchHomeActivity" />
         <activity android:name=".views.MineActivity" />
@@ -112,7 +112,9 @@
         <activity android:name=".views.CreateUserEmailActivity" />
         <activity android:name=".views.CreateUserIdActivity" />
         <activity android:name=".views.CreateUserAGActivity" />
-        <activity android:name=".splash.SplashGuidActivity"></activity>
+        <activity android:name=".splash.SplashGuidActivity" />
+        <activity android:name=".dialog.PollSingleChoiceActivity"
+            android:theme="@style/Theme.DialogFragmentActivity"></activity>
     </application>
 
 </manifest>

@@ -28,7 +28,6 @@ import com.google.firebase.database.MutableData;
 import com.google.firebase.database.Transaction;
 import com.n4u1.AQA.AQA.R;
 import com.n4u1.AQA.AQA.dialog.GoHomeDialog;
-import com.n4u1.AQA.AQA.dialog.RankingChoiceActivity;
 import com.n4u1.AQA.AQA.dialog.UploadLoadingActivity;
 import com.n4u1.AQA.AQA.fragments.CameraFragment;
 import com.n4u1.AQA.AQA.fragments.ImageFragment;
