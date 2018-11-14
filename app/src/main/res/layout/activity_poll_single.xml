@@ -289,6 +289,19 @@
                     android:src="@drawable/q_bg_w" />
             </LinearLayout>
 
+
+            <TextView
+                android:id="@+id/pollActivity_textView_state"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:layout_gravity="center"
+                android:textStyle="bold"
+                android:textColor="#636363"
+                android:textSize="14sp" />
+
+
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"

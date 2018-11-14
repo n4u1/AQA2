@@ -5,7 +5,17 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
+import android.os.AsyncTask;
+import android.os.Handler;
+import android.provider.MediaStore;
+import android.renderscript.Allocation;
+import android.renderscript.Element;
+import android.renderscript.RenderScript;
+import android.renderscript.ScriptIntrinsicBlur;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -18,6 +28,7 @@ import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.util.LruCache;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -32,7 +43,13 @@ import android.widget.Toast;
 
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
+import com.bumptech.glide.request.target.SimpleTarget;
+import com.bumptech.glide.request.transition.Transition;
+import com.google.android.gms.ads.identifier.AdvertisingIdClient;
+import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
+import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
@@ -43,6 +60,7 @@ import com.n4u1.AQA.AQA.R;
 import com.n4u1.AQA.AQA.dialog.AlarmDoneDialog;
 import com.n4u1.AQA.AQA.dialog.ContentDeleteDialog;
 import com.n4u1.AQA.AQA.dialog.DeleteModificationActivity;
+import com.n4u1.AQA.AQA.dialog.GUIDFailDialog;
 import com.n4u1.AQA.AQA.dialog.PollRankingChoiceActivity;
 import com.n4u1.AQA.AQA.dialog.PollResultAnonymousDialog;
 import com.n4u1.AQA.AQA.dialog.PollResultDialog;
@@ -51,6 +69,7 @@ import com.n4u1.AQA.AQA.dialog.UserAlarmDialog;
 import com.n4u1.AQA.AQA.models.ContentDTO;
 import com.n4u1.AQA.AQA.models.ReplyDTO;
 import com.n4u1.AQA.AQA.recyclerview.ReplyAdapter;
+import com.n4u1.AQA.AQA.splash.SplashLoadingActivity;
 import com.n4u1.AQA.AQA.util.GlideApp;
 import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.data.Entry;
@@ -65,7 +84,13 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.MutableData;
 import com.google.firebase.database.Transaction;
 import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Picasso;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -96,6 +121,8 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
 
     final ArrayList<ReplyDTO> replyDTOS = new ArrayList<>();
     private HashMap<String, String> issueMap = new HashMap<>();
+
+    private LruCache<String, Bitmap> mMemoryCache;
 
     int contentHit;
     boolean checkUserHitContent = false;
@@ -133,7 +160,8 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
             pollActivity_textView_check_3, pollActivity_textView_check_4,
             pollActivity_textView_check_5, pollActivity_textView_check_6,
             pollActivity_textView_check_7, pollActivity_textView_check_8,
-            pollActivity_textView_check_9, pollActivity_textView_check_10, pollActivity_textView_userId;
+            pollActivity_textView_check_9, pollActivity_textView_check_10,
+            pollActivity_textView_userId, pollActivity_textView_state;
 
     TextView pollActivity_textView_hitCount, pollActivity_textView_likeCount, pollActivity_textView_contentId, pollActivity_textView_replyCount;
     ImageView pollActivity_imageView_state, pollActivity_imageView_like, pollActivity_imageView_alarm;
@@ -153,9 +181,10 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
         }
+        final int maxMemory = (int) (Runtime.getRuntime().maxMemory() / 1024);
+        final int cacheSize = maxMemory / 8;
 
         final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-
 
         final String contentKey = getIntent().getStringExtra("contentKey");
         contentHit = getIntent().getIntExtra("contentHit", 999999);
@@ -179,11 +208,13 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
         pollActivity_textView_pollMode = findViewById(R.id.pollActivity_textView_pollMode);
         pollActivity_textView_date = findViewById(R.id.pollActivity_textView_date);
         pollActivity_textView_contentId = findViewById(R.id.pollActivity_textView_contentId);
+        pollActivity_textView_state = findViewById(R.id.pollActivity_textView_state);
 
         pollActivity_imageView_userClass = findViewById(R.id.pollActivity_imageView_userClass);
         imageView_userClass0 = findViewById(R.id.imageView_userClass0);
         imageView_userClass1 = findViewById(R.id.imageView_userClass1);
         imageView_userClass2 = findViewById(R.id.imageView_userClass2);
+
 
         pollActivity_imageView_replyView_1 = findViewById(R.id.pollActivity_imageView_replyView_1);
         pollActivity_imageView_replyView_2 = findViewById(R.id.pollActivity_imageView_replyView_2);
@@ -275,19 +306,19 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
         pollActivity_textView_check_9.setOnClickListener(this);
         pollActivity_textView_check_10.setOnClickListener(this);
 
+        //캐시 초기화
+        mMemoryCache = new LruCache<String, Bitmap>(cacheSize){
+            @Override
+            protected int sizeOf(String key, Bitmap bitmap){
+                return bitmap.getByteCount() / 1024;
+            }
+        };
 
-        //제목옆에 더보기 클릭
-//        pollActivity_imageView_showMore.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Log.d("lkjshormore", "showmore");
-//                Intent intentShowMore = new Intent(PollSingleActivity.this, UserAlarmDialog.class);
-//                intentShowMore.putExtra("pollKey", contentKey);
-//                intentShowMore.putExtra("hitCount", contentHit);
-//                startActivityForResult(intentShowMore, 20000);
-//            }
-//        });
-//
+
+        //비트맵 만들고 blur효과 이후에 캐시에 저장
+        BlurAsyncTask blurAsyncTask = new BlurAsyncTask();
+        blurAsyncTask.execute();
+
 
         //알람설정 클릭
         pollActivity_imageView_alarm.setOnClickListener(new View.OnClickListener() {
@@ -379,6 +410,7 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
                 });
             }
         });
+
 
         //이미투표했는지 여부 확인해서 floating action button 색 넣기
         fabCheck(firebaseDatabase.getReference().child("user_contents").child(contentKey));
@@ -672,6 +704,16 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
                     pollActivity_textView_userId.setText(contentDTO.getUserID());
                     settingUserIcon(contentDTO.getUid());
                     settingUserAlarm(contentKey);
+
+
+                    if (contentDTO.contentPicker.get(auth.getCurrentUser().getUid()) == null) {
+                        pollActivity_textView_state.setText("투표 전 입니다");
+                    } else {
+                        int picked = contentDTO.contentPicker.get(auth.getCurrentUser().getUid());
+                        pollActivity_textView_state.setText(picked + 1 + "번에 투표 하셧습니다.");
+                    }
+
+
                     if (contentDTO.likes.containsKey(auth.getCurrentUser().getUid())) {
                         pollActivity_imageView_like.setImageResource(R.drawable.ic_thumb_up_blue);
                     } else {
@@ -1101,7 +1143,7 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
                 pollActivity_imageView_userAddContent_n8.getVisibility() == View.VISIBLE ||
                 pollActivity_imageView_userAddContent_n9.getVisibility() == View.VISIBLE ||
                 pollActivity_imageView_userAddContent_n9.getVisibility() == View.VISIBLE ||
-                pollActivity_imageView_userAddContent_n9.getVisibility() == View.VISIBLE ) {
+                pollActivity_imageView_userAddContent_n9.getVisibility() == View.VISIBLE) {
             return true;
         } else {
             return false;
@@ -1399,25 +1441,12 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
                             }
                         });
                     } else if (data.getStringExtra("result").equals("선택 하기")) {
-
                         pollActivity_textView_check_1.setText(data.getStringExtra("result"));
                         pollActivity_imageView_userAddContent_n1.setVisibility(View.VISIBLE);
-                        imageChoice(pollActivity_imageView_userAddContent_n1);
-                        firebaseDatabase.getReference().child("user_contents").child(getIntent().getStringExtra("contentKey")).addListenerForSingleValueEvent(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                ContentDTO contentDTO = dataSnapshot.getValue(ContentDTO.class);
-                                GlideApp.with(PollSingleActivity.this)
-                                        .load(contentDTO.getImageUrl_0())
-                                        .apply(RequestOptions.bitmapTransform(new BlurTransformation(30, 1)))
-                                        .into(pollActivity_imageView_userAddContent_1);
-                            }
+                        imageChoice(1);
+                        GlideApp.with(PollSingleActivity.this).load(getBitmapFromMemCache("img_0")).centerCrop().into(pollActivity_imageView_userAddContent_1);
 
-                            @Override
-                            public void onCancelled(@NonNull DatabaseError databaseError) {
 
-                            }
-                        });
                     }
                     break;
                 case 200:
@@ -1439,22 +1468,8 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
                     } else if (data.getStringExtra("result").equals("선택 하기")) {
                         pollActivity_textView_check_2.setText(data.getStringExtra("result"));
                         pollActivity_imageView_userAddContent_n2.setVisibility(View.VISIBLE);
-                        imageChoice(pollActivity_imageView_userAddContent_n2);
-                        firebaseDatabase.getReference().child("user_contents").child(getIntent().getStringExtra("contentKey")).addListenerForSingleValueEvent(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                ContentDTO contentDTO = dataSnapshot.getValue(ContentDTO.class);
-                                GlideApp.with(PollSingleActivity.this)
-                                        .load(contentDTO.getImageUrl_1())
-                                        .apply(RequestOptions.bitmapTransform(new BlurTransformation(30, 1)))
-                                        .into(pollActivity_imageView_userAddContent_2);
-                            }
-
-                            @Override
-                            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                            }
-                        });
+                        imageChoice(2);
+                        GlideApp.with(PollSingleActivity.this).load(getBitmapFromMemCache("img_1")).centerCrop().into(pollActivity_imageView_userAddContent_2);
                     }
                     break;
                 case 300:
@@ -1476,22 +1491,8 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
                     } else if (data.getStringExtra("result").equals("선택 하기")) {
                         pollActivity_textView_check_3.setText(data.getStringExtra("result"));
                         pollActivity_imageView_userAddContent_n3.setVisibility(View.VISIBLE);
-                        imageChoice(pollActivity_imageView_userAddContent_n3);
-                        firebaseDatabase.getReference().child("user_contents").child(getIntent().getStringExtra("contentKey")).addListenerForSingleValueEvent(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                ContentDTO contentDTO = dataSnapshot.getValue(ContentDTO.class);
-                                GlideApp.with(PollSingleActivity.this)
-                                        .load(contentDTO.getImageUrl_2())
-                                        .apply(RequestOptions.bitmapTransform(new BlurTransformation(30, 1)))
-                                        .into(pollActivity_imageView_userAddContent_3);
-                            }
-
-                            @Override
-                            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                            }
-                        });
+                        imageChoice(3);
+                        GlideApp.with(PollSingleActivity.this).load(getBitmapFromMemCache("img_2")).centerCrop().into(pollActivity_imageView_userAddContent_3);
                     }
                     break;
                 case 400:
@@ -1513,22 +1514,8 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
                     } else if (data.getStringExtra("result").equals("선택 하기")) {
                         pollActivity_textView_check_4.setText(data.getStringExtra("result"));
                         pollActivity_imageView_userAddContent_n4.setVisibility(View.VISIBLE);
-                        imageChoice(pollActivity_imageView_userAddContent_n4);
-                        firebaseDatabase.getReference().child("user_contents").child(getIntent().getStringExtra("contentKey")).addListenerForSingleValueEvent(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                ContentDTO contentDTO = dataSnapshot.getValue(ContentDTO.class);
-                                GlideApp.with(PollSingleActivity.this)
-                                        .load(contentDTO.getImageUrl_3())
-                                        .apply(RequestOptions.bitmapTransform(new BlurTransformation(30, 1)))
-                                        .into(pollActivity_imageView_userAddContent_4);
-                            }
-
-                            @Override
-                            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                            }
-                        });
+                        imageChoice(4);
+                        GlideApp.with(PollSingleActivity.this).load(getBitmapFromMemCache("img_3")).centerCrop().into(pollActivity_imageView_userAddContent_4);
                     }
                     break;
                 case 500:
@@ -1550,22 +1537,8 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
                     } else if (data.getStringExtra("result").equals("선택 하기")) {
                         pollActivity_textView_check_5.setText(data.getStringExtra("result"));
                         pollActivity_imageView_userAddContent_n5.setVisibility(View.VISIBLE);
-                        imageChoice(pollActivity_imageView_userAddContent_n5);
-                        firebaseDatabase.getReference().child("user_contents").child(getIntent().getStringExtra("contentKey")).addListenerForSingleValueEvent(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                ContentDTO contentDTO = dataSnapshot.getValue(ContentDTO.class);
-                                GlideApp.with(PollSingleActivity.this)
-                                        .load(contentDTO.getImageUrl_4())
-                                        .apply(RequestOptions.bitmapTransform(new BlurTransformation(30, 1)))
-                                        .into(pollActivity_imageView_userAddContent_5);
-                            }
-
-                            @Override
-                            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                            }
-                        });
+                        imageChoice(5);
+                        GlideApp.with(PollSingleActivity.this).load(getBitmapFromMemCache("img_4")).centerCrop().into(pollActivity_imageView_userAddContent_5);
                     }
                     break;
                 case 600:
@@ -1587,22 +1560,8 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
                     } else if (data.getStringExtra("result").equals("선택 하기")) {
                         pollActivity_textView_check_6.setText(data.getStringExtra("result"));
                         pollActivity_imageView_userAddContent_n6.setVisibility(View.VISIBLE);
-                        imageChoice(pollActivity_imageView_userAddContent_n6);
-                        firebaseDatabase.getReference().child("user_contents").child(getIntent().getStringExtra("contentKey")).addListenerForSingleValueEvent(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                ContentDTO contentDTO = dataSnapshot.getValue(ContentDTO.class);
-                                GlideApp.with(PollSingleActivity.this)
-                                        .load(contentDTO.getImageUrl_5())
-                                        .apply(RequestOptions.bitmapTransform(new BlurTransformation(30, 1)))
-                                        .into(pollActivity_imageView_userAddContent_6);
-                            }
-
-                            @Override
-                            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                            }
-                        });
+                        imageChoice(6);
+                        GlideApp.with(PollSingleActivity.this).load(getBitmapFromMemCache("img_5")).centerCrop().into(pollActivity_imageView_userAddContent_6);
                     }
                     break;
                 case 700:
@@ -1624,22 +1583,8 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
                     } else if (data.getStringExtra("result").equals("선택 하기")) {
                         pollActivity_textView_check_7.setText(data.getStringExtra("result"));
                         pollActivity_imageView_userAddContent_n7.setVisibility(View.VISIBLE);
-                        imageChoice(pollActivity_imageView_userAddContent_n7);
-                        firebaseDatabase.getReference().child("user_contents").child(getIntent().getStringExtra("contentKey")).addListenerForSingleValueEvent(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                ContentDTO contentDTO = dataSnapshot.getValue(ContentDTO.class);
-                                GlideApp.with(PollSingleActivity.this)
-                                        .load(contentDTO.getImageUrl_6())
-                                        .apply(RequestOptions.bitmapTransform(new BlurTransformation(30, 1)))
-                                        .into(pollActivity_imageView_userAddContent_7);
-                            }
-
-                            @Override
-                            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                            }
-                        });
+                        imageChoice(7);
+                        GlideApp.with(PollSingleActivity.this).load(getBitmapFromMemCache("img_6")).centerCrop().into(pollActivity_imageView_userAddContent_7);
                     }
                     break;
                 case 800:
@@ -1661,22 +1606,8 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
                     } else if (data.getStringExtra("result").equals("선택 하기")) {
                         pollActivity_textView_check_8.setText(data.getStringExtra("result"));
                         pollActivity_imageView_userAddContent_n8.setVisibility(View.VISIBLE);
-                        imageChoice(pollActivity_imageView_userAddContent_n8);
-                        firebaseDatabase.getReference().child("user_contents").child(getIntent().getStringExtra("contentKey")).addListenerForSingleValueEvent(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                ContentDTO contentDTO = dataSnapshot.getValue(ContentDTO.class);
-                                GlideApp.with(PollSingleActivity.this)
-                                        .load(contentDTO.getImageUrl_7())
-                                        .apply(RequestOptions.bitmapTransform(new BlurTransformation(30, 1)))
-                                        .into(pollActivity_imageView_userAddContent_8);
-                            }
-
-                            @Override
-                            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                            }
-                        });
+                        imageChoice(8);
+                        GlideApp.with(PollSingleActivity.this).load(getBitmapFromMemCache("img_7")).centerCrop().into(pollActivity_imageView_userAddContent_8);
                     }
                     break;
                 case 900:
@@ -1698,22 +1629,8 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
                     } else if (data.getStringExtra("result").equals("선택 하기")) {
                         pollActivity_textView_check_9.setText(data.getStringExtra("result"));
                         pollActivity_imageView_userAddContent_n9.setVisibility(View.VISIBLE);
-                        imageChoice(pollActivity_imageView_userAddContent_n9);
-                        firebaseDatabase.getReference().child("user_contents").child(getIntent().getStringExtra("contentKey")).addListenerForSingleValueEvent(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                ContentDTO contentDTO = dataSnapshot.getValue(ContentDTO.class);
-                                GlideApp.with(PollSingleActivity.this)
-                                        .load(contentDTO.getImageUrl_8())
-                                        .apply(RequestOptions.bitmapTransform(new BlurTransformation(30, 1)))
-                                        .into(pollActivity_imageView_userAddContent_9);
-                            }
-
-                            @Override
-                            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                            }
-                        });
+                        imageChoice(9);
+                        GlideApp.with(PollSingleActivity.this).load(getBitmapFromMemCache("img_8")).centerCrop().into(pollActivity_imageView_userAddContent_9);
                     }
                     break;
                 case 1000:
@@ -1735,22 +1652,8 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
                     } else if (data.getStringExtra("result").equals("선택 하기")) {
                         pollActivity_textView_check_10.setText(data.getStringExtra("result"));
                         pollActivity_imageView_userAddContent_n10.setVisibility(View.VISIBLE);
-                        imageChoice(pollActivity_imageView_userAddContent_n10);
-                        firebaseDatabase.getReference().child("user_contents").child(getIntent().getStringExtra("contentKey")).addListenerForSingleValueEvent(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                ContentDTO contentDTO = dataSnapshot.getValue(ContentDTO.class);
-                                GlideApp.with(PollSingleActivity.this)
-                                        .load(contentDTO.getImageUrl_9())
-                                        .apply(RequestOptions.bitmapTransform(new BlurTransformation(30, 1)))
-                                        .into(pollActivity_imageView_userAddContent_10);
-                            }
-
-                            @Override
-                            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                            }
-                        });
+                        imageChoice(10);
+                        GlideApp.with(PollSingleActivity.this).load(getBitmapFromMemCache("img_9")).centerCrop().into(pollActivity_imageView_userAddContent_10);
                     }
                     break;
                 case 10000:
@@ -2818,23 +2721,146 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
     }
 
     //선택한 이미지에 순위 표시
-    private void imageChoice(ImageView imageView) {
+    private void imageChoice(final int i) {
 
         firebaseDatabase.getReference().child("user_contents").child(getIntent().getStringExtra("contentKey")).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 ContentDTO contentDTO = dataSnapshot.getValue(ContentDTO.class);
                 try {
-                    GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_0()).centerCrop().thumbnail(Glide.with(getApplicationContext()).load(R.drawable.loadingicon)).into(pollActivity_imageView_userAddContent_1).getView();
-                    GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_1()).centerCrop().thumbnail(Glide.with(getApplicationContext()).load(R.drawable.loadingicon)).into(pollActivity_imageView_userAddContent_2).getView();
-                    GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_2()).centerCrop().thumbnail(Glide.with(getApplicationContext()).load(R.drawable.loadingicon)).into(pollActivity_imageView_userAddContent_3).getView();
-                    GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_3()).centerCrop().thumbnail(Glide.with(getApplicationContext()).load(R.drawable.loadingicon)).into(pollActivity_imageView_userAddContent_4).getView();
-                    GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_4()).centerCrop().thumbnail(Glide.with(getApplicationContext()).load(R.drawable.loadingicon)).into(pollActivity_imageView_userAddContent_5).getView();
-                    GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_5()).centerCrop().thumbnail(Glide.with(getApplicationContext()).load(R.drawable.loadingicon)).into(pollActivity_imageView_userAddContent_6).getView();
-                    GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_6()).centerCrop().thumbnail(Glide.with(getApplicationContext()).load(R.drawable.loadingicon)).into(pollActivity_imageView_userAddContent_7).getView();
-                    GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_7()).centerCrop().thumbnail(Glide.with(getApplicationContext()).load(R.drawable.loadingicon)).into(pollActivity_imageView_userAddContent_8).getView();
-                    GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_8()).centerCrop().thumbnail(Glide.with(getApplicationContext()).load(R.drawable.loadingicon)).into(pollActivity_imageView_userAddContent_9).getView();
-                    GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_9()).centerCrop().thumbnail(Glide.with(getApplicationContext()).load(R.drawable.loadingicon)).into(pollActivity_imageView_userAddContent_10).getView();
+                    switch (i) {
+                        case 1 :
+                            pollActivity_imageView_userAddContent_n1.setVisibility(View.VISIBLE);
+                            Glide.with(PollSingleActivity.this).load(R.drawable.ic_check_blue_300dp).into(pollActivity_imageView_userAddContent_n1);
+                            GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_1()).centerCrop().into(pollActivity_imageView_userAddContent_2);
+                            GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_2()).centerCrop().into(pollActivity_imageView_userAddContent_3);
+                            GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_3()).centerCrop().into(pollActivity_imageView_userAddContent_4);
+                            GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_4()).centerCrop().into(pollActivity_imageView_userAddContent_5);
+                            GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_5()).centerCrop().into(pollActivity_imageView_userAddContent_6);
+                            GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_6()).centerCrop().into(pollActivity_imageView_userAddContent_7);
+                            GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_7()).centerCrop().into(pollActivity_imageView_userAddContent_8);
+                            GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_8()).centerCrop().into(pollActivity_imageView_userAddContent_9);
+                            GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_9()).centerCrop().into(pollActivity_imageView_userAddContent_10);
+                            break;
+                        case 2 :
+                            pollActivity_imageView_userAddContent_n2.setVisibility(View.VISIBLE);
+                            Glide.with(PollSingleActivity.this).load(R.drawable.ic_check_blue_300dp).into(pollActivity_imageView_userAddContent_n2);
+                            GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_0()).centerCrop().into(pollActivity_imageView_userAddContent_1);
+                            GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_2()).centerCrop().into(pollActivity_imageView_userAddContent_3);
+                            GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_3()).centerCrop().into(pollActivity_imageView_userAddContent_4);
+                            GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_4()).centerCrop().into(pollActivity_imageView_userAddContent_5);
+                            GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_5()).centerCrop().into(pollActivity_imageView_userAddContent_6);
+                            GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_6()).centerCrop().into(pollActivity_imageView_userAddContent_7);
+                            GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_7()).centerCrop().into(pollActivity_imageView_userAddContent_8);
+                            GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_8()).centerCrop().into(pollActivity_imageView_userAddContent_9);
+                            GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_9()).centerCrop().into(pollActivity_imageView_userAddContent_10);
+                            break;
+                        case 3 :
+                            pollActivity_imageView_userAddContent_n3.setVisibility(View.VISIBLE);
+                            Glide.with(PollSingleActivity.this).load(R.drawable.ic_check_blue_300dp).into(pollActivity_imageView_userAddContent_n3);
+                            GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_0()).centerCrop().into(pollActivity_imageView_userAddContent_1);
+                            GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_1()).centerCrop().into(pollActivity_imageView_userAddContent_2);
+                            GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_3()).centerCrop().into(pollActivity_imageView_userAddContent_4);
+                            GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_4()).centerCrop().into(pollActivity_imageView_userAddContent_5);
+                            GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_5()).centerCrop().into(pollActivity_imageView_userAddContent_6);
+                            GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_6()).centerCrop().into(pollActivity_imageView_userAddContent_7);
+                            GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_7()).centerCrop().into(pollActivity_imageView_userAddContent_8);
+                            GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_8()).centerCrop().into(pollActivity_imageView_userAddContent_9);
+                            GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_9()).centerCrop().into(pollActivity_imageView_userAddContent_10);
+                            break;
+                        case 4 :
+                            pollActivity_imageView_userAddContent_n4.setVisibility(View.VISIBLE);
+                            Glide.with(PollSingleActivity.this).load(R.drawable.ic_check_blue_300dp).into(pollActivity_imageView_userAddContent_n4);
+                            GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_0()).centerCrop().into(pollActivity_imageView_userAddContent_1);
+                            GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_1()).centerCrop().into(pollActivity_imageView_userAddContent_2);
+                            GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_2()).centerCrop().into(pollActivity_imageView_userAddContent_3);
+                            GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_4()).centerCrop().into(pollActivity_imageView_userAddContent_5);
+                            GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_5()).centerCrop().into(pollActivity_imageView_userAddContent_6);
+                            GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_6()).centerCrop().into(pollActivity_imageView_userAddContent_7);
+                            GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_7()).centerCrop().into(pollActivity_imageView_userAddContent_8);
+                            GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_8()).centerCrop().into(pollActivity_imageView_userAddContent_9);
+                            GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_9()).centerCrop().into(pollActivity_imageView_userAddContent_10);
+                            break;
+                        case 5 :
+                            pollActivity_imageView_userAddContent_n5.setVisibility(View.VISIBLE);
+                            Glide.with(PollSingleActivity.this).load(R.drawable.ic_check_blue_300dp).into(pollActivity_imageView_userAddContent_n5);
+                            GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_0()).centerCrop().into(pollActivity_imageView_userAddContent_1);
+                            GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_1()).centerCrop().into(pollActivity_imageView_userAddContent_2);
+                            GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_2()).centerCrop().into(pollActivity_imageView_userAddContent_3);
+                            GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_3()).centerCrop().into(pollActivity_imageView_userAddContent_4);
+                            GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_5()).centerCrop().into(pollActivity_imageView_userAddContent_6);
+                            GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_6()).centerCrop().into(pollActivity_imageView_userAddContent_7);
+                            GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_7()).centerCrop().into(pollActivity_imageView_userAddContent_8);
+                            GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_8()).centerCrop().into(pollActivity_imageView_userAddContent_9);
+                            GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_9()).centerCrop().into(pollActivity_imageView_userAddContent_10);
+                            break;
+                        case 6 :
+                            pollActivity_imageView_userAddContent_n6.setVisibility(View.VISIBLE);
+                            Glide.with(PollSingleActivity.this).load(R.drawable.ic_check_blue_300dp).into(pollActivity_imageView_userAddContent_n6);
+                            GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_0()).centerCrop().into(pollActivity_imageView_userAddContent_1);
+                            GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_1()).centerCrop().into(pollActivity_imageView_userAddContent_2);
+                            GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_2()).centerCrop().into(pollActivity_imageView_userAddContent_3);
+                            GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_3()).centerCrop().into(pollActivity_imageView_userAddContent_4);
+                            GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_4()).centerCrop().into(pollActivity_imageView_userAddContent_5);
+                            GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_6()).centerCrop().into(pollActivity_imageView_userAddContent_7);
+                            GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_7()).centerCrop().into(pollActivity_imageView_userAddContent_8);
+                            GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_8()).centerCrop().into(pollActivity_imageView_userAddContent_9);
+                            GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_9()).centerCrop().into(pollActivity_imageView_userAddContent_10);
+                            break;
+                        case 7 :
+                            pollActivity_imageView_userAddContent_n7.setVisibility(View.VISIBLE);
+                            Glide.with(PollSingleActivity.this).load(R.drawable.ic_check_blue_300dp).into(pollActivity_imageView_userAddContent_n7);
+                            GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_0()).centerCrop().into(pollActivity_imageView_userAddContent_1);
+                            GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_1()).centerCrop().into(pollActivity_imageView_userAddContent_2);
+                            GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_2()).centerCrop().into(pollActivity_imageView_userAddContent_3);
+                            GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_3()).centerCrop().into(pollActivity_imageView_userAddContent_4);
+                            GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_4()).centerCrop().into(pollActivity_imageView_userAddContent_5);
+                            GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_5()).centerCrop().into(pollActivity_imageView_userAddContent_6);
+                            GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_7()).centerCrop().into(pollActivity_imageView_userAddContent_8);
+                            GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_8()).centerCrop().into(pollActivity_imageView_userAddContent_9);
+                            GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_9()).centerCrop().into(pollActivity_imageView_userAddContent_10);
+                            break;
+                        case 8 :
+                            pollActivity_imageView_userAddContent_n8.setVisibility(View.VISIBLE);
+                            Glide.with(PollSingleActivity.this).load(R.drawable.ic_check_blue_300dp).into(pollActivity_imageView_userAddContent_n8);
+                            GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_0()).centerCrop().into(pollActivity_imageView_userAddContent_1);
+                            GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_1()).centerCrop().into(pollActivity_imageView_userAddContent_2);
+                            GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_2()).centerCrop().into(pollActivity_imageView_userAddContent_3);
+                            GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_3()).centerCrop().into(pollActivity_imageView_userAddContent_4);
+                            GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_4()).centerCrop().into(pollActivity_imageView_userAddContent_5);
+                            GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_5()).centerCrop().into(pollActivity_imageView_userAddContent_6);
+                            GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_6()).centerCrop().into(pollActivity_imageView_userAddContent_7);
+                            GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_8()).centerCrop().into(pollActivity_imageView_userAddContent_9);
+                            GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_9()).centerCrop().into(pollActivity_imageView_userAddContent_10);
+                            break;
+                        case 9 :
+                            pollActivity_imageView_userAddContent_n9.setVisibility(View.VISIBLE);
+                            Glide.with(PollSingleActivity.this).load(R.drawable.ic_check_blue_300dp).into(pollActivity_imageView_userAddContent_n9);
+                            GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_0()).centerCrop().into(pollActivity_imageView_userAddContent_1);
+                            GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_1()).centerCrop().into(pollActivity_imageView_userAddContent_2);
+                            GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_2()).centerCrop().into(pollActivity_imageView_userAddContent_3);
+                            GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_3()).centerCrop().into(pollActivity_imageView_userAddContent_4);
+                            GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_4()).centerCrop().into(pollActivity_imageView_userAddContent_5);
+                            GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_5()).centerCrop().into(pollActivity_imageView_userAddContent_6);
+                            GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_6()).centerCrop().into(pollActivity_imageView_userAddContent_7);
+                            GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_7()).centerCrop().into(pollActivity_imageView_userAddContent_8);
+                            GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_9()).centerCrop().into(pollActivity_imageView_userAddContent_10);
+                            break;
+                        case 10 :
+                            pollActivity_imageView_userAddContent_n10.setVisibility(View.VISIBLE);
+                            Glide.with(PollSingleActivity.this).load(R.drawable.ic_check_blue_300dp).into(pollActivity_imageView_userAddContent_n10);
+                            GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_0()).centerCrop().into(pollActivity_imageView_userAddContent_1);
+                            GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_1()).centerCrop().into(pollActivity_imageView_userAddContent_2);
+                            GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_2()).centerCrop().into(pollActivity_imageView_userAddContent_3);
+                            GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_3()).centerCrop().into(pollActivity_imageView_userAddContent_4);
+                            GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_4()).centerCrop().into(pollActivity_imageView_userAddContent_5);
+                            GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_5()).centerCrop().into(pollActivity_imageView_userAddContent_6);
+                            GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_6()).centerCrop().into(pollActivity_imageView_userAddContent_7);
+                            GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_7()).centerCrop().into(pollActivity_imageView_userAddContent_8);
+                            GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_8()).centerCrop().into(pollActivity_imageView_userAddContent_9);
+                            break;
+                    }
+
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -2858,9 +2884,6 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
         pollActivity_imageView_userAddContent_n9.setVisibility(View.GONE);
         pollActivity_imageView_userAddContent_n10.setVisibility(View.GONE);
 
-        imageView.setVisibility(View.VISIBLE);
-
-        Glide.with(PollSingleActivity.this).load(R.drawable.ic_check_blue_300dp).into(imageView);
     }
 
     //userPoint(userClass) 점수추가
@@ -2954,6 +2977,459 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
         });
     }
 
+
+    // 이미지 캐쉬 하기
+    public void addBitmapToMemoryCache(String key, Bitmap bitmap) {
+        if (getBitmapFromMemCache(key) == null) {
+            mMemoryCache.put(key, bitmap);
+        }
+    }
+
+
+    // 캐쉬된 이미지 가져오기
+    public Bitmap getBitmapFromMemCache(String key) {
+        return mMemoryCache.get(key);
+    }
+
+    //이미지 blur 효과 주기
+    public static Bitmap imageBlur(Context context, Bitmap bitmap, float radius) {
+
+        RenderScript rs = RenderScript.create(context);
+
+        final Allocation input = Allocation.createFromBitmap(rs, bitmap);
+        final Allocation output = Allocation.createTyped(rs, input.getType());
+        final ScriptIntrinsicBlur script = ScriptIntrinsicBlur.create(rs, Element.U8_4(rs));
+        script.setRadius(radius);
+        script.setInput(input);
+        script.forEach(output);
+        output.copyTo(bitmap);
+
+        return bitmap;
+    }
+
+
+    //이미지 비트맵으로 만들어서 캐시에 저장
+    private class BlurAsyncTask extends AsyncTask<Void, Void, String> {
+        @Override
+        protected String doInBackground(Void... voids) {
+            mDatabaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    ContentDTO contentDTO = dataSnapshot.getValue(ContentDTO.class);
+
+                    switch (contentDTO.getItemViewType()) {
+                        case 2:
+
+                            Glide.with(getApplicationContext()).asBitmap().load(contentDTO.getImageUrl_0())
+                                    .into(new SimpleTarget<Bitmap>(){
+                                        @Override
+                                        public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+                                            addBitmapToMemoryCache("img_0", imageBlur(PollSingleActivity.this, resource, 24f));
+                                        }
+                                    });
+                            Glide.with(getApplicationContext()).asBitmap().load(contentDTO.getImageUrl_1())
+                                    .into(new SimpleTarget<Bitmap>(){
+                                        @Override
+                                        public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+                                            addBitmapToMemoryCache("img_1", imageBlur(PollSingleActivity.this, resource, 24f));
+                                        }
+                                    });
+                            break;
+                        case 3:
+                            Glide.with(getApplicationContext()).asBitmap().load(contentDTO.getImageUrl_0())
+                                    .into(new SimpleTarget<Bitmap>(){
+                                        @Override
+                                        public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+                                            addBitmapToMemoryCache("img_0", imageBlur(PollSingleActivity.this, resource, 24f));
+                                        }
+                                    });
+                            Glide.with(getApplicationContext()).asBitmap().load(contentDTO.getImageUrl_1())
+                                    .into(new SimpleTarget<Bitmap>(){
+                                        @Override
+                                        public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+                                            addBitmapToMemoryCache("img_1", imageBlur(PollSingleActivity.this, resource, 24f));
+                                        }
+                                    });
+                            Glide.with(getApplicationContext()).asBitmap().load(contentDTO.getImageUrl_2())
+                                    .into(new SimpleTarget<Bitmap>(){
+                                        @Override
+                                        public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+                                            addBitmapToMemoryCache("img_2", imageBlur(PollSingleActivity.this, resource, 24f));
+                                        }
+                                    });
+                            break;
+                        case 4:
+                            Glide.with(getApplicationContext()).asBitmap().load(contentDTO.getImageUrl_0())
+                                    .into(new SimpleTarget<Bitmap>(){
+                                        @Override
+                                        public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+                                            addBitmapToMemoryCache("img_0", imageBlur(PollSingleActivity.this, resource, 24f));
+                                        }
+                                    });
+                            Glide.with(getApplicationContext()).asBitmap().load(contentDTO.getImageUrl_1())
+                                    .into(new SimpleTarget<Bitmap>(){
+                                        @Override
+                                        public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+                                            addBitmapToMemoryCache("img_1", imageBlur(PollSingleActivity.this, resource, 24f));
+                                        }
+                                    });
+                            Glide.with(getApplicationContext()).asBitmap().load(contentDTO.getImageUrl_2())
+                                    .into(new SimpleTarget<Bitmap>(){
+                                        @Override
+                                        public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+                                            addBitmapToMemoryCache("img_2", imageBlur(PollSingleActivity.this, resource, 24f));
+                                        }
+                                    });
+                            Glide.with(getApplicationContext()).asBitmap().load(contentDTO.getImageUrl_3())
+                                    .into(new SimpleTarget<Bitmap>(){
+                                        @Override
+                                        public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+                                            addBitmapToMemoryCache("img_3", imageBlur(PollSingleActivity.this, resource, 24f));
+                                        }
+                                    });
+                            break;
+                        case 5:
+                            Glide.with(getApplicationContext()).asBitmap().load(contentDTO.getImageUrl_0())
+                                    .into(new SimpleTarget<Bitmap>(){
+                                        @Override
+                                        public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+                                            addBitmapToMemoryCache("img_0", imageBlur(PollSingleActivity.this, resource, 24f));
+                                        }
+                                    });
+                            Glide.with(getApplicationContext()).asBitmap().load(contentDTO.getImageUrl_1())
+                                    .into(new SimpleTarget<Bitmap>(){
+                                        @Override
+                                        public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+                                            addBitmapToMemoryCache("img_1", imageBlur(PollSingleActivity.this, resource, 24f));
+                                        }
+                                    });
+                            Glide.with(getApplicationContext()).asBitmap().load(contentDTO.getImageUrl_2())
+                                    .into(new SimpleTarget<Bitmap>(){
+                                        @Override
+                                        public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+                                            addBitmapToMemoryCache("img_2", imageBlur(PollSingleActivity.this, resource, 24f));
+                                        }
+                                    });
+                            Glide.with(getApplicationContext()).asBitmap().load(contentDTO.getImageUrl_3())
+                                    .into(new SimpleTarget<Bitmap>(){
+                                        @Override
+                                        public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+                                            addBitmapToMemoryCache("img_3", imageBlur(PollSingleActivity.this, resource, 24f));
+                                        }
+                                    });
+                            Glide.with(getApplicationContext()).asBitmap().load(contentDTO.getImageUrl_4())
+                                    .into(new SimpleTarget<Bitmap>(){
+                                        @Override
+                                        public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+                                            addBitmapToMemoryCache("img_4", imageBlur(PollSingleActivity.this, resource, 24f));
+                                        }
+                                    });
+                            break;
+                        case 6:
+                            Glide.with(getApplicationContext()).asBitmap().load(contentDTO.getImageUrl_0())
+                                    .into(new SimpleTarget<Bitmap>(){
+                                        @Override
+                                        public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+                                            addBitmapToMemoryCache("img_0", imageBlur(PollSingleActivity.this, resource, 24f));
+                                        }
+                                    });
+                            Glide.with(getApplicationContext()).asBitmap().load(contentDTO.getImageUrl_1())
+                                    .into(new SimpleTarget<Bitmap>(){
+                                        @Override
+                                        public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+                                            addBitmapToMemoryCache("img_1", imageBlur(PollSingleActivity.this, resource, 24f));
+                                        }
+                                    });
+                            Glide.with(getApplicationContext()).asBitmap().load(contentDTO.getImageUrl_2())
+                                    .into(new SimpleTarget<Bitmap>(){
+                                        @Override
+                                        public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+                                            addBitmapToMemoryCache("img_2", imageBlur(PollSingleActivity.this, resource, 24f));
+                                        }
+                                    });
+                            Glide.with(getApplicationContext()).asBitmap().load(contentDTO.getImageUrl_3())
+                                    .into(new SimpleTarget<Bitmap>(){
+                                        @Override
+                                        public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+                                            addBitmapToMemoryCache("img_3", imageBlur(PollSingleActivity.this, resource, 24f));
+                                        }
+                                    });
+                            Glide.with(getApplicationContext()).asBitmap().load(contentDTO.getImageUrl_4())
+                                    .into(new SimpleTarget<Bitmap>(){
+                                        @Override
+                                        public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+                                            addBitmapToMemoryCache("img_4", imageBlur(PollSingleActivity.this, resource, 24f));
+                                        }
+                                    });
+                            Glide.with(getApplicationContext()).asBitmap().load(contentDTO.getImageUrl_5())
+                                    .into(new SimpleTarget<Bitmap>(){
+                                        @Override
+                                        public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+                                            addBitmapToMemoryCache("img_5", imageBlur(PollSingleActivity.this, resource, 24f));
+                                        }
+                                    });
+                            break;
+                        case 7:
+                            Glide.with(getApplicationContext()).asBitmap().load(contentDTO.getImageUrl_0())
+                                    .into(new SimpleTarget<Bitmap>(){
+                                        @Override
+                                        public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+                                            addBitmapToMemoryCache("img_0", imageBlur(PollSingleActivity.this, resource, 24f));
+                                        }
+                                    });
+                            Glide.with(getApplicationContext()).asBitmap().load(contentDTO.getImageUrl_1())
+                                    .into(new SimpleTarget<Bitmap>(){
+                                        @Override
+                                        public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+                                            addBitmapToMemoryCache("img_1", imageBlur(PollSingleActivity.this, resource, 24f));
+                                        }
+                                    });
+                            Glide.with(getApplicationContext()).asBitmap().load(contentDTO.getImageUrl_2())
+                                    .into(new SimpleTarget<Bitmap>(){
+                                        @Override
+                                        public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+                                            addBitmapToMemoryCache("img_2", imageBlur(PollSingleActivity.this, resource, 24f));
+                                        }
+                                    });
+                            Glide.with(getApplicationContext()).asBitmap().load(contentDTO.getImageUrl_3())
+                                    .into(new SimpleTarget<Bitmap>(){
+                                        @Override
+                                        public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+                                            addBitmapToMemoryCache("img_3", imageBlur(PollSingleActivity.this, resource, 24f));
+                                        }
+                                    });
+                            Glide.with(getApplicationContext()).asBitmap().load(contentDTO.getImageUrl_4())
+                                    .into(new SimpleTarget<Bitmap>(){
+                                        @Override
+                                        public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+                                            addBitmapToMemoryCache("img_4", imageBlur(PollSingleActivity.this, resource, 24f));
+                                        }
+                                    });
+                            Glide.with(getApplicationContext()).asBitmap().load(contentDTO.getImageUrl_5())
+                                    .into(new SimpleTarget<Bitmap>(){
+                                        @Override
+                                        public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+                                            addBitmapToMemoryCache("img_5", imageBlur(PollSingleActivity.this, resource, 24f));
+                                        }
+                                    });
+                            Glide.with(getApplicationContext()).asBitmap().load(contentDTO.getImageUrl_6())
+                                    .into(new SimpleTarget<Bitmap>(){
+                                        @Override
+                                        public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+                                            addBitmapToMemoryCache("img_6", imageBlur(PollSingleActivity.this, resource, 24f));
+                                        }
+                                    });
+                            break;
+                        case 8:
+                            Glide.with(getApplicationContext()).asBitmap().load(contentDTO.getImageUrl_0())
+                                    .into(new SimpleTarget<Bitmap>(){
+                                        @Override
+                                        public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+                                            addBitmapToMemoryCache("img_0", imageBlur(PollSingleActivity.this, resource, 24f));
+                                        }
+                                    });
+                            Glide.with(getApplicationContext()).asBitmap().load(contentDTO.getImageUrl_1())
+                                    .into(new SimpleTarget<Bitmap>(){
+                                        @Override
+                                        public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+                                            addBitmapToMemoryCache("img_1", imageBlur(PollSingleActivity.this, resource, 24f));
+                                        }
+                                    });
+                            Glide.with(getApplicationContext()).asBitmap().load(contentDTO.getImageUrl_2())
+                                    .into(new SimpleTarget<Bitmap>(){
+                                        @Override
+                                        public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+                                            addBitmapToMemoryCache("img_2", imageBlur(PollSingleActivity.this, resource, 24f));
+                                        }
+                                    });
+                            Glide.with(getApplicationContext()).asBitmap().load(contentDTO.getImageUrl_3())
+                                    .into(new SimpleTarget<Bitmap>(){
+                                        @Override
+                                        public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+                                            addBitmapToMemoryCache("img_3", imageBlur(PollSingleActivity.this, resource, 24f));
+                                        }
+                                    });
+                            Glide.with(getApplicationContext()).asBitmap().load(contentDTO.getImageUrl_4())
+                                    .into(new SimpleTarget<Bitmap>(){
+                                        @Override
+                                        public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+                                            addBitmapToMemoryCache("img_4", imageBlur(PollSingleActivity.this, resource, 24f));
+                                        }
+                                    });
+                            Glide.with(getApplicationContext()).asBitmap().load(contentDTO.getImageUrl_5())
+                                    .into(new SimpleTarget<Bitmap>(){
+                                        @Override
+                                        public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+                                            addBitmapToMemoryCache("img_5", imageBlur(PollSingleActivity.this, resource, 24f));
+                                        }
+                                    });
+                            Glide.with(getApplicationContext()).asBitmap().load(contentDTO.getImageUrl_6())
+                                    .into(new SimpleTarget<Bitmap>(){
+                                        @Override
+                                        public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+                                            addBitmapToMemoryCache("img_6", imageBlur(PollSingleActivity.this, resource, 24f));
+                                        }
+                                    });
+                            Glide.with(getApplicationContext()).asBitmap().load(contentDTO.getImageUrl_7())
+                                    .into(new SimpleTarget<Bitmap>(){
+                                        @Override
+                                        public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+                                            addBitmapToMemoryCache("img_7", imageBlur(PollSingleActivity.this, resource, 24f));
+                                        }
+                                    });
+                            break;
+                        case 9:
+                            Glide.with(getApplicationContext()).asBitmap().load(contentDTO.getImageUrl_0())
+                                    .into(new SimpleTarget<Bitmap>(){
+                                        @Override
+                                        public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+                                            addBitmapToMemoryCache("img_0", imageBlur(PollSingleActivity.this, resource, 24f));
+                                        }
+                                    });
+                            Glide.with(getApplicationContext()).asBitmap().load(contentDTO.getImageUrl_1())
+                                    .into(new SimpleTarget<Bitmap>(){
+                                        @Override
+                                        public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+                                            addBitmapToMemoryCache("img_1", imageBlur(PollSingleActivity.this, resource, 24f));
+                                        }
+                                    });
+                            Glide.with(getApplicationContext()).asBitmap().load(contentDTO.getImageUrl_2())
+                                    .into(new SimpleTarget<Bitmap>(){
+                                        @Override
+                                        public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+                                            addBitmapToMemoryCache("img_2", imageBlur(PollSingleActivity.this, resource, 24f));
+                                        }
+                                    });
+                            Glide.with(getApplicationContext()).asBitmap().load(contentDTO.getImageUrl_3())
+                                    .into(new SimpleTarget<Bitmap>(){
+                                        @Override
+                                        public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+                                            addBitmapToMemoryCache("img_3", imageBlur(PollSingleActivity.this, resource, 24f));
+                                        }
+                                    });
+                            Glide.with(getApplicationContext()).asBitmap().load(contentDTO.getImageUrl_4())
+                                    .into(new SimpleTarget<Bitmap>(){
+                                        @Override
+                                        public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+                                            addBitmapToMemoryCache("img_4", imageBlur(PollSingleActivity.this, resource, 24f));
+                                        }
+                                    });
+                            Glide.with(getApplicationContext()).asBitmap().load(contentDTO.getImageUrl_5())
+                                    .into(new SimpleTarget<Bitmap>(){
+                                        @Override
+                                        public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+                                            addBitmapToMemoryCache("img_5", imageBlur(PollSingleActivity.this, resource, 24f));
+                                        }
+                                    });
+                            Glide.with(getApplicationContext()).asBitmap().load(contentDTO.getImageUrl_6())
+                                    .into(new SimpleTarget<Bitmap>(){
+                                        @Override
+                                        public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+                                            addBitmapToMemoryCache("img_6", imageBlur(PollSingleActivity.this, resource, 24f));
+                                        }
+                                    });
+                            Glide.with(getApplicationContext()).asBitmap().load(contentDTO.getImageUrl_7())
+                                    .into(new SimpleTarget<Bitmap>(){
+                                        @Override
+                                        public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+                                            addBitmapToMemoryCache("img_7", imageBlur(PollSingleActivity.this, resource, 24f));
+                                        }
+                                    });
+                            Glide.with(getApplicationContext()).asBitmap().load(contentDTO.getImageUrl_8())
+                                    .into(new SimpleTarget<Bitmap>(){
+                                        @Override
+                                        public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+                                            addBitmapToMemoryCache("img_8", imageBlur(PollSingleActivity.this, resource, 24f));
+                                        }
+                                    });
+                            break;
+                        case 10:
+                            Glide.with(getApplicationContext()).asBitmap().load(contentDTO.getImageUrl_0())
+                                    .into(new SimpleTarget<Bitmap>(){
+                                        @Override
+                                        public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+                                            addBitmapToMemoryCache("img_0", imageBlur(PollSingleActivity.this, resource, 24f));
+                                        }
+                                    });
+                            Glide.with(getApplicationContext()).asBitmap().load(contentDTO.getImageUrl_1())
+                                    .into(new SimpleTarget<Bitmap>(){
+                                        @Override
+                                        public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+                                            addBitmapToMemoryCache("img_1", imageBlur(PollSingleActivity.this, resource, 24f));
+                                        }
+                                    });
+                            Glide.with(getApplicationContext()).asBitmap().load(contentDTO.getImageUrl_2())
+                                    .into(new SimpleTarget<Bitmap>(){
+                                        @Override
+                                        public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+                                            addBitmapToMemoryCache("img_2", imageBlur(PollSingleActivity.this, resource, 24f));
+                                        }
+                                    });
+                            Glide.with(getApplicationContext()).asBitmap().load(contentDTO.getImageUrl_3())
+                                    .into(new SimpleTarget<Bitmap>(){
+                                        @Override
+                                        public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+                                            addBitmapToMemoryCache("img_3", imageBlur(PollSingleActivity.this, resource, 24f));
+                                        }
+                                    });
+                            Glide.with(getApplicationContext()).asBitmap().load(contentDTO.getImageUrl_4())
+                                    .into(new SimpleTarget<Bitmap>(){
+                                        @Override
+                                        public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+                                            addBitmapToMemoryCache("img_4", imageBlur(PollSingleActivity.this, resource, 24f));
+                                        }
+                                    });
+                            Glide.with(getApplicationContext()).asBitmap().load(contentDTO.getImageUrl_5())
+                                    .into(new SimpleTarget<Bitmap>(){
+                                        @Override
+                                        public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+                                            addBitmapToMemoryCache("img_5", imageBlur(PollSingleActivity.this, resource, 24f));
+                                        }
+                                    });
+                            Glide.with(getApplicationContext()).asBitmap().load(contentDTO.getImageUrl_6())
+                                    .into(new SimpleTarget<Bitmap>(){
+                                        @Override
+                                        public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+                                            addBitmapToMemoryCache("img_6", imageBlur(PollSingleActivity.this, resource, 24f));
+                                        }
+                                    });
+                            Glide.with(getApplicationContext()).asBitmap().load(contentDTO.getImageUrl_7())
+                                    .into(new SimpleTarget<Bitmap>(){
+                                        @Override
+                                        public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+                                            addBitmapToMemoryCache("img_7", imageBlur(PollSingleActivity.this, resource, 24f));
+                                        }
+                                    });
+                            Glide.with(getApplicationContext()).asBitmap().load(contentDTO.getImageUrl_8())
+                                    .into(new SimpleTarget<Bitmap>(){
+                                        @Override
+                                        public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+                                            addBitmapToMemoryCache("img_8", imageBlur(PollSingleActivity.this, resource, 24f));
+                                        }
+                                    });
+                            Glide.with(getApplicationContext()).asBitmap().load(contentDTO.getImageUrl_9())
+                                    .into(new SimpleTarget<Bitmap>(){
+                                        @Override
+                                        public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+                                            addBitmapToMemoryCache("img_9", imageBlur(PollSingleActivity.this, resource, 24f));
+                                        }
+                                    });
+                            break;
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
+
+            return null;
+        }
+    }
+
+
+
     @Override
     public void ContentDeleteDialogCallback(String string) {
         //게시글 삭제
@@ -2966,6 +3442,21 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
             mReference.child("users").child(mUser.getUid()).child("uploadContent").child(pollKey).removeValue();
         }
 
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mMemoryCache.remove("img_0");
+        mMemoryCache.remove("img_1");
+        mMemoryCache.remove("img_2");
+        mMemoryCache.remove("img_3");
+        mMemoryCache.remove("img_4");
+        mMemoryCache.remove("img_5");
+        mMemoryCache.remove("img_6");
+        mMemoryCache.remove("img_7");
+        mMemoryCache.remove("img_8");
+        mMemoryCache.remove("img_9");
     }
 }
 

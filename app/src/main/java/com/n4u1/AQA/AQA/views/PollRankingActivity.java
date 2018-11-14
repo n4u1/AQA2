@@ -669,38 +669,6 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
 
         //contentDTO 화면 초기세팅
         mDatabaseReferenceAlarm = FirebaseDatabase.getInstance().getReference();
-//
-//        mDatabaseReferenceAlarm.child("user_contents").child(contentKey).child("contentPicker").addChildEventListener(new ChildEventListener() {
-//            @Override
-//            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-//                Iterator<DataSnapshot> iterator = dataSnapshot.getChildren().iterator();
-//                while (iterator.hasNext()) {
-//                    Map<String, Integer> stringIntegerMap = (Map<String, Integer>) iterator.next().getValue();
-//                }
-//            }
-//
-//            @Override
-//            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-//
-//            }
-//
-//            @Override
-//            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-//
-//            }
-//
-//            @Override
-//            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-//
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError databaseError) {
-//
-//            }
-//        });
-
-
         mDatabaseReferenceAlarm.child("user_contents").child(contentKey).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -719,16 +687,17 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
                 settingUserAlarm(contentKey);
 
 
-                try {
-                    int picked = contentDTO.contentPicker.get(auth.getCurrentUser().getUid());
-                    if (picked >= 0) {
-                        pollActivity_textView_state.setText(picked + 1 + "번에 1위 투표 하셧습니다.");
-                    } else {
-                        pollActivity_textView_state.setText("투표 전 입니다");
-                    }
-                } catch (Exception e) {
+                if (contentDTO.contentPicker.get(auth.getCurrentUser().getUid()) == null) {
+                    pollActivity_textView_state.setText("투표 전 입니다");
 
+                } else {
+                    int picked = contentDTO.contentPicker.get(auth.getCurrentUser().getUid());
+                    pollActivity_textView_state.setText(picked + 1 + "번에 1위 투표 하셧습니다.");
                 }
+
+
+
+
 
 
                 if (contentDTO.likes.containsKey(auth.getCurrentUser().getUid())) {
