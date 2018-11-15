@@ -558,7 +558,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="8"
-                    android:text="개발자 욕"
+                    android:text="건의사항"
                     android:textColor="#383838"
                     android:textSize="18dp" />
 

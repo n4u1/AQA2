@@ -68,8 +68,8 @@ public class SplashLoadingActivity extends AppCompatActivity implements GUIDFail
                         } else {
                             // If sign in fails, display a message to the user.
                             Handler hd = new Handler();
-                            hd.postDelayed(new splashhandlerLogin(), 500);
-                            Toast.makeText(getApplicationContext(), "User Login Fail", Toast.LENGTH_LONG).show();
+                            hd.postDelayed(new splashhandlerLogin(), 100);
+                            Toast.makeText(getApplicationContext(), "로그인 실패", Toast.LENGTH_LONG).show();
                         }
                     }
                 });
@@ -145,7 +145,7 @@ public class SplashLoadingActivity extends AppCompatActivity implements GUIDFail
                             editor.commit();
 
                             Handler hd = new Handler();
-                            hd.postDelayed(new splashhandlerHome(), 500);
+                            hd.postDelayed(new splashhandlerHome(), 100);
                         } else {
                             GUIDFailDialog guidFailDialog = new GUIDFailDialog();
                             guidFailDialog.show(getSupportFragmentManager(), "guidFailDialog");

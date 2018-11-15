@@ -128,7 +128,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="자신의 게시글에는 화면 우상단에 알람 아이콘이 생겨납니다.
-알람을 설정해 빨리 결과를 확인해보세요. 자신의 게시글에만 삭제,알람 아이콘이 생겨납니다" />
+알람을 설정해 결과를 바로 확인해보세요. 자신의 게시글에만 삭제,알람 아이콘이 생겨납니다" />
 
             <TextView
                 android:textSize="24dp"
@@ -151,6 +151,26 @@
                 android:text="네. 투표 진행후 내용을 변경해 정 반대의 결과가 되는것이 우려됩니다.
 번거로우시겠지만 다시 작성해주시기 바랍니다.
 수정 히스토리 관리는 검토중입니다." />
+
+            <TextView
+                android:textSize="24dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <!-- ㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ-->
+
+
+            <TextView
+                android:textSize="18dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="순위투표의 점수는 어떻게 계산 되나요?" />
+
+            <TextView
+                android:textSize="14dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="단일 투표는 1투표당 1점, 순위 투표는 1위가 후보수-1점 입니다. 예를 들어 후보의 수가 4개이면 1위는 3점 2위는 2점 3위는 1점 4위는 0점 입니다." />
 
             <TextView
                 android:textSize="24dp"

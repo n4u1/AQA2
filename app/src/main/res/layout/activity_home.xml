@@ -18,6 +18,14 @@
         <include layout="@layout/mytoolbar" />
 
 
+        <View
+            android:layout_alignTop="@+id/adView"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#d4d4d4" />
+
+
+
         <com.google.android.gms.ads.AdView
             android:id="@+id/adView"
             android:layout_width="wrap_content"
