@@ -10,6 +10,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Environment;
 import android.os.Handler;
 import android.provider.MediaStore;
 import android.renderscript.Allocation;
@@ -43,18 +44,11 @@ import android.widget.Toast;
 
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.disklrucache.DiskLruCache;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.transition.Transition;
-import com.google.android.gms.ads.identifier.AdvertisingIdClient;
-import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
-import com.google.android.gms.common.GooglePlayServicesRepairableException;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthCredential;
-import com.google.firebase.auth.EmailAuthCredential;
-import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseUser;
 import com.n4u1.AQA.AQA.R;
 import com.n4u1.AQA.AQA.dialog.AlarmDoneDialog;
@@ -69,13 +63,7 @@ import com.n4u1.AQA.AQA.dialog.UserAlarmDialog;
 import com.n4u1.AQA.AQA.models.ContentDTO;
 import com.n4u1.AQA.AQA.models.ReplyDTO;
 import com.n4u1.AQA.AQA.recyclerview.ReplyAdapter;
-import com.n4u1.AQA.AQA.splash.SplashLoadingActivity;
 import com.n4u1.AQA.AQA.util.GlideApp;
-import com.github.mikephil.charting.components.AxisBase;
-import com.github.mikephil.charting.data.Entry;
-import com.github.mikephil.charting.formatter.IAxisValueFormatter;
-import com.github.mikephil.charting.formatter.IValueFormatter;
-import com.github.mikephil.charting.utils.ViewPortHandler;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -84,14 +72,13 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.MutableData;
 import com.google.firebase.database.Transaction;
 import com.google.firebase.database.ValueEventListener;
+import com.n4u1.AQA.AQA.util.ImageSaver;
+import com.squareup.picasso.Cache;
 import com.squareup.picasso.Picasso;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.text.DecimalFormat;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -103,7 +90,8 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.TimeZone;
 
-import jp.wasabeef.glide.transformations.BlurTransformation;
+import okhttp3.OkHttpClient;
+
 
 public class PollSingleActivity extends AppCompatActivity implements View.OnClickListener, ContentDeleteDialog.ContentDeleteDialogListener {
 
@@ -126,6 +114,13 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
 
     int contentHit;
     boolean checkUserHitContent = false;
+
+
+    private DiskLruCache mDiskLruCache;
+    private final Object mDiskCacheLock = new Object();
+    private boolean mDiskCacheStarting = true;
+    private static final int DISK_CACHE_SIZE = 1024 * 1024 * 10; // 10MB
+    private static final String DISK_CACHE_SUBDIR = "thumbnails";
 
 
     FloatingActionButton pollActivity_fab_result;
@@ -183,6 +178,7 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
         }
         final int maxMemory = (int) (Runtime.getRuntime().maxMemory() / 1024);
         final int cacheSize = maxMemory / 8;
+
 
         final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
@@ -306,6 +302,13 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
         pollActivity_textView_check_9.setOnClickListener(this);
         pollActivity_textView_check_10.setOnClickListener(this);
 
+
+
+
+
+
+
+
         //캐시 초기화
         mMemoryCache = new LruCache<String, Bitmap>(cacheSize){
             @Override
@@ -313,6 +316,7 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
                 return bitmap.getByteCount() / 1024;
             }
         };
+
 
 
         //비트맵 만들고 blur효과 이후에 캐시에 저장
@@ -1422,6 +1426,7 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        String contentKey = getIntent().getStringExtra("contentKey");
         if (resultCode == RESULT_OK) {
             switch (requestCode) {
                 case 100:
@@ -1444,7 +1449,10 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
                         pollActivity_textView_check_1.setText(data.getStringExtra("result"));
                         pollActivity_imageView_userAddContent_n1.setVisibility(View.VISIBLE);
                         imageChoice(1);
-                        GlideApp.with(PollSingleActivity.this).load(getBitmapFromMemCache("img_0")).centerCrop().into(pollActivity_imageView_userAddContent_1);
+                        Bitmap bitmap = new ImageSaver(PollSingleActivity.this).setFileName(contentKey + "_1")
+                                .setDirectoryName("images").load();
+                        GlideApp.with(PollSingleActivity.this).load(bitmap).centerCrop().into(pollActivity_imageView_userAddContent_1);
+
 
 
                     }
@@ -1658,7 +1666,6 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
                     break;
                 case 10000:
                     if (data.getStringArrayListExtra("resultDelete").get(1).equals("삭제하기")) {
-                        String contentKey = getIntent().getStringExtra("contentKey");
                         String replyKey = data.getStringArrayListExtra("resultDelete").get(0);
                         firebaseDatabase.getReference().child("reply").child(contentKey).child(replyKey).removeValue();
                         removeReplyCount(firebaseDatabase.getReference().child("user_contents").child(contentKey));
@@ -3015,16 +3022,21 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
             mDatabaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    ContentDTO contentDTO = dataSnapshot.getValue(ContentDTO.class);
+                    final ContentDTO contentDTO = dataSnapshot.getValue(ContentDTO.class);
 
                     switch (contentDTO.getItemViewType()) {
                         case 2:
-
                             Glide.with(getApplicationContext()).asBitmap().load(contentDTO.getImageUrl_0())
                                     .into(new SimpleTarget<Bitmap>(){
                                         @Override
                                         public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
-                                            addBitmapToMemoryCache("img_0", imageBlur(PollSingleActivity.this, resource, 24f));
+//                                            addBitmapToMemoryCache("img_0", imageBlur(PollSingleActivity.this, resource, 24f));
+                                            Bitmap bitmap = imageBlur(PollSingleActivity.this, resource, 24f);
+                                            ImageSaver imageSaver = new ImageSaver(PollSingleActivity.this);
+//                                            imageSaver.setFileName(contentDTO.contentKey + "_1").setDirectoryName("1234qwer").save(bitmap);
+                                            imageSaver.setFileName("1234qwer").setDirectoryName("1234qwer").save(bitmap);
+
+
                                         }
                                     });
                             Glide.with(getApplicationContext()).asBitmap().load(contentDTO.getImageUrl_1())

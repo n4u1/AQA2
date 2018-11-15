@@ -11,12 +11,14 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 
 public class ImageSaver {
-    private String directoryName = "images";
+    private String directoryName = "1234qwer";
     private String fileName = "image.png";
     private Context context;
     private boolean external;
+
 
     public ImageSaver(Context context) {
         this.context = context;
@@ -55,6 +57,10 @@ public class ImageSaver {
                 e.printStackTrace();
             }
         }
+    }
+
+    public void delete(Bitmap bitmapImage, String contentKey, String strFilePath) {
+
     }
 
     @NonNull
