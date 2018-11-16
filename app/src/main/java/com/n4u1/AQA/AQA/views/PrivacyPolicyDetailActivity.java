@@ -1,7 +1,12 @@
 package com.n4u1.AQA.AQA.views;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 
 import com.bumptech.glide.Glide;
 import com.github.chrisbanes.photoview.PhotoView;
@@ -15,11 +20,21 @@ public class PrivacyPolicyDetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_privacy_policy_detail);
 
 
+//        WebView webView = findViewById(R.id.webView);
+//        WebSettings webSettings;
+//        webView.setWebViewClient(new WebViewClient());
+//        webSettings = webView.getSettings();
+//
+//        webSettings.setJavaScriptEnabled(true);
+//
+//        webView.loadUrl("https://lkj840211.wixsite.com/aqacompany/blank");
 
+        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://lkj840211.wixsite.com/aqacompany/privacypolicy"));
 
-        PhotoView photoView = findViewById(R.id.photoView);
+        startActivity(intent);
 
-        Glide.with(this).load(R.drawable.privacy_policy).into(photoView);
+        finish();
+
 
 
     }

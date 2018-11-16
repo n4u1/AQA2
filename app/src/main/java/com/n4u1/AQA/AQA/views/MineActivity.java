@@ -202,11 +202,11 @@ public class MineActivity extends AppCompatActivity implements LogOutDialog.LogO
         mineActivity_linearLayout_notice.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                Toast toast = Toast.makeText(getApplicationContext(), "아직 공지사항이 없습니다 :)", Toast.LENGTH_SHORT);
-//                toast.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL, 0, 0);
-//                toast.show();
-                Intent intent = new Intent(MineActivity.this, CreateUserEmailActivity.class);
-                startActivity(intent);
+                Toast toast = Toast.makeText(getApplicationContext(), "아직 공지사항이 없습니다 :)", Toast.LENGTH_SHORT);
+                toast.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL, 0, 0);
+                toast.show();
+//                Intent intent = new Intent(MineActivity.this, CreateUserEmailActivity.class);
+//                startActivity(intent);
             }
         });
 
@@ -230,7 +230,7 @@ public class MineActivity extends AppCompatActivity implements LogOutDialog.LogO
         });
 
 
-        //개발자욕하러가기
+        //건의사항
         mineActivity_linearLayout_suggest.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -326,7 +326,7 @@ public class MineActivity extends AppCompatActivity implements LogOutDialog.LogO
         mineActivity_linearLayout_servicePolicy.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MineActivity.this, ServicePolicyActivity.class);
+                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://lkj840211.wixsite.com/aqacompany/privacypolicy"));
                 startActivity(intent);
             }
         });
@@ -336,7 +336,7 @@ public class MineActivity extends AppCompatActivity implements LogOutDialog.LogO
         mineActivity_linearLayout_privacyPolicy.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MineActivity.this, PrivacyPolicyActivity.class);
+                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://lkj840211.wixsite.com/aqacompany/servicepolicy"));
                 startActivity(intent);
             }
         });

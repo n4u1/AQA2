@@ -1,8 +1,10 @@
 package com.n4u1.AQA.AQA.views;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -10,6 +12,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -44,8 +47,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 
-public class LoginActivity extends AppCompatActivity implements PreviewDialog.PreviewDialogListener,
-        GUIDFailDialog.GUIDFailDialogListener {
+public class LoginActivity extends AppCompatActivity implements PreviewDialog.PreviewDialogListener{
     private FirebaseAuth mAuth;
 
     private long backPressedTime = 0;
@@ -53,17 +55,20 @@ public class LoginActivity extends AppCompatActivity implements PreviewDialog.Pr
     EditText editTextPassword;
 
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
         TextView textView_hidden = findViewById(R.id.textView_hidden);
-        TextView textView_privacy_policy = findViewById(R.id.textView_privacy_policy);
-        LinearLayout linearLayout_createUser = findViewById(R.id.linearLayout_createUser);
-        LinearLayout linearLayout_loginUser = findViewById(R.id.linearLayout_loginUser);
-        LinearLayout linearLayout_findUser = findViewById(R.id.linearLayout_findUser);
-        TextView textView_preview = findViewById(R.id.textView_preview);
+        final TextView textView_privacy_policy = findViewById(R.id.textView_privacy_policy);
+        final TextView textView_servicePolicy = findViewById(R.id.textView_servicePolicy);
+        final LinearLayout linearLayout_createUser = findViewById(R.id.linearLayout_createUser);
+        final LinearLayout linearLayout_loginUser = findViewById(R.id.linearLayout_loginUser);
+        final LinearLayout linearLayout_findUser = findViewById(R.id.linearLayout_findUser);
+        final LinearLayout linearLayout_initDevice = findViewById(R.id.linearLayout_initDevice);
+        final TextView textView_preview = findViewById(R.id.textView_preview);
 //        String htmlString = "<u>둘러보기</u>";
 
 
@@ -73,24 +78,56 @@ public class LoginActivity extends AppCompatActivity implements PreviewDialog.Pr
 
 
         //둘러보기
-//        textView_preview.setText(Html.fromHtml(htmlString));
-        textView_preview.setOnClickListener(new View.OnClickListener() {
+        textView_preview.setOnTouchListener(new View.OnTouchListener() {
             @Override
-            public void onClick(View view) {
-                PreviewDialog previewDialog = new PreviewDialog();
-                previewDialog.show(getSupportFragmentManager(), "previewDialog");
+            public boolean onTouch(View v, MotionEvent event) {
+                if (MotionEvent.ACTION_DOWN == event.getAction()) {
+                    textView_preview.setTextColor(0xFF88B6E7);
+                }
+                if (MotionEvent.ACTION_UP == event.getAction()) {
+                    textView_preview.setTextColor(0xff4485c9);
+                    PreviewDialog previewDialog = new PreviewDialog();
+                    previewDialog.show(getSupportFragmentManager(), "previewDialog");
+                }
+                return true;
+            }
+
+        });
+
+
+        //이용약관
+        textView_servicePolicy.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (MotionEvent.ACTION_DOWN == event.getAction()) {
+                    textView_servicePolicy.setTextColor(0xFF88B6E7);
+                }
+                if (MotionEvent.ACTION_UP == event.getAction()) {
+                    textView_servicePolicy.setTextColor(0xff4485c9);
+                    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://lkj840211.wixsite.com/aqacompany/servicepolicy"));
+                    startActivity(intent);
+                }
+                return true;
             }
         });
 
 
         //개인정보 처리방침
-        textView_privacy_policy.setOnClickListener(new View.OnClickListener() {
+        textView_privacy_policy.setOnTouchListener(new View.OnTouchListener() {
             @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(LoginActivity.this, PrivacyPolicyActivity.class);
-                startActivity(intent);
+            public boolean onTouch(View v, MotionEvent event) {
+                if (MotionEvent.ACTION_DOWN == event.getAction()) {
+                    textView_privacy_policy.setTextColor(0xFF88B6E7);
+                }
+                if (MotionEvent.ACTION_UP == event.getAction()) {
+                    textView_privacy_policy.setTextColor(0xff4485c9);
+                    Intent intent = new Intent(LoginActivity.this, PrivacyPolicyActivity.class);
+                    startActivity(intent);
+                }
+                return true;
             }
         });
+
 
         //히든
         textView_hidden.setOnClickListener(new View.OnClickListener() {
@@ -102,51 +139,82 @@ public class LoginActivity extends AppCompatActivity implements PreviewDialog.Pr
             }
         });
 
+        //로그인하기
+        linearLayout_loginUser.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (MotionEvent.ACTION_UP == event.getAction()) {
+                    linearLayout_loginUser.setBackgroundResource(R.drawable.shape);
+                    String userId;
+                    userId = editTextEmail.getText().toString();
+                    if (editTextEmail.getText().toString().equals("") || editTextPassword.getText().toString().equals("")) {
+                        NotInputDialog notInputDialog = new NotInputDialog();
+                        notInputDialog.show(getSupportFragmentManager(), "notInputDialog");
+                    } else if (!checkEmail(editTextEmail.getText().toString())) {
+                        NotEmailDialog notEmailDialog = new NotEmailDialog();
+                        notEmailDialog.show(getSupportFragmentManager(), "notEmailDialog");
+                    } else if (editTextPassword.getText().toString().length() < 6) {
+                        AgainPasswordDialog againPasswordDialog = new AgainPasswordDialog();
+                        againPasswordDialog.show(getSupportFragmentManager(), "againPasswordDialog");
+                    } else {
+                        loginUser(userId, editTextPassword.getText().toString());
+                    }
+                }
+                if (MotionEvent.ACTION_DOWN == event.getAction()) {
+                    linearLayout_loginUser.setBackgroundResource(R.drawable.shape_click);
+                }
+                return true;
+            }
+        });
+
 
         //계정 만들기
-        linearLayout_createUser.setOnClickListener(new View.OnClickListener() {
+        linearLayout_createUser.setOnTouchListener(new View.OnTouchListener() {
             @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(LoginActivity.this, SplashGuidActivity.class);
-                intent.putExtra("userLoginFlag", "createUser");
-                startActivity(intent);
-            }
-        });
-
-
-        //계정 찾기
-        linearLayout_findUser.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent findIntent = new Intent(LoginActivity.this, FindUserActivity.class);
-                startActivity(findIntent);
-            }
-        });
-
-
-
-        //로그인하기
-        linearLayout_loginUser.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String userId;
-                userId = editTextEmail.getText().toString();
-                if (editTextEmail.getText().toString().equals("") || editTextPassword.getText().toString().equals("")) {
-                    NotInputDialog notInputDialog = new NotInputDialog();
-                    notInputDialog.show(getSupportFragmentManager(), "notInputDialog");
-                } else if (!checkEmail(editTextEmail.getText().toString())) {
-                    NotEmailDialog notEmailDialog = new NotEmailDialog();
-                    notEmailDialog.show(getSupportFragmentManager(), "notEmailDialog");
-                } else if (editTextPassword.getText().toString().length() < 6) {
-                    AgainPasswordDialog againPasswordDialog = new AgainPasswordDialog();
-                    againPasswordDialog.show(getSupportFragmentManager(), "againPasswordDialog");
-                } else {
-                    loginUser(userId, editTextPassword.getText().toString());
+            public boolean onTouch(View v, MotionEvent event) {
+                if (MotionEvent.ACTION_UP == event.getAction()) {
+                    linearLayout_createUser.setBackgroundResource(R.drawable.shape);
+                    Intent intent = new Intent(LoginActivity.this, SplashGuidActivity.class);
+                    intent.putExtra("userLoginFlag", "createUser");
+                    startActivity(intent);
                 }
-
-
+                if (MotionEvent.ACTION_DOWN == event.getAction()) {
+                    linearLayout_createUser.setBackgroundResource(R.drawable.shape_click);
+                }
+                return true;
             }
         });
+
+        //비밀번호 찾기
+        linearLayout_findUser.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (MotionEvent.ACTION_UP == event.getAction()) {
+                    linearLayout_findUser.setBackgroundResource(R.drawable.shape);
+                    Intent findIntent = new Intent(LoginActivity.this, FindUserActivity.class);
+                    startActivity(findIntent);
+                }
+                if (MotionEvent.ACTION_DOWN == event.getAction()) {
+                    linearLayout_findUser.setBackgroundResource(R.drawable.shape_click);
+                }
+                return true;
+            }
+        });
+
+        //기기 초기화, Google Device Id Init
+        linearLayout_initDevice.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (MotionEvent.ACTION_UP == event.getAction()) {
+                    linearLayout_initDevice.setBackgroundResource(R.drawable.shape);
+                }
+                if (MotionEvent.ACTION_DOWN == event.getAction()) {
+                    linearLayout_initDevice.setBackgroundResource(R.drawable.shape_click);
+                }
+                return true;
+            }
+        });
+
 
         //test login
         Button buttona = findViewById(R.id.buttona);
@@ -184,8 +252,6 @@ public class LoginActivity extends AppCompatActivity implements PreviewDialog.Pr
                 loginUser("lkj840211@gmail.com", "dltjsdn2@");
             }
         });
-
-
 
 
     }
@@ -240,8 +306,5 @@ public class LoginActivity extends AppCompatActivity implements PreviewDialog.Pr
         }
     }
 
-    @Override
-    public void GUIDFailDialogCallback(String string) {
-    }
 
 }

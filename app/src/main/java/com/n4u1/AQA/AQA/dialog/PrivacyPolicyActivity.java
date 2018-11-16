@@ -27,6 +27,7 @@ public class PrivacyPolicyActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(PrivacyPolicyActivity.this, PrivacyPolicyDetailActivity.class);
+                finish();
                 startActivity(intent);
 
             }
