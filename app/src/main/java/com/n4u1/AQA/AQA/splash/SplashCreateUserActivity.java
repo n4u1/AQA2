@@ -85,6 +85,7 @@ public class SplashCreateUserActivity extends AppCompatActivity implements GUIDF
         user.setUid(uid);
         user.setEmail(email);
         user.setUserClass(0);
+        user.setPollInitInfo("true");
         mDatabase.child("users").child(uid).setValue(user);
 
         SharedPreferences pref = getSharedPreferences("com.n4u1.AQA", MODE_PRIVATE);

@@ -36,7 +36,6 @@ import android.widget.Toast;
 
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.disklrucache.DiskLruCache;
 import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.transition.Transition;
@@ -82,6 +81,7 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
     private int pickCandidate = 0;
     private FirebaseAuth auth;
     private DatabaseReference mDatabaseReference;
+    private DatabaseReference mDatabaseReferenceInitAlarm;
     private DatabaseReference mDatabaseReferencePicker;
     private FirebaseDatabase firebaseDatabase;
 
@@ -152,7 +152,7 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
             getSupportActionBar().setDisplayShowHomeEnabled(true);
         }
         final int maxMemory = (int) (Runtime.getRuntime().maxMemory() / 1024);
-        final int cacheSize = maxMemory / 8;
+
 
 
         final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
@@ -163,6 +163,7 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
         Log.d("lkj noti", contentKey);
 
         mDatabaseReference = FirebaseDatabase.getInstance().getReference("user_contents").child(contentKey);
+        mDatabaseReferenceInitAlarm = FirebaseDatabase.getInstance().getReference("users").child(auth.getCurrentUser().getUid());
         mDatabaseReferencePicker = FirebaseDatabase.getInstance().getReference("users");
         auth = FirebaseAuth.getInstance();
         firebaseDatabase = FirebaseDatabase.getInstance();
@@ -170,8 +171,6 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
 
         pollActivity_imageView_alarm = findViewById(R.id.pollActivity_imageView_alarm);
 
-
-//        scrollView = findViewById(R.id.scrollView);
         pollActivity_fab_result = findViewById(R.id.pollActivity_fab_result);
         pollActivity_textView_title = findViewById(R.id.pollActivity_textView_title);
         pollActivity_textView_description = findViewById(R.id.pollActivity_textView_description);
@@ -278,13 +277,27 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
         pollActivity_textView_check_10.setOnClickListener(this);
 
 
-        //캐시 초기화
-//        mMemoryCache = new LruCache<String, Bitmap>(cacheSize) {
-//            @Override
-//            protected int sizeOf(String key, Bitmap bitmap) {
-//                return bitmap.getByteCount() / 1024;
-//            }
-//        };
+        //처음사용자 Q 버튼 알려주기
+        mDatabaseReferenceInitAlarm.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                try {
+                    Map<String, Object> user = (Map<String, Object>) dataSnapshot.getValue();
+                    String flag = String.valueOf(user.get("pollInitInfo"));
+                    Log.d("lkj flag", flag);
+                    if (flag.equals("true")) {
+
+                    }
+                } catch (Exception e) {
+
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
 
 
         //알람설정 클릭
@@ -886,30 +899,35 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
         firebaseDatabase.getReference().child("users").child(uId).child("userClass").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                int userClass = Integer.parseInt(dataSnapshot.getValue().toString());
-                if (userClass >= 0 && userClass < 50) {
-                    pollActivity_imageView_userClass.setImageResource(R.drawable.q_class_red_1);
-                } else if (userClass >= 50 && userClass < 100) {
-                    pollActivity_imageView_userClass.setImageResource(R.drawable.q_class_red_2);
-                } else if (userClass >= 100 && userClass < 150) {
-                    pollActivity_imageView_userClass.setImageResource(R.drawable.q_class_orange_1);
-                } else if (userClass >= 150 && userClass < 200) {
-                    pollActivity_imageView_userClass.setImageResource(R.drawable.q_class_orange_2);
-                } else if (userClass >= 200 && userClass < 250) {
-                    pollActivity_imageView_userClass.setImageResource(R.drawable.q_class_yellow_1);
-                } else if (userClass >= 250 && userClass < 300) {
-                    pollActivity_imageView_userClass.setImageResource(R.drawable.q_class_yellow_2);
-                } else if (userClass >= 300 && userClass < 350) {
-                    pollActivity_imageView_userClass.setImageResource(R.drawable.q_class_green_1);
-                } else if (userClass >= 350 && userClass < 400) {
-                    pollActivity_imageView_userClass.setImageResource(R.drawable.q_class_green_2);
-                } else if (userClass >= 400 && userClass < 450) {
-                    pollActivity_imageView_userClass.setImageResource(R.drawable.q_class_blue_1);
-                } else if (userClass >= 450 && userClass < 501) {
-                    pollActivity_imageView_userClass.setImageResource(R.drawable.q_class_blue_2);
-                } else if (userClass == 1000) {
-                    pollActivity_imageView_userClass.setImageResource(R.drawable.q_class_black);
+                try {
+                    int userClass = Integer.parseInt(dataSnapshot.getValue().toString());
+                    if (userClass >= 0 && userClass < 50) {
+                        pollActivity_imageView_userClass.setImageResource(R.drawable.q_class_red_1);
+                    } else if (userClass >= 50 && userClass < 100) {
+                        pollActivity_imageView_userClass.setImageResource(R.drawable.q_class_red_2);
+                    } else if (userClass >= 100 && userClass < 150) {
+                        pollActivity_imageView_userClass.setImageResource(R.drawable.q_class_orange_1);
+                    } else if (userClass >= 150 && userClass < 200) {
+                        pollActivity_imageView_userClass.setImageResource(R.drawable.q_class_orange_2);
+                    } else if (userClass >= 200 && userClass < 250) {
+                        pollActivity_imageView_userClass.setImageResource(R.drawable.q_class_yellow_1);
+                    } else if (userClass >= 250 && userClass < 300) {
+                        pollActivity_imageView_userClass.setImageResource(R.drawable.q_class_yellow_2);
+                    } else if (userClass >= 300 && userClass < 350) {
+                        pollActivity_imageView_userClass.setImageResource(R.drawable.q_class_green_1);
+                    } else if (userClass >= 350 && userClass < 400) {
+                        pollActivity_imageView_userClass.setImageResource(R.drawable.q_class_green_2);
+                    } else if (userClass >= 400 && userClass < 450) {
+                        pollActivity_imageView_userClass.setImageResource(R.drawable.q_class_blue_1);
+                    } else if (userClass >= 450 && userClass < 501) {
+                        pollActivity_imageView_userClass.setImageResource(R.drawable.q_class_blue_2);
+                    } else if (userClass == 1000) {
+                        pollActivity_imageView_userClass.setImageResource(R.drawable.q_class_black);
+                    }
+                } catch (Exception e) {
+                    pollActivity_imageView_userClass.setImageResource(R.drawable.q_class_null);
                 }
+
             }
 
             @Override

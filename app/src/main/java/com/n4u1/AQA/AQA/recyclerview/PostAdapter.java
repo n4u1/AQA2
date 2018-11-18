@@ -400,7 +400,7 @@ public class PostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                                     ((PostViewHolder1)holder).imageView_userClass.setImageResource(R.drawable.q_class_red_1);
                                 }
                             } catch (Exception e) {
-
+                                ((PostViewHolder1)holder).imageView_userClass.setImageResource(R.drawable.q_class_null);
                             }
 
                         }
@@ -538,32 +538,37 @@ public class PostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                     firebaseDatabase.getReference().child("users").child(contentDTOS.get(position).uid).child("userClass").addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                            int userClass = Integer.parseInt(dataSnapshot.getValue().toString());
-                            if (userClass >= 0 && userClass < 50) {
-                                ((PostViewHolder2)holder).imageView_userClass.setImageResource(R.drawable.q_class_red_1);
-                            } else if (userClass >= 50 && userClass < 100) {
-                                ((PostViewHolder2)holder).imageView_userClass.setImageResource(R.drawable.q_class_red_2);
-                            } else if (userClass >= 100 && userClass < 150) {
-                                ((PostViewHolder2)holder).imageView_userClass.setImageResource(R.drawable.q_class_orange_1);
-                            } else if (userClass >= 150 && userClass < 200) {
-                                ((PostViewHolder2)holder).imageView_userClass.setImageResource(R.drawable.q_class_orange_2);
-                            } else if (userClass >= 200 && userClass < 250) {
-                                ((PostViewHolder2)holder).imageView_userClass.setImageResource(R.drawable.q_class_yellow_1);
-                            } else if (userClass >= 250 && userClass < 300) {
-                                ((PostViewHolder2)holder).imageView_userClass.setImageResource(R.drawable.q_class_yellow_2);
-                            } else if (userClass >= 300 && userClass < 350) {
-                                ((PostViewHolder2)holder).imageView_userClass.setImageResource(R.drawable.q_class_green_1);
-                            } else if (userClass >= 350 && userClass < 400) {
-                                ((PostViewHolder2)holder).imageView_userClass.setImageResource(R.drawable.q_class_green_2);
-                            } else if (userClass >= 400 && userClass < 450) {
-                                ((PostViewHolder2)holder).imageView_userClass.setImageResource(R.drawable.q_class_blue_1);
-                            } else if (userClass >= 450 && userClass < 501) {
-                                ((PostViewHolder2)holder).imageView_userClass.setImageResource(R.drawable.q_class_blue_2);
-                            } else if (userClass == 1000) {
-                                ((PostViewHolder2)holder).imageView_userClass.setImageResource(R.drawable.q_class_black);
-                            } else {
-                                ((PostViewHolder2)holder).imageView_userClass.setImageResource(R.drawable.q_class_red_1);
+                            try {
+                                int userClass = Integer.parseInt(dataSnapshot.getValue().toString());
+                                if (userClass >= 0 && userClass < 50) {
+                                    ((PostViewHolder2)holder).imageView_userClass.setImageResource(R.drawable.q_class_red_1);
+                                } else if (userClass >= 50 && userClass < 100) {
+                                    ((PostViewHolder2)holder).imageView_userClass.setImageResource(R.drawable.q_class_red_2);
+                                } else if (userClass >= 100 && userClass < 150) {
+                                    ((PostViewHolder2)holder).imageView_userClass.setImageResource(R.drawable.q_class_orange_1);
+                                } else if (userClass >= 150 && userClass < 200) {
+                                    ((PostViewHolder2)holder).imageView_userClass.setImageResource(R.drawable.q_class_orange_2);
+                                } else if (userClass >= 200 && userClass < 250) {
+                                    ((PostViewHolder2)holder).imageView_userClass.setImageResource(R.drawable.q_class_yellow_1);
+                                } else if (userClass >= 250 && userClass < 300) {
+                                    ((PostViewHolder2)holder).imageView_userClass.setImageResource(R.drawable.q_class_yellow_2);
+                                } else if (userClass >= 300 && userClass < 350) {
+                                    ((PostViewHolder2)holder).imageView_userClass.setImageResource(R.drawable.q_class_green_1);
+                                } else if (userClass >= 350 && userClass < 400) {
+                                    ((PostViewHolder2)holder).imageView_userClass.setImageResource(R.drawable.q_class_green_2);
+                                } else if (userClass >= 400 && userClass < 450) {
+                                    ((PostViewHolder2)holder).imageView_userClass.setImageResource(R.drawable.q_class_blue_1);
+                                } else if (userClass >= 450 && userClass < 501) {
+                                    ((PostViewHolder2)holder).imageView_userClass.setImageResource(R.drawable.q_class_blue_2);
+                                } else if (userClass == 1000) {
+                                    ((PostViewHolder2)holder).imageView_userClass.setImageResource(R.drawable.q_class_black);
+                                } else {
+                                    ((PostViewHolder2)holder).imageView_userClass.setImageResource(R.drawable.q_class_red_1);
+                                }
+                            } catch (Exception e) {
+                                ((PostViewHolder2)holder).imageView_userClass.setImageResource(R.drawable.q_class_null);
                             }
+
                         }
                         @Override
                         public void onCancelled(@NonNull DatabaseError databaseError) {
@@ -699,42 +704,48 @@ public class PostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                     ((PostViewHolder3) holder).textView_title.setText(contentDTOS.get(position).title);
                 }
                 ((PostViewHolder3) holder).textView_userName.setText(contentDTOS.get(position).userID);
-                ((PostViewHolder3)holder).textView_pollMode.setText(contentDTOS.get(position).pollMode + " / " + contentDTOS.get(position).itemViewType);
+                ((PostViewHolder3) holder).textView_pollMode.setText(contentDTOS.get(position).pollMode + " / " + contentDTOS.get(position).itemViewType);
                 ((PostViewHolder3) holder).textView_contentType.setText(contentDTOS.get(position).contentType);
                 ((PostViewHolder3) holder).textView_hitCount.setText(String.valueOf(contentDTOS.get(position).contentHit));
-                ((PostViewHolder3)holder).textView_replyCount.setText(" [" + String.valueOf(contentDTOS.get(position).replyCount) + "]");
+                ((PostViewHolder3) holder).textView_replyCount.setText(" [" + String.valueOf(contentDTOS.get(position).replyCount) + "]");
+
 
                 //Q userClass 별로 색 세팅
                 try {
                     firebaseDatabase.getReference().child("users").child(contentDTOS.get(position).uid).child("userClass").addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                            int userClass = Integer.parseInt(dataSnapshot.getValue().toString());
-                            if (userClass >= 0 && userClass < 50) {
-                                ((PostViewHolder3)holder).imageView_userClass.setImageResource(R.drawable.q_class_red_1);
-                            } else if (userClass >= 50 && userClass < 100) {
-                                ((PostViewHolder3)holder).imageView_userClass.setImageResource(R.drawable.q_class_red_2);
-                            } else if (userClass >= 100 && userClass < 150) {
-                                ((PostViewHolder3)holder).imageView_userClass.setImageResource(R.drawable.q_class_orange_1);
-                            } else if (userClass >= 150 && userClass < 200) {
-                                ((PostViewHolder3)holder).imageView_userClass.setImageResource(R.drawable.q_class_orange_2);
-                            } else if (userClass >= 200 && userClass < 250) {
-                                ((PostViewHolder3)holder).imageView_userClass.setImageResource(R.drawable.q_class_yellow_1);
-                            } else if (userClass >= 250 && userClass < 300) {
-                                ((PostViewHolder3)holder).imageView_userClass.setImageResource(R.drawable.q_class_yellow_2);
-                            } else if (userClass >= 300 && userClass < 350) {
-                                ((PostViewHolder3)holder).imageView_userClass.setImageResource(R.drawable.q_class_green_1);
-                            } else if (userClass >= 350 && userClass < 400) {
-                                ((PostViewHolder3)holder).imageView_userClass.setImageResource(R.drawable.q_class_green_2);
-                            } else if (userClass >= 400 && userClass < 450) {
-                                ((PostViewHolder3)holder).imageView_userClass.setImageResource(R.drawable.q_class_blue_1);
-                            } else if (userClass >= 450 && userClass < 501) {
-                                ((PostViewHolder3)holder).imageView_userClass.setImageResource(R.drawable.q_class_blue_2);
-                            } else if (userClass == 1000) {
-                                ((PostViewHolder3)holder).imageView_userClass.setImageResource(R.drawable.q_class_black);
-                            } else {
-                                ((PostViewHolder3)holder).imageView_userClass.setImageResource(R.drawable.q_class_red_1);
+                            try {
+                                int userClass = Integer.parseInt(dataSnapshot.getValue().toString());
+                                if (userClass >= 0 && userClass < 50) {
+                                    ((PostViewHolder3)holder).imageView_userClass.setImageResource(R.drawable.q_class_red_1);
+                                } else if (userClass >= 50 && userClass < 100) {
+                                    ((PostViewHolder3)holder).imageView_userClass.setImageResource(R.drawable.q_class_red_2);
+                                } else if (userClass >= 100 && userClass < 150) {
+                                    ((PostViewHolder3)holder).imageView_userClass.setImageResource(R.drawable.q_class_orange_1);
+                                } else if (userClass >= 150 && userClass < 200) {
+                                    ((PostViewHolder3)holder).imageView_userClass.setImageResource(R.drawable.q_class_orange_2);
+                                } else if (userClass >= 200 && userClass < 250) {
+                                    ((PostViewHolder3)holder).imageView_userClass.setImageResource(R.drawable.q_class_yellow_1);
+                                } else if (userClass >= 250 && userClass < 300) {
+                                    ((PostViewHolder3)holder).imageView_userClass.setImageResource(R.drawable.q_class_yellow_2);
+                                } else if (userClass >= 300 && userClass < 350) {
+                                    ((PostViewHolder3)holder).imageView_userClass.setImageResource(R.drawable.q_class_green_1);
+                                } else if (userClass >= 350 && userClass < 400) {
+                                    ((PostViewHolder3)holder).imageView_userClass.setImageResource(R.drawable.q_class_green_2);
+                                } else if (userClass >= 400 && userClass < 450) {
+                                    ((PostViewHolder3)holder).imageView_userClass.setImageResource(R.drawable.q_class_blue_1);
+                                } else if (userClass >= 450 && userClass < 501) {
+                                    ((PostViewHolder3)holder).imageView_userClass.setImageResource(R.drawable.q_class_blue_2);
+                                } else if (userClass == 1000) {
+                                    ((PostViewHolder3)holder).imageView_userClass.setImageResource(R.drawable.q_class_black);
+                                } else {
+                                    ((PostViewHolder3)holder).imageView_userClass.setImageResource(R.drawable.q_class_red_1);
+                                }
+                            } catch (Exception e) {
+                                ((PostViewHolder3)holder).imageView_userClass.setImageResource(R.drawable.q_class_null);
                             }
+
                         }
                         @Override
                         public void onCancelled(@NonNull DatabaseError databaseError) {
@@ -985,6 +996,7 @@ public class PostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 //        });
 //        return 0;
 //    }
+
 
 
     private void onLikeClicked(final DatabaseReference postRef) {

@@ -1,8 +1,12 @@
 package com.n4u1.AQA.AQA.views;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.AppCompatCheckBox;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -18,7 +22,11 @@ import com.n4u1.AQA.AQA.dialog.NotEmailDialog;
 import com.n4u1.AQA.AQA.dialog.NotGenderDialog;
 import com.n4u1.AQA.AQA.dialog.NotIdlDialog;
 import com.n4u1.AQA.AQA.dialog.NullEmailDialog;
+import com.n4u1.AQA.AQA.dialog.PrivacyPolicyActivity;
+import com.n4u1.AQA.AQA.dialog.PrivacyPolicyDoneDialog;
+import com.n4u1.AQA.AQA.dialog.ServicePolicyDoneDialog;
 import com.n4u1.AQA.AQA.dialog.ShortIdDialog;
+import com.n4u1.AQA.AQA.splash.LoadingDialog;
 import com.n4u1.AQA.AQA.splash.SplashCreateUserActivity;
 
 import java.text.SimpleDateFormat;
@@ -31,11 +39,14 @@ public class CreateUserAGActivity extends AppCompatActivity
         CreateUserAgeDialog.CreateUserAgeDialogListener {
 
     EditText createUserAG_editText_age, createUserAG_editText_gender;
-    TextView createUserAG_textView_start;
+    TextView createUserAG_textView_start, createUser_ag_textView_servicePolicy, createUser_ag_textView_privacy_policy;
     ImageView createUserAG_imageView_back;
     String email, password, gender, userId;
+    AppCompatCheckBox createUser_ag_checkBox_servicePolicy, createUser_ag_checkBox_privacyPolicy;
     int age;
 
+
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,6 +61,11 @@ public class CreateUserAGActivity extends AppCompatActivity
         createUserAG_textView_start = findViewById(R.id.createUserAG_textView_start);
         createUserAG_editText_gender = findViewById(R.id.createUserAG_editText_gender);
         createUserAG_editText_age = findViewById(R.id.createUserAG_editText_age);
+        createUser_ag_textView_privacy_policy = findViewById(R.id.createUser_ag_textView_privacy_policy);
+        createUser_ag_textView_servicePolicy = findViewById(R.id.createUser_ag_textView_servicePolicy);
+        createUser_ag_checkBox_privacyPolicy = findViewById(R.id.createUser_ag_checkBox_privacyPolicy);
+        createUser_ag_checkBox_servicePolicy = findViewById(R.id.createUser_ag_checkBox_servicePolicy);
+
 
         //뒤로가기
         createUserAG_imageView_back.setOnClickListener(new View.OnClickListener() {
@@ -84,6 +100,39 @@ public class CreateUserAGActivity extends AppCompatActivity
             }
         });
 
+        //이용약관 보기
+        createUser_ag_textView_servicePolicy.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (MotionEvent.ACTION_DOWN == event.getAction()) {
+                    createUser_ag_textView_servicePolicy.setTextColor(0xFF88B6E7);
+                }
+                if (MotionEvent.ACTION_UP == event.getAction()) {
+                    createUser_ag_textView_servicePolicy.setTextColor(0xff4485c9);
+                    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://lkj840211.wixsite.com/aqacompany/servicepolicy"));
+                    startActivity(intent);
+                }
+                return true;
+            }
+        });
+
+        //개인정보처리방침 보기
+        createUser_ag_textView_privacy_policy.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (MotionEvent.ACTION_DOWN == event.getAction()) {
+                    createUser_ag_textView_privacy_policy.setTextColor(0xFF88B6E7);
+                }
+                if (MotionEvent.ACTION_UP == event.getAction()) {
+                    createUser_ag_textView_privacy_policy.setTextColor(0xff4485c9);
+                    Intent intent = new Intent(CreateUserAGActivity.this, PrivacyPolicyActivity.class);
+                    startActivity(intent);
+                }
+                return true;
+            }
+        });
+
+
 
         //시작하기
         createUserAG_textView_start.setOnClickListener(new View.OnClickListener() {
@@ -117,6 +166,17 @@ public class CreateUserAGActivity extends AppCompatActivity
         if (createUserAG_editText_gender.getText().toString().isEmpty()) {
             NotGenderDialog notGenderDialog = new NotGenderDialog();
             notGenderDialog.show(getSupportFragmentManager(), "notGenderDialog");
+            return false;
+        }
+        if (!createUser_ag_checkBox_privacyPolicy.isChecked()) {
+            PrivacyPolicyDoneDialog privacyPolicyDoneDialog = new PrivacyPolicyDoneDialog();
+            privacyPolicyDoneDialog.show(getSupportFragmentManager(), "privacyPolicyDoneDialog");
+
+            return false;
+        }
+        if (!createUser_ag_checkBox_servicePolicy.isChecked()) {
+            ServicePolicyDoneDialog servicePolicyDoneDialog = new ServicePolicyDoneDialog();
+            servicePolicyDoneDialog.show(getSupportFragmentManager(), "servicePolicyDoneDialog");
             return false;
         }
         return true;

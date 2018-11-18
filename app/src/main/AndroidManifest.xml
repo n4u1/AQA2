@@ -7,6 +7,7 @@
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
 
     <!-- INTENT-FILTER 넣어야함 ??? -->
     <application
@@ -113,8 +114,10 @@
         <activity android:name=".views.CreateUserIdActivity" />
         <activity android:name=".views.CreateUserAGActivity" />
         <activity android:name=".splash.SplashGuidActivity" />
-        <activity android:name=".dialog.PollSingleChoiceActivity"
-            android:theme="@style/Theme.DialogFragmentActivity"></activity>
+        <activity
+            android:name=".dialog.PollSingleChoiceActivity"
+            android:theme="@style/Theme.DialogFragmentActivity" />
+        <activity android:name=".splash.LoadingDialog"></activity>
     </application>
 
 </manifest>

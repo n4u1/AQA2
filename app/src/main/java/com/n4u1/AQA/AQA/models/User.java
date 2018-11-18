@@ -12,12 +12,13 @@ public class User {
     private String pickContent;
     private int age, userClass;
     private String search_flag_category, search_flag_title;
+    private String pollInitInfo;
 
     public Map<String, Boolean> likeContent = new HashMap<>();
 
     public User () {    }
 
-    public User(String tmpImgUrl_0, String tmpImgUrl_1, String tmpImgUrl_2, String tmpImgUrl_3, String tmpImgUrl_4, String tmpImgUrl_5, String tmpImgUrl_6, String tmpImgUrl_7, String tmpImgUrl_8, String tmpImgUrl_9, String deviceName, String sex, String job, String uid, String email, String userId, String pickContent, int age, String search_flag_category, String search_flag_title, Map<String, Boolean> likeContent) {
+    public User(String tmpImgUrl_0, String tmpImgUrl_1, String tmpImgUrl_2, String tmpImgUrl_3, String tmpImgUrl_4, String tmpImgUrl_5, String tmpImgUrl_6, String tmpImgUrl_7, String tmpImgUrl_8, String tmpImgUrl_9, String deviceName, String sex, String job, String uid, String email, String userId, String guid, String pickContent, int age, int userClass, String search_flag_category, String search_flag_title, String pollInitInfo, Map<String, Boolean> likeContent) {
         this.tmpImgUrl_0 = tmpImgUrl_0;
         this.tmpImgUrl_1 = tmpImgUrl_1;
         this.tmpImgUrl_2 = tmpImgUrl_2;
@@ -34,10 +35,13 @@ public class User {
         this.uid = uid;
         this.email = email;
         this.userId = userId;
+        this.guid = guid;
         this.pickContent = pickContent;
         this.age = age;
+        this.userClass = userClass;
         this.search_flag_category = search_flag_category;
         this.search_flag_title = search_flag_title;
+        this.pollInitInfo = pollInitInfo;
         this.likeContent = likeContent;
     }
 
@@ -47,7 +51,7 @@ public class User {
         result.put("email", email);
         result.put("uid", uid);
         result.put("guid", guid);
-        result.put("userclass", userClass);
+        result.put("userClass", userClass);
         result.put("userId", userId);
         result.put("likeContent", likeContent);
         result.put("sex", sex);
@@ -55,8 +59,17 @@ public class User {
         result.put("job", job);
         result.put("search_flag_category", search_flag_category);
         result.put("search_flag_title", search_flag_title);
+        result.put("pollInitInfo", pollInitInfo);
 
         return result;
+    }
+
+    public String getPollInitInfo() {
+        return pollInitInfo;
+    }
+
+    public void setPollInitInfo(String pollInitInfo) {
+        this.pollInitInfo = pollInitInfo;
     }
 
     public String getGuid() {

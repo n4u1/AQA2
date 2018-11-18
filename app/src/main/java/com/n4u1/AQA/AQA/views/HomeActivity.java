@@ -185,7 +185,7 @@ public class HomeActivity extends AppCompatActivity implements SwipeRefreshLayou
 
 
         //실시간 투표순위 5개
-        //fadingTextview init
+        //fadingTextView init
         String[] tempString = {" ", "1", "2", "3", "4"};
         fadingTextView.setTimeout(4, TimeUnit.SECONDS);
         if (!BuildConfig.DEBUG) {
@@ -243,7 +243,7 @@ public class HomeActivity extends AppCompatActivity implements SwipeRefreshLayou
 //                259200000 = 259200 = 3일
 //                1909600000 = 1909600 = 22일2시간
                 for (int i = 0; i < dataSnapshot.getChildrenCount(); i++) {
-                    if (issueLong.get(i) > issueDate_ - 1909600000) {
+                    if (issueLong.get(i) > issueDate_ - 1999699999) {
                         filterIssueDate.add(String.valueOf(issueLong.get(i)));
                         filteringCount++;
                     }

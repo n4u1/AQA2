@@ -53,7 +53,6 @@ public class SplashLoadingActivity extends AppCompatActivity implements GUIDFail
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             try {
-
                                 Log.d("lkj current uid", mAuth.getCurrentUser().getUid());
                                 GUIDAsyncTask guidAsyncTask = new GUIDAsyncTask();
                                 guidAsyncTask.execute();

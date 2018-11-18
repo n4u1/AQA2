@@ -108,7 +108,7 @@
     <TextView
         android:id="@+id/textView_preview"
         android:layout_width="wrap_content"
-        android:layout_height="17dp"
+        android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
         android:text="둘러보기"
         android:textColor="#4485c9"
@@ -120,7 +120,7 @@
     <TextView
         android:id="@+id/textView_servicePolicy"
         android:layout_width="wrap_content"
-        android:layout_height="17dp"
+        android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:text="이용약관"
         android:textColor="#4485c9"

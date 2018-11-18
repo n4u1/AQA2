@@ -14,7 +14,6 @@ android {
         renderscriptSupportModeEnabled true
 
 
-
     }
     buildTypes {
         release {

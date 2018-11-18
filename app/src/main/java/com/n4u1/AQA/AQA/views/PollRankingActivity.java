@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.ColorDrawable;
+import android.media.audiofx.AudioEffect;
 import android.os.AsyncTask;
 import android.renderscript.Allocation;
 import android.renderscript.Element;
@@ -300,11 +301,21 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
 //        loginUser(spUserEmail, spUserPassword);
 
 
-        //최초 알림 다이얼로그 - 투표버튼 위치 확인 다이얼로그
+        //처음사용자 Q 버튼 알려주기
         firebaseDatabase.getReference().child("users").child(auth.getCurrentUser().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                Map<String, Object> user = (Map<String, Object>) dataSnapshot.getValue();
+                try {
+                    Map<String, Object> user = (Map<String, Object>) dataSnapshot.getValue();
+                    String flag = String.valueOf(user.get("pollInitInfo"));
+                    Log.d("lkj flag", flag);
+                    if (flag.equals("true")) {
+
+                    }
+                } catch (Exception e) {
+
+                }
+
             }
 
             @Override
@@ -871,30 +882,35 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
         firebaseDatabase.getReference().child("users").child(userId).child("userClass").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                int userClass = Integer.parseInt(dataSnapshot.getValue().toString());
-                if (userClass >= 0 && userClass < 50) {
-                    pollActivity_imageView_userClass.setImageResource(R.drawable.q_class_red_1);
-                } else if (userClass >= 50 && userClass < 100) {
-                    pollActivity_imageView_userClass.setImageResource(R.drawable.q_class_red_2);
-                } else if (userClass >= 100 && userClass < 150) {
-                    pollActivity_imageView_userClass.setImageResource(R.drawable.q_class_orange_1);
-                } else if (userClass >= 150 && userClass < 200) {
-                    pollActivity_imageView_userClass.setImageResource(R.drawable.q_class_orange_2);
-                } else if (userClass >= 200 && userClass < 250) {
-                    pollActivity_imageView_userClass.setImageResource(R.drawable.q_class_yellow_1);
-                } else if (userClass >= 250 && userClass < 300) {
-                    pollActivity_imageView_userClass.setImageResource(R.drawable.q_class_yellow_2);
-                } else if (userClass >= 300 && userClass < 350) {
-                    pollActivity_imageView_userClass.setImageResource(R.drawable.q_class_green_1);
-                } else if (userClass >= 350 && userClass < 400) {
-                    pollActivity_imageView_userClass.setImageResource(R.drawable.q_class_green_2);
-                } else if (userClass >= 400 && userClass < 450) {
-                    pollActivity_imageView_userClass.setImageResource(R.drawable.q_class_blue_1);
-                } else if (userClass >= 450 && userClass < 501) {
-                    pollActivity_imageView_userClass.setImageResource(R.drawable.q_class_blue_2);
-                } else if (userClass == 1000) {
-                    pollActivity_imageView_userClass.setImageResource(R.drawable.q_class_black);
+                try {
+                    int userClass = Integer.parseInt(dataSnapshot.getValue().toString());
+                    if (userClass >= 0 && userClass < 50) {
+                        pollActivity_imageView_userClass.setImageResource(R.drawable.q_class_red_1);
+                    } else if (userClass >= 50 && userClass < 100) {
+                        pollActivity_imageView_userClass.setImageResource(R.drawable.q_class_red_2);
+                    } else if (userClass >= 100 && userClass < 150) {
+                        pollActivity_imageView_userClass.setImageResource(R.drawable.q_class_orange_1);
+                    } else if (userClass >= 150 && userClass < 200) {
+                        pollActivity_imageView_userClass.setImageResource(R.drawable.q_class_orange_2);
+                    } else if (userClass >= 200 && userClass < 250) {
+                        pollActivity_imageView_userClass.setImageResource(R.drawable.q_class_yellow_1);
+                    } else if (userClass >= 250 && userClass < 300) {
+                        pollActivity_imageView_userClass.setImageResource(R.drawable.q_class_yellow_2);
+                    } else if (userClass >= 300 && userClass < 350) {
+                        pollActivity_imageView_userClass.setImageResource(R.drawable.q_class_green_1);
+                    } else if (userClass >= 350 && userClass < 400) {
+                        pollActivity_imageView_userClass.setImageResource(R.drawable.q_class_green_2);
+                    } else if (userClass >= 400 && userClass < 450) {
+                        pollActivity_imageView_userClass.setImageResource(R.drawable.q_class_blue_1);
+                    } else if (userClass >= 450 && userClass < 501) {
+                        pollActivity_imageView_userClass.setImageResource(R.drawable.q_class_blue_2);
+                    } else if (userClass == 1000) {
+                        pollActivity_imageView_userClass.setImageResource(R.drawable.q_class_black);
+                    }
+                } catch (Exception e) {
+                    pollActivity_imageView_userClass.setImageResource(R.drawable.q_class_null);
                 }
+
             }
 
             @Override

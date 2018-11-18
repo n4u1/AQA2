@@ -198,6 +198,18 @@ public class MineActivity extends AppCompatActivity implements LogOutDialog.LogO
             }
         });
 
+
+
+        //Q포인트 점수 알아보기
+        mineActivity_linearLayout_userClass.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MineActivity.this, UserClassInfoActivity.class);
+                startActivity(intent);
+            }
+        });
+
+
         //공지사항
         mineActivity_linearLayout_notice.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -215,16 +227,6 @@ public class MineActivity extends AppCompatActivity implements LogOutDialog.LogO
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(MineActivity.this, AqaIsActivity.class);
-                startActivity(intent);
-            }
-        });
-
-
-        //Q포인트 점수 알아보기
-        mineActivity_linearLayout_userClass.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(MineActivity.this, UserClassInfoActivity.class);
                 startActivity(intent);
             }
         });

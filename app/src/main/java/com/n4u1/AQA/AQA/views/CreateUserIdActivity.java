@@ -28,6 +28,7 @@ import com.n4u1.AQA.AQA.dialog.NotGenderDialog;
 import com.n4u1.AQA.AQA.dialog.NotIdlDialog;
 import com.n4u1.AQA.AQA.dialog.NullEmailDialog;
 import com.n4u1.AQA.AQA.dialog.ShortIdDialog;
+import com.n4u1.AQA.AQA.splash.LoadingDialog;
 
 import java.util.Iterator;
 import java.util.Map;
@@ -51,7 +52,7 @@ public class CreateUserIdActivity extends AppCompatActivity {
 
         email = getIntent().getStringExtra("email");
         pw = getIntent().getStringExtra("pw");
-
+        final LoadingDialog loadingDialog = new LoadingDialog(CreateUserIdActivity.this);
         mRef = FirebaseDatabase.getInstance().getReference();
         createUserId_textView_next = findViewById(R.id.createUserId_textView_next);
         createUserId_imageView_back = findViewById(R.id.createUserId_imageView_back);
@@ -70,6 +71,7 @@ public class CreateUserIdActivity extends AppCompatActivity {
                 if (MotionEvent.ACTION_UP == event.getAction()) {
                     createUserId_textView_next.setTextColor(0xff4485c9);
                     if (checkingId()) {
+                        loadingDialog.show();
                         mRef.child("users").addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -79,12 +81,15 @@ public class CreateUserIdActivity extends AppCompatActivity {
                                     String userId = String.valueOf(user.get("userId"));
                                     if (userId.equals(createUserId_editText_id.getText().toString())) {
                                         CURRENT_ID_CHECK_FLAG = false;
+                                        loadingDialog.dismiss();
                                         LiveIdDialog liveIdDialog = new LiveIdDialog();
                                         liveIdDialog.show(getSupportFragmentManager(), "liveIdDialog");
                                     }
                                 }
+                                loadingDialog.dismiss();
                                 //모두 이상없으면 다음으로 이동
                                 if (CURRENT_ID_CHECK_FLAG) {
+                                    loadingDialog.dismiss();
                                     Intent intent = new Intent(CreateUserIdActivity.this, CreateUserAGActivity.class);
                                     intent.putExtra("email", email);
                                     intent.putExtra("pw", pw);
@@ -130,7 +135,7 @@ public class CreateUserIdActivity extends AppCompatActivity {
             return false;
         }
 
-        if (createUserId_editText_id.getText().toString().length() < 4) {
+        if (createUserId_editText_id.getText().toString().length() < 3) {
             ShortIdDialog shortIdDialog = new ShortIdDialog();
             shortIdDialog.show(getSupportFragmentManager(), "shortIdDialog");
             return false;

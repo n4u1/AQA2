@@ -79,28 +79,33 @@ public class SuggestAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         mDatabase.getReference().child("users").child(suggestDTOS.get(i).uid).child("userClass").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                int userClass = Integer.parseInt(dataSnapshot.getValue().toString());
-                if (userClass >= 0 && userClass < 50) {
-                    ((SuggestViewHolder) viewHolder).imageView_userClass.setImageResource(R.drawable.q_class_red_1);
-                } else if (userClass >= 50 && userClass < 100) {
-                    ((SuggestViewHolder) viewHolder).imageView_userClass.setImageResource(R.drawable.q_class_red_2);
-                } else if (userClass >= 100 && userClass < 150) {
-                    ((SuggestViewHolder) viewHolder).imageView_userClass.setImageResource(R.drawable.q_class_orange_1);
-                } else if (userClass >= 150 && userClass < 200) {
-                    ((SuggestViewHolder) viewHolder).imageView_userClass.setImageResource(R.drawable.q_class_orange_2);
-                } else if (userClass >= 200 && userClass < 250) {
-                    ((SuggestViewHolder) viewHolder).imageView_userClass.setImageResource(R.drawable.q_class_yellow_1);
-                } else if (userClass >= 250 && userClass < 300) {
-                    ((SuggestViewHolder) viewHolder).imageView_userClass.setImageResource(R.drawable.q_class_yellow_2);
-                } else if (userClass >= 300 && userClass < 350) {
-                    ((SuggestViewHolder) viewHolder).imageView_userClass.setImageResource(R.drawable.q_class_green_1);
-                } else if (userClass >= 350 && userClass < 400) {
-                    ((SuggestViewHolder) viewHolder).imageView_userClass.setImageResource(R.drawable.q_class_green_2);
-                } else if (userClass >= 400 && userClass < 450) {
-                    ((SuggestViewHolder) viewHolder).imageView_userClass.setImageResource(R.drawable.q_class_blue_1);
-                } else if (userClass >= 450 && userClass < 501) {
-                    ((SuggestViewHolder) viewHolder).imageView_userClass.setImageResource(R.drawable.q_class_blue_2);
+                try {
+                    int userClass = Integer.parseInt(dataSnapshot.getValue().toString());
+                    if (userClass >= 0 && userClass < 50) {
+                        ((SuggestViewHolder) viewHolder).imageView_userClass.setImageResource(R.drawable.q_class_red_1);
+                    } else if (userClass >= 50 && userClass < 100) {
+                        ((SuggestViewHolder) viewHolder).imageView_userClass.setImageResource(R.drawable.q_class_red_2);
+                    } else if (userClass >= 100 && userClass < 150) {
+                        ((SuggestViewHolder) viewHolder).imageView_userClass.setImageResource(R.drawable.q_class_orange_1);
+                    } else if (userClass >= 150 && userClass < 200) {
+                        ((SuggestViewHolder) viewHolder).imageView_userClass.setImageResource(R.drawable.q_class_orange_2);
+                    } else if (userClass >= 200 && userClass < 250) {
+                        ((SuggestViewHolder) viewHolder).imageView_userClass.setImageResource(R.drawable.q_class_yellow_1);
+                    } else if (userClass >= 250 && userClass < 300) {
+                        ((SuggestViewHolder) viewHolder).imageView_userClass.setImageResource(R.drawable.q_class_yellow_2);
+                    } else if (userClass >= 300 && userClass < 350) {
+                        ((SuggestViewHolder) viewHolder).imageView_userClass.setImageResource(R.drawable.q_class_green_1);
+                    } else if (userClass >= 350 && userClass < 400) {
+                        ((SuggestViewHolder) viewHolder).imageView_userClass.setImageResource(R.drawable.q_class_green_2);
+                    } else if (userClass >= 400 && userClass < 450) {
+                        ((SuggestViewHolder) viewHolder).imageView_userClass.setImageResource(R.drawable.q_class_blue_1);
+                    } else if (userClass >= 450 && userClass < 501) {
+                        ((SuggestViewHolder) viewHolder).imageView_userClass.setImageResource(R.drawable.q_class_blue_2);
+                    }
+                } catch (Exception e) {
+                    ((SuggestViewHolder) viewHolder).imageView_userClass.setImageResource(R.drawable.q_class_null);
                 }
+
             }
 
             @Override
