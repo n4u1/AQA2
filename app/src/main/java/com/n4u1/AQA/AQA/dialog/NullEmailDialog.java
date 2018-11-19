@@ -39,11 +39,7 @@ public class NullEmailDialog extends DialogFragment {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setPositiveButton("확인", null)
-                .setItems(R.array.NullEmail, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                    }
-                });
+                .setMessage("이메일을 입력해주세요.\n이메일은 공개되지 않습니다.\n이벤트, 로그인, 개인정보 변경에만 사용 됩니다.");
         return builder.create();
     }
 }

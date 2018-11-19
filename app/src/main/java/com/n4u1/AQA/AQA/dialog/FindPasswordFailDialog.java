@@ -39,11 +39,10 @@ public class FindPasswordFailDialog extends DialogFragment {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setPositiveButton("확인", null)
-                .setItems(R.array.FindPasswordFail, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                    }
-                });
+                .setMessage("메일 전송에 실패했습니다.\n" +
+                        "가입시 등록한 이메일이 맞는지 확인 해주시기 바랍니다.\n" +
+                        "확인되지 않으면 lkj8402111@gmail.com으로 문의해주세요.");
+
         return builder.create();
     }
 }

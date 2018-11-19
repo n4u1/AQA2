@@ -4,6 +4,7 @@ package com.n4u1.AQA.AQA.views;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.drawable.ColorDrawable;
 import android.media.audiofx.AudioEffect;
@@ -51,6 +52,7 @@ import com.n4u1.AQA.AQA.dialog.AlarmDoneDialog;
 import com.n4u1.AQA.AQA.dialog.ContentDeleteDialog;
 import com.n4u1.AQA.AQA.dialog.DeleteModificationActivity;
 import com.n4u1.AQA.AQA.dialog.PollButtonInfoDialog;
+import com.n4u1.AQA.AQA.dialog.PollInitInfoDialog;
 import com.n4u1.AQA.AQA.dialog.PollResultAnonymousDialog;
 import com.n4u1.AQA.AQA.dialog.PollResultRankingDialog;
 import com.n4u1.AQA.AQA.dialog.PollRankingChoiceActivity;
@@ -302,27 +304,40 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
 
 
         //처음사용자 Q 버튼 알려주기
-        firebaseDatabase.getReference().child("users").child(auth.getCurrentUser().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                try {
-                    Map<String, Object> user = (Map<String, Object>) dataSnapshot.getValue();
-                    String flag = String.valueOf(user.get("pollInitInfo"));
-                    Log.d("lkj flag", flag);
-                    if (flag.equals("true")) {
+        if (user.isAnonymous()) {
+            SharedPreferences pref = getSharedPreferences("com.n4u1.AQA", MODE_PRIVATE);
+            String previewer = pref.getString("com.n4u1.AQA.previewer", null);
+            if (previewer.equals("previewerFirst")) {
+                SharedPreferences.Editor editor = pref.edit();
+                editor.putString("com.n4u1.AQA.previewer", "previewer");
+                editor.commit();
+                PollInitInfoDialog pollInitInfoDialog = new PollInitInfoDialog();
+                pollInitInfoDialog.show(getSupportFragmentManager(), "pollInitInfoDialog");
+            }
+        } else {
+            firebaseDatabase.getReference().child("users").child(auth.getCurrentUser().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    try {
+                        Map<String, Object> user = (Map<String, Object>) dataSnapshot.getValue();
+                        String flag = String.valueOf(user.get("pollInitInfo"));
+                        Log.d("lkj flag", flag);
+                        if (flag.equals("true")) {
+                            PollInitInfoDialog pollInitInfoDialog = new PollInitInfoDialog();
+                            pollInitInfoDialog.show(getSupportFragmentManager(), "pollInitInfoDialog");
+                            firebaseDatabase.getReference().child("users").child(auth.getCurrentUser().getUid()).child("pollInitInfo").setValue("false");
+                        }
+                    } catch (Exception e) {
 
                     }
-                } catch (Exception e) {
+                }
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
 
                 }
+            });
+        }
 
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
 
 
         //알람설정 클릭
@@ -483,6 +498,7 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
             }
         });
 
+
         //댓글 등록 버튼 색 변경
         pollActivity_editText_reply.addTextChangedListener(new TextWatcher() {
             @Override
@@ -504,6 +520,7 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
                 }
             }
         });
+
 
 
         //댓글 펼치기
@@ -607,6 +624,7 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
 
             }
         });
+
 
 
         //따봉버튼 클릭리스너,  좋아요(따봉) 이미지 클릭

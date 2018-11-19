@@ -307,10 +307,12 @@
         android:layout_marginStart="4dp"
         android:layout_marginBottom="132dp"
         android:text="a"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
     <Button
+        android:visibility="gone"
         android:id="@+id/buttonb"
         android:layout_width="54dp"
         android:layout_height="39dp"
@@ -320,6 +322,7 @@
         app:layout_constraintTop_toBottomOf="@+id/buttona" />
 
     <Button
+        android:visibility="gone"
         android:id="@+id/buttonc"
         android:layout_width="54dp"
         android:layout_height="39dp"
@@ -329,6 +332,7 @@
         app:layout_constraintTop_toBottomOf="@+id/buttonb" />
 
     <Button
+        android:visibility="gone"
         android:id="@+id/buttond"
         android:layout_width="54dp"
         android:layout_height="39dp"
@@ -338,6 +342,7 @@
         app:layout_constraintTop_toBottomOf="@+id/buttonc" />
 
     <Button
+        android:visibility="gone"
         android:id="@+id/buttonl"
         android:layout_width="54dp"
         android:layout_height="39dp"

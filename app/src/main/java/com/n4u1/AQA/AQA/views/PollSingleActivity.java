@@ -4,6 +4,7 @@ package com.n4u1.AQA.AQA.views;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.renderscript.Allocation;
@@ -44,6 +45,7 @@ import com.n4u1.AQA.AQA.R;
 import com.n4u1.AQA.AQA.dialog.AlarmDoneDialog;
 import com.n4u1.AQA.AQA.dialog.ContentDeleteDialog;
 import com.n4u1.AQA.AQA.dialog.DeleteModificationActivity;
+import com.n4u1.AQA.AQA.dialog.PollInitInfoDialog;
 import com.n4u1.AQA.AQA.dialog.PollResultAnonymousDialog;
 import com.n4u1.AQA.AQA.dialog.PollResultDialog;
 import com.n4u1.AQA.AQA.dialog.PollSingleChoiceActivity;
@@ -163,7 +165,7 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
         Log.d("lkj noti", contentKey);
 
         mDatabaseReference = FirebaseDatabase.getInstance().getReference("user_contents").child(contentKey);
-        mDatabaseReferenceInitAlarm = FirebaseDatabase.getInstance().getReference("users").child(auth.getCurrentUser().getUid());
+        mDatabaseReferenceInitAlarm = FirebaseDatabase.getInstance().getReference("users");
         mDatabaseReferencePicker = FirebaseDatabase.getInstance().getReference("users");
         auth = FirebaseAuth.getInstance();
         firebaseDatabase = FirebaseDatabase.getInstance();
@@ -278,26 +280,41 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
 
 
         //처음사용자 Q 버튼 알려주기
-        mDatabaseReferenceInitAlarm.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                try {
-                    Map<String, Object> user = (Map<String, Object>) dataSnapshot.getValue();
-                    String flag = String.valueOf(user.get("pollInitInfo"));
-                    Log.d("lkj flag", flag);
-                    if (flag.equals("true")) {
+        if (user.isAnonymous()) {
+            SharedPreferences pref = getSharedPreferences("com.n4u1.AQA", MODE_PRIVATE);
+            String previewer = pref.getString("com.n4u1.AQA.previewer", null);
+            if (previewer.equals("previewerFirst")) {
+                SharedPreferences.Editor editor = pref.edit();
+                editor.putString("com.n4u1.AQA.previewer", "previewer");
+                editor.commit();
+                PollInitInfoDialog pollInitInfoDialog = new PollInitInfoDialog();
+                pollInitInfoDialog.show(getSupportFragmentManager(), "pollInitInfoDialog");
+            }
+        } else {
+            mDatabaseReferenceInitAlarm.child(user.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    try {
+                        Map<String, Object> user = (Map<String, Object>) dataSnapshot.getValue();
+                        String flag = String.valueOf(user.get("pollInitInfo"));
+                        Log.d("lkj flag", flag);
+                        if (flag.equals("true")) {
+                            PollInitInfoDialog pollInitInfoDialog = new PollInitInfoDialog();
+                            pollInitInfoDialog.show(getSupportFragmentManager(), "pollInitInfoDialog");
+                            mDatabaseReferenceInitAlarm.child(auth.getCurrentUser().getUid()).child("pollInitInfo").setValue("false");
+                        }
+                    } catch (Exception e) {
 
                     }
-                } catch (Exception e) {
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
 
                 }
-            }
+            });
+        }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
 
 
         //알람설정 클릭
@@ -736,6 +753,11 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
                             pollActivity_imageView_userAddContent_3.setVisibility(View.VISIBLE);
                             pollActivity_imageView_userAddContent_4.setVisibility(View.VISIBLE);
                             pollActivity_imageView_userAddContent_5.setVisibility(View.VISIBLE);
+//                            GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_0()).override(300,300).centerCrop().thumbnail(Glide.with(getApplicationContext()).load(R.drawable.loadingicon)).centerInside().into(pollActivity_imageView_userAddContent_1).getView();
+//                            GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_1()).override(300,300).centerCrop().thumbnail(Glide.with(getApplicationContext()).load(R.drawable.loadingicon)).centerInside().into(pollActivity_imageView_userAddContent_2).getView();
+//                            GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_2()).override(300,300).centerCrop().thumbnail(Glide.with(getApplicationContext()).load(R.drawable.loadingicon)).centerInside().into(pollActivity_imageView_userAddContent_3).getView();
+//                            GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_3()).override(300,300).centerCrop().thumbnail(Glide.with(getApplicationContext()).load(R.drawable.loadingicon)).centerInside().into(pollActivity_imageView_userAddContent_4).getView();
+//                            GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_4()).override(300,300).centerCrop().thumbnail(Glide.with(getApplicationContext()).load(R.drawable.loadingicon)).centerInside().into(pollActivity_imageView_userAddContent_5).getView();
                             GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_0()).centerCrop().thumbnail(Glide.with(getApplicationContext()).load(R.drawable.loadingicon)).into(pollActivity_imageView_userAddContent_1).getView();
                             GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_1()).centerCrop().thumbnail(Glide.with(getApplicationContext()).load(R.drawable.loadingicon)).into(pollActivity_imageView_userAddContent_2).getView();
                             GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_2()).centerCrop().thumbnail(Glide.with(getApplicationContext()).load(R.drawable.loadingicon)).into(pollActivity_imageView_userAddContent_3).getView();

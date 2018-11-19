@@ -39,11 +39,7 @@ public class LiveEmailDialog extends DialogFragment {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setPositiveButton("확인", null)
-                .setItems(R.array.LiveEmail, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                    }
-                });
+                .setMessage("사용중인 이메일 입니다.");
         return builder.create();
     }
 }

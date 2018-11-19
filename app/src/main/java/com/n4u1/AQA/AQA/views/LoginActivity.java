@@ -280,6 +280,12 @@ public class LoginActivity extends AppCompatActivity implements PreviewDialog.Pr
     @Override
     public void PreviewDialogCallback(String string) {
         if (string.equals("확인")) {
+
+            SharedPreferences pref = getSharedPreferences("com.n4u1.AQA", MODE_PRIVATE);
+            String spUserEmail = pref.getString("com.n4u1.AQA.fireBaseUserEmail", null);
+            String spUserPassword = pref.getString("com.n4u1.AQA.fireBaseUserPassword", null);
+
+
             Intent intent = new Intent(LoginActivity.this, SplashGuidActivity.class);
             intent.putExtra("userLoginFlag", "preView");
             startActivity(intent);

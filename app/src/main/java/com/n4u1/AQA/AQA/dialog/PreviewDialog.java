@@ -63,8 +63,7 @@ public class PreviewDialog extends DialogFragment {
                 mListener.PreviewDialogCallback("확인");
 
             }
-        }).setMessage("여러분들의 소중한 개인정보가 모여 도출된 투표 결과는 확인하실 수가 없습니다.\n" +
-                "그외.. 투표 게시하기, 투표 하기, 댓글 달기, 알람설정 하기 등 도 제한됩니다.");
+        }).setMessage("여러분들의 소중한 개인정보가 모여 도출된 투표 결과 외 여러기능은 확인하실 수가 없습니다.\n");
         builder.setNeutralButton("취 소", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {

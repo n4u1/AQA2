@@ -39,11 +39,7 @@ public class AgainPasswordDialog extends DialogFragment {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setPositiveButton("확인", null)
-                .setItems(R.array.AgainPassword, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                    }
-                });
+                .setMessage("비밀번호는 6자 이상입니다.");
         return builder.create();
     }
 }

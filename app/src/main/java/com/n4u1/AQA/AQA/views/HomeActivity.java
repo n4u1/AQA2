@@ -173,8 +173,10 @@ public class HomeActivity extends AppCompatActivity implements SwipeRefreshLayou
             }
         });
 
+
         //노티 백그라운드 자동 실행
         backgroundNotify();
+
 
         //광고넣기
         AdRequest adRequest = new AdRequest.Builder()
@@ -342,6 +344,7 @@ public class HomeActivity extends AppCompatActivity implements SwipeRefreshLayou
                             Intent intent = new Intent(getApplicationContext(), PollRankingActivity.class);
                             Bundle bundle = new Bundle();
                             bundle.putString("contentKey", issueContentDTOS.get(i).contentKey);
+                            bundle.putString("previewerGuid", getIntent().getStringExtra("guid"));
                             bundle.putInt("itemViewType", issueContentDTOS.get(i).itemViewType);
                             bundle.putInt("contentHit", issueContentDTOS.get(i).contentHit);
                             intent.putExtras(bundle);
@@ -351,6 +354,7 @@ public class HomeActivity extends AppCompatActivity implements SwipeRefreshLayou
                             Intent intent = new Intent(getApplicationContext(), PollSingleActivity.class);
                             Bundle bundle = new Bundle();
                             bundle.putString("contentKey", issueContentDTOS.get(i).contentKey);
+                            bundle.putString("previewerGuid", getIntent().getStringExtra("guid"));
                             bundle.putInt("itemViewType", issueContentDTOS.get(i).itemViewType);
                             bundle.putInt("contentHit", issueContentDTOS.get(i).contentHit);
                             intent.putExtras(bundle);

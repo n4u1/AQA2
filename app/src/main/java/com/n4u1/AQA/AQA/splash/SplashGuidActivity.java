@@ -1,6 +1,7 @@
 package com.n4u1.AQA.AQA.splash;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -47,7 +48,6 @@ public class SplashGuidActivity extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
-
                     GUIDAsyncTask guidAsyncTask = new GUIDAsyncTask();
                     guidAsyncTask.execute();
 
@@ -102,9 +102,15 @@ public class SplashGuidActivity extends AppCompatActivity {
                     onBackPressed();
                 } else {
                     try {
+                        SharedPreferences pref = getSharedPreferences("com.n4u1.AQA", MODE_PRIVATE);
+                        SharedPreferences.Editor editor = pref.edit();
+                        editor.putString("com.n4u1.AQA.previewer", "previewerFirst");
+                        editor.commit();
+
                         previewerMap.put(advertId, previewerValue);
                         mDatabaseReference.child("previewerGuid").child(advertId).setValue(previewerMap);
                         Intent intent = new Intent(SplashGuidActivity.this, HomeActivity.class);
+                        intent.putExtra("guid", advertId);
                         SplashGuidActivity.this.finish();
                         startActivity(intent);
 

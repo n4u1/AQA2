@@ -39,11 +39,7 @@ public class ShortIdDialog extends DialogFragment {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setPositiveButton("확인", null)
-                .setItems(R.array.ShortEmail, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                    }
-                });
+                .setMessage("아이디는 영소문자와 숫자, 3~10 글자 사이로 입력해주세요.");
         return builder.create();
     }
 }

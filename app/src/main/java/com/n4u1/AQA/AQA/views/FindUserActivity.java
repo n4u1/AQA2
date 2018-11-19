@@ -17,6 +17,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.n4u1.AQA.AQA.R;
 import com.n4u1.AQA.AQA.dialog.FindPasswordFailDialog;
 import com.n4u1.AQA.AQA.dialog.NotEmailDialog;
+import com.n4u1.AQA.AQA.dialog.NotInputDialog;
 import com.n4u1.AQA.AQA.dialog.NullEmailDialog;
 
 import java.util.regex.Matcher;
@@ -41,8 +42,10 @@ public class FindUserActivity extends AppCompatActivity {
             public void onClick(View v) {
                 String inputUserEmail = findUser_editText_email.getText().toString();
                 if (inputUserEmail.equals("")) {
-                    NullEmailDialog nullEmailDialog = new NullEmailDialog();
-                    nullEmailDialog.show(getSupportFragmentManager(), "nullEmailDialog");
+//                    NullEmailDialog nullEmailDialog = new NullEmailDialog();
+//                    nullEmailDialog.show(getSupportFragmentManager(), "nullEmailDialog");
+                    NotInputDialog notInputDialog = new NotInputDialog();
+                    notInputDialog.show(getSupportFragmentManager(), "notInputDialog");
                 } else {
                     if (checkEmail(inputUserEmail)) {
                         FirebaseAuth auth = FirebaseAuth.getInstance();

@@ -10,8 +10,8 @@ import android.support.v7.app.AlertDialog;
 
 import com.n4u1.AQA.AQA.R;
 
-public class LiveIdDialog extends DialogFragment {
-    public LiveIdDialog() {
+public class PollInitInfoDialog extends DialogFragment {
+    public PollInitInfoDialog() {
     }
 
 
@@ -39,7 +39,7 @@ public class LiveIdDialog extends DialogFragment {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setPositiveButton("확인", null)
-                .setMessage("아이디가 이미 존재합니다.");
+                .setMessage("사진을 선택하신후에 Q버튼으로 투표하고 결과를 확인할 수 있습니다.");
         return builder.create();
     }
 }

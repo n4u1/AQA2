@@ -24,7 +24,7 @@ public class SignOutDialog extends DialogFragment {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 //        builder.setTitle("사용해주셔서 감사합니다.");
-        builder.setMessage("힝...");
+        builder.setMessage("탈퇴 하시겠어요?");
         builder.setPositiveButton("탈퇴하기", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {

@@ -39,11 +39,7 @@ public class NotGenderDialog extends DialogFragment {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setPositiveButton("확인", null)
-                .setItems(R.array.NotGender, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                    }
-                });
+                .setMessage("성별을 입력해주세요.\n나이와 성별은 투표 통계 외에는 사용하지 않습니다.");
         return builder.create();
     }
 }
