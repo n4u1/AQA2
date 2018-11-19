@@ -7,7 +7,7 @@
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
 
     <!-- INTENT-FILTER 넣어야함 ??? -->
     <application
@@ -26,14 +26,10 @@
         <meta-data
             android:name="com.google.android.gms.ads.AD_MANAGER_APP"
             android:value="true" />
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_icon"
+            android:resource="@drawable/aqacustom2" />
 
-        <activity android:name=".splash.SplashActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
 
         <provider
             android:name="android.support.v4.content.FileProvider"
@@ -45,9 +41,6 @@
                 android:resource="@xml/filepaths" />
         </provider>
 
-        <meta-data
-            android:name="com.google.firebase.messaging.default_notification_icon"
-            android:resource="@drawable/aqacustom2" />
 
         <service
             android:name=".util.NotificationJobService"
@@ -58,6 +51,13 @@
             </intent-filter>
         </service>
 
+<!--////////////////////////////////////////activity/////////////////////////////////////////-->
+        <activity android:name=".splash.SplashActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity android:name=".views.LoginActivity" />
         <activity android:name=".dialog.BaseLoadingActivity" />
         <activity android:name=".views.HomeActivity" />
@@ -67,8 +67,44 @@
             android:label="@string/title_activity_file_choice"
             android:theme="@style/AppTheme" />
         <activity android:name=".views.TestActivity" />
-        <activity android:name=".views.PollRankingActivity" />
-        <activity android:name=".views.PollSingleActivity" />
+        <activity android:name=".views.PollRankingActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="aqaapp" android:host="aqa_ranking_deeplink"/>
+                <data android:scheme="http" android:host="yoursite.com" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:scheme="https"
+                    android:host="yoursite.com" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".views.PollSingleActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="aqaapp" android:host="aqas_ingleg_deeplink"/>
+                <data android:scheme="http" android:host="yoursite.com" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:scheme="https"
+                    android:host="yoursite.com" />
+            </intent-filter>
+        </activity>
         <activity android:name=".views.CreateUserActivity" />
         <activity
             android:name=".dialog.PollRankingChoiceActivity"
@@ -117,7 +153,8 @@
         <activity
             android:name=".dialog.PollSingleChoiceActivity"
             android:theme="@style/Theme.DialogFragmentActivity" />
-        <activity android:name=".splash.LoadingDialog"></activity>
+<!--////////////////////////////////////////activity/////////////////////////////////////////-->
+
     </application>
 
 </manifest>

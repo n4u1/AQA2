@@ -147,8 +147,10 @@ public class NotificationJobService extends JobService {
         builder.setSmallIcon(R.mipmap.ic_q_custom);
         builder.setContentTitle(title);
         builder.setContentText(hitCount + "분께서 투표하셨어요!");
-        PendingIntent pendingIntent;
 
+        PendingIntent pendingIntent;
+        String urlRanking = "aqaapp://aqa_ranking_deeplink";
+        String urlSingle = "aqaapp://aqas_ingleg_deeplink";
         int requestID = (int) System.currentTimeMillis();
 
         Log.d("lkj hitCount", String.valueOf(hitCount));
@@ -158,7 +160,7 @@ public class NotificationJobService extends JobService {
         Log.d("lkj itemViewType", String.valueOf(itemViewType));
 
         if (mode.equals("순위 투표")) {
-            Intent intentRanking = new Intent(getApplicationContext(), PollRankingActivity.class);
+            Intent intentRanking = new Intent(Intent.ACTION_VIEW, Uri.parse(urlRanking));
             TaskStackBuilder stackBuilder = TaskStackBuilder.create(getApplicationContext());
             stackBuilder.addParentStack(HomeActivity.class);
             stackBuilder.addNextIntent(intentRanking);
@@ -170,7 +172,7 @@ public class NotificationJobService extends JobService {
             pendingIntent = stackBuilder.getPendingIntent(requestID, PendingIntent.FLAG_UPDATE_CURRENT);
 
         } else {
-            Intent intentSingle = new Intent(getApplicationContext(), PollSingleActivity.class);
+            Intent intentSingle = new Intent(Intent.ACTION_VIEW, Uri.parse(urlSingle));
             TaskStackBuilder stackBuilder = TaskStackBuilder.create(getApplicationContext());
             stackBuilder.addParentStack(HomeActivity.class);
             stackBuilder.addNextIntent(intentSingle);
