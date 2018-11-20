@@ -1,7 +1,6 @@
 package com.n4u1.AQA.AQA.admin;
 
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -10,24 +9,20 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.n4u1.AQA.AQA.R;
-import com.n4u1.AQA.AQA.models.User;
 
-import java.lang.reflect.Array;
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Map;
 
 public class AdminUserActivity extends AppCompatActivity {
 
     TextView admin_textView_userId, admin_textView_age, admin_textView_email,
-            admin_textView_gender, admin_textView_guid, admin_textView_qpoint, admin_textView_uid;
+            admin_textView_gender, admin_textView_guid, admin_textView_qPoint, admin_textView_uid;
     EditText admin_editText_email, admin_editText_id;
     Button admin_button_email, admin_button_id;
     DatabaseReference mDatabaseReference;
@@ -50,7 +45,7 @@ public class AdminUserActivity extends AppCompatActivity {
         admin_textView_email = findViewById(R.id.admin_textView_email);
         admin_textView_gender = findViewById(R.id.admin_textView_gender);
         admin_textView_guid = findViewById(R.id.admin_textView_guid);
-        admin_textView_qpoint = findViewById(R.id.admin_textView_qpoint);
+        admin_textView_qPoint = findViewById(R.id.admin_textView_qpoint);
         admin_textView_uid = findViewById(R.id.admin_textView_uid);
 
 
@@ -75,7 +70,7 @@ public class AdminUserActivity extends AppCompatActivity {
                                         admin_textView_guid.setText(String.valueOf(userMapTemp.get("guid")));
                                         admin_textView_gender.setText(String.valueOf(userMapTemp.get("sex")));
                                         admin_textView_uid.setText(String.valueOf(userMapTemp.get("uid")));
-                                        admin_textView_qpoint.setText(String.valueOf(userMapTemp.get("userClass")));
+                                        admin_textView_qPoint.setText(String.valueOf(userMapTemp.get("userClass")));
                                     }
 
                                     @Override
@@ -119,7 +114,7 @@ public class AdminUserActivity extends AppCompatActivity {
                                         admin_textView_guid.setText(String.valueOf(userMapTemp.get("guid")));
                                         admin_textView_gender.setText(String.valueOf(userMapTemp.get("sex")));
                                         admin_textView_uid.setText(String.valueOf(userMapTemp.get("uid")));
-                                        admin_textView_qpoint.setText(String.valueOf(userMapTemp.get("userClass")));
+                                        admin_textView_qPoint.setText(String.valueOf(userMapTemp.get("userClass")));
                                     }
 
                                     @Override

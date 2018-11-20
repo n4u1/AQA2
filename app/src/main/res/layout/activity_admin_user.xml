@@ -62,6 +62,7 @@
         android:layout_marginTop="24dp"
         android:layout_marginEnd="8dp"
         android:text="EMAIL"
+        android:textSize="24dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.4"
         app:layout_constraintStart_toStartOf="parent"
@@ -69,6 +70,7 @@
 
     <TextView
         android:text="Age"
+        android:textSize="24dp"
         android:id="@+id/admin_textView_age"
         android:layout_width="169dp"
         android:layout_height="wrap_content"
@@ -83,6 +85,7 @@
 
     <TextView
         android:text="Gender"
+        android:textSize="24dp"
         android:id="@+id/admin_textView_gender"
         android:layout_width="169dp"
         android:layout_height="wrap_content"
@@ -94,6 +97,7 @@
 
     <TextView
         android:text="ID"
+        android:textSize="24dp"
         android:id="@+id/admin_textView_userId"
         android:layout_width="169dp"
         android:layout_height="wrap_content"
@@ -108,6 +112,7 @@
 
     <TextView
         android:text="qPoint"
+        android:textSize="24dp"
         android:id="@+id/admin_textView_qpoint"
         android:layout_width="169dp"
         android:layout_height="wrap_content"
