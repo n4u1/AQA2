@@ -1,41 +1,23 @@
 package com.n4u1.AQA.AQA.views;
 
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.media.RingtoneManager;
 import android.net.Uri;
-import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.SwitchCompat;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.firebase.jobdispatcher.FirebaseJobDispatcher;
-import com.firebase.jobdispatcher.GooglePlayDriver;
-import com.firebase.jobdispatcher.Job;
-import com.firebase.jobdispatcher.Lifetime;
-import com.firebase.jobdispatcher.RetryStrategy;
-import com.firebase.jobdispatcher.Trigger;
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdView;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.n4u1.AQA.AQA.R;
@@ -46,16 +28,13 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.n4u1.AQA.AQA.admin.AdminContentsActivity;
+import com.n4u1.AQA.AQA.admin.AdminEtcActivity;
+import com.n4u1.AQA.AQA.admin.AdminUserActivity;
 import com.n4u1.AQA.AQA.dialog.FindEmailDialog;
-import com.n4u1.AQA.AQA.dialog.PrivacyPolicyActivity;
 import com.n4u1.AQA.AQA.dialog.SignOutDialog;
 import com.n4u1.AQA.AQA.dialog.LogOutDialog;
-import com.n4u1.AQA.AQA.models.ContentDTO;
-import com.n4u1.AQA.AQA.util.NotificationJobService;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 
 public class MineActivity extends AppCompatActivity implements LogOutDialog.LogOutDialogListener,
@@ -63,10 +42,12 @@ public class MineActivity extends AppCompatActivity implements LogOutDialog.LogO
 
     FirebaseUser mFireBaseUser;
     DatabaseReference mDatabaseReference;
+    DatabaseReference mDatabaseReferenceAdmin;
 
     DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
     FirebaseUser mUser = FirebaseAuth.getInstance().getCurrentUser();
 
+    String adminAuthId = null;
 
 
     @Override
@@ -86,6 +67,7 @@ public class MineActivity extends AppCompatActivity implements LogOutDialog.LogO
 
         mFireBaseUser = FirebaseAuth.getInstance().getCurrentUser();
         mDatabaseReference = FirebaseDatabase.getInstance().getReference("users").child(mFireBaseUser.getUid());
+        mDatabaseReferenceAdmin = FirebaseDatabase.getInstance().getReference("adminAuth").child("1");
 
 //        AdView adView = findViewById(R.id.adView);
         final TextView mineActivity_textView_id = findViewById(R.id.mineActivity_textView_id);
@@ -111,13 +93,74 @@ public class MineActivity extends AppCompatActivity implements LogOutDialog.LogO
         LinearLayout mineActivity_linearLayout_password = findViewById(R.id.mineActivity_linearLayout_password);
 
 
-        //adView
-//        AdRequest adRequest = new AdRequest.Builder()
-////                .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)        // All emulators
-//                .addTestDevice("C39C4F095E193D0C5E7BBCB91B89B469")  // Galaxy Nexus-4 device ID
-//
-//                .build();
-//        adView.loadAd(adRequest);
+        //admin LinearLayout
+        final LinearLayout mineActivity_linearLayout_adminEtc = findViewById(R.id.mineActivity_linearLayout_adminEtc);
+        final LinearLayout mineActivity_linearLayout_adminContents = findViewById(R.id.mineActivity_linearLayout_adminContents);
+        final LinearLayout mineActivity_linearLayout_adminUser = findViewById(R.id.mineActivity_linearLayout_adminUser);
+
+
+
+
+        //admin 페이지 활성화
+        mDatabaseReferenceAdmin.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (int i = 0; i < dataSnapshot.getChildrenCount(); i++) {
+                    Map<String, Boolean> adminMap = (Map<String, Boolean>) dataSnapshot.getValue();
+                    adminAuthId = adminMap.keySet().toString();
+                }
+                mDatabaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        try {
+                            Map<String, Object> users = (Map<String, Object>) dataSnapshot.getValue();
+                            if (adminAuthId.contains(String.valueOf(users.get("userId")))) {
+                                mineActivity_linearLayout_adminUser.setVisibility(View.VISIBLE);
+                                mineActivity_linearLayout_adminContents.setVisibility(View.VISIBLE);
+                                mineActivity_linearLayout_adminEtc.setVisibility(View.VISIBLE);
+                            }
+                        } catch (Exception e) {
+
+                        }
+
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+        mineActivity_linearLayout_adminUser.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MineActivity.this, AdminUserActivity.class);
+                startActivity(intent);
+            }
+        });
+        mineActivity_linearLayout_adminContents.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MineActivity.this, AdminContentsActivity.class);
+                startActivity(intent);
+            }
+        });
+        mineActivity_linearLayout_adminEtc.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MineActivity.this, AdminEtcActivity.class);
+                startActivity(intent);
+            }
+        });
+
+
+
 
         //이메일 가져오기
         mineActivity_textView_account.setText(mFireBaseUser.getEmail());

@@ -30,7 +30,6 @@
             android:name="com.google.firebase.messaging.default_notification_icon"
             android:resource="@drawable/aqacustom2" />
 
-
         <provider
             android:name="android.support.v4.content.FileProvider"
             android:authorities="com.n4u1.AQA.AQA.fileprovider"
@@ -41,7 +40,6 @@
                 android:resource="@xml/filepaths" />
         </provider>
 
-
         <service
             android:name=".util.NotificationJobService"
             android:enabled="true"
@@ -51,10 +49,11 @@
             </intent-filter>
         </service>
 
-<!--////////////////////////////////////////activity/////////////////////////////////////////-->
+        <!-- ////////////////////////////////////////activity///////////////////////////////////////// -->
         <activity android:name=".splash.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -70,10 +69,16 @@
         <activity android:name=".views.PollRankingActivity">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-                <data android:scheme="aqaapp" android:host="aqa_ranking_deeplink"/>
-                <data android:scheme="http" android:host="yoursite.com" />
+
+                <data
+                    android:host="aqa_ranking_deeplink"
+                    android:scheme="aqaapp" />
+                <data
+                    android:host="yoursite.com"
+                    android:scheme="http" />
             </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -82,17 +87,23 @@
                 <category android:name="android.intent.category.BROWSABLE" />
 
                 <data
-                    android:scheme="https"
-                    android:host="yoursite.com" />
+                    android:host="yoursite.com"
+                    android:scheme="https" />
             </intent-filter>
         </activity>
         <activity android:name=".views.PollSingleActivity">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-                <data android:scheme="aqaapp" android:host="aqas_ingleg_deeplink"/>
-                <data android:scheme="http" android:host="yoursite.com" />
+
+                <data
+                    android:host="aqas_ingleg_deeplink"
+                    android:scheme="aqaapp" />
+                <data
+                    android:host="yoursite.com"
+                    android:scheme="http" />
             </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -101,8 +112,8 @@
                 <category android:name="android.intent.category.BROWSABLE" />
 
                 <data
-                    android:scheme="https"
-                    android:host="yoursite.com" />
+                    android:host="yoursite.com"
+                    android:scheme="https" />
             </intent-filter>
         </activity>
         <activity android:name=".views.CreateUserActivity" />
@@ -153,8 +164,11 @@
         <activity
             android:name=".dialog.PollSingleChoiceActivity"
             android:theme="@style/Theme.DialogFragmentActivity" />
-<!--////////////////////////////////////////activity/////////////////////////////////////////-->
+        <!-- ////////////////////////////////////////activity///////////////////////////////////////// -->
 
+        <activity android:name=".admin.AdminUserActivity" />
+        <activity android:name=".admin.AdminContentsActivity" />
+        <activity android:name=".admin.AdminEtcActivity"></activity>
     </application>
 
 </manifest>

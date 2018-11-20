@@ -132,7 +132,7 @@ public class SuggestDetailActivity extends AppCompatActivity {
                                         }
 //                                Collections.reverse(replyDTOTemp);
                                         replyDTOS.addAll(replyDTOTemp);
-//                                int temp = replyDTOS.size() - position - 1;
+//                                int adminAuthId = replyDTOS.size() - position - 1;
                                         String replyKey = replyDTOTemp.get(position).getReplyKey();
 
                                         //수정하기, 선택하기 액티비티(다이얼로그)띄우기
