@@ -8,6 +8,7 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.drawable.ColorDrawable;
 import android.media.audiofx.AudioEffect;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.renderscript.Allocation;
 import android.renderscript.Element;
@@ -16,6 +17,7 @@ import android.renderscript.ScriptIntrinsicBlur;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -30,6 +32,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -42,11 +45,18 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.transition.Transition;
+import com.google.android.gms.common.util.VisibleForTesting;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.dynamiclinks.DynamicLink;
+import com.google.firebase.dynamiclinks.FirebaseDynamicLinks;
+import com.google.firebase.dynamiclinks.PendingDynamicLinkData;
+import com.google.firebase.dynamiclinks.ShortDynamicLink;
 import com.n4u1.AQA.AQA.R;
 import com.n4u1.AQA.AQA.dialog.AlarmDoneDialog;
 import com.n4u1.AQA.AQA.dialog.ContentDeleteDialog;
@@ -86,6 +96,10 @@ import jp.wasabeef.glide.transformations.BlurTransformation;
 
 public class PollRankingActivity extends AppCompatActivity implements View.OnClickListener,
         ContentDeleteDialog.ContentDeleteDialogListener, PollButtonInfoDialog.PollButtonInfoDialogListener {
+
+
+    private static final String TAG = "lkj_DeepLink";
+    private static final String DEEP_LINK_URL = "aqapoll.page.link";
 
     private boolean ACTIVITY_REPLY_FLAG;
     private boolean ACTIVITY_BESTREPLY_FLAG;
@@ -293,6 +307,67 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
         pollActivity_textView_check_8.setOnClickListener(this);
         pollActivity_textView_check_9.setOnClickListener(this);
         pollActivity_textView_check_10.setOnClickListener(this);
+
+
+
+
+        // Validate that the developer has set the app code.
+        validateAppCode();
+
+        // Create a deep link and display it in the UI
+        final Uri deepLink = buildDeepLink(Uri.parse(DEEP_LINK_URL), 0);
+//        ((TextView) findViewById(R.id.linkViewSend)).setText(deepLink.toString());
+        Log.d("lkj deep link test1", deepLink.toString());
+
+        // Share button click listener
+        findViewById(R.id.buttonShare).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                shareDeepLink(deepLink.toString());
+            }
+        });
+        // [END_EXCLUDE]
+
+        // [START get_deep_link]
+        FirebaseDynamicLinks.getInstance()
+                .getDynamicLink(getIntent())
+                .addOnSuccessListener(this, new OnSuccessListener<PendingDynamicLinkData>() {
+                    @Override
+                    public void onSuccess(PendingDynamicLinkData pendingDynamicLinkData) {
+                        // Get deep link from result (may be null if no link is found)
+                        Uri deepLink = null;
+                        if (pendingDynamicLinkData != null) {
+                            deepLink = pendingDynamicLinkData.getLink();
+                        }
+
+
+                        // Handle the deep link. For example, open the linked
+                        // content, or apply promotional credit to the user's
+                        // account.
+                        // ...
+
+                        // [START_EXCLUDE]
+                        // Display deep link in the UI
+                        if (deepLink != null) {
+                            Snackbar.make(findViewById(android.R.id.content),
+                                    "Found deep link!", Snackbar.LENGTH_LONG).show();
+
+                            Log.d("lkj deep link test2", deepLink.toString());
+//                            ((TextView) findViewById(R.id.linkViewReceive))
+//                                    .setText(deepLink.toString());
+                        } else {
+                            Log.d(TAG, "getDynamicLink: no link found");
+                        }
+                        // [END_EXCLUDE]
+                    }
+                })
+                .addOnFailureListener(this, new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w(TAG, "getDynamicLink:onFailure", e);
+                    }
+                });
+        // [END get_deep_link]
 
 
 //        SharedPreferences pref = getSharedPreferences("com.n4u1.AQA", MODE_PRIVATE);
@@ -3154,6 +3229,50 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
         }
     }
 
+    @VisibleForTesting
+    public Uri buildDeepLink(@NonNull Uri deepLink, int minVersion) {
+        String uriPrefix = getString(R.string.dynamic_links_uri_prefix);
+
+        // Set dynamic link parameters:
+        //  * URI prefix (required)
+        //  * Android Parameters (required)
+        //  * Deep link
+        // [START build_dynamic_link]
+        DynamicLink.Builder builder = FirebaseDynamicLinks.getInstance()
+                .createDynamicLink()
+                .setDomainUriPrefix(uriPrefix)
+                .setAndroidParameters(new DynamicLink.AndroidParameters.Builder()
+                        .setMinimumVersion(minVersion)
+                        .build())
+                .setLink(deepLink);
+
+        // Build the dynamic link
+        DynamicLink link = builder.buildDynamicLink();
+        // [END build_dynamic_link]
+
+        // Return the dynamic link as a URI
+        return link.getUri();
+    }
+
+    private void shareDeepLink(String deepLink) {
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.setType("text/plain");
+        intent.putExtra(Intent.EXTRA_SUBJECT, "Firebase Deep Link");
+        intent.putExtra(Intent.EXTRA_TEXT,deepLink);
+
+        startActivity(intent);
+    }
+
+    private void validateAppCode() {
+        String uriPrefix = getString(R.string.dynamic_links_uri_prefix);
+        if (uriPrefix.contains("com.n4u1.AQA.AQA")) {
+            new AlertDialog.Builder(this)
+                    .setTitle("Invalid Configuration")
+                    .setMessage("Please set your Dynamic Links domain in app/build.gradle")
+                    .setPositiveButton(android.R.string.ok, null)
+                    .create().show();
+        }
+    }
 
 
 

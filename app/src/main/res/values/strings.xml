@@ -7,6 +7,7 @@
     <!--real-->
     <!--<string name="banner_ad_unit_id_">ca-app-pub-1854873514128645/3569596301</string>-->
 
+    <string name="dynamic_links_uri_prefix">aqapoll.page.link</string>
 
     <string-array name="contentType">
         <item>단일 투표 </item>
