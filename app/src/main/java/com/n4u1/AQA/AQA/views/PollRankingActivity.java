@@ -98,9 +98,6 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
         ContentDeleteDialog.ContentDeleteDialogListener, PollButtonInfoDialog.PollButtonInfoDialogListener {
 
 
-    private static final String TAG = "lkj_DeepLink";
-    private static final String DEEP_LINK_URL = "aqapoll.page.link";
-
     private boolean ACTIVITY_REPLY_FLAG;
     private boolean ACTIVITY_BESTREPLY_FLAG;
     private int pickCandidate = 0;
@@ -309,65 +306,100 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
         pollActivity_textView_check_10.setOnClickListener(this);
 
 
+//        DynamicLink dynamicLink = FirebaseDynamicLinks.getInstance().createDynamicLink()
+//                .setLink(Uri.parse("https://aqa_ranking_deeplink"))
+//                .setDomainUriPrefix("aqapoll.page.link/HVFx")
+//                // Open links with this app on Android
+//                .setAndroidParameters(new DynamicLink.AndroidParameters.Builder().build())
+//                // Open links with com.example.ios on iOS
+//                //.setIosParameters(new DynamicLink.IosParameters.Builder("com.example.ios").build())
+//                .buildDynamicLink();
+//
+//        final Uri dynamicLinkUri = dynamicLink.getUri();
 
 
-        // Validate that the developer has set the app code.
-        validateAppCode();
 
-        // Create a deep link and display it in the UI
-        final Uri deepLink = buildDeepLink(Uri.parse(DEEP_LINK_URL), 0);
-//        ((TextView) findViewById(R.id.linkViewSend)).setText(deepLink.toString());
-        Log.d("lkj deep link test1", deepLink.toString());
+//        Log.d("lkj dynamicLinkUri", dynamicLinkUri.toString());
+//        final Task<ShortDynamicLink> shortLinkTask = FirebaseDynamicLinks.getInstance().createDynamicLink()
+//                .setLink(Uri.parse("https://aqa_ranking_deeplink"))
+//
+//                .setDomainUriPrefix("aqapoll.page.link/HVFx")
+//                // Set parameters
+//                // ...
+//
+//                .setAndroidParameters(new DynamicLink.AndroidParameters.Builder().build())
+//                .buildShortDynamicLink()
+//                .addOnCompleteListener(this, new OnCompleteListener<ShortDynamicLink>() {
+//                    @Override
+//                    public void onComplete(@NonNull Task<ShortDynamicLink> task) {
+//                        if (task.isSuccessful()) {
+//                            // Short link created
+//                            Uri shortLink = task.getResult().getShortLink();
+//                            Uri flowchartLink = task.getResult().getPreviewLink();
+//                            Log.d("lkj shortLink", shortLink.toString());
+//                            Log.d("lkj flowchartLink", flowchartLink.toString());
+//                        } else {
+//                            Log.d("lkj flowchartLink", "ERRRRRRRRRRRRRRR");
+//                            // Error
+//                            // ...
+//                        }
+//                    }
+//                });
 
-        // Share button click listener
-        findViewById(R.id.buttonShare).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                shareDeepLink(deepLink.toString());
-            }
-        });
-        // [END_EXCLUDE]
 
-        // [START get_deep_link]
-        FirebaseDynamicLinks.getInstance()
-                .getDynamicLink(getIntent())
-                .addOnSuccessListener(this, new OnSuccessListener<PendingDynamicLinkData>() {
+
+
+
+
+
+
+
+
+
+
+
+
+
+        final Task<ShortDynamicLink> shortLinkTask = FirebaseDynamicLinks.getInstance().createDynamicLink()
+                .setLink(Uri.parse("https://aqa_ranking_deeplink"))
+                .setDomainUriPrefix("aqapoll.page.link/HVFx")
+                .setAndroidParameters(new DynamicLink.AndroidParameters.Builder().build())
+                // Set parameters
+                // ...
+                .buildShortDynamicLink()
+                .addOnCompleteListener(this, new OnCompleteListener<ShortDynamicLink>() {
                     @Override
-                    public void onSuccess(PendingDynamicLinkData pendingDynamicLinkData) {
-                        // Get deep link from result (may be null if no link is found)
-                        Uri deepLink = null;
-                        if (pendingDynamicLinkData != null) {
-                            deepLink = pendingDynamicLinkData.getLink();
-                        }
-
-
-                        // Handle the deep link. For example, open the linked
-                        // content, or apply promotional credit to the user's
-                        // account.
-                        // ...
-
-                        // [START_EXCLUDE]
-                        // Display deep link in the UI
-                        if (deepLink != null) {
-                            Snackbar.make(findViewById(android.R.id.content),
-                                    "Found deep link!", Snackbar.LENGTH_LONG).show();
-
-                            Log.d("lkj deep link test2", deepLink.toString());
-//                            ((TextView) findViewById(R.id.linkViewReceive))
-//                                    .setText(deepLink.toString());
+                    public void onComplete(@NonNull Task<ShortDynamicLink> task) {
+                        if (task.isSuccessful()) {
+                            // Short link created
+                            Uri shortLink = task.getResult().getShortLink();
+                            Uri flowchartLink = task.getResult().getPreviewLink();
                         } else {
-                            Log.d(TAG, "getDynamicLink: no link found");
+                            Log.d("lkj shortLink", "ERRRRRRRR");
+                            // Error
+                            // ...
                         }
-                        // [END_EXCLUDE]
-                    }
-                })
-                .addOnFailureListener(this, new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.w(TAG, "getDynamicLink:onFailure", e);
                     }
                 });
-        // [END get_deep_link]
+
+
+
+        findViewById(R.id.buttonShare).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Log.d("lkj shortLink", shortLinkTask.getResult().getShortLink().toString());
+                Log.d("lkj flowchartLink", shortLinkTask.getResult().getPreviewLink().toString());
+//                Log.d("lkj dynamicLinkUri", dynamicLinkUri.toString());
+            }
+        });
+
+
+
+
+//
+//        String shortLink = shortLinkTask.getResult().getShortLink().toString();
+//        Log.d("lkj shortLink22", shortLink.toString());
 
 
 //        SharedPreferences pref = getSharedPreferences("com.n4u1.AQA", MODE_PRIVATE);
@@ -406,13 +438,13 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
 
                     }
                 }
+
                 @Override
                 public void onCancelled(@NonNull DatabaseError databaseError) {
 
                 }
             });
         }
-
 
 
         //알람설정 클릭
@@ -597,7 +629,6 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
         });
 
 
-
         //댓글 펼치기
         pollActivity_relativeLayout_reply.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -699,7 +730,6 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
 
             }
         });
-
 
 
         //따봉버튼 클릭리스너,  좋아요(따봉) 이미지 클릭
@@ -810,10 +840,6 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
                         pollActivity_textView_state.setText(picked + 1 + "번에 1위 투표 하셧습니다.");
                     }
                 }
-
-
-
-
 
 
                 if (contentDTO.likes.containsKey(auth.getCurrentUser().getUid())) {
@@ -950,7 +976,6 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
                         GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_9()).centerCrop().thumbnail(Glide.with(getApplicationContext()).load(R.drawable.loadingicon)).into(pollActivity_imageView_userAddContent_10).getView();
                         break;
                 }
-
 
 
                 //비트맵 만들고 blur효과 이후에 캐시에 저장
@@ -3228,52 +3253,6 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
             return null;
         }
     }
-
-    @VisibleForTesting
-    public Uri buildDeepLink(@NonNull Uri deepLink, int minVersion) {
-        String uriPrefix = getString(R.string.dynamic_links_uri_prefix);
-
-        // Set dynamic link parameters:
-        //  * URI prefix (required)
-        //  * Android Parameters (required)
-        //  * Deep link
-        // [START build_dynamic_link]
-        DynamicLink.Builder builder = FirebaseDynamicLinks.getInstance()
-                .createDynamicLink()
-                .setDomainUriPrefix(uriPrefix)
-                .setAndroidParameters(new DynamicLink.AndroidParameters.Builder()
-                        .setMinimumVersion(minVersion)
-                        .build())
-                .setLink(deepLink);
-
-        // Build the dynamic link
-        DynamicLink link = builder.buildDynamicLink();
-        // [END build_dynamic_link]
-
-        // Return the dynamic link as a URI
-        return link.getUri();
-    }
-
-    private void shareDeepLink(String deepLink) {
-        Intent intent = new Intent(Intent.ACTION_SEND);
-        intent.setType("text/plain");
-        intent.putExtra(Intent.EXTRA_SUBJECT, "Firebase Deep Link");
-        intent.putExtra(Intent.EXTRA_TEXT,deepLink);
-
-        startActivity(intent);
-    }
-
-    private void validateAppCode() {
-        String uriPrefix = getString(R.string.dynamic_links_uri_prefix);
-        if (uriPrefix.contains("com.n4u1.AQA.AQA")) {
-            new AlertDialog.Builder(this)
-                    .setTitle("Invalid Configuration")
-                    .setMessage("Please set your Dynamic Links domain in app/build.gradle")
-                    .setPositiveButton(android.R.string.ok, null)
-                    .create().show();
-        }
-    }
-
 
 
     @Override
