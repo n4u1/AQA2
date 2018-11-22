@@ -721,19 +721,19 @@ public class HomeActivity extends AppCompatActivity implements SwipeRefreshLayou
 
 
 //                    AQA이미지 공유기능
-                    String type = "image/*";
-                    Bitmap shareBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.aqacustom2);
-                    File outputFile = new File(getApplicationContext().getCacheDir(), "AQA" + ".png");
-                    FileOutputStream outPutStream = new FileOutputStream(outputFile);
-                    shareBitmap.compress(Bitmap.CompressFormat.PNG, 100, outPutStream);
-                    outPutStream.flush();
-                    outPutStream.close();
-                    outputFile.setReadable(true, false);
-                    Uri outputUri = FileProvider.getUriForFile(getApplicationContext(), "com.n4u1.AQA.AQA.fileprovider", outputFile);
-                    Intent share = new Intent(Intent.ACTION_SEND);
-                    share.putExtra(Intent.EXTRA_STREAM, outputUri);
-                    share.setType(type);
-                    startActivity(Intent.createChooser(share, "공유하기"));
+//                    String type = "image/*";
+//                    Bitmap shareBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.aqacustom2);
+//                    File outputFile = new File(getApplicationContext().getCacheDir(), "AQA" + ".png");
+//                    FileOutputStream outPutStream = new FileOutputStream(outputFile);
+//                    shareBitmap.compress(Bitmap.CompressFormat.PNG, 100, outPutStream);
+//                    outPutStream.flush();
+//                    outPutStream.close();
+//                    outputFile.setReadable(true, false);
+//                    Uri outputUri = FileProvider.getUriForFile(getApplicationContext(), "com.n4u1.AQA.AQA.fileprovider", outputFile);
+//                    Intent share = new Intent(Intent.ACTION_SEND);
+//                    share.putExtra(Intent.EXTRA_STREAM, outputUri);
+//                    share.setType(type);
+//                    startActivity(Intent.createChooser(share, "공유하기"));
 
                 } catch (Exception e) {
                     Toast.makeText(getApplicationContext(), "error", Toast.LENGTH_LONG).show();

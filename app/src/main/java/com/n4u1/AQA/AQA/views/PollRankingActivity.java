@@ -163,7 +163,7 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
 
     TextView pollActivity_textView_hitCount, pollActivity_textView_likeCount, pollActivity_textView_contentId, pollActivity_textView_replyCount;
     ImageView pollActivity_imageView_state, pollActivity_imageView_like, pollActivity_imageView_alarm;
-
+    String contentKey;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -180,15 +180,50 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
             getSupportActionBar().setTitle(null);
         }
 
-
         final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        final String contentKey = getIntent().getStringExtra("contentKey");
+
+//        final String contentKey = getIntent().getStringExtra("contentKey");
         contentHit = getIntent().getIntExtra("contentHit", 999999);
+
+
+        //동적링크에서 contentKey받기
+        FirebaseDynamicLinks.getInstance()
+                .getDynamicLink(getIntent())
+                .addOnSuccessListener(this, new OnSuccessListener<PendingDynamicLinkData>() {
+                    @Override
+                    public void onSuccess(PendingDynamicLinkData pendingDynamicLinkData) {
+                        // Get deep link from result (may be null if no link is found)
+                        Uri deepLink = null;
+                        Log.d("lkj deepLink??", deepLink.toString());
+                        if (pendingDynamicLinkData != null) {
+                            deepLink = pendingDynamicLinkData.getLink();
+
+                            contentKey = deepLink.getQueryParameter("contentKey");
+                            Log.d("lkj deepLink", deepLink.toString());
+                            Log.d("lkj getQueryParameter", deepLink.getQueryParameter("contentKey"));
+                        }
+
+                        // Handle the deep link. For example, open the linked
+                        // content, or apply promotional credit to the user's
+                        // account.
+                        // ...
+
+                        // ...
+                    }
+                })
+                .addOnFailureListener(this, new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w("lkj getDynLink", "getDynamicLink:onFailure", e);
+                    }
+                });
+        //동적링크에서 contentKey받기 end
+
 
 
         Log.d("lkj hitCount!!!", String.valueOf(contentHit));
 //        Log.d("lkj title", title);
-        Log.d("lkj contentKey!!!", contentKey);
+//        Log.d("lkj contentKey!!!", contentKey);
 //        Log.d("lkj mode", mode);
 //        Log.d("lkj itemViewType", String.valueOf(itemViewType));
 
@@ -306,66 +341,10 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
         pollActivity_textView_check_10.setOnClickListener(this);
 
 
-//        DynamicLink dynamicLink = FirebaseDynamicLinks.getInstance().createDynamicLink()
-//                .setLink(Uri.parse("https://aqa_ranking_deeplink"))
-//                .setDomainUriPrefix("aqapoll.page.link/HVFx")
-//                // Open links with this app on Android
-//                .setAndroidParameters(new DynamicLink.AndroidParameters.Builder().build())
-//                // Open links with com.example.ios on iOS
-//                //.setIosParameters(new DynamicLink.IosParameters.Builder("com.example.ios").build())
-//                .buildDynamicLink();
-//
-//        final Uri dynamicLinkUri = dynamicLink.getUri();
-
-
-
-//        Log.d("lkj dynamicLinkUri", dynamicLinkUri.toString());
-//        final Task<ShortDynamicLink> shortLinkTask = FirebaseDynamicLinks.getInstance().createDynamicLink()
-//                .setLink(Uri.parse("https://aqa_ranking_deeplink"))
-//
-//                .setDomainUriPrefix("aqapoll.page.link/HVFx")
-//                // Set parameters
-//                // ...
-//
-//                .setAndroidParameters(new DynamicLink.AndroidParameters.Builder().build())
-//                .buildShortDynamicLink()
-//                .addOnCompleteListener(this, new OnCompleteListener<ShortDynamicLink>() {
-//                    @Override
-//                    public void onComplete(@NonNull Task<ShortDynamicLink> task) {
-//                        if (task.isSuccessful()) {
-//                            // Short link created
-//                            Uri shortLink = task.getResult().getShortLink();
-//                            Uri flowchartLink = task.getResult().getPreviewLink();
-//                            Log.d("lkj shortLink", shortLink.toString());
-//                            Log.d("lkj flowchartLink", flowchartLink.toString());
-//                        } else {
-//                            Log.d("lkj flowchartLink", "ERRRRRRRRRRRRRRR");
-//                            // Error
-//                            // ...
-//                        }
-//                    }
-//                });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         final Task<ShortDynamicLink> shortLinkTask = FirebaseDynamicLinks.getInstance().createDynamicLink()
-                .setLink(Uri.parse("https://aqa_ranking_deeplink"))
+                .setLink(getDeepLink(contentKey))
                 .setDomainUriPrefix("aqapoll.page.link/HVFx")
-                .setAndroidParameters(new DynamicLink.AndroidParameters.Builder().build())
-                // Set parameters
-                // ...
+                .setAndroidParameters(new DynamicLink.AndroidParameters.Builder("com.n4u1.AQA.AQA").build())
                 .buildShortDynamicLink()
                 .addOnCompleteListener(this, new OnCompleteListener<ShortDynamicLink>() {
                     @Override
@@ -374,8 +353,10 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
                             // Short link created
                             Uri shortLink = task.getResult().getShortLink();
                             Uri flowchartLink = task.getResult().getPreviewLink();
+                            Log.d("lkj shortLink = ", shortLink.toString());
+                            Log.d("lkj flowchartLink = ", flowchartLink.toString());
                         } else {
-                            Log.d("lkj shortLink", "ERRRRRRRR");
+                            Log.d("lkj shortLink Err", "shortLink Err");
                             // Error
                             // ...
                         }
@@ -383,14 +364,10 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
                 });
 
 
-
         findViewById(R.id.buttonShare).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                Log.d("lkj shortLink", shortLinkTask.getResult().getShortLink().toString());
-                Log.d("lkj flowchartLink", shortLinkTask.getResult().getPreviewLink().toString());
-//                Log.d("lkj dynamicLinkUri", dynamicLinkUri.toString());
+                Log.d("lkj shortLinkTask", shortLinkTask.getResult().getShortLink().toString());
             }
         });
 
@@ -3253,6 +3230,14 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
             return null;
         }
     }
+
+
+    //딥링크 만들기
+    private Uri getDeepLink(String contentKey) {
+        return Uri.parse("https://aqa_ranking_deeplink/?" + "contentKey" + "=" + contentKey);
+    }
+
+
 
 
     @Override
