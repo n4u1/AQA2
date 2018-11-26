@@ -1,13 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" >
+    android:orientation="vertical"
+    tools:context=".views.TestActivity">
 
+    <Button
+        android:id="@+id/btn_share_dynamic_link"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Share(Dyanamic Link)" />
 
-    <com.github.chrisbanes.photoview.PhotoView
-        android:id="@+id/photoView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+    <Button
+        android:id="@+id/btn_share_invite"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Share(Invite)" />
 
-</RelativeLayout>
+</LinearLayout>

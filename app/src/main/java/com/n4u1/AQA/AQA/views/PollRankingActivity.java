@@ -111,6 +111,7 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
     private FirebaseDatabase firebaseDatabase;
     private FirebaseDatabase likeFirebaseDatabase;
     private String replyKey;
+    private String contentKey;
 
 
     final ArrayList<ReplyDTO> replyDTOS = new ArrayList<>();
@@ -163,7 +164,7 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
 
     TextView pollActivity_textView_hitCount, pollActivity_textView_likeCount, pollActivity_textView_contentId, pollActivity_textView_replyCount;
     ImageView pollActivity_imageView_state, pollActivity_imageView_like, pollActivity_imageView_alarm;
-    String contentKey;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -180,13 +181,22 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
             getSupportActionBar().setTitle(null);
         }
 
+
+
+        final Uri data = getIntent().getData();
+        if(data != null){
+            Log.d("lkj Data2 in intent2", data.toString());
+            Log.d("lkj Data2 in intent3", data.getLastPathSegment());
+            Log.d("lkj Data2 in intent4", data.getQueryParameter("contentKey"));
+            contentKey = data.getQueryParameter("contentKey");
+        } else {
+            contentKey = getIntent().getStringExtra("contentKey");
+        }
         final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-
-//        final String contentKey = getIntent().getStringExtra("contentKey");
-        contentHit = getIntent().getIntExtra("contentHit", 999999);
+//        contentHit = getIntent().getIntExtra("contentHit", 999999);
 
 
-        //동적링크에서 contentKey받기
+        //동적링크에서 contentKey받기 (이거 필요없는듯?)
         FirebaseDynamicLinks.getInstance()
                 .getDynamicLink(getIntent())
                 .addOnSuccessListener(this, new OnSuccessListener<PendingDynamicLinkData>() {
@@ -194,21 +204,13 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
                     public void onSuccess(PendingDynamicLinkData pendingDynamicLinkData) {
                         // Get deep link from result (may be null if no link is found)
                         Uri deepLink = null;
-                        Log.d("lkj deepLink??", deepLink.toString());
+//                        Log.d("lkj deepLink??", deepLink.toString());
                         if (pendingDynamicLinkData != null) {
                             deepLink = pendingDynamicLinkData.getLink();
-
-                            contentKey = deepLink.getQueryParameter("contentKey");
+//                            contentKey = deepLink.getQueryParameter("contentKey");
+//                            mDatabaseReference = FirebaseDatabase.getInstance().getReference("user_contents").child(contentKey);
                             Log.d("lkj deepLink", deepLink.toString());
-                            Log.d("lkj getQueryParameter", deepLink.getQueryParameter("contentKey"));
                         }
-
-                        // Handle the deep link. For example, open the linked
-                        // content, or apply promotional credit to the user's
-                        // account.
-                        // ...
-
-                        // ...
                     }
                 })
                 .addOnFailureListener(this, new OnFailureListener() {
@@ -220,16 +222,13 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
         //동적링크에서 contentKey받기 end
 
 
-
-        Log.d("lkj hitCount!!!", String.valueOf(contentHit));
 //        Log.d("lkj title", title);
 //        Log.d("lkj contentKey!!!", contentKey);
 //        Log.d("lkj mode", mode);
 //        Log.d("lkj itemViewType", String.valueOf(itemViewType));
-
-        DatabaseReference mDatabaseReferenceAlarm;
         mDatabaseReference = FirebaseDatabase.getInstance().getReference("user_contents").child(contentKey);
 
+        DatabaseReference mDatabaseReferenceAlarm;
         mDatabaseReferencePicker = FirebaseDatabase.getInstance().getReference("users");
         auth = FirebaseAuth.getInstance();
         firebaseDatabase = FirebaseDatabase.getInstance();
@@ -341,35 +340,39 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
         pollActivity_textView_check_10.setOnClickListener(this);
 
 
-        final Task<ShortDynamicLink> shortLinkTask = FirebaseDynamicLinks.getInstance().createDynamicLink()
-                .setLink(getDeepLink(contentKey))
-                .setDomainUriPrefix("aqapoll.page.link/HVFx")
-                .setAndroidParameters(new DynamicLink.AndroidParameters.Builder("com.n4u1.AQA.AQA").build())
-                .buildShortDynamicLink()
-                .addOnCompleteListener(this, new OnCompleteListener<ShortDynamicLink>() {
-                    @Override
-                    public void onComplete(@NonNull Task<ShortDynamicLink> task) {
-                        if (task.isSuccessful()) {
-                            // Short link created
-                            Uri shortLink = task.getResult().getShortLink();
-                            Uri flowchartLink = task.getResult().getPreviewLink();
-                            Log.d("lkj shortLink = ", shortLink.toString());
-                            Log.d("lkj flowchartLink = ", flowchartLink.toString());
-                        } else {
-                            Log.d("lkj shortLink Err", "shortLink Err");
-                            // Error
-                            // ...
-                        }
-                    }
-                });
 
 
-        findViewById(R.id.buttonShare).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Log.d("lkj shortLinkTask", shortLinkTask.getResult().getShortLink().toString());
-            }
-        });
+
+//        final Task<ShortDynamicLink> shortLinkTask = FirebaseDynamicLinks.getInstance().createDynamicLink()
+//                .setLink(getDeepLink(contentKey))
+//                .setDomainUriPrefix("aqapoll.page.link/HVFx")
+//                .setAndroidParameters(new DynamicLink.AndroidParameters.Builder("com.n4u1.AQA.AQA").build())
+//                .buildShortDynamicLink()
+//                .addOnCompleteListener(this, new OnCompleteListener<ShortDynamicLink>() {
+//                    @Override
+//                    public void onComplete(@NonNull Task<ShortDynamicLink> task) {
+//                        if (task.isSuccessful()) {
+//                            // Short link created
+//                            Uri shortLink = task.getResult().getShortLink();
+//                            Uri flowchartLink = task.getResult().getPreviewLink();
+//                            Log.d("lkj shortLink = ", shortLink.toString());
+//                            Log.d("lkj flowchartLink = ", flowchartLink.toString());
+//                        } else {
+//                            Log.d("lkj shortLink Err", "shortLink Err");
+//                            // Error
+//                            // ...
+//                        }
+//                    }
+//                });
+//
+//
+//        findViewById(R.id.buttonShare).setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Intent intent = new Intent(PollRankingActivity.this, TestActivity.class);
+//                startActivity(intent);
+//            }
+//        });
 
 
 
@@ -405,7 +408,6 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
                     try {
                         Map<String, Object> user = (Map<String, Object>) dataSnapshot.getValue();
                         String flag = String.valueOf(user.get("pollInitInfo"));
-                        Log.d("lkj flag", flag);
                         if (flag.equals("true")) {
                             PollInitInfoDialog pollInitInfoDialog = new PollInitInfoDialog();
                             pollInitInfoDialog.show(getSupportFragmentManager(), "pollInitInfoDialog");
@@ -428,7 +430,16 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
         pollActivity_imageView_alarm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String contentKey = getIntent().getStringExtra("contentKey");
+
+
+                if(data != null){
+                    Log.d("lkj Data2 in intent2", data.toString());
+                    Log.d("lkj Data2 in intent3", data.getLastPathSegment());
+                    Log.d("lkj Data2 in intent4", data.getQueryParameter("contentKey"));
+                    contentKey = data.getQueryParameter("contentKey");
+                } else {
+                    contentKey = getIntent().getStringExtra("contentKey");
+                }
                 Intent intentShowMore = new Intent(PollRankingActivity.this, UserAlarmDialog.class);
                 intentShowMore.putExtra("pollKey", contentKey);
                 intentShowMore.putExtra("hitCount", contentHit);
@@ -805,6 +816,7 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
                 pollActivity_textView_userId.setText(contentDTO.getUserID());
                 settingUserIcon(contentDTO.getUid());
                 settingUserAlarm(contentKey);
+                contentHit = contentDTO.getContentHit();
 
 
                 if (contentDTO.contentPicker.get(auth.getCurrentUser().getUid()) == null) {
@@ -1056,7 +1068,15 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
 
 
     private void likeClick() {
-        final String contentKey = getIntent().getStringExtra("contentKey");
+        final Uri data = getIntent().getData();
+        if(data != null){
+            Log.d("lkj Data2 in intent2", data.toString());
+            Log.d("lkj Data2 in intent3", data.getLastPathSegment());
+            Log.d("lkj Data2 in intent4", data.getQueryParameter("contentKey"));
+            contentKey = data.getQueryParameter("contentKey");
+        } else {
+            contentKey = getIntent().getStringExtra("contentKey");
+        }
         firebaseDatabase.getReference().child("user_contents").child(contentKey).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -1290,13 +1310,23 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
                 }
                 if (contentDTO.contentPicker.containsKey(auth.getCurrentUser().getUid())) {
                     //투표가 되어있으면 PollResultRankingDialog
+                    final Uri data = getIntent().getData();
+                    if(data != null){
+                        Log.d("lkj Data2 in intent2", data.toString());
+                        Log.d("lkj Data2 in intent3", data.getLastPathSegment());
+                        Log.d("lkj Data2 in intent4", data.getQueryParameter("contentKey"));
+                        contentKey = data.getQueryParameter("contentKey");
+                    } else {
+                        contentKey = getIntent().getStringExtra("contentKey");
+                    }
+
                     PollResultRankingDialog pollResultRankingDialog = new PollResultRankingDialog();
                     Bundle bundle = new Bundle();
 
                     bundle.putInt("imagePick", currentPick());
                     bundle.putInt("imageN", getIntent().getIntExtra("itemViewType", 100));
                     bundle.putInt("contentHits", contentHit);
-                    bundle.putString("currentContent", getIntent().getStringExtra("contentKey"));
+                    bundle.putString("currentContent", contentKey);
                     bundle.putString("statisticsCode", contentDTO.statistics_code);
 
                     pollResultRankingDialog.setArguments(bundle);
@@ -1388,7 +1418,17 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
 
                         //몇변에 투표했는지 users/pickContent:100
                         contentDTO.contentPicker.put(auth.getCurrentUser().getUid(), currentPick());
-                        String key = getIntent().getStringExtra("contentKey");
+                        final Uri data = getIntent().getData();
+                        String key;
+                        if(data != null){
+                            Log.d("lkj Data2 in intent2", data.toString());
+                            Log.d("lkj Data2 in intent3", data.getLastPathSegment());
+                            Log.d("lkj Data2 in intent4", data.getQueryParameter("contentKey"));
+                            key = data.getQueryParameter("contentKey");
+                        } else {
+                            key = getIntent().getStringExtra("contentKey");
+                        }
+
                         firebaseDatabase.getReference()
                                 .child("users")
                                 .child(auth.getCurrentUser().getUid())
@@ -1406,7 +1446,7 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
                         Bundle bundle = new Bundle();
                         bundle.putInt("imagePick", currentPick());
                         bundle.putInt("imageN", getIntent().getIntExtra("itemViewType", 100));
-                        bundle.putString("currentContent", getIntent().getStringExtra("contentKey"));
+                        bundle.putString("currentContent", key);
                         bundle.putString("statisticsCode", contentDTO.statistics_code);
                         pollResultRankingDialog.setArguments(bundle);
                         pollResultRankingDialog.show(getSupportFragmentManager(), "pollResultDialog");
@@ -1671,7 +1711,15 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        final String contentKey = getIntent().getStringExtra("contentKey");
+        final Uri data_ = getIntent().getData();
+        if(data_ != null){
+            //HomeActivity에서 넘어온 데이터가 없으면, 링크를 타고왔을테니
+            contentKey = data_.getQueryParameter("contentKey");
+        } else {
+            //HomeActivity에서 넘어온 데이터가 있으면
+            contentKey = getIntent().getStringExtra("contentKey");
+        }
+
         if (resultCode == RESULT_OK) {
             switch (requestCode) {
                 case 100:
@@ -2176,7 +2224,15 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
     public boolean onCreateOptionsMenu(final Menu menu) {
         getMenuInflater().inflate(R.menu.poll_ranking_menu, menu);
         final MenuItem item = menu.findItem(R.id.menu_delete);
-        final String contentKey = getIntent().getStringExtra("contentKey");
+        Uri data = getIntent().getData();
+        if(data != null){
+            Log.d("lkj Data2 in intent2", data.toString());
+            Log.d("lkj Data2 in intent3", data.getLastPathSegment());
+            Log.d("lkj Data2 in intent4", data.getQueryParameter("contentKey"));
+            contentKey = data.getQueryParameter("contentKey");
+        } else {
+            contentKey = getIntent().getStringExtra("contentKey");
+        }
         firebaseDatabase.getReference().child("user_contents").child(contentKey).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -2242,7 +2298,17 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
             public void onClick(DialogInterface dialogInterface, int i) {
                 FirebaseUser mUser = FirebaseAuth.getInstance().getCurrentUser();
                 DatabaseReference mReference = FirebaseDatabase.getInstance().getReference();
-                String pollKey = getIntent().getStringExtra("contentKey");
+                String pollKey;
+                Uri data = getIntent().getData();
+                if(data != null){
+                    Log.d("lkj Data2 in intent2", data.toString());
+                    Log.d("lkj Data2 in intent3", data.getLastPathSegment());
+                    Log.d("lkj Data2 in intent4", data.getQueryParameter("contentKey"));
+                    pollKey = data.getQueryParameter("contentKey");
+                } else {
+                    pollKey = getIntent().getStringExtra("contentKey");
+                }
+//                String pollKey = getIntent().getStringExtra("contentKey");
                 mReference.child("user_contents").child(pollKey).removeValue();
                 mReference.child("users").child(mUser.getUid()).child("uploadContent").child(pollKey).removeValue();
 //                Toast toast = Toast.makeText(getApplicationContext(), "삭제 되었습니다.", Toast.LENGTH_SHORT);
@@ -3246,7 +3312,16 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
         if (string.equals("확인")) {
             FirebaseUser mUser = FirebaseAuth.getInstance().getCurrentUser();
             DatabaseReference mReference = FirebaseDatabase.getInstance().getReference();
-            String pollKey = getIntent().getStringExtra("pollKey");
+            String pollKey;
+            Uri data = getIntent().getData();
+            if(data != null){
+                Log.d("lkj Data2 in intent2", data.toString());
+                Log.d("lkj Data2 in intent3", data.getLastPathSegment());
+                Log.d("lkj Data2 in intent4", data.getQueryParameter("contentKey"));
+                pollKey = data.getQueryParameter("contentKey");
+            } else {
+                pollKey = getIntent().getStringExtra("contentKey");
+            }
             finish();
             mReference.child("user_contents").child(pollKey).removeValue();
             mReference.child("users").child(mUser.getUid()).child("uploadContent").child(pollKey).removeValue();

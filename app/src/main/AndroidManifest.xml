@@ -54,7 +54,6 @@
         <activity android:name=".splash.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -68,23 +67,12 @@
             android:theme="@style/AppTheme" />
         <activity android:name=".views.TestActivity" />
         <activity android:name=".views.PollRankingActivity">
-            <intent-filter android:autoVerify="true">
-                <action android:name="android.intent.action.VIEW" />
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-                <data android:host="lkj840211.wixsite.com/aqacompany" android:scheme="http" />
-            </intent-filter>
             <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.APP_BROWSER" />
-                <data  android:host="aqa_ranking_deeplink" android:scheme="aqaapp" />
-            </intent-filter>
-            <intent-filter android:autoVerify="true">
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
                 <data android:host="aqa.ranking.com" android:scheme="https" />
+                <data android:host="aqa.ranking.com" android:scheme="http" />
             </intent-filter>
         </activity>
         <activity android:name=".views.PollSingleActivity">

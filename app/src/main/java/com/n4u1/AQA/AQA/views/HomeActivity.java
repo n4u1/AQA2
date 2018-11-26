@@ -184,6 +184,14 @@ public class HomeActivity extends AppCompatActivity implements SwipeRefreshLayou
                 .addTestDevice("C39C4F095E193D0C5E7BBCB91B89B469")  // TestDeviceId
                 .build();
         adView.loadAd(adRequest);
+        //test AdView click
+//        adView.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent intent = new Intent(HomeActivity.this, TestActivity.class);
+//                startActivity(intent);
+//            }
+//        });
 
 
         //실시간 투표순위 5개

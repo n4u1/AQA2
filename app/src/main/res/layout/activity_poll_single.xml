@@ -240,7 +240,6 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="4dp"
                     android:layout_weight="5"
-                    android:text="3374"
                     android:textColor="#737373"
                     android:textSize="14dp" />
 
@@ -258,7 +257,6 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="4dp"
                     android:layout_weight="5"
-                    android:text="2291"
                     android:textColor="#737373"
                     android:textSize="14dp" />
 
@@ -275,11 +273,17 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="4dp"
-                    android:layout_weight="5"
-                    android:text="2291"
+                    android:layout_weight="4"
                     android:textColor="#737373"
                     android:textSize="14dp" />
 
+                <ImageView
+                    android:paddingRight="16dp"
+                    android:id="@+id/pollActivity_imageView_share"
+                    android:layout_width="0dp"
+                    android:layout_height="20dp"
+                    android:layout_weight="4"
+                    android:src="@drawable/ic_share_black_24dp" />
 
                 <ImageView
                     android:id="@+id/pollActivity_imageView_state"

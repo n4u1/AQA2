@@ -72,10 +72,22 @@ public class LoginActivity extends AppCompatActivity implements PreviewDialog.Pr
 //        String htmlString = "<u>둘러보기</u>";
 
 
+
+
+
         mAuth = FirebaseAuth.getInstance();
         editTextEmail = findViewById(R.id.editText_email);
         editTextPassword = findViewById(R.id.editText_password);
 
+
+        //testButton -> TestActivity
+        findViewById(R.id.buttonTest).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(LoginActivity.this, TestActivity.class);
+                startActivity(intent);
+            }
+        });
 
         //둘러보기
         textView_preview.setOnTouchListener(new View.OnTouchListener() {
