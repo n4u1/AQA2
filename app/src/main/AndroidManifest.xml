@@ -57,51 +57,19 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".views.LoginActivity" />
-        <activity android:name=".dialog.BaseLoadingActivity" />
-        <activity android:name=".views.HomeActivity" />
-        <activity android:name=".views.UserContentsUploadActivity" />
-        <activity
-            android:name=".views.FileChoiceActivity"
-            android:label="@string/title_activity_file_choice"
-            android:theme="@style/AppTheme" />
-        <activity android:name=".views.TestActivity" />
-        <activity android:name=".views.PollRankingActivity">
+        <activity android:name=".splash.SplashDynamicLinkActivity">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-                <data android:host="aqa.ranking.com" android:scheme="https" />
-                <data android:host="aqa.ranking.com" android:scheme="http" />
+                <data
+                    android:host="aqa.ranking.com"
+                    android:scheme="https" />
+                <data
+                    android:host="aqa.ranking.com"
+                    android:scheme="http" />
             </intent-filter>
         </activity>
-        <activity android:name=".views.PollSingleActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-                <data android:host="aqa_singleg_deeplink" android:scheme="aqaapp" />
-                <data android:host="lkj840211.wixsite.com/aqacompany" android:scheme="http" />
-            </intent-filter>
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-                <data android:host="lkj840211.wixsite.com/aqacompany" android:scheme="https" />
-            </intent-filter>
-        </activity>
-        <activity android:name=".views.CreateUserActivity" />
-        <activity
-            android:name=".dialog.PollRankingChoiceActivity"
-            android:theme="@style/Theme.DialogFragmentActivity" />
-        <activity android:name=".views.SearchHomeActivity" />
-        <activity android:name=".views.MineActivity" />
-        <activity android:name=".views.MyLikeContentsActivity" />
-        <activity android:name=".views.MyReplyContentsActivity" />
-        <activity android:name=".views.SearchResultActivity" />
-        <activity android:name=".views.MyPollActivity" />
-        <activity android:name=".views.MyUploadActivity" />
-        <activity android:name=".views.FullImageActivity" />
         <activity
             android:name=".dialog.DeleteModificationActivity"
             android:theme="@style/Theme.DialogFragmentActivity" />
@@ -113,20 +81,26 @@
             android:name=".dialog.UserAlarmDialog"
             android:theme="@style/Theme.DialogFragmentActivity" />
         <activity android:name=".views.WhenNotiClickActivity" />
-        <activity android:name=".splash.SplashLoadingActivity" />
         <activity
             android:name=".views.UserClassInfoActivity"
             android:theme="@style/Theme.DialogFragmentActivity" />
-        <activity android:name=".views.SuggestActivity" />
-        <activity android:name=".views.UserSuggestUploadActivity" />
-        <activity android:name=".views.SuggestDetailActivity" />
-        <activity android:name=".views.ShareAuthActivity" />
-        <activity android:name=".views.UserShareAuthUploadActivity" />
-        <activity android:name=".views.ShareAuthDetailActivity" />
-        <activity android:name=".views.VersionInfoActivity" />
         <activity
             android:name=".dialog.PrivacyPolicyActivity"
             android:theme="@style/Theme.DialogFragmentActivity" />
+        <activity
+            android:name=".views.FileChoiceActivity"
+            android:label="@string/title_activity_file_choice"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".dialog.PollSingleChoiceActivity"
+            android:theme="@style/Theme.DialogFragmentActivity" />
+        <activity
+            android:name=".dialog.PollRankingChoiceActivity"
+            android:theme="@style/Theme.DialogFragmentActivity" />
+        <activity android:name=".views.LoginActivity" />
+        <activity android:name=".dialog.BaseLoadingActivity" />
+        <activity android:name=".views.HomeActivity" />
+        <activity android:name=".views.UserContentsUploadActivity" />
         <activity android:name=".views.PrivacyPolicyDetailActivity" />
         <activity android:name=".views.ServicePolicyActivity" />
         <activity android:name=".splash.SplashCreateUserActivity" />
@@ -135,14 +109,31 @@
         <activity android:name=".views.CreateUserIdActivity" />
         <activity android:name=".views.CreateUserAGActivity" />
         <activity android:name=".splash.SplashGuidActivity" />
-        <activity
-            android:name=".dialog.PollSingleChoiceActivity"
-            android:theme="@style/Theme.DialogFragmentActivity" />
-        <!-- ////////////////////////////////////////activity///////////////////////////////////////// -->
-
+        <activity android:name=".views.TestActivity" />
         <activity android:name=".admin.AdminUserActivity" />
         <activity android:name=".admin.AdminContentsActivity" />
-        <activity android:name=".admin.AdminEtcActivity"></activity>
+        <activity android:name=".admin.AdminEtcActivity" />
+        <activity android:name=".views.PollRankingActivity" />
+        <activity android:name=".views.PollSingleActivity" />
+        <activity android:name=".views.CreateUserActivity" />
+        <activity android:name=".views.SearchHomeActivity" />
+        <activity android:name=".views.MineActivity" />
+        <activity android:name=".views.MyLikeContentsActivity" />
+        <activity android:name=".views.MyReplyContentsActivity" />
+        <activity android:name=".views.SearchResultActivity" />
+        <activity android:name=".views.MyPollActivity" />
+        <activity android:name=".views.SuggestActivity" />
+        <activity android:name=".views.UserSuggestUploadActivity" />
+        <activity android:name=".views.SuggestDetailActivity" />
+        <activity android:name=".views.ShareAuthActivity" />
+        <activity android:name=".views.UserShareAuthUploadActivity" />
+        <activity android:name=".views.ShareAuthDetailActivity" />
+        <activity android:name=".views.VersionInfoActivity" />
+        <activity android:name=".views.MyUploadActivity" />
+        <activity android:name=".splash.SplashLoadingActivity" />
+        <activity android:name=".views.FullImageActivity" />
+
+        <!-- ////////////////////////////////////////activity///////////////////////////////////////// -->
     </application>
 
 </manifest>

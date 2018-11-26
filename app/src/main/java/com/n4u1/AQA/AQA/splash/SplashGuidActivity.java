@@ -42,7 +42,7 @@ public class SplashGuidActivity extends AppCompatActivity {
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
         mDatabaseReference = FirebaseDatabase.getInstance().getReference();
-        userLoginFlag = getIntent().getStringExtra("userLoginFlag");
+        userLoginFlag = getIntent().getStringExtra("userLoginFlag"); //처음사용자 확인용
 
         mAuth.signInAnonymously().addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
             @Override

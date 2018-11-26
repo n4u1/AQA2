@@ -153,6 +153,13 @@ public class HomeActivity extends AppCompatActivity implements SwipeRefreshLayou
             requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.CAMERA}, 0);
         }
 
+        //testActivity
+        findViewById(R.id.testActivity).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getApplicationContext(), TestActivity.class));
+            }
+        });
 
 
         //공지사항 db/notice/flag true일때 공지 다이얼로그

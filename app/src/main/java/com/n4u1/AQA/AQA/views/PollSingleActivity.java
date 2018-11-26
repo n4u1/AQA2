@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.renderscript.Allocation;
 import android.renderscript.Element;
@@ -79,7 +80,7 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
 
     private boolean ACTIVITY_REPLY_FLAG;
     private boolean ACTIVITY_BESTREPLY_FLAG;
-
+    private int contentAmount;
     private int pickCandidate = 0;
     private FirebaseAuth auth;
     private DatabaseReference mDatabaseReference;
@@ -95,6 +96,7 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
 
 //    private LruCache<String, Bitmap> mMemoryCache;
 
+    private String contentKey;
     int contentHit;
     boolean checkUserHitContent = false;
 
@@ -153,14 +155,20 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
         }
-        final int maxMemory = (int) (Runtime.getRuntime().maxMemory() / 1024);
 
 
+
+        final Uri data = getIntent().getData();
+        if(data != null){
+            Log.d("lkj Data2 in intent2", data.toString());
+            Log.d("lkj Data2 in intent3", data.getLastPathSegment());
+            Log.d("lkj Data2 in intent4", data.getQueryParameter("contentKey"));
+            contentKey = data.getQueryParameter("contentKey");
+        } else {
+            contentKey = getIntent().getStringExtra("contentKey");
+        }
 
         final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-
-        final String contentKey = getIntent().getStringExtra("contentKey");
-        contentHit = getIntent().getIntExtra("contentHit", 999999);
 
         Log.d("lkj noti", contentKey);
 
@@ -321,7 +329,11 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
         pollActivity_imageView_alarm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String contentKey = getIntent().getStringExtra("contentKey");
+                if(data != null){
+                    contentKey = data.getQueryParameter("contentKey");
+                } else {
+                    contentKey = getIntent().getStringExtra("contentKey");
+                }
                 Intent intentShowMore = new Intent(PollSingleActivity.this, UserAlarmDialog.class);
                 intentShowMore.putExtra("pollKey", contentKey);
                 intentShowMore.putExtra("hitCount", contentHit);
@@ -701,18 +713,23 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
                     pollActivity_textView_userId.setText(contentDTO.getUserID());
                     settingUserIcon(contentDTO.getUid());
                     settingUserAlarm(contentKey);
+                    contentAmount = contentDTO.getItemViewType();
+                    contentHit = contentDTO.getContentHit();
 
 
-                    if (contentDTO.contentPicker.get(auth.getCurrentUser().getUid()) == null) {
+                    if (user.isAnonymous()) {
+                        pollActivity_textView_state.setText("투표에 참여하시려면 로그인 해주세요.");
+                    } else if (contentDTO.contentPicker.get(auth.getCurrentUser().getUid()) == null) {
                         pollActivity_textView_state.setText("투표 전 입니다");
                     } else {
                         int picked = contentDTO.contentPicker.get(auth.getCurrentUser().getUid());
                         if (picked == 9999) {
                             pollActivity_textView_state.setText(contentDTO.getUserID() + "님의 투표입니다.");
                         } else {
-                            pollActivity_textView_state.setText(picked + 1 + "번에 투표 하셧습니다.");
+                            pollActivity_textView_state.setText(picked + 1 + "번에 1위 투표 하셧습니다.");
                         }
                     }
+
 
 
                     if (contentDTO.likes.containsKey(auth.getCurrentUser().getUid())) {
@@ -965,7 +982,12 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
      */
 
     private void likeClick() {
-        final String contentKey = getIntent().getStringExtra("contentKey");
+        final Uri data = getIntent().getData();
+        if(data != null){
+            contentKey = data.getQueryParameter("contentKey");
+        } else {
+            contentKey = getIntent().getStringExtra("contentKey");
+        }
         firebaseDatabase.getReference().child("user_contents").child(contentKey).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -1209,8 +1231,13 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
 
     //투표 시작
     private void onResultClicked(final DatabaseReference postRef, final int currentAge, final String currentGender) {
-        final int contentAmount = getIntent().getIntExtra("itemViewType", 0);
         Log.d("lkj contentAmount", String.valueOf(contentAmount));
+        final Uri data = getIntent().getData();
+        if(data != null){
+            contentKey = data.getQueryParameter("contentKey");
+        } else {
+            contentKey = getIntent().getStringExtra("contentKey");
+        }
 
         postRef.runTransaction(new Transaction.Handler() {
             @Override
@@ -1222,11 +1249,12 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
                 if (contentDTO.contentPicker.containsKey(auth.getCurrentUser().getUid())) {
                     //투표가 되어있으면 PollResultDialog
                     PollResultDialog pollResultDialog = new PollResultDialog();
+
                     Bundle bundle = new Bundle();
                     bundle.putInt("imagePick", currentPick());
-                    bundle.putInt("imageN", getIntent().getIntExtra("itemViewType", 100));
+                    bundle.putInt("imageN", contentAmount);
                     bundle.putInt("contentHits", contentHit);
-                    bundle.putString("currentContent", getIntent().getStringExtra("contentKey"));
+                    bundle.putString("currentContent", contentKey);
                     bundle.putString("statisticsCode", contentDTO.statistics_code);
 
                     pollResultDialog.setArguments(bundle);
@@ -1283,18 +1311,17 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
 
                         //몇변에 투표했는지 users/pickContent:N
                         contentDTO.contentPicker.put(auth.getCurrentUser().getUid(), currentPick());
-                        String key = getIntent().getStringExtra("contentKey");
                         firebaseDatabase.getReference()
                                 .child("users")
                                 .child(auth.getCurrentUser().getUid())
                                 .child("pickContent")
-                                .child(key)
+                                .child(contentKey)
                                 .setValue(currentPick());
 
 
                         //투표했을때 DB/issueContents 에 시간 : contentKey 입력
                         long issueDate = getCurrentDate();
-                        issueMap.put(String.valueOf(issueDate), key);
+                        issueMap.put(String.valueOf(issueDate), contentKey);
                         firebaseDatabase.getReference().child("issueContents").child(String.valueOf(issueDate)).setValue(issueMap);
 
 
@@ -1302,8 +1329,8 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
                         PollResultDialog pollResultDialog = new PollResultDialog();
                         Bundle bundle = new Bundle();
                         bundle.putInt("imagePick", currentPick());
-                        bundle.putInt("imageN", getIntent().getIntExtra("itemViewType", 100));
-                        bundle.putString("currentContent", getIntent().getStringExtra("contentKey"));
+                        bundle.putInt("imageN", contentAmount);
+                        bundle.putString("currentContent", contentKey);
                         bundle.putString("statisticsCode", contentDTO.statistics_code);
                         pollResultDialog.setArguments(bundle);
                         pollResultDialog.show(getSupportFragmentManager(), "pollResultDialog");
@@ -1401,7 +1428,7 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
         if (checkUserHitContent) {
             intent.putExtra("contentsCount", 1);
         } else {
-            intent.putExtra("contentsCount", getIntent().getIntExtra("itemViewType", 100));
+            intent.putExtra("contentsCount", contentAmount);
         }
 
         switch (v.getId()) {
@@ -1441,7 +1468,6 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        String contentKey = getIntent().getStringExtra("contentKey");
         if (resultCode == RESULT_OK) {
             switch (requestCode) {
                 case 100:
@@ -1741,7 +1767,6 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
     public boolean onCreateOptionsMenu(final Menu menu) {
         getMenuInflater().inflate(R.menu.poll_single_menu, menu);
         final MenuItem item = menu.findItem(R.id.menu_delete);
-        final String contentKey = getIntent().getStringExtra("contentKey");
         firebaseDatabase.getReference().child("user_contents").child(contentKey).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -1797,9 +1822,8 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
 
                 FirebaseUser mUser = FirebaseAuth.getInstance().getCurrentUser();
                 DatabaseReference mReference = FirebaseDatabase.getInstance().getReference();
-                String pollKey = getIntent().getStringExtra("contentKey");
-                mReference.child("user_contents").child(pollKey).removeValue();
-                mReference.child("users").child(mUser.getUid()).child("uploadContent").child(pollKey).removeValue();
+                mReference.child("user_contents").child(contentKey).removeValue();
+                mReference.child("users").child(mUser.getUid()).child("uploadContent").child(contentKey).removeValue();
 //                Toast toast = Toast.makeText(getApplicationContext(), "삭제 되었습니다.", Toast.LENGTH_SHORT);
 //                toast.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL, 0, 0);
 //                toast.show();
@@ -2762,7 +2786,7 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
     //선택한 이미지에 순위 표시
     private void imageChoice(final int i) {
 
-        firebaseDatabase.getReference().child("user_contents").child(getIntent().getStringExtra("contentKey")).addListenerForSingleValueEvent(new ValueEventListener() {
+        firebaseDatabase.getReference().child("user_contents").child(contentKey).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 ContentDTO contentDTO = dataSnapshot.getValue(ContentDTO.class);
@@ -3643,10 +3667,9 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
         if (string.equals("확인")) {
             FirebaseUser mUser = FirebaseAuth.getInstance().getCurrentUser();
             DatabaseReference mReference = FirebaseDatabase.getInstance().getReference();
-            String pollKey = getIntent().getStringExtra("pollKey");
             finish();
-            mReference.child("user_contents").child(pollKey).removeValue();
-            mReference.child("users").child(mUser.getUid()).child("uploadContent").child(pollKey).removeValue();
+            mReference.child("user_contents").child(contentKey).removeValue();
+            mReference.child("users").child(mUser.getUid()).child("uploadContent").child(contentKey).removeValue();
         }
 
     }

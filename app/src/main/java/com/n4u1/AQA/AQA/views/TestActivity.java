@@ -135,7 +135,8 @@ public class TestActivity extends AppCompatActivity {
         // Generate promotion code
         String promotionCode = "-LPIPBqOPlg5DbbI4w1-";
         // https://ted.com/promotion?code=DF3DY1
-        return Uri.parse("https://aqa.ranking.com/" + SEGMENT_PROMOTION + "?" + KEY_CODE + "=" + promotionCode);
+        return Uri.parse("https://aqa.ranking.com/" + SEGMENT_PROMOTION + "?" + KEY_CODE + "=" + promotionCode
+                + "&pollMode=" + "ranking");
     }
 
     private void showPromotionDialog(String code) {

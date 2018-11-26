@@ -101,7 +101,7 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
     private boolean ACTIVITY_REPLY_FLAG;
     private boolean ACTIVITY_BESTREPLY_FLAG;
     private int pickCandidate = 0;
-    int contentAmount;
+    private int contentAmount;
 
     private FirebaseAuth auth;
     private DatabaseReference mDatabaseReference;
@@ -184,15 +184,17 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
 
 
         final Uri data = getIntent().getData();
-        if(data != null){
+        if(data != null) {
             Log.d("lkj Data2 in intent2", data.toString());
             Log.d("lkj Data2 in intent3", data.getLastPathSegment());
             Log.d("lkj Data2 in intent4", data.getQueryParameter("contentKey"));
             contentKey = data.getQueryParameter("contentKey");
+            Log.d("lkj intent Test1", data.getQueryParameter("contentKey"));
         } else {
             contentKey = getIntent().getStringExtra("contentKey");
+            Log.d("lkj intent Test2", getIntent().getStringExtra("contentKey"));
         }
-        final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
 //        contentHit = getIntent().getIntExtra("contentHit", 999999);
 
 
@@ -226,8 +228,8 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
 //        Log.d("lkj contentKey!!!", contentKey);
 //        Log.d("lkj mode", mode);
 //        Log.d("lkj itemViewType", String.valueOf(itemViewType));
+        final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         mDatabaseReference = FirebaseDatabase.getInstance().getReference("user_contents").child(contentKey);
-
         DatabaseReference mDatabaseReferenceAlarm;
         mDatabaseReferencePicker = FirebaseDatabase.getInstance().getReference("users");
         auth = FirebaseAuth.getInstance();
@@ -394,13 +396,18 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
         if (user.isAnonymous()) {
             SharedPreferences pref = getSharedPreferences("com.n4u1.AQA", MODE_PRIVATE);
             String previewer = pref.getString("com.n4u1.AQA.previewer", null);
-            if (previewer.equals("previewerFirst")) {
-                SharedPreferences.Editor editor = pref.edit();
-                editor.putString("com.n4u1.AQA.previewer", "previewer");
-                editor.commit();
-                PollInitInfoDialog pollInitInfoDialog = new PollInitInfoDialog();
-                pollInitInfoDialog.show(getSupportFragmentManager(), "pollInitInfoDialog");
+            try {
+                if (previewer.equals("previewerFirst")) {
+                    SharedPreferences.Editor editor = pref.edit();
+                    editor.putString("com.n4u1.AQA.previewer", "previewer");
+                    editor.commit();
+                    PollInitInfoDialog pollInitInfoDialog = new PollInitInfoDialog();
+                    pollInitInfoDialog.show(getSupportFragmentManager(), "pollInitInfoDialog");
+                }
+            } catch (Exception e) {
+
             }
+
         } else {
             firebaseDatabase.getReference().child("users").child(auth.getCurrentUser().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
@@ -426,6 +433,8 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
         }
 
 
+
+
         //알람설정 클릭
         pollActivity_imageView_alarm.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -433,9 +442,6 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
 
 
                 if(data != null){
-                    Log.d("lkj Data2 in intent2", data.toString());
-                    Log.d("lkj Data2 in intent3", data.getLastPathSegment());
-                    Log.d("lkj Data2 in intent4", data.getQueryParameter("contentKey"));
                     contentKey = data.getQueryParameter("contentKey");
                 } else {
                     contentKey = getIntent().getStringExtra("contentKey");
@@ -817,9 +823,11 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
                 settingUserIcon(contentDTO.getUid());
                 settingUserAlarm(contentKey);
                 contentHit = contentDTO.getContentHit();
+                contentAmount = contentDTO.getItemViewType();
 
-
-                if (contentDTO.contentPicker.get(auth.getCurrentUser().getUid()) == null) {
+                if (user.isAnonymous()) {
+                    pollActivity_textView_state.setText("투표에 참여하시려면 로그인 해주세요.");
+                } else if (contentDTO.contentPicker.get(auth.getCurrentUser().getUid()) == null) {
                     pollActivity_textView_state.setText("투표 전 입니다");
                 } else {
                     int picked = contentDTO.contentPicker.get(auth.getCurrentUser().getUid());
@@ -829,6 +837,7 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
                         pollActivity_textView_state.setText(picked + 1 + "번에 1위 투표 하셧습니다.");
                     }
                 }
+
 
 
                 if (contentDTO.likes.containsKey(auth.getCurrentUser().getUid())) {
@@ -1070,9 +1079,6 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
     private void likeClick() {
         final Uri data = getIntent().getData();
         if(data != null){
-            Log.d("lkj Data2 in intent2", data.toString());
-            Log.d("lkj Data2 in intent3", data.getLastPathSegment());
-            Log.d("lkj Data2 in intent4", data.getQueryParameter("contentKey"));
             contentKey = data.getQueryParameter("contentKey");
         } else {
             contentKey = getIntent().getStringExtra("contentKey");
@@ -1300,7 +1306,7 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
 
     //투표 시작
     private void onResultClicked(final DatabaseReference postRef, final int currentAge, final String currentGender) {
-        contentAmount = getIntent().getIntExtra("itemViewType", 0);
+
         postRef.runTransaction(new Transaction.Handler() {
             @Override
             public Transaction.Result doTransaction(MutableData mutableData) {
@@ -1312,9 +1318,6 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
                     //투표가 되어있으면 PollResultRankingDialog
                     final Uri data = getIntent().getData();
                     if(data != null){
-                        Log.d("lkj Data2 in intent2", data.toString());
-                        Log.d("lkj Data2 in intent3", data.getLastPathSegment());
-                        Log.d("lkj Data2 in intent4", data.getQueryParameter("contentKey"));
                         contentKey = data.getQueryParameter("contentKey");
                     } else {
                         contentKey = getIntent().getStringExtra("contentKey");
@@ -1324,7 +1327,7 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
                     Bundle bundle = new Bundle();
 
                     bundle.putInt("imagePick", currentPick());
-                    bundle.putInt("imageN", getIntent().getIntExtra("itemViewType", 100));
+                    bundle.putInt("imageN", contentAmount);
                     bundle.putInt("contentHits", contentHit);
                     bundle.putString("currentContent", contentKey);
                     bundle.putString("statisticsCode", contentDTO.statistics_code);
@@ -1445,7 +1448,7 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
                         PollResultRankingDialog pollResultRankingDialog = new PollResultRankingDialog();
                         Bundle bundle = new Bundle();
                         bundle.putInt("imagePick", currentPick());
-                        bundle.putInt("imageN", getIntent().getIntExtra("itemViewType", 100));
+                        bundle.putInt("imageN", contentAmount);
                         bundle.putString("currentContent", key);
                         bundle.putString("statisticsCode", contentDTO.statistics_code);
                         pollResultRankingDialog.setArguments(bundle);
@@ -1661,7 +1664,7 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
         if (checkUserHitContent) {
             intent.putExtra("contentsCount", 1);
         } else {
-            intent.putExtra("contentsCount", getIntent().getIntExtra("itemViewType", 100));
+            intent.putExtra("contentsCount", contentAmount);
         }
         switch (v.getId()) {
             case R.id.pollActivity_imageView_userAddContent_1:
@@ -1711,14 +1714,6 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        final Uri data_ = getIntent().getData();
-        if(data_ != null){
-            //HomeActivity에서 넘어온 데이터가 없으면, 링크를 타고왔을테니
-            contentKey = data_.getQueryParameter("contentKey");
-        } else {
-            //HomeActivity에서 넘어온 데이터가 있으면
-            contentKey = getIntent().getStringExtra("contentKey");
-        }
 
         if (resultCode == RESULT_OK) {
             switch (requestCode) {
