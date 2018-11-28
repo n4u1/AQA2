@@ -2,11 +2,13 @@ package com.n4u1.AQA.AQA.splash;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
 import android.widget.Toast;
@@ -15,6 +17,7 @@ import com.google.android.gms.ads.identifier.AdvertisingIdClient;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
@@ -23,17 +26,21 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.dynamiclinks.FirebaseDynamicLinks;
+import com.google.firebase.dynamiclinks.PendingDynamicLinkData;
 import com.n4u1.AQA.AQA.R;
 import com.n4u1.AQA.AQA.dialog.GUIDFailDialog;
 import com.n4u1.AQA.AQA.views.HomeActivity;
 import com.n4u1.AQA.AQA.views.LoginActivity;
+import com.n4u1.AQA.AQA.views.PollRankingActivity;
 
 import java.io.IOException;
 import java.util.Map;
 
 public class SplashActivity extends AppCompatActivity implements GUIDFailDialog.GUIDFailDialogListener {
     private FirebaseAuth mAuth;
-
+    private String contentKey;
+    private String pollMode;
 
 
     @Override
@@ -43,11 +50,46 @@ public class SplashActivity extends AppCompatActivity implements GUIDFailDialog.
         mAuth = FirebaseAuth.getInstance();
 
 
+//        final Uri data = getIntent().getData();
+//        if(data != null){
+//            Log.d("lkj Data2 in intent2", data.toString());
+//            Log.d("lkj Data2 in intent3", data.getLastPathSegment());
+//            Log.d("lkj Data2 in intent4", data.getQueryParameter("contentKey"));
+//            Log.d("lkj Data2 in intent5", data.getQueryParameter("pollMode"));
+//            contentKey = data.getQueryParameter("contentKey");
+//            pollMode = data.getQueryParameter("pollMode");
+//        }
+
+
         SharedPreferences pref = getSharedPreferences("com.n4u1.AQA", MODE_PRIVATE);
         String spUserEmail = pref.getString("com.n4u1.AQA.fireBaseUserEmail", "a");
         String spUserPassword = pref.getString("com.n4u1.AQA.fireBaseUserPassword", "b");
 
         loginUser(spUserEmail, spUserPassword);
+
+
+//        다이나믹링크 파라미터 받기
+//        FirebaseDynamicLinks.getInstance().getDynamicLink(getIntent())
+//                .addOnSuccessListener(new OnSuccessListener<PendingDynamicLinkData>() {
+//                    @Override
+//                    public void onSuccess(PendingDynamicLinkData pendingDynamicLinkData) {
+//                        if (pendingDynamicLinkData == null) {
+//                            return;
+//                        }
+//
+//                        Uri deepLink = pendingDynamicLinkData.getLink();
+//                        contentKey = deepLink.getQueryParameter("contentKey");
+//                        Log.d("lkj Skey???", contentKey);
+//
+//                        if (!TextUtils.isEmpty(contentKey)) {
+//                            Intent intent = new Intent(SplashActivity.this, PollRankingActivity.class);
+//                            intent.putExtra("contentKey", contentKey);
+//                            Log.d("lkj key?????????", contentKey);
+//                            startActivity(intent);
+//                        }
+//                    }
+//                });
+
 
 
     }
@@ -68,6 +110,14 @@ public class SplashActivity extends AppCompatActivity implements GUIDFailDialog.
                             }
 
                         } else {
+                            if (!TextUtils.isEmpty(contentKey) && TextUtils.isEmpty(pollMode)) {
+                                Log.d("lkj current uid2", mAuth.getCurrentUser().getUid());
+                                GUIDAsyncTask guidAsyncTask = new GUIDAsyncTask();
+                                guidAsyncTask.execute();
+                            } else {
+                                Handler hd = new Handler();
+                                hd.postDelayed(new splashhandlerLogin(), 10);
+                            }
                             // If sign in fails, display a message to the user.
                             Handler hd = new Handler();
                             hd.postDelayed(new splashhandlerLogin(), 10);

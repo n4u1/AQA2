@@ -12,9 +12,12 @@ import android.view.Gravity;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.dynamiclinks.FirebaseDynamicLinks;
+import com.google.firebase.dynamiclinks.PendingDynamicLinkData;
 import com.n4u1.AQA.AQA.R;
 import com.n4u1.AQA.AQA.views.PollRankingActivity;
 import com.n4u1.AQA.AQA.views.PollSingleActivity;
@@ -31,16 +34,41 @@ public class SplashDynamicLinkActivity extends AppCompatActivity {
         setContentView(R.layout.activity_splash_dynamic_link);
         mAuth = FirebaseAuth.getInstance();
 
+//
+//        final Uri data = getIntent().getData();
+//        if(data != null){
+//            Log.d("lkj Data2 in intent2", data.toString());
+//            Log.d("lkj Data2 in intent3", data.getLastPathSegment());
+//            Log.d("lkj Data2 in intent4", data.getQueryParameter("contentKey"));
+//            Log.d("lkj Data2 in intent5", data.getQueryParameter("pollMode"));
+//            contentKey = data.getQueryParameter("contentKey");
+//            pollMode = data.getQueryParameter("pollMode");
+//        }
 
-        final Uri data = getIntent().getData();
-        if(data != null){
-            Log.d("lkj Data2 in intent2", data.toString());
-            Log.d("lkj Data2 in intent3", data.getLastPathSegment());
-            Log.d("lkj Data2 in intent4", data.getQueryParameter("contentKey"));
-            Log.d("lkj Data2 in intent5", data.getQueryParameter("pollMode"));
-            contentKey = data.getQueryParameter("contentKey");
-            pollMode = data.getQueryParameter("pollMode");
-        }
+
+        //다이나믹링크 파라미터 받기
+        FirebaseDynamicLinks.getInstance().getDynamicLink(getIntent())
+                .addOnSuccessListener(new OnSuccessListener<PendingDynamicLinkData>() {
+                    @Override
+                    public void onSuccess(PendingDynamicLinkData pendingDynamicLinkData) {
+                        if (pendingDynamicLinkData == null) {
+                            return;
+                        }
+
+                        Uri deepLink = pendingDynamicLinkData.getLink();
+                        contentKey = deepLink.getQueryParameter("contentKey");
+                        pollMode = deepLink.getQueryParameter("pollMode");
+                        Log.d("lkj Skey???", contentKey);
+                        Log.d("lkj Spmode???", pollMode);
+
+//                        if (!TextUtils.isEmpty(contentKey)) {
+//                            Intent intent = new Intent(SplashActivity.this, PollRankingActivity.class);
+//                            intent.putExtra("contentKey", contentKey);
+//                            Log.d("lkj key?????????", contentKey);
+//                            startActivity(intent);
+//                        }
+                    }
+                });
 
 
         SharedPreferences pref = getSharedPreferences("com.n4u1.AQA", MODE_PRIVATE);

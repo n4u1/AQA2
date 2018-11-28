@@ -23,6 +23,7 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
@@ -43,8 +44,11 @@ import com.github.mikephil.charting.utils.FileUtils;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.dynamiclinks.FirebaseDynamicLinks;
+import com.google.firebase.dynamiclinks.PendingDynamicLinkData;
 import com.n4u1.AQA.AQA.R;
 import com.n4u1.AQA.AQA.dialog.NotEmailDialog;
 import com.n4u1.AQA.AQA.dialog.NotFoundGUIDDialog;
@@ -513,6 +517,29 @@ public class HomeActivity extends AppCompatActivity implements SwipeRefreshLayou
 
             }
         });
+
+
+        FirebaseDynamicLinks.getInstance().getDynamicLink(getIntent())
+                .addOnSuccessListener(new OnSuccessListener<PendingDynamicLinkData>() {
+                    @Override
+                    public void onSuccess(PendingDynamicLinkData pendingDynamicLinkData) {
+                        if (pendingDynamicLinkData == null) {
+                            return;
+                        }
+
+                        Uri deepLink = pendingDynamicLinkData.getLink();
+                        String contentKey = deepLink.getQueryParameter("contentKey");
+                        Log.d("lkj key???", contentKey);
+
+                        if (!TextUtils.isEmpty(contentKey)) {
+                            Intent intent = new Intent(HomeActivity.this, PollRankingActivity.class);
+                            intent.putExtra("contentKey", contentKey);
+                            Log.d("lkj key?????????", contentKey);
+                            startActivity(intent);
+                        }
+                    }
+                });
+
     }
 
     //실시간투표 fadingTextView 세팅

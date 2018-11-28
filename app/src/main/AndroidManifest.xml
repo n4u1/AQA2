@@ -63,10 +63,10 @@
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
                 <data
-                    android:host="aqa.ranking.com"
+                    android:host="aaqa.ranking.com"
                     android:scheme="https" />
                 <data
-                    android:host="aqa.ranking.com"
+                    android:host="aaqa.ranking.com"
                     android:scheme="http" />
             </intent-filter>
         </activity>
