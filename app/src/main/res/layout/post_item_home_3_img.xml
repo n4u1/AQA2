@@ -191,13 +191,6 @@
                 android:textColor="#737373" />
 
 
-            <ImageView
-                android:id="@+id/imageView_share"
-                android:layout_width="0dp"
-                android:layout_height="24dp"
-                android:layout_weight="1"
-                android:src="@drawable/ic_share_black_24dp" />
-
 
             <ImageView
                 android:id="@+id/imageView_state"

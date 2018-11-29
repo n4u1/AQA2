@@ -946,6 +946,7 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
         });
 
 
+        //공유 클릭
         findViewById(R.id.pollActivity_imageView_share).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

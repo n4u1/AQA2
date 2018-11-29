@@ -925,19 +925,14 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
         });
 
 
-
+        //공유 클릭
         findViewById(R.id.pollActivity_imageView_share).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 String id = pollActivity_textView_userId.getText().toString();
                 ShareDialog shareDialog = ShareDialog.newInstance(id);
                 shareDialog.show(getSupportFragmentManager(), "shareDialog");
                 shareUrl = shareContent.getShareUrl();
-//
-
-//                ShareDialog shareDialog = new ShareDialog();
-//                shareDialog.show(getSupportFragmentManager(), "shareDialog");
             }
         });
     }
