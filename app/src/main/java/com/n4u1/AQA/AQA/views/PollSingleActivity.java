@@ -50,6 +50,7 @@ import com.n4u1.AQA.AQA.dialog.PollInitInfoDialog;
 import com.n4u1.AQA.AQA.dialog.PollResultAnonymousDialog;
 import com.n4u1.AQA.AQA.dialog.PollResultDialog;
 import com.n4u1.AQA.AQA.dialog.PollSingleChoiceActivity;
+import com.n4u1.AQA.AQA.dialog.ShareDialog;
 import com.n4u1.AQA.AQA.dialog.UserAlarmDialog;
 import com.n4u1.AQA.AQA.models.ContentDTO;
 import com.n4u1.AQA.AQA.models.ReplyDTO;
@@ -64,6 +65,8 @@ import com.google.firebase.database.MutableData;
 import com.google.firebase.database.Transaction;
 import com.google.firebase.database.ValueEventListener;
 import com.n4u1.AQA.AQA.util.ImageSaver;
+import com.n4u1.AQA.AQA.util.ShareContent;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -76,7 +79,8 @@ import java.util.Map;
 import java.util.TimeZone;
 
 
-public class PollSingleActivity extends AppCompatActivity implements View.OnClickListener, ContentDeleteDialog.ContentDeleteDialogListener {
+public class PollSingleActivity extends AppCompatActivity implements View.OnClickListener,
+        ContentDeleteDialog.ContentDeleteDialogListener, ShareDialog.ShareDialogListener {
 
     private boolean ACTIVITY_REPLY_FLAG;
     private boolean ACTIVITY_BESTREPLY_FLAG;
@@ -91,14 +95,18 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
     private FirebaseDatabase likeFirebaseDatabase;
     private String replyKey;
 
-    final ArrayList<ReplyDTO> replyDTOS = new ArrayList<>();
-    private HashMap<String, String> issueMap = new HashMap<>();
-
-//    private LruCache<String, Bitmap> mMemoryCache;
 
     private String contentKey;
     int contentHit;
     boolean checkUserHitContent = false;
+
+    final ArrayList<ReplyDTO> replyDTOS = new ArrayList<>();
+    private HashMap<String, String> issueMap = new HashMap<>();
+    private ShareContent shareContent;
+
+
+//    private LruCache<String, Bitmap> mMemoryCache;
+
 
 
 
@@ -120,7 +128,7 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
 
 
     ImageView pollActivity_imageView_userClass, imageView_userClass0, imageView_userClass1, imageView_userClass2;
-    ImageView pollActivity_button_replySend;
+    ImageView pollActivity_button_replySend, pollActivity_imageView_share;
     EditText pollActivity_editText_reply;
     RecyclerView pollActivity_recyclerView_reply;
     RelativeLayout pollActivity_relativeLayout_reply;
@@ -139,6 +147,7 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
 
     TextView pollActivity_textView_hitCount, pollActivity_textView_likeCount, pollActivity_textView_contentId, pollActivity_textView_replyCount;
     ImageView pollActivity_imageView_state, pollActivity_imageView_like, pollActivity_imageView_alarm;
+    String shareUrl;
 
 
     @Override
@@ -167,6 +176,11 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
         } else {
             contentKey = getIntent().getStringExtra("contentKey");
         }
+
+        shareContent = new ShareContent(contentKey, "single");
+
+
+
 
         final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
@@ -210,6 +224,7 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
         pollActivity_imageView_userAddContent_8 = findViewById(R.id.pollActivity_imageView_userAddContent_8);
         pollActivity_imageView_userAddContent_9 = findViewById(R.id.pollActivity_imageView_userAddContent_9);
         pollActivity_imageView_userAddContent_10 = findViewById(R.id.pollActivity_imageView_userAddContent_10);
+
 
         pollActivity_textView_userId = findViewById(R.id.pollActivity_textView_userId);
         linearLayout_bestReply0 = findViewById(R.id.linearLayout_bestReply0);
@@ -927,6 +942,18 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
+            }
+        });
+
+
+        findViewById(R.id.pollActivity_imageView_share).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                String id = pollActivity_textView_userId.getText().toString();
+                ShareDialog shareDialog = ShareDialog.newInstance(id);
+                shareDialog.show(getSupportFragmentManager(), "shareDialog");
+                shareUrl = shareContent.getShareUrl();
             }
         });
 
@@ -3068,6 +3095,25 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
         output.copyTo(bitmap);
 
         return bitmap;
+    }
+
+    @Override
+    public void ShareDialogCallback(String string) {
+        if (string.equals("공유하기")) {
+
+            Intent intent = new Intent(android.content.Intent.ACTION_SEND);
+            intent.setType("text/plain");
+//                     Set default text message
+//                     카톡, 이메일, MMS 다 이걸로 설정 가능
+            String subject = "AQA 둘중에 하나만 골라!";
+            String text = shareUrl;
+            intent.putExtra(Intent.EXTRA_SUBJECT, subject);
+            intent.putExtra(Intent.EXTRA_TEXT, text);
+//                     Title of intent
+            Intent chooser = Intent.createChooser(intent, "공유하기");
+            startActivity(chooser);
+
+        }
     }
 
 

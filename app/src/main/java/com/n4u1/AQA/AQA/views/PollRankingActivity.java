@@ -66,6 +66,7 @@ import com.n4u1.AQA.AQA.dialog.PollInitInfoDialog;
 import com.n4u1.AQA.AQA.dialog.PollResultAnonymousDialog;
 import com.n4u1.AQA.AQA.dialog.PollResultRankingDialog;
 import com.n4u1.AQA.AQA.dialog.PollRankingChoiceActivity;
+import com.n4u1.AQA.AQA.dialog.ShareDialog;
 import com.n4u1.AQA.AQA.dialog.UserAlarmDialog;
 import com.n4u1.AQA.AQA.models.ContentDTO;
 import com.n4u1.AQA.AQA.models.ReplyDTO;
@@ -80,6 +81,7 @@ import com.google.firebase.database.MutableData;
 import com.google.firebase.database.Transaction;
 import com.google.firebase.database.ValueEventListener;
 import com.n4u1.AQA.AQA.util.ImageSaver;
+import com.n4u1.AQA.AQA.util.ShareContent;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -95,7 +97,8 @@ import java.util.TimeZone;
 import jp.wasabeef.glide.transformations.BlurTransformation;
 
 public class PollRankingActivity extends AppCompatActivity implements View.OnClickListener,
-        ContentDeleteDialog.ContentDeleteDialogListener, PollButtonInfoDialog.PollButtonInfoDialogListener {
+        ContentDeleteDialog.ContentDeleteDialogListener, PollButtonInfoDialog.PollButtonInfoDialogListener,
+        ShareDialog.ShareDialogListener {
 
 
     private boolean ACTIVITY_REPLY_FLAG;
@@ -117,9 +120,9 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
     final ArrayList<ReplyDTO> replyDTOS = new ArrayList<>();
     private HashMap<String, String> issueMap = new HashMap<>();
     private HashMap<ImageView, String> userChoiceMap = new HashMap<>();
-
     boolean checkUserHitContent = false;
     int contentHit;
+    String tmpContentKey, tmpPollMode;
 
     RelativeLayout pollActivity_relativeLayout_addImage_1;
     FloatingActionButton pollActivity_fab_result;
@@ -145,7 +148,7 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
             pollActivity_imageView_replyView_1, pollActivity_imageView_replyView_2;
 
     ImageView pollActivity_imageView_userClass, imageView_userClass0, imageView_userClass1, imageView_userClass2;
-    ImageView pollActivity_button_replySend;
+    ImageView pollActivity_button_replySend, pollActivity_imageView_share;
     EditText pollActivity_editText_reply;
     RecyclerView pollActivity_recyclerView_reply;
     RelativeLayout pollActivity_relativeLayout_reply;
@@ -165,6 +168,7 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
     TextView pollActivity_textView_hitCount, pollActivity_textView_likeCount, pollActivity_textView_contentId, pollActivity_textView_replyCount;
     ImageView pollActivity_imageView_state, pollActivity_imageView_like, pollActivity_imageView_alarm;
 
+    String shareUrl;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -195,33 +199,10 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
             Log.d("lkj intent Test2", getIntent().getStringExtra("contentKey"));
         }
 
+        final ShareContent shareContent = new ShareContent(contentKey, "ranking");
 //        contentHit = getIntent().getIntExtra("contentHit", 999999);
 
 
-        //동적링크에서 contentKey받기 (이거 필요없는듯?)
-        FirebaseDynamicLinks.getInstance()
-                .getDynamicLink(getIntent())
-                .addOnSuccessListener(this, new OnSuccessListener<PendingDynamicLinkData>() {
-                    @Override
-                    public void onSuccess(PendingDynamicLinkData pendingDynamicLinkData) {
-                        // Get deep link from result (may be null if no link is found)
-                        Uri deepLink = null;
-//                        Log.d("lkj deepLink??", deepLink.toString());
-                        if (pendingDynamicLinkData != null) {
-                            deepLink = pendingDynamicLinkData.getLink();
-//                            contentKey = deepLink.getQueryParameter("contentKey");
-//                            mDatabaseReference = FirebaseDatabase.getInstance().getReference("user_contents").child(contentKey);
-                            Log.d("lkj deepLink", deepLink.toString());
-                        }
-                    }
-                })
-                .addOnFailureListener(this, new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.w("lkj getDynLink", "getDynamicLink:onFailure", e);
-                    }
-                });
-        //동적링크에서 contentKey받기 end
 
 
 //        Log.d("lkj title", title);
@@ -341,55 +322,6 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
         pollActivity_textView_check_9.setOnClickListener(this);
         pollActivity_textView_check_10.setOnClickListener(this);
 
-
-
-
-
-//        final Task<ShortDynamicLink> shortLinkTask = FirebaseDynamicLinks.getInstance().createDynamicLink()
-//                .setLink(getDeepLink(contentKey))
-//                .setDomainUriPrefix("aqapoll.page.link/HVFx")
-//                .setAndroidParameters(new DynamicLink.AndroidParameters.Builder("com.n4u1.AQA.AQA").build())
-//                .buildShortDynamicLink()
-//                .addOnCompleteListener(this, new OnCompleteListener<ShortDynamicLink>() {
-//                    @Override
-//                    public void onComplete(@NonNull Task<ShortDynamicLink> task) {
-//                        if (task.isSuccessful()) {
-//                            // Short link created
-//                            Uri shortLink = task.getResult().getShortLink();
-//                            Uri flowchartLink = task.getResult().getPreviewLink();
-//                            Log.d("lkj shortLink = ", shortLink.toString());
-//                            Log.d("lkj flowchartLink = ", flowchartLink.toString());
-//                        } else {
-//                            Log.d("lkj shortLink Err", "shortLink Err");
-//                            // Error
-//                            // ...
-//                        }
-//                    }
-//                });
-//
-//
-//        findViewById(R.id.buttonShare).setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Intent intent = new Intent(PollRankingActivity.this, TestActivity.class);
-//                startActivity(intent);
-//            }
-//        });
-
-
-
-
-//
-//        String shortLink = shortLinkTask.getResult().getShortLink().toString();
-//        Log.d("lkj shortLink22", shortLink.toString());
-
-
-//        SharedPreferences pref = getSharedPreferences("com.n4u1.AQA", MODE_PRIVATE);
-//        String spUserEmail = pref.getString("com.n4u1.AQA.fireBaseUserEmail", null);
-//        String spUserPassword = pref.getString("com.n4u1.AQA.fireBaseUserPassword", null);
-//        String currentId = auth.getCurrentUser().getUid();
-//        Log.d("lkj currentId", currentId);
-//        loginUser(spUserEmail, spUserPassword);
 
 
         //처음사용자 Q 버튼 알려주기
@@ -535,6 +467,7 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
 
         //이미투표했는지 여부 확인해서 floating action button 색 넣기
         fabCheck(firebaseDatabase.getReference().child("user_contents").child(contentKey));
+
 
         //투표하고 결과보기
         pollActivity_imageView_state.setOnClickListener(new View.OnClickListener() {
@@ -804,12 +737,16 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
         });
 
 
+
         //contentDTO 화면 초기세팅
         mDatabaseReferenceAlarm = FirebaseDatabase.getInstance().getReference();
         mDatabaseReferenceAlarm.child("user_contents").child(contentKey).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 ContentDTO contentDTO = dataSnapshot.getValue(ContentDTO.class);
+                tmpContentKey = contentDTO.getContentKey();
+                tmpPollMode = contentDTO.getPollMode();
+                tmpPollMode = tmpPollMode.replaceAll(" ", "");
                 pollActivity_textView_date.setText(contentDTO.getUploadDate());
                 pollActivity_textView_title.setText(contentDTO.getTitle());
                 pollActivity_textView_contentId.setText(contentDTO.getContentId());
@@ -988,6 +925,21 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
         });
 
 
+
+        findViewById(R.id.pollActivity_imageView_share).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                String id = pollActivity_textView_userId.getText().toString();
+                ShareDialog shareDialog = ShareDialog.newInstance(id);
+                shareDialog.show(getSupportFragmentManager(), "shareDialog");
+                shareUrl = shareContent.getShareUrl();
+//
+
+//                ShareDialog shareDialog = new ShareDialog();
+//                shareDialog.show(getSupportFragmentManager(), "shareDialog");
+            }
+        });
     }
 
     /*
@@ -2701,6 +2653,25 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
         output.copyTo(bitmap);
 
         return bitmap;
+    }
+
+    @Override
+    public void ShareDialogCallback(String string) {
+        if (string.equals("공유하기")) {
+
+            Intent intent = new Intent(android.content.Intent.ACTION_SEND);
+            intent.setType("text/plain");
+//                     Set default text message
+//                     카톡, 이메일, MMS 다 이걸로 설정 가능
+            String subject = "AQA 둘중에 하나만 골라!";
+            String text = shareUrl;
+            intent.putExtra(Intent.EXTRA_SUBJECT, subject);
+            intent.putExtra(Intent.EXTRA_TEXT, text);
+//                     Title of intent
+            Intent chooser = Intent.createChooser(intent, "공유하기");
+            startActivity(chooser);
+
+        }
     }
 
     //이미지 비트맵으로 만들어서 캐시에 저장

@@ -62,6 +62,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.n4u1.AQA.AQA.util.ShareContent;
 import com.tomer.fadingtextview.BuildConfig;
 import com.tomer.fadingtextview.FadingTextView;
 
@@ -98,6 +99,7 @@ public class HomeActivity extends AppCompatActivity implements SwipeRefreshLayou
     private long backPressedTime = 0;
     final ArrayList<String> tempKey = new ArrayList<>();
     final ArrayList<String> issueContents_ = new ArrayList<>();
+    private ShareContent shareContent = new ShareContent();
 
     FadingTextView fadingTextView;
     String[] issueContents = new String[5];
@@ -119,8 +121,6 @@ public class HomeActivity extends AppCompatActivity implements SwipeRefreshLayou
             getSupportActionBar().setDisplayShowHomeEnabled(true);
             getSupportActionBar().setTitle(null);
         }
-
-
 
 
 
@@ -158,12 +158,12 @@ public class HomeActivity extends AppCompatActivity implements SwipeRefreshLayou
         }
 
         //testActivity
-        findViewById(R.id.testActivity).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(getApplicationContext(), TestActivity.class));
-            }
-        });
+//        findViewById(R.id.testActivity).setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                startActivity(new Intent(getApplicationContext(), TestActivity.class));
+//            }
+//        });
 
 
         //공지사항 db/notice/flag true일때 공지 다이얼로그
@@ -519,6 +519,7 @@ public class HomeActivity extends AppCompatActivity implements SwipeRefreshLayou
         });
 
 
+        //다이나믹 링크 받기
         FirebaseDynamicLinks.getInstance().getDynamicLink(getIntent())
                 .addOnSuccessListener(new OnSuccessListener<PendingDynamicLinkData>() {
                     @Override
@@ -529,18 +530,31 @@ public class HomeActivity extends AppCompatActivity implements SwipeRefreshLayou
 
                         Uri deepLink = pendingDynamicLinkData.getLink();
                         String contentKey = deepLink.getQueryParameter("contentKey");
-                        Log.d("lkj key???", contentKey);
+                        String pollMode = deepLink.getQueryParameter("pollMode");
+//                        Log.d("lkj key???", contentKey);
 
                         if (!TextUtils.isEmpty(contentKey)) {
-                            Intent intent = new Intent(HomeActivity.this, PollRankingActivity.class);
-                            intent.putExtra("contentKey", contentKey);
-                            Log.d("lkj key?????????", contentKey);
-                            startActivity(intent);
+                            if (pollMode.equals("single")) {
+                                Intent intent = new Intent(HomeActivity.this, PollSingleActivity.class);
+                                intent.putExtra("contentKey", contentKey);
+                                Log.d("lkj key?????", contentKey);
+                                Log.d("lkj mode?????", pollMode);
+                                startActivity(intent);
+                            }
+                            if (pollMode.equals("ranking")) {
+                                Intent intent = new Intent(HomeActivity.this, PollRankingActivity.class);
+                                intent.putExtra("contentKey", contentKey);
+                                Log.d("lkj key???", contentKey);
+                                Log.d("lkj mode???", pollMode);
+                                startActivity(intent);
+                            }
+
                         }
                     }
                 });
 
     }
+
 
     //실시간투표 fadingTextView 세팅
     private void onIssueContents(String[] issueContents) {
@@ -738,24 +752,25 @@ public class HomeActivity extends AppCompatActivity implements SwipeRefreshLayou
             case "공유하기":
                 try {
 //                    test 버전
-                    Toast toast = Toast.makeText(this, "정식 버전 되면 많이 해주세요!!", Toast.LENGTH_SHORT);
-                    toast.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL, 0, 0);
-                    toast.show();
+//                    Toast toast = Toast.makeText(this, "정식 버전 되면 많이 해주세요!!", Toast.LENGTH_SHORT);
+//                    toast.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL, 0, 0);
+//                    toast.show();
 
 
 
-////                    real 버전
-//                    Intent intent = new Intent(android.content.Intent.ACTION_SEND);
-//                    intent.setType("text/plain");
-////                     Set default text message
-////                     카톡, 이메일, MMS 다 이걸로 설정 가능
-//                    String subject = "문자의 제목";
-//                    String text = "AQA\nFunny Trustly Purely\n골라봐!\nhttps://play.google.com/apps/testing/com.n4u1.AQA.AQA";
-//                    intent.putExtra(Intent.EXTRA_SUBJECT, subject);
-//                    intent.putExtra(Intent.EXTRA_TEXT, text);
-////                     Title of intent
-//                    Intent chooser = Intent.createChooser(intent, "공유하기");
-//                    startActivity(chooser);
+
+//                    real 버전
+                    Intent intent = new Intent(android.content.Intent.ACTION_SEND);
+                    intent.setType("text/plain");
+//                     Set default text message
+//                     카톡, 이메일, MMS 다 이걸로 설정 가능
+                    String subject = "AQA 둘중에 하나만 골라!";
+                    String text = shareContent.getShareUrl();
+                    intent.putExtra(Intent.EXTRA_SUBJECT, subject);
+                    intent.putExtra(Intent.EXTRA_TEXT, text);
+//                     Title of intent
+                    Intent chooser = Intent.createChooser(intent, "공유하기");
+                    startActivity(chooser);
 
 
 
