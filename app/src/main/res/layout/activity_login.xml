@@ -83,38 +83,19 @@
     </android.support.design.widget.TextInputLayout>
 
 
-    <!--<EditText-->
-    <!--android:theme="@style/TextLabel"-->
-    <!--android:id="@+id/editText_password"-->
-    <!--android:layout_width="wrap_content"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:layout_marginBottom="8dp"-->
-    <!--android:layout_marginEnd="8dp"-->
-    <!--android:layout_marginLeft="8dp"-->
-    <!--android:layout_marginRight="8dp"-->
-    <!--android:layout_marginStart="8dp"-->
-    <!--android:layout_marginTop="8dp"-->
-    <!--android:ems="10"-->
-    <!--android:hint="password"-->
-    <!--android:inputType="textPassword"-->
-    <!--app:layout_constraintBottom_toBottomOf="parent"-->
-    <!--app:layout_constraintEnd_toEndOf="parent"-->
-    <!--app:layout_constraintHorizontal_bias="0.503"-->
-    <!--app:layout_constraintStart_toStartOf="parent"-->
-    <!--app:layout_constraintTop_toTopOf="parent"-->
-    <!--app:layout_constraintVertical_bias="0.227" />-->
 
 
     <TextView
-        android:id="@+id/textView_preview"
+        android:id="@+id/textView_initDevice"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:text="둘러보기"
+        android:layout_marginTop="16dp"
+        android:text="기기초기화"
         android:textColor="#4485c9"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.501"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout_initDevice" />
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout_findUser" />
 
 
     <TextView
@@ -126,7 +107,7 @@
         android:textColor="#4485c9"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView_preview" />
+        app:layout_constraintTop_toBottomOf="@+id/textView_initDevice" />
 
 
     <LinearLayout
@@ -164,7 +145,7 @@
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout_loginUser">
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout_preView">
 
         <TextView
             android:layout_width="wrap_content"
@@ -202,7 +183,7 @@
 
 
     <LinearLayout
-        android:id="@+id/linearLayout_initDevice"
+        android:id="@+id/linearLayout_preView"
         android:layout_width="200dp"
         android:layout_height="48dp"
         android:layout_marginTop="16dp"
@@ -212,14 +193,14 @@
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout_findUser">
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout_loginUser">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="16dp"
-            android:drawableStart="@drawable/ic_usersearch"
-            android:text="   기기 초기화"
+            android:drawableStart="@drawable/ic_userlogin_start"
+            android:text="   둘러보기"
             android:textColor="#454545"
             android:textSize="16dp" />
     </LinearLayout>

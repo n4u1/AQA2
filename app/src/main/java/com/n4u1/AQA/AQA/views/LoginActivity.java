@@ -24,6 +24,9 @@ import android.widget.Toast;
 import com.google.android.gms.ads.identifier.AdvertisingIdClient;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.n4u1.AQA.AQA.R;
@@ -33,26 +36,34 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.n4u1.AQA.AQA.dialog.AgainPasswordDialog;
 import com.n4u1.AQA.AQA.dialog.GUIDFailDialog;
+import com.n4u1.AQA.AQA.dialog.InitDeviceDialog;
 import com.n4u1.AQA.AQA.dialog.NotEmailDialog;
 import com.n4u1.AQA.AQA.dialog.NotInputDialog;
 import com.n4u1.AQA.AQA.dialog.PreviewDialog;
 import com.n4u1.AQA.AQA.dialog.PrivacyPolicyActivity;
+import com.n4u1.AQA.AQA.models.User;
+import com.n4u1.AQA.AQA.splash.LoadingDialog;
 import com.n4u1.AQA.AQA.splash.SplashGuidActivity;
 import com.n4u1.AQA.AQA.splash.SplashLoadingActivity;
 
 
 import java.io.IOException;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 
-public class LoginActivity extends AppCompatActivity implements PreviewDialog.PreviewDialogListener{
+public class LoginActivity extends AppCompatActivity
+        implements PreviewDialog.PreviewDialogListener, InitDeviceDialog.InitDeviceDialogListener {
+
     private FirebaseAuth mAuth;
 
     private long backPressedTime = 0;
-    EditText editTextEmail;
-    EditText editTextPassword;
+    private EditText editTextEmail;
+    private EditText editTextPassword;
+    private DatabaseReference mDatabaseReference;
+    private LoadingDialog loadingDialog;
 
 
     @SuppressLint("ClickableViewAccessibility")
@@ -67,37 +78,61 @@ public class LoginActivity extends AppCompatActivity implements PreviewDialog.Pr
         final LinearLayout linearLayout_createUser = findViewById(R.id.linearLayout_createUser);
         final LinearLayout linearLayout_loginUser = findViewById(R.id.linearLayout_loginUser);
         final LinearLayout linearLayout_findUser = findViewById(R.id.linearLayout_findUser);
-        final LinearLayout linearLayout_initDevice = findViewById(R.id.linearLayout_initDevice);
-        final TextView textView_preview = findViewById(R.id.textView_preview);
+        final LinearLayout linearLayout_preView = findViewById(R.id.linearLayout_preView);
+        final TextView textView_initDevice = findViewById(R.id.textView_initDevice);
 //        String htmlString = "<u>둘러보기</u>";
 
+        loadingDialog = new LoadingDialog(LoginActivity.this);
 
 
 
 
+        mDatabaseReference = FirebaseDatabase.getInstance().getReference();
         mAuth = FirebaseAuth.getInstance();
         editTextEmail = findViewById(R.id.editText_email);
         editTextPassword = findViewById(R.id.editText_password);
 
 
-        //testButton -> TestActivity
-        findViewById(R.id.buttonTest).setOnClickListener(new View.OnClickListener() {
+        //로그인하기
+        linearLayout_loginUser.setOnTouchListener(new View.OnTouchListener() {
             @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(LoginActivity.this, TestActivity.class);
-                startActivity(intent);
+            public boolean onTouch(View v, MotionEvent event) {
+                if (MotionEvent.ACTION_UP == event.getAction()) {
+                    linearLayout_loginUser.setBackgroundResource(R.drawable.shape);
+                    String userId;
+                    userId = editTextEmail.getText().toString();
+                    if (editTextEmail.getText().toString().equals("") || editTextPassword.getText().toString().equals("")) {
+                        NotInputDialog notInputDialog = new NotInputDialog();
+                        notInputDialog.show(getSupportFragmentManager(), "notInputDialog");
+                    } else if (!checkEmail(editTextEmail.getText().toString())) {
+                        NotEmailDialog notEmailDialog = new NotEmailDialog();
+                        notEmailDialog.show(getSupportFragmentManager(), "notEmailDialog");
+                    } else if (editTextPassword.getText().toString().length() < 6) {
+                        AgainPasswordDialog againPasswordDialog = new AgainPasswordDialog();
+                        againPasswordDialog.show(getSupportFragmentManager(), "againPasswordDialog");
+                    } else {
+                        loginUser(userId, editTextPassword.getText().toString());
+                    }
+                }
+                if (MotionEvent.ACTION_DOWN == event.getAction()) {
+                    linearLayout_loginUser.setBackgroundResource(R.drawable.shape_click);
+                }
+                return true;
             }
         });
 
+
+
+
         //둘러보기
-        textView_preview.setOnTouchListener(new View.OnTouchListener() {
+        linearLayout_preView.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 if (MotionEvent.ACTION_DOWN == event.getAction()) {
-                    textView_preview.setTextColor(0xFF88B6E7);
+                    linearLayout_preView.setBackgroundResource(R.drawable.shape_click);
                 }
                 if (MotionEvent.ACTION_UP == event.getAction()) {
-                    textView_preview.setTextColor(0xff4485c9);
+                    linearLayout_preView.setBackgroundResource(R.drawable.shape);
                     PreviewDialog previewDialog = new PreviewDialog();
                     previewDialog.show(getSupportFragmentManager(), "previewDialog");
                 }
@@ -105,6 +140,25 @@ public class LoginActivity extends AppCompatActivity implements PreviewDialog.Pr
             }
 
         });
+
+
+        //기기 초기화, Google Device Id Init
+        textView_initDevice.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (MotionEvent.ACTION_UP == event.getAction()) {
+                    textView_initDevice.setTextColor(0xff4485c9);
+                    InitDeviceDialog initDeviceDialog = new InitDeviceDialog();
+                    initDeviceDialog.show(getSupportFragmentManager(), "initDeviceDialog");
+                }
+                if (MotionEvent.ACTION_DOWN == event.getAction()) {
+                    textView_initDevice.setTextColor(0xFF88B6E7);
+                }
+                return true;
+            }
+        });
+
+
 
 
         //이용약관
@@ -146,38 +200,11 @@ public class LoginActivity extends AppCompatActivity implements PreviewDialog.Pr
             @Override
             public void onClick(View view) {
 //                Toast.makeText(getApplicationContext(), "Hidden Quest Complete!\n오늘 좋은일이 생길거에요!", Toast.LENGTH_LONG).show();
-                Toast.makeText(getApplicationContext(), "히든 퀘스트!!\n잘생긴 경준이 오빠라고 하면 커피 쏩니다ㅋㅋㅋㅋㅋㅋㅋㅋㅋ선착순1명ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "행복한 하루 되세요!", Toast.LENGTH_LONG).show();
 
             }
         });
 
-        //로그인하기
-        linearLayout_loginUser.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                if (MotionEvent.ACTION_UP == event.getAction()) {
-                    linearLayout_loginUser.setBackgroundResource(R.drawable.shape);
-                    String userId;
-                    userId = editTextEmail.getText().toString();
-                    if (editTextEmail.getText().toString().equals("") || editTextPassword.getText().toString().equals("")) {
-                        NotInputDialog notInputDialog = new NotInputDialog();
-                        notInputDialog.show(getSupportFragmentManager(), "notInputDialog");
-                    } else if (!checkEmail(editTextEmail.getText().toString())) {
-                        NotEmailDialog notEmailDialog = new NotEmailDialog();
-                        notEmailDialog.show(getSupportFragmentManager(), "notEmailDialog");
-                    } else if (editTextPassword.getText().toString().length() < 6) {
-                        AgainPasswordDialog againPasswordDialog = new AgainPasswordDialog();
-                        againPasswordDialog.show(getSupportFragmentManager(), "againPasswordDialog");
-                    } else {
-                        loginUser(userId, editTextPassword.getText().toString());
-                    }
-                }
-                if (MotionEvent.ACTION_DOWN == event.getAction()) {
-                    linearLayout_loginUser.setBackgroundResource(R.drawable.shape_click);
-                }
-                return true;
-            }
-        });
 
 
         //계정 만들기
@@ -213,17 +240,15 @@ public class LoginActivity extends AppCompatActivity implements PreviewDialog.Pr
             }
         });
 
-        //기기 초기화, Google Device Id Init
-        linearLayout_initDevice.setOnTouchListener(new View.OnTouchListener() {
+
+
+
+        //testButton -> TestActivity
+        findViewById(R.id.buttonTest).setOnClickListener(new View.OnClickListener() {
             @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                if (MotionEvent.ACTION_UP == event.getAction()) {
-                    linearLayout_initDevice.setBackgroundResource(R.drawable.shape);
-                }
-                if (MotionEvent.ACTION_DOWN == event.getAction()) {
-                    linearLayout_initDevice.setBackgroundResource(R.drawable.shape_click);
-                }
-                return true;
+            public void onClick(View v) {
+                Intent intent = new Intent(LoginActivity.this, TestActivity.class);
+                startActivity(intent);
             }
         });
 
@@ -289,23 +314,6 @@ public class LoginActivity extends AppCompatActivity implements PreviewDialog.Pr
     }
 
 
-    @Override
-    public void PreviewDialogCallback(String string) {
-        if (string.equals("확인")) {
-
-            SharedPreferences pref = getSharedPreferences("com.n4u1.AQA", MODE_PRIVATE);
-            String spUserEmail = pref.getString("com.n4u1.AQA.fireBaseUserEmail", null);
-            String spUserPassword = pref.getString("com.n4u1.AQA.fireBaseUserPassword", null);
-
-
-            Intent intent = new Intent(LoginActivity.this, SplashGuidActivity.class);
-            intent.putExtra("userLoginFlag", "preView");
-            startActivity(intent);
-//            Toast toast = Toast.makeText(this, "준비중 입니다.", Toast.LENGTH_SHORT);
-//            toast.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL, 0, 0);
-//            toast.show();
-        }
-    }
 
 
     @Override
@@ -325,4 +333,96 @@ public class LoginActivity extends AppCompatActivity implements PreviewDialog.Pr
     }
 
 
+    @Override
+    public void InitDeviceDialogCallback(String string) {
+        if (string.equals("확인")) {
+            loadingDialog.show();
+            mAuth.signInAnonymously().addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                @Override
+                public void onComplete(@NonNull Task<AuthResult> task) {
+                    if (task.isSuccessful()) {
+                        GUIDAsyncTask guidAsyncTask = new GUIDAsyncTask();
+                        guidAsyncTask.execute();
+                    }
+                }
+            });
+
+
+
+
+        }
+    }
+
+
+    @Override
+    public void PreviewDialogCallback(String string) {
+        if (string.equals("확인")) {
+
+            SharedPreferences pref = getSharedPreferences("com.n4u1.AQA", MODE_PRIVATE);
+            String spUserEmail = pref.getString("com.n4u1.AQA.fireBaseUserEmail", null);
+            String spUserPassword = pref.getString("com.n4u1.AQA.fireBaseUserPassword", null);
+
+
+            Intent intent = new Intent(LoginActivity.this, SplashGuidActivity.class);
+            intent.putExtra("userLoginFlag", "preView");
+            startActivity(intent);
+//            Toast toast = Toast.makeText(this, "준비중 입니다.", Toast.LENGTH_SHORT);
+//            toast.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL, 0, 0);
+//            toast.show();
+        }
+    }
+
+
+
+    private class GUIDAsyncTask extends AsyncTask<Void, Void, String> {
+        @Override
+        protected String doInBackground(Void... voids) {
+
+            AdvertisingIdClient.Info idInfo = null;
+            try {
+                idInfo = AdvertisingIdClient.getAdvertisingIdInfo(getApplicationContext());
+            } catch (GooglePlayServicesNotAvailableException e) {
+                e.printStackTrace();
+            } catch (GooglePlayServicesRepairableException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            String advertId = null;
+            try {
+                advertId = idInfo.getId();
+            } catch (NullPointerException e) {
+                e.printStackTrace();
+            }
+            Log.d("lkj advertId1", advertId);
+            return advertId;
+        }
+
+        @Override
+        protected void onPostExecute(final String advertId) {
+            Log.d("lkj advertId2", advertId);
+            mDatabaseReference.child("users").addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//                    User user = dataSnapshot.getValue(User.class);
+                    Iterator<DataSnapshot> usersIterator = dataSnapshot.getChildren().iterator();
+                    while (usersIterator.hasNext()) {
+                        Map<String, Object> user = (Map<String, Object>) usersIterator.next().getValue();
+                        String guid = String.valueOf(user.get("guid"));
+                        if (guid.equals(advertId)) {
+                            Log.d("lkj user ad id", String.valueOf(user.get("userId")));
+                            mDatabaseReference.child("users").child(String.valueOf(user.get("uid"))).child("guid").setValue("");
+                        }
+                    }
+                    loadingDialog.dismiss();
+                    mAuth.signOut();
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
+        }
+    }
 }
