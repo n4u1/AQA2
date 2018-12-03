@@ -19,7 +19,7 @@
         android:layout_alignParentBottom="true"
         android:layout_marginRight="24dp"
         android:layout_marginBottom="24dp"
-        android:src="@drawable/q"
+        android:src="@drawable/ic_aqa_qicon"
         app:backgroundTint="#ffffff" />
 
 

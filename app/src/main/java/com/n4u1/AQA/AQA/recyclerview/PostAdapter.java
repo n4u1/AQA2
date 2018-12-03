@@ -341,7 +341,7 @@ public class PostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
 
                 if (contentDTOS.get(position).contentPicker.containsKey(auth.getCurrentUser().getUid())) {
-                    ((PostViewHolder1) holder).imageView_state.setImageResource(R.drawable.q);
+                    ((PostViewHolder1) holder).imageView_state.setImageResource(R.drawable.ic_aqa_qicon);
                 } else {
                     ((PostViewHolder1) holder).imageView_state.setImageResource(R.drawable.q_bg_w);
                 }
@@ -356,7 +356,7 @@ public class PostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
 
                 if (contentDTOS.get(position).title.length() >= 15) {
-                    ((PostViewHolder1) holder).textView_title.setText(contentDTOS.get(position).title.substring(0,15) + "...");
+                    ((PostViewHolder1) holder).textView_title.setText(contentDTOS.get(position).title.substring(0,14) + "...");
                 } else {
                     ((PostViewHolder1) holder).textView_title.setText(contentDTOS.get(position).title);
                 }
@@ -508,7 +508,7 @@ public class PostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 });
 
                 if (contentDTOS.get(position).contentPicker.containsKey(auth.getCurrentUser().getUid())) {
-                    ((PostViewHolder2) holder).imageView_state.setImageResource(R.drawable.q);
+                    ((PostViewHolder2) holder).imageView_state.setImageResource(R.drawable.ic_aqa_qicon);
                 } else {
                     ((PostViewHolder2) holder).imageView_state.setImageResource(R.drawable.q_bg_w);
                 }
@@ -522,7 +522,7 @@ public class PostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
 
                 if (contentDTOS.get(position).title.length() >= 15) {
-                    ((PostViewHolder2) holder).textView_title.setText(contentDTOS.get(position).title.substring(0,15) + "...");
+                    ((PostViewHolder2) holder).textView_title.setText(contentDTOS.get(position).title.substring(0,14) + "...");
                 } else {
                     ((PostViewHolder2) holder).textView_title.setText(contentDTOS.get(position).title);
                 }
@@ -684,7 +684,7 @@ public class PostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 });
 
                 if (contentDTOS.get(position).contentPicker.containsKey(auth.getCurrentUser().getUid())) {
-                    ((PostViewHolder3) holder).imageView_state.setImageResource(R.drawable.q);
+                    ((PostViewHolder3) holder).imageView_state.setImageResource(R.drawable.ic_aqa_qicon);
                 } else {
                     ((PostViewHolder3) holder).imageView_state.setImageResource(R.drawable.q_bg_w);
                 }
@@ -699,7 +699,7 @@ public class PostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
 
                 if (contentDTOS.get(position).title.length() >= 15) {
-                    ((PostViewHolder3) holder).textView_title.setText(contentDTOS.get(position).title.substring(0,15) + "...");
+                    ((PostViewHolder3) holder).textView_title.setText(contentDTOS.get(position).title.substring(0,14) + "...");
                 } else {
                     ((PostViewHolder3) holder).textView_title.setText(contentDTOS.get(position).title);
                 }
@@ -844,7 +844,7 @@ public class PostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
                 //투표여부
                 if (contentDTOS.get(position).contentPicker.containsKey(auth.getCurrentUser().getUid())) {
-                    ((PostViewHolder100) holder).imageView_state.setImageResource(R.drawable.q);
+                    ((PostViewHolder100) holder).imageView_state.setImageResource(R.drawable.ic_aqa_qicon);
                 } else {
                     ((PostViewHolder100) holder).imageView_state.setImageResource(R.drawable.q_bg_w);
                 }
@@ -860,7 +860,7 @@ public class PostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
                 //타이틀은 15자 이상이면 '...'표시
                 if (contentDTOS.get(position).title.length() >= 15) {
-                    ((PostViewHolder100) holder).textView_title.setText(contentDTOS.get(position).title.substring(0,15) + "...");
+                    ((PostViewHolder100) holder).textView_title.setText(contentDTOS.get(position).title.substring(0,14) + "...");
                 } else {
                     ((PostViewHolder100) holder).textView_title.setText(contentDTOS.get(position).title);
                 }

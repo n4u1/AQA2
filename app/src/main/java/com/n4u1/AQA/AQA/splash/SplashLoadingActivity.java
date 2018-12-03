@@ -25,16 +25,23 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.n4u1.AQA.AQA.R;
 import com.n4u1.AQA.AQA.dialog.GUIDFailDialog;
+import com.n4u1.AQA.AQA.dialog.GUIDInitDialog;
+import com.n4u1.AQA.AQA.dialog.LiveIdDialog;
 import com.n4u1.AQA.AQA.views.HomeActivity;
 import com.n4u1.AQA.AQA.views.LoginActivity;
 
 import java.io.IOException;
+import java.util.Iterator;
 import java.util.Map;
 
-public class SplashLoadingActivity extends AppCompatActivity implements GUIDFailDialog.GUIDFailDialogListener {
+public class SplashLoadingActivity extends AppCompatActivity
+        implements GUIDFailDialog.GUIDFailDialogListener, GUIDInitDialog.GUIDInitDialogListener {
 
     String email, password;
     FirebaseAuth mAuth;
+    private String guid;
+    private String userId = "nullId";
+    private String uIdTemp = "nullIdTemp";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,6 +101,7 @@ public class SplashLoadingActivity extends AppCompatActivity implements GUIDFail
 //        thread.start();
 
     }
+
     /*
     onCreate();
      */
@@ -119,6 +127,7 @@ public class SplashLoadingActivity extends AppCompatActivity implements GUIDFail
                 e.printStackTrace();
             }
             Log.d("lkj advertId1", advertId);
+            guid = advertId;
             return advertId;
         }
 
@@ -130,25 +139,107 @@ public class SplashLoadingActivity extends AppCompatActivity implements GUIDFail
                 toast.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL, 0, 0);
                 toast.show();
             } else {
+                Log.d("lkj test1", "test1");
                 DatabaseReference mDatabaseRef;
                 mDatabaseRef = FirebaseDatabase.getInstance().getReference();
-                mDatabaseRef.child("users").child(mAuth.getCurrentUser().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+                mDatabaseRef.child("users").addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        Map<String, Object> user = (Map<String, Object>) dataSnapshot.getValue();
-                        if (user.get("guid").toString().equals(advertId)) {
+                        Log.d("lkj test2", "test2");
+
+                        int adIdFlag_1 = 0;
+                        int adIdFlag_2 = 0;
+                        Iterator<DataSnapshot> usersIterator = dataSnapshot.getChildren().iterator();
+                        while (usersIterator.hasNext()) {
+                            Log.d("lkj test3", "test3");
+                            Map<String, Object> user = (Map<String, Object>) usersIterator.next().getValue();
+                            if (advertId.equals(user.get("guid"))) { // 현재 구글ID가 디비에 있는지?
+                                uIdTemp = String.valueOf(user.get("uid"));
+                                adIdFlag_1++;
+//                                Log.d("lkj user ad id", String.valueOf(user.get("userId")));
+                                if (String.valueOf(user.get("uid")).equals(mAuth.getCurrentUser().getUid())) {
+                                    userId = String.valueOf(user.get("userId"));
+                                    adIdFlag_1--;
+                                    adIdFlag_2++;
+                                }
+                                Log.d("lkj adIdFlag", String.valueOf(adIdFlag_1));
+                            }
+                            if (String.valueOf(user.get("uid")).equals(mAuth.getCurrentUser().getUid())) { //현재로그인한 계정이 디비에 있는지?
+                                adIdFlag_2++;
+                            }
+                        }
+                        /*
+                        adIdFlag_1	adIdFlag_2	결과
+                            0       	2		정상 로그인 :
+                            0       	0		이럴경우는 없겠지?
+                            1       	0		구글ID가 디비에는 있는데 현재 로그인한 계정과 맞지 않을경우 : 다른 이메일로 로그인 시도
+                            0       	1		처음 사용하는 다른 기기에서 기존 이메일로 로그인 시도는? : 다른 기기에서 로그인시도
+                            2	        1		구글아이디가 2개인데 현재 로그인하려는 계정과 연결 되어있지 않음
+                            3       	1		구글아이디가 3개인데 현재 로그인하려는 계정과 연결 되어있지 않음
+                            4       	1		구글아이디가 4개인데 현재 로그인하려는 계정과 연결 되어있지 않음
+                         */
+
+                        //확인한후에 로직
+                        //정상 로그인
+                        if (adIdFlag_1 == 0 && adIdFlag_2 == 2) {
                             SharedPreferences pref = getSharedPreferences("com.n4u1.AQA", MODE_PRIVATE);
                             SharedPreferences.Editor editor = pref.edit();
                             editor.putString("com.n4u1.AQA.fireBaseUserEmail", email);
                             editor.putString("com.n4u1.AQA.fireBaseUserPassword", password);
                             editor.commit();
-
                             Handler hd = new Handler();
                             hd.postDelayed(new splashhandlerHome(), 100);
-                        } else {
+                            finish();
+
+                        }
+                        //다른 이메일로 로그인 시도
+                        else if (adIdFlag_1 == 1 && adIdFlag_2 == 0) {
+                            //현재의 guid가 DB상에 존재할경우 초기화 진행
                             GUIDFailDialog guidFailDialog = new GUIDFailDialog();
                             guidFailDialog.show(getSupportFragmentManager(), "guidFailDialog");
+
                         }
+                        //다른 기기에서 로그인 시도
+                        else if (adIdFlag_1 == 0 && adIdFlag_2 == 1) {
+                            GUIDInitDialog guidInitDialog = new GUIDInitDialog();
+                            guidInitDialog.show(getSupportFragmentManager(), "guidInitDialog");
+
+                        }
+                        //adminAuth에 포함되어있는 아이디일 경우 로그인
+                        else {
+                            DatabaseReference mDatabaseRefAdmin;
+                            mDatabaseRefAdmin = FirebaseDatabase.getInstance().getReference();
+                            mDatabaseRefAdmin.child("adminAuth").child("1").addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                    for (int i = 0; i < dataSnapshot.getChildrenCount(); i++) {
+                                        Map<String, Boolean> adminMap = (Map<String, Boolean>) dataSnapshot.getValue();
+                                        Log.d("lkj adminId", adminMap.keySet().toString());
+                                        Log.d("lkj current userId", userId);
+                                        if (adminMap.keySet().toString().contains(userId)) {
+                                            SharedPreferences pref = getSharedPreferences("com.n4u1.AQA", MODE_PRIVATE);
+                                            SharedPreferences.Editor editor = pref.edit();
+                                            editor.putString("com.n4u1.AQA.fireBaseUserEmail", email);
+                                            editor.putString("com.n4u1.AQA.fireBaseUserPassword", password);
+                                            editor.commit();
+                                            Handler hd = new Handler();
+                                            hd.postDelayed(new splashhandlerHome(), 100);
+                                            finish();
+                                        }
+                                    }
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                }
+                            });
+                            //이도 저도 아니면 로그인 실패
+                            Toast.makeText(getApplicationContext(), "로그인 실패", Toast.LENGTH_LONG).show();
+                            finish();
+                        }
+                        Log.d("lkj flag1", String.valueOf(adIdFlag_1));
+                        Log.d("lkj flag2", String.valueOf(adIdFlag_2));
                     }
 
                     @Override
@@ -157,6 +248,44 @@ public class SplashLoadingActivity extends AppCompatActivity implements GUIDFail
                     }
                 });
             }
+        }
+    }
+
+    //다른 이메일로 로그인 시도
+    @Override
+    public void GUIDFailDialogCallback(String string) {
+        if (string.equals("확인")) {
+            DatabaseReference mDatabaseRef = FirebaseDatabase.getInstance().getReference();
+            //초기화를 위해서 기존에 있던건 null로 넣어주고 지금 로그인한 게정에 guid를 넣어줌
+            mDatabaseRef.child("users").child(mAuth.getCurrentUser().getUid()).child("guid").setValue(guid);
+            mDatabaseRef.child("users").child(uIdTemp).child("guid").setValue("");
+            SharedPreferences pref = getSharedPreferences("com.n4u1.AQA", MODE_PRIVATE);
+            SharedPreferences.Editor editor = pref.edit();
+            editor.putString("com.n4u1.AQA.fireBaseUserEmail", email);
+            editor.putString("com.n4u1.AQA.fireBaseUserPassword", password);
+            editor.commit();
+
+            Handler hd = new Handler();
+            hd.postDelayed(new splashhandlerHome(), 100);
+        }
+    }
+
+
+    //다른 기기에서 로그인 시도
+    @Override
+    public void GUIDInitDialogCallback(String string) {
+        if (string.equals("확인")) {
+            DatabaseReference mDatabaseRef = FirebaseDatabase.getInstance().getReference();
+            //초기화를 위해서 현재 로그인한 계정의 guid에 현재의 guid로 변경
+            mDatabaseRef.child("users").child(mAuth.getCurrentUser().getUid()).child("guid").setValue(guid);
+            SharedPreferences pref = getSharedPreferences("com.n4u1.AQA", MODE_PRIVATE);
+            SharedPreferences.Editor editor = pref.edit();
+            editor.putString("com.n4u1.AQA.fireBaseUserEmail", email);
+            editor.putString("com.n4u1.AQA.fireBaseUserPassword", password);
+            editor.commit();
+
+            Handler hd = new Handler();
+            hd.postDelayed(new splashhandlerHome(), 100);
         }
     }
 
@@ -177,14 +306,6 @@ public class SplashLoadingActivity extends AppCompatActivity implements GUIDFail
             finish();
             startActivity(intent);
 
-//            startActivity(new Intent(getApplication(), HomeActivity.class)); // 로딩이 끝난후 이동할 Activity
-//            SplashLoadingActivity.this.finish(); // 로딩페이지 Activity Stack에서 제거
         }
-    }
-
-
-    @Override
-    public void GUIDFailDialogCallback(String string) {
-        if (string.equals("확인")) finish();
     }
 }

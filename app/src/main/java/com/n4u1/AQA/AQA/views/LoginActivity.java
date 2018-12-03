@@ -411,7 +411,7 @@ public class LoginActivity extends AppCompatActivity
                         String guid = String.valueOf(user.get("guid"));
                         if (guid.equals(advertId)) {
                             Log.d("lkj user ad id", String.valueOf(user.get("userId")));
-                            mDatabaseReference.child("users").child(String.valueOf(user.get("uid"))).child("guid").setValue("");
+//                            mDatabaseReference.child("users").child(String.valueOf(user.get("uid"))).child("guid").setValue("");
                         }
                     }
                     loadingDialog.dismiss();

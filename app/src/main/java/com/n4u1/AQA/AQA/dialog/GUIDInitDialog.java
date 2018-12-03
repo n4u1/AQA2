@@ -8,16 +8,16 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
 
-public class GUIDFailDialog extends DialogFragment {
-    public GUIDFailDialog() {
+public class GUIDInitDialog extends DialogFragment {
+    public GUIDInitDialog() {
     }
 
 
-    public interface GUIDFailDialogListener {
-        public void GUIDFailDialogCallback(String string);
+    public interface GUIDInitDialogListener {
+        public void GUIDInitDialogCallback(String string);
     }
 
-    GUIDFailDialogListener mListener;
+    GUIDInitDialogListener mListener;
 
     @NonNull
     @Override
@@ -33,7 +33,7 @@ public class GUIDFailDialog extends DialogFragment {
         builder.setPositiveButton("확 인", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                mListener.GUIDFailDialogCallback("확인");
+                mListener.GUIDInitDialogCallback("확인");
             }
         });
 
@@ -54,7 +54,7 @@ public class GUIDFailDialog extends DialogFragment {
         try {
             // Instantiate the NoticeDialogListener so we can send events to the host
 //            mListener = (GoHomeDialog.GoHomeDialogListener) getActivity();
-            mListener = (GUIDFailDialog.GUIDFailDialogListener) getActivity();
+            mListener = (GUIDInitDialog.GUIDInitDialogListener) getActivity();
         } catch (ClassCastException e) {
             // The activity doesn't implement the interface, throw exception
             throw new ClassCastException(context.toString()

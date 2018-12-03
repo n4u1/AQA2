@@ -514,7 +514,7 @@
                     android:layout_height="24dp"
                     android:layout_gravity="center"
                     android:layout_weight="1"
-                    android:src="@drawable/q" />
+                    android:src="@drawable/ic_aqa_qicon" />
 
                 <TextView
                     android:id="@+id/mineActivity_textView_aqa"

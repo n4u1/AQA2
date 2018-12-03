@@ -132,7 +132,7 @@ public class PostAdapterMine extends RecyclerView.Adapter<RecyclerView.ViewHolde
             ((PostViewHolderMine) holder).textView_likeCount.setText(String.valueOf(contentDTOS.get(position).likeCount));
         }
         if (contentDTOS.get(position).contentPicker.containsKey(mUser.getUid())) {
-            ((PostViewHolderMine) holder).imageView_state.setImageResource(R.drawable.q);
+            ((PostViewHolderMine) holder).imageView_state.setImageResource(R.drawable.ic_aqa_qicon);
         } else {
             ((PostViewHolderMine) holder).imageView_state.setImageResource(R.drawable.q_bg_w);
         }

@@ -1415,8 +1415,8 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
                     return Transaction.success(mutableData);
                 }
                 if (contentDTO.contentPicker.containsKey(auth.getCurrentUser().getUid())) {
-                    pollActivity_fab_result.setImageResource(R.drawable.q); //fab 파란색
-                    pollActivity_imageView_state.setImageResource(R.drawable.q);
+                    pollActivity_fab_result.setImageResource(R.drawable.ic_aqa_qicon); //fab 파란색
+                    pollActivity_imageView_state.setImageResource(R.drawable.ic_aqa_qicon);
                     checkUserHitContent = true;//투표여부
                 } else {
                     pollActivity_fab_result.setImageResource(R.drawable.q_bg_w); //fab 흰색

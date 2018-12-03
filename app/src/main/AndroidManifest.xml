@@ -13,7 +13,7 @@
     <!-- INTENT-FILTER 넣어야함 ??? -->
     <application
         android:allowBackup="true"
-        android:icon="@drawable/q"
+        android:icon="@drawable/ic_aqa_qicon"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
