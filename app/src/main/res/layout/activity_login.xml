@@ -83,36 +83,22 @@
     </android.support.design.widget.TextInputLayout>
 
 
-
-
-    <TextView
-        android:id="@+id/textView_initDevice"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="기기초기화"
-        android:textColor="#4485c9"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.501"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout_findUser" />
-
-
-    <TextView
-        android:id="@+id/textView_servicePolicy"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="이용약관"
-        android:textColor="#4485c9"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView_initDevice" />
+    <!--<TextView-->
+    <!--android:id="@+id/textView_initDevice"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_marginTop="16dp"-->
+    <!--android:text="기기초기화"-->
+    <!--android:textColor="#4485c9"-->
+    <!--app:layout_constraintEnd_toEndOf="parent"-->
+    <!--app:layout_constraintHorizontal_bias="0.501"-->
+    <!--app:layout_constraintStart_toStartOf="parent"-->
+    <!--app:layout_constraintTop_toBottomOf="@+id/linearLayout_findUser" />-->
 
 
     <LinearLayout
         android:id="@+id/linearLayout_loginUser"
-        android:layout_width="200dp"
+        android:layout_width="240dp"
         android:layout_height="48dp"
         android:layout_marginTop="16dp"
         android:background="@drawable/shape"
@@ -136,7 +122,7 @@
 
     <LinearLayout
         android:id="@+id/linearLayout_createUser"
-        android:layout_width="200dp"
+        android:layout_width="240dp"
         android:layout_height="48dp"
         android:layout_marginTop="16dp"
         android:background="@drawable/shape"
@@ -160,7 +146,7 @@
 
     <LinearLayout
         android:id="@+id/linearLayout_findUser"
-        android:layout_width="200dp"
+        android:layout_width="240dp"
         android:layout_height="48dp"
         android:layout_marginTop="16dp"
         android:background="@drawable/shape"
@@ -184,7 +170,7 @@
 
     <LinearLayout
         android:id="@+id/linearLayout_preView"
-        android:layout_width="200dp"
+        android:layout_width="240dp"
         android:layout_height="48dp"
         android:layout_marginTop="16dp"
         android:background="@drawable/shape"
@@ -206,6 +192,18 @@
     </LinearLayout>
 
 
+    <TextView
+        android:id="@+id/textView_servicePolicy"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="이용약관"
+        android:textColor="#4485c9"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout_findUser" />
+
+
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="106dp"
@@ -216,7 +214,7 @@
         app:layout_constraintBottom_toBottomOf="@+id/textView2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:srcCompat="@drawable/aqacustom2" />
+        app:srcCompat="@drawable/ic_aqa" />
 
     <TextView
         android:id="@+id/textView2"
@@ -288,46 +286,46 @@
         android:layout_marginStart="4dp"
         android:layout_marginBottom="132dp"
         android:text="a"
-        android:visibility="visible"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
     <Button
-        android:visibility="visible"
         android:id="@+id/buttonb"
         android:layout_width="54dp"
         android:layout_height="39dp"
         android:layout_marginStart="4dp"
         android:text="b"
+        android:visibility="gone"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/buttona" />
 
     <Button
-        android:visibility="visible"
         android:id="@+id/buttonc"
         android:layout_width="54dp"
         android:layout_height="39dp"
         android:layout_marginStart="4dp"
         android:text="c"
+        android:visibility="gone"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/buttonb" />
 
     <Button
-        android:visibility="visible"
         android:id="@+id/buttond"
         android:layout_width="54dp"
         android:layout_height="39dp"
         android:layout_marginStart="4dp"
         android:text="d"
+        android:visibility="gone"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/buttonc" />
 
     <Button
-        android:visibility="visible"
         android:id="@+id/buttonl"
         android:layout_width="54dp"
         android:layout_height="39dp"
         android:text="l"
+        android:visibility="gone"
         app:layout_constraintStart_toEndOf="@+id/buttond"
         app:layout_constraintTop_toBottomOf="@+id/buttonc" />
 
@@ -337,6 +335,7 @@
         android:layout_height="35dp"
         android:layout_marginEnd="32dp"
         android:layout_marginBottom="28dp"
+        android:visibility="gone"
         android:text="T"
         app:layout_constraintBottom_toTopOf="@+id/buttona"
         app:layout_constraintEnd_toStartOf="@+id/linearLayout_findUser" />

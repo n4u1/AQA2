@@ -116,7 +116,7 @@ public class HomeActivity extends AppCompatActivity implements SwipeRefreshLayou
         setSupportActionBar(myToolbar);
 
         if (getSupportActionBar() != null) {
-            getSupportActionBar().setHomeAsUpIndicator(R.mipmap.ic_aqa_custom);
+            getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_aqa);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
             getSupportActionBar().setTitle(null);

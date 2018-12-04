@@ -16,8 +16,10 @@ import jp.wasabeef.recyclerview.animators.holder.AnimateViewHolder;
 public class PostViewHolder3 extends RecyclerView.ViewHolder implements AnimateViewHolder {
 
     public ImageView imageView_postImg_0, imageView_postImg_1, imageView_postImg_2,
-            imageView_postImg_3, imageView_like, imageView_share, imageView_hitCount, imageView_state, imageView_userClass;
-    public TextView textView_likeCount, textView_userName, textView_title, textView_contentType, textView_hitCount, textView_replyCount, textView_pollMode;
+            imageView_postImg_3, imageView_like, imageView_share, imageView_hitCount,
+            imageView_state, imageView_userClass, imageView_reply;
+    public TextView textView_likeCount, textView_userName, textView_title, textView_contentType,
+            textView_hitCount, textView_pollMode, textView_reply;
 
 
     public PostViewHolder3(View itemView) {
@@ -31,12 +33,13 @@ public class PostViewHolder3 extends RecyclerView.ViewHolder implements AnimateV
         imageView_hitCount = itemView.findViewById(R.id.imageView_hitCount);
         imageView_like = itemView.findViewById(R.id.imageView_like);
         imageView_share = itemView.findViewById(R.id.imageView_share);
+        imageView_reply = itemView.findViewById(R.id.imageView_reply);
+        textView_reply = itemView.findViewById(R.id.textView_reply);
         textView_hitCount = itemView.findViewById(R.id.textView_hitCount);
         textView_likeCount = itemView.findViewById(R.id.textView_likeCount);
         textView_userName = itemView.findViewById(R.id.textView_userName);
         textView_title = itemView.findViewById(R.id.textView_title);
         textView_contentType = itemView.findViewById(R.id.textView_contentType);
-        textView_replyCount = itemView.findViewById(R.id.textView_replyCount);
         textView_pollMode = itemView.findViewById(R.id.textView_pollMode);
 
     }

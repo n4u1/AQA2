@@ -34,6 +34,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_toRightOf="@id/imageView_userClass"
+                android:maxLines="1"
                 android:textColor="#000000" />
 
             <TextView
@@ -43,6 +44,7 @@
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="8dp"
                 android:layout_toRightOf="@+id/textView_userName"
+                android:maxLines="1"
                 android:singleLine="true"
                 android:textColor="#737373" />
 
@@ -50,7 +52,8 @@
                 android:id="@+id/textView_replyCount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_toRightOf="@+id/textView_title" />
+                android:layout_toRightOf="@+id/textView_title"
+                android:maxLines="1" />
 
         </RelativeLayout>
 
@@ -130,7 +133,7 @@
                 android:id="@+id/textView_pollMode"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1.8"
+                android:layout_weight="3"
                 android:text="단일투표 / 3" />
 
         </LinearLayout>
@@ -168,6 +171,22 @@
 
 
             <ImageView
+                android:id="@+id/imageView_reply"
+                android:layout_width="0dp"
+                android:layout_height="24dp"
+                android:layout_weight="1"
+                android:src="@drawable/ic_replyicon_black" />
+
+
+            <TextView
+                android:id="@+id/textView_reply"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textColor="#737373" />
+
+
+            <ImageView
                 android:id="@+id/imageView_like"
                 android:layout_width="0dp"
                 android:layout_height="24dp"
@@ -183,12 +202,13 @@
                 android:textColor="#737373" />
 
 
+
             <ImageView
                 android:id="@+id/imageView_state"
                 android:layout_width="0dp"
                 android:layout_height="24dp"
                 android:layout_weight="1"
-                android:src="@drawable/q_bg_w" />
+                android:src="@drawable/ic_aqa_qw" />
 
 
         </LinearLayout>

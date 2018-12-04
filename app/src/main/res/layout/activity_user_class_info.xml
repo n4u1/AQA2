@@ -62,7 +62,7 @@
                     android:layout_weight="1"
                     android:gravity="center"
                     android:scaleType="fitCenter"
-                    android:src="@drawable/q_bg_w"
+                    android:src="@drawable/ic_aqa_qw"
                     android:text="모양" />
 
                 <TextView

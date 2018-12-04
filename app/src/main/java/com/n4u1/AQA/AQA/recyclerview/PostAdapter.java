@@ -201,6 +201,7 @@ public class PostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 ((PostViewHolder) holder).textView_userName.setText(contentDTOS.get(position).userID);
                 ((PostViewHolder) holder).textView_contentType.setText(contentDTOS.get(position).contentType);
                 ((PostViewHolder) holder).textView_hitCount.setText(String.valueOf(contentDTOS.get(position).contentHit));
+                ((PostViewHolder) holder).textView_reply.setText(String.valueOf(contentDTOS.get(position).replyCount));
 
                 GlideApp.with(holder.itemView.getContext()).load(contentDTOS.get(position).imageUrl_0).centerCrop().thumbnail(Glide.with(holder.itemView.getContext()).load(R.drawable.loadingicon)).into(((PostViewHolder) holder).imageView_postImg_0);
 
@@ -288,7 +289,7 @@ public class PostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 ((PostViewHolder1) holder).imageView_state.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Toast toast = Toast.makeText(mContext, "우와! 투표했더니 파란색이 칠해졌다!", Toast.LENGTH_SHORT);
+                        Toast toast = Toast.makeText(mContext, "투표한 게시글은 파란색 아이콘으로 변경 됩니다.", Toast.LENGTH_SHORT);
                         toast.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL, 0, 0);
                         toast.show();
                     }
@@ -343,7 +344,7 @@ public class PostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 if (contentDTOS.get(position).contentPicker.containsKey(auth.getCurrentUser().getUid())) {
                     ((PostViewHolder1) holder).imageView_state.setImageResource(R.drawable.ic_aqa_qicon);
                 } else {
-                    ((PostViewHolder1) holder).imageView_state.setImageResource(R.drawable.q_bg_w);
+                    ((PostViewHolder1) holder).imageView_state.setImageResource(R.drawable.ic_aqa_qw);
                 }
 
                 if (contentDTOS.get(position).likes.containsKey(auth.getCurrentUser().getUid())) {
@@ -365,7 +366,7 @@ public class PostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 ((PostViewHolder1)holder).textView_pollMode.setText(contentDTOS.get(position).pollMode + " / " + contentDTOS.get(position).itemViewType);
                 ((PostViewHolder1)holder).textView_contentType.setText(contentDTOS.get(position).contentType);
                 ((PostViewHolder1)holder).textView_hitCount.setText(String.valueOf(contentDTOS.get(position).contentHit));
-                ((PostViewHolder1)holder).textView_replyCount.setText(" [" + String.valueOf(contentDTOS.get(position).replyCount) + "]");
+                ((PostViewHolder1)holder).textView_reply.setText(String.valueOf(contentDTOS.get(position).replyCount));
 
                 //Q userClass 별로 색 세팅
                 try {
@@ -501,7 +502,7 @@ public class PostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 ((PostViewHolder2) holder).imageView_state.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Toast toast = Toast.makeText(mContext, "우와! 투표했더니 파란색이 칠해졌다!", Toast.LENGTH_SHORT);
+                        Toast toast = Toast.makeText(mContext, "투표한 게시글은 파란색 아이콘으로 변경 됩니다.", Toast.LENGTH_SHORT);
                         toast.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL, 0, 0);
                         toast.show();
                     }
@@ -510,7 +511,7 @@ public class PostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 if (contentDTOS.get(position).contentPicker.containsKey(auth.getCurrentUser().getUid())) {
                     ((PostViewHolder2) holder).imageView_state.setImageResource(R.drawable.ic_aqa_qicon);
                 } else {
-                    ((PostViewHolder2) holder).imageView_state.setImageResource(R.drawable.q_bg_w);
+                    ((PostViewHolder2) holder).imageView_state.setImageResource(R.drawable.ic_aqa_qw);
                 }
                 if (contentDTOS.get(position).likes.containsKey(auth.getCurrentUser().getUid())) {
                     ((PostViewHolder2) holder).imageView_like.setImageResource(R.drawable.ic_thumb_up_blue);
@@ -531,7 +532,7 @@ public class PostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 ((PostViewHolder2)holder).textView_pollMode.setText(contentDTOS.get(position).pollMode + " / " + contentDTOS.get(position).itemViewType);
                 ((PostViewHolder2) holder).textView_contentType.setText(contentDTOS.get(position).contentType);
                 ((PostViewHolder2) holder).textView_hitCount.setText(String.valueOf(contentDTOS.get(position).contentHit));
-                ((PostViewHolder2)holder).textView_replyCount.setText(" [" + String.valueOf(contentDTOS.get(position).replyCount) + "]");
+                ((PostViewHolder2)holder).textView_reply.setText(String.valueOf(contentDTOS.get(position).replyCount));
 
                 //Q userClass 별로 색 세팅
                 try {
@@ -677,7 +678,7 @@ public class PostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 ((PostViewHolder3) holder).imageView_state.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Toast toast = Toast.makeText(mContext, "우와! 투표했더니 파란색이 칠해졌다!", Toast.LENGTH_SHORT);
+                        Toast toast = Toast.makeText(mContext, "투표한 게시글은 파란색 아이콘으로 변경 됩니다.", Toast.LENGTH_SHORT);
                         toast.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL, 0, 0);
                         toast.show();
                     }
@@ -686,7 +687,7 @@ public class PostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 if (contentDTOS.get(position).contentPicker.containsKey(auth.getCurrentUser().getUid())) {
                     ((PostViewHolder3) holder).imageView_state.setImageResource(R.drawable.ic_aqa_qicon);
                 } else {
-                    ((PostViewHolder3) holder).imageView_state.setImageResource(R.drawable.q_bg_w);
+                    ((PostViewHolder3) holder).imageView_state.setImageResource(R.drawable.ic_aqa_qw);
                 }
 
                 if (contentDTOS.get(position).likes.containsKey(auth.getCurrentUser().getUid())) {
@@ -707,7 +708,7 @@ public class PostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 ((PostViewHolder3) holder).textView_pollMode.setText(contentDTOS.get(position).pollMode + " / " + contentDTOS.get(position).itemViewType);
                 ((PostViewHolder3) holder).textView_contentType.setText(contentDTOS.get(position).contentType);
                 ((PostViewHolder3) holder).textView_hitCount.setText(String.valueOf(contentDTOS.get(position).contentHit));
-                ((PostViewHolder3) holder).textView_replyCount.setText(" [" + String.valueOf(contentDTOS.get(position).replyCount) + "]");
+                ((PostViewHolder3)holder).textView_reply.setText(String.valueOf(contentDTOS.get(position).replyCount));
 
 
                 //Q userClass 별로 색 세팅
@@ -792,7 +793,7 @@ public class PostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 ((PostViewHolder100) holder).imageView_state.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Toast toast = Toast.makeText(mContext, "우와! 투표했더니 파란색이 칠해졌다!", Toast.LENGTH_SHORT);
+                        Toast toast = Toast.makeText(mContext, "투표한 게시글은 파란색 아이콘으로 변경 됩니다.", Toast.LENGTH_SHORT);
                         toast.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL, 0, 0);
                         toast.show();
                     }
@@ -846,7 +847,7 @@ public class PostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 if (contentDTOS.get(position).contentPicker.containsKey(auth.getCurrentUser().getUid())) {
                     ((PostViewHolder100) holder).imageView_state.setImageResource(R.drawable.ic_aqa_qicon);
                 } else {
-                    ((PostViewHolder100) holder).imageView_state.setImageResource(R.drawable.q_bg_w);
+                    ((PostViewHolder100) holder).imageView_state.setImageResource(R.drawable.ic_aqa_qw);
                 }
 
                 //좋아요, 따봉아이콘

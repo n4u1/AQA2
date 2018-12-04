@@ -2143,8 +2143,8 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
                             runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
-                                    pollActivity_fab_result.setImageResource(R.drawable.q_bg_w);//fab 흰색
-                                    pollActivity_imageView_state.setImageResource(R.drawable.q_bg_w);
+                                    pollActivity_fab_result.setImageResource(R.drawable.ic_aqa_qw);//fab 흰색
+                                    pollActivity_imageView_state.setImageResource(R.drawable.ic_aqa_qw);
                                 }
                             });
                         }

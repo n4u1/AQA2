@@ -19,7 +19,7 @@
         android:layout_width="106dp"
         android:layout_height="80dp"
         android:layout_gravity="center"
-        app:srcCompat="@drawable/aqacustom2" />
+        app:srcCompat="@drawable/ic_aqa" />
 
 
     <android.support.design.widget.TextInputLayout

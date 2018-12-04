@@ -79,7 +79,7 @@ public class LoginActivity extends AppCompatActivity
         final LinearLayout linearLayout_loginUser = findViewById(R.id.linearLayout_loginUser);
         final LinearLayout linearLayout_findUser = findViewById(R.id.linearLayout_findUser);
         final LinearLayout linearLayout_preView = findViewById(R.id.linearLayout_preView);
-        final TextView textView_initDevice = findViewById(R.id.textView_initDevice);
+//        final TextView textView_initDevice = findViewById(R.id.textView_initDevice);
 //        String htmlString = "<u>둘러보기</u>";
 
         loadingDialog = new LoadingDialog(LoginActivity.this);
@@ -142,21 +142,21 @@ public class LoginActivity extends AppCompatActivity
         });
 
 
-        //기기 초기화, Google Device Id Init
-        textView_initDevice.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                if (MotionEvent.ACTION_UP == event.getAction()) {
-                    textView_initDevice.setTextColor(0xff4485c9);
-                    InitDeviceDialog initDeviceDialog = new InitDeviceDialog();
-                    initDeviceDialog.show(getSupportFragmentManager(), "initDeviceDialog");
-                }
-                if (MotionEvent.ACTION_DOWN == event.getAction()) {
-                    textView_initDevice.setTextColor(0xFF88B6E7);
-                }
-                return true;
-            }
-        });
+//        //기기 초기화, Google Device Id Init
+//        textView_initDevice.setOnTouchListener(new View.OnTouchListener() {
+//            @Override
+//            public boolean onTouch(View v, MotionEvent event) {
+//                if (MotionEvent.ACTION_UP == event.getAction()) {
+//                    textView_initDevice.setTextColor(0xff4485c9);
+//                    InitDeviceDialog initDeviceDialog = new InitDeviceDialog();
+//                    initDeviceDialog.show(getSupportFragmentManager(), "initDeviceDialog");
+//                }
+//                if (MotionEvent.ACTION_DOWN == event.getAction()) {
+//                    textView_initDevice.setTextColor(0xFF88B6E7);
+//                }
+//                return true;
+//            }
+//        });
 
 
 

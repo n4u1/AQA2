@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -122,7 +123,7 @@ public class PostAdapterMine extends RecyclerView.Adapter<RecyclerView.ViewHolde
         ((PostViewHolderMine) holder).textView_contentType.setText(contentDTOS.get(position).contentType);
         ((PostViewHolderMine) holder).textView_hitCount.setText(String.valueOf(contentDTOS.get(position).contentHit));
         ((PostViewHolderMine) holder).textView_likeCount.setText(String.valueOf(contentDTOS.get(position).likeCount));
-        ((PostViewHolderMine)holder).textView_replyCount.setText(" [" + String.valueOf(contentDTOS.get(position).replyCount) + "]");
+        ((PostViewHolderMine)holder).textView_replyCount.setText(String.valueOf(contentDTOS.get(position).replyCount));
         ((PostViewHolderMine)holder).textView_pollMode.setText(contentDTOS.get(position).pollMode + " / " + contentDTOS.get(position).itemViewType);
         if (contentDTOS.get(position).likes.containsKey(mUser.getUid())) {
             ((PostViewHolderMine) holder).imageView_like.setImageResource(R.drawable.ic_thumb_up_blue);
@@ -134,34 +135,40 @@ public class PostAdapterMine extends RecyclerView.Adapter<RecyclerView.ViewHolde
         if (contentDTOS.get(position).contentPicker.containsKey(mUser.getUid())) { 
             ((PostViewHolderMine) holder).imageView_state.setImageResource(R.drawable.ic_aqa_qicon);
         } else {
-            ((PostViewHolderMine) holder).imageView_state.setImageResource(R.drawable.q_bg_w);
+            ((PostViewHolderMine) holder).imageView_state.setImageResource(R.drawable.ic_aqa_qw);
         }
         //Q userClass 별로 색 세팅
+        Log.d("lkj dtoUid", contentDTOS.get(position).uid);
         mDatabase.getReference().child("users").child(contentDTOS.get(position).uid).child("userClass").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                int userClass = Integer.parseInt(dataSnapshot.getValue().toString());
-                if (userClass >= 0 && userClass < 50) {
-                    ((PostViewHolderMine)holder).imageView_userClass.setImageResource(R.drawable.q_class_red_1);
-                } else if (userClass >= 50 && userClass < 100) {
-                    ((PostViewHolderMine)holder).imageView_userClass.setImageResource(R.drawable.q_class_red_2);
-                } else if (userClass >= 100 && userClass < 150) {
-                    ((PostViewHolderMine)holder).imageView_userClass.setImageResource(R.drawable.q_class_orange_1);
-                } else if (userClass >= 150 && userClass < 200) {
-                    ((PostViewHolderMine)holder).imageView_userClass.setImageResource(R.drawable.q_class_orange_2);
-                } else if (userClass >= 200 && userClass < 250) {
-                    ((PostViewHolderMine)holder).imageView_userClass.setImageResource(R.drawable.q_class_yellow_1);
-                } else if (userClass >= 250 && userClass < 300) {
-                    ((PostViewHolderMine)holder).imageView_userClass.setImageResource(R.drawable.q_class_yellow_2);
-                } else if (userClass >= 300 && userClass < 350) {
-                    ((PostViewHolderMine)holder).imageView_userClass.setImageResource(R.drawable.q_class_green_1);
-                } else if (userClass >= 350 && userClass < 400) {
-                    ((PostViewHolderMine)holder).imageView_userClass.setImageResource(R.drawable.q_class_green_2);
-                } else if (userClass >= 400 && userClass < 450) {
-                    ((PostViewHolderMine)holder).imageView_userClass.setImageResource(R.drawable.q_class_blue_1);
-                } else if (userClass >= 450 && userClass < 501) {
-                    ((PostViewHolderMine)holder).imageView_userClass.setImageResource(R.drawable.q_class_blue_2);
+                try {
+                    int userClass = Integer.parseInt(dataSnapshot.getValue().toString());
+                    if (userClass >= 0 && userClass < 50) {
+                        ((PostViewHolderMine)holder).imageView_userClass.setImageResource(R.drawable.q_class_red_1);
+                    } else if (userClass >= 50 && userClass < 100) {
+                        ((PostViewHolderMine)holder).imageView_userClass.setImageResource(R.drawable.q_class_red_2);
+                    } else if (userClass >= 100 && userClass < 150) {
+                        ((PostViewHolderMine)holder).imageView_userClass.setImageResource(R.drawable.q_class_orange_1);
+                    } else if (userClass >= 150 && userClass < 200) {
+                        ((PostViewHolderMine)holder).imageView_userClass.setImageResource(R.drawable.q_class_orange_2);
+                    } else if (userClass >= 200 && userClass < 250) {
+                        ((PostViewHolderMine)holder).imageView_userClass.setImageResource(R.drawable.q_class_yellow_1);
+                    } else if (userClass >= 250 && userClass < 300) {
+                        ((PostViewHolderMine)holder).imageView_userClass.setImageResource(R.drawable.q_class_yellow_2);
+                    } else if (userClass >= 300 && userClass < 350) {
+                        ((PostViewHolderMine)holder).imageView_userClass.setImageResource(R.drawable.q_class_green_1);
+                    } else if (userClass >= 350 && userClass < 400) {
+                        ((PostViewHolderMine)holder).imageView_userClass.setImageResource(R.drawable.q_class_green_2);
+                    } else if (userClass >= 400 && userClass < 450) {
+                        ((PostViewHolderMine)holder).imageView_userClass.setImageResource(R.drawable.q_class_blue_1);
+                    } else if (userClass >= 450 && userClass < 501) {
+                        ((PostViewHolderMine)holder).imageView_userClass.setImageResource(R.drawable.q_class_blue_2);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
+
             }
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {

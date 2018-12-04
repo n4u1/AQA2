@@ -47,12 +47,6 @@
                 android:singleLine="true"
                 android:textColor="#737373" />
 
-            <TextView
-                android:id="@+id/textView_replyCount"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_toRightOf="@+id/textView_title"
-                android:text=" [5]" />
         </RelativeLayout>
 
         <View
@@ -127,6 +121,21 @@
                 android:text="3374"
                 android:textColor="#737373" />
 
+            <ImageView
+                android:id="@+id/imageView_replycount"
+                android:layout_width="0dp"
+                android:layout_height="24dp"
+                android:layout_weight="1"
+                android:src="@drawable/ic_replyicon_black" />
+
+
+            <TextView
+                android:id="@+id/textView_replyCount"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="2291"
+                android:textColor="#737373" />
 
             <ImageView
                 android:id="@+id/imageView_like"
@@ -144,12 +153,14 @@
                 android:text="2291"
                 android:textColor="#737373" />
 
+
+
             <ImageView
                 android:id="@+id/imageView_state"
                 android:layout_width="0dp"
                 android:layout_height="24dp"
                 android:layout_weight="1"
-                android:src="@drawable/q_bg_w" />
+                android:src="@drawable/ic_aqa_qw" />
 
 
         </LinearLayout>

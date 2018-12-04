@@ -29,7 +29,7 @@
             android:value="true" />
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_icon"
-            android:resource="@drawable/aqacustom2" />
+            android:resource="@drawable/ic_aqa" />
 
         <provider
             android:name="android.support.v4.content.FileProvider"
