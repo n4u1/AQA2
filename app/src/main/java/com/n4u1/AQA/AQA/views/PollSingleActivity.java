@@ -108,8 +108,6 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
 //    private LruCache<String, Bitmap> mMemoryCache;
 
 
-
-
     FloatingActionButton pollActivity_fab_result;
     TextView pollActivity_textView_title, pollActivity_textView_description,
             pollActivity_textView_pollMode, pollActivity_textView_contentType, pollActivity_textView_date;
@@ -166,9 +164,8 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
         }
 
 
-
         final Uri data = getIntent().getData();
-        if(data != null){
+        if (data != null) {
             Log.d("lkj Data2 in intent2", data.toString());
             Log.d("lkj Data2 in intent3", data.getLastPathSegment());
             Log.d("lkj Data2 in intent4", data.getQueryParameter("contentKey"));
@@ -178,8 +175,6 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
         }
 
         shareContent = new ShareContent(contentKey, "single");
-
-
 
 
         final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
@@ -339,12 +334,11 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
         }
 
 
-
         //알람설정 클릭
         pollActivity_imageView_alarm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(data != null){
+                if (data != null) {
                     contentKey = data.getQueryParameter("contentKey");
                 } else {
                     contentKey = getIntent().getStringExtra("contentKey");
@@ -444,30 +438,26 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
         pollActivity_imageView_state.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (user.isAnonymous()) {
-                    PollResultAnonymousDialog pollResultAnonymousDialog = new PollResultAnonymousDialog();
-                    pollResultAnonymousDialog.show(getSupportFragmentManager(), "pollResultAnonymousDialog ");
-                } else {
-                    mDatabaseReferencePicker.child(auth.getCurrentUser().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                            Map<String, Object> user = (Map<String, Object>) dataSnapshot.getValue();
-                            Object object = user.get("age");
-                            int currentAge = Integer.parseInt(object.toString());
-                            String currentGender = user.get("sex").toString();
-                            onResultClicked(firebaseDatabase.getReference().child("user_contents").child(contentKey), currentAge, currentGender);
+                mDatabaseReferencePicker.child(auth.getCurrentUser().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        Map<String, Object> user = (Map<String, Object>) dataSnapshot.getValue();
+                        Object object = user.get("age");
+                        int currentAge = Integer.parseInt(object.toString());
+                        String currentGender = user.get("sex").toString();
+                        onResultClicked(firebaseDatabase.getReference().child("user_contents").child(contentKey), currentAge, currentGender);
 //                        issueContents 테스트 디비 입력용
 //                        long issueDate = getCurrentDate();
 //                        issueMap.put(String.valueOf(issueDate), contentKey);
 //                        firebaseDatabase.getReference().child("issueContents").child(String.valueOf(issueDate)).setValue(issueMap);
-                        }
+                    }
 
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError databaseError) {
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
 
-                        }
-                    });
-                }
+                    }
+                });
+
 
             }
         });
@@ -476,28 +466,23 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
         pollActivity_fab_result.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (user.isAnonymous()) {
-                    PollResultAnonymousDialog pollResultAnonymousDialog = new PollResultAnonymousDialog();
-                    pollResultAnonymousDialog.show(getSupportFragmentManager(), "pollResultAnonymousDialog ");
-                } else {
-                    mDatabaseReferencePicker.child(auth.getCurrentUser().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                            Map<String, Object> user = (Map<String, Object>) dataSnapshot.getValue();
-                            Object object = user.get("age");
-                            int currentAge = Integer.parseInt(object.toString());
-                            String currentGender = user.get("sex").toString();
+                mDatabaseReferencePicker.child(auth.getCurrentUser().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        Map<String, Object> user = (Map<String, Object>) dataSnapshot.getValue();
+                        Object object = user.get("age");
+                        int currentAge = Integer.parseInt(object.toString());
+                        String currentGender = user.get("sex").toString();
 
-                            onResultClicked(firebaseDatabase.getReference().child("user_contents").child(contentKey), currentAge, currentGender);
+                        onResultClicked(firebaseDatabase.getReference().child("user_contents").child(contentKey), currentAge, currentGender);
 
-                        }
+                    }
 
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError databaseError) {
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
 
-                        }
-                    });
-                }
+                    }
+                });
 
 
             }
@@ -746,7 +731,6 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
                     }
 
 
-
                     if (contentDTO.likes.containsKey(auth.getCurrentUser().getUid())) {
                         pollActivity_imageView_like.setImageResource(R.drawable.ic_thumb_up_blue);
                     } else {
@@ -889,8 +873,6 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
                     }
 
 
-
-
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -1011,7 +993,7 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
 
     private void likeClick() {
         final Uri data = getIntent().getData();
-        if(data != null){
+        if (data != null) {
             contentKey = data.getQueryParameter("contentKey");
         } else {
             contentKey = getIntent().getStringExtra("contentKey");
@@ -1261,7 +1243,7 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
     private void onResultClicked(final DatabaseReference postRef, final int currentAge, final String currentGender) {
         Log.d("lkj contentAmount", String.valueOf(contentAmount));
         final Uri data = getIntent().getData();
-        if(data != null){
+        if (data != null) {
             contentKey = data.getQueryParameter("contentKey");
         } else {
             contentKey = getIntent().getStringExtra("contentKey");
@@ -2980,28 +2962,23 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
     //userPoint(userClass) 점수추가
     public void userPointAdd(final int point) {
         FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-        String uId = firebaseUser.getUid();
+        final String uId = firebaseUser.getUid();
+        final DatabaseReference tmpRef = FirebaseDatabase.getInstance().getReference();
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("users").child(uId);
 
-        databaseReference.runTransaction(new Transaction.Handler() {
-            @NonNull
-            @Override
-            public Transaction.Result doTransaction(@NonNull MutableData mutableData) {
-//                User user = mutableData.getValue(User.class);
-                Map<String, Object> user = (Map<String, Object>) mutableData.getValue();
-                if (user == null) {
-                    return Transaction.success(mutableData);
-                }
-                int tmp = Integer.parseInt(user.get("userClass").toString());
-                tmp = tmp + point;
-                user.put("userClass", tmp);
 
-                mutableData.setValue(user);
-                return Transaction.success(mutableData);
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                Map<String, Object> user = (Map<String, Object>) dataSnapshot.getValue();
+                int currentPoint = Integer.parseInt(String.valueOf(user.get("userClass")));
+                currentPoint = currentPoint + point;
+                tmpRef.child("users").child(uId).child("userClass").setValue(currentPoint);
+
             }
 
             @Override
-            public void onComplete(@Nullable DatabaseError databaseError, boolean b, @Nullable DataSnapshot dataSnapshot) {
+            public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
         });
@@ -3223,7 +3200,7 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
                                             imageSaver.setFileName(contentDTO.contentKey + "_4").setDirectoryName("AQA").save(bitmap);
                                         }
                                     });
-                            case 5:
+                        case 5:
                             Glide.with(getApplicationContext()).asBitmap().load(contentDTO.getImageUrl_0())
                                     .apply(new RequestOptions().override(200, 200))
                                     .into(new SimpleTarget<Bitmap>() {

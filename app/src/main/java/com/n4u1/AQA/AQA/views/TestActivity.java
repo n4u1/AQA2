@@ -1,24 +1,7 @@
 package com.n4u1.AQA.AQA.views;
 
-import android.content.ActivityNotFoundException;
-import android.content.Intent;
-import android.net.Uri;
-import android.support.annotation.NonNull;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
-
-import com.google.android.gms.appinvite.AppInviteInvitation;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.dynamiclinks.DynamicLink;
-import com.google.firebase.dynamiclinks.FirebaseDynamicLinks;
-import com.google.firebase.dynamiclinks.PendingDynamicLinkData;
-import com.google.firebase.dynamiclinks.ShortDynamicLink;
 import com.n4u1.AQA.AQA.R;
 
 public class TestActivity extends AppCompatActivity {
@@ -68,6 +51,7 @@ mineActivity 에서 이메일 항목 n 글자 이상일경우 ... 표시  / 내�
 ###################################################################################################################################################
 관리자 페이지 : 이벤트,공지사항업로드,각종조회되도록,런칭후 1년뒤 미사용자 체크후 개인정보 별도 보관필요
 ###################################################################################################################################################
+Q포인트 처음에 한번 안올라감 / 메일변경하기 / Q포인트 아이콘 변경 / 더해지다가 1000점 되면?? /
 ###################################################################################################################################################
 ###################################################################################################################################################
 ###################################################################################################################################################

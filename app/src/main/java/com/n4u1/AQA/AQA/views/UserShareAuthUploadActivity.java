@@ -29,6 +29,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.MutableData;
 import com.google.firebase.database.Transaction;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -231,28 +232,23 @@ public class UserShareAuthUploadActivity extends AppCompatActivity implements Go
     //userPoint(userClass) 점수추가
     public void userPointAdd(final int point) {
         FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-        String uId = firebaseUser.getUid();
+        final String uId = firebaseUser.getUid();
+        final DatabaseReference tmpRef = FirebaseDatabase.getInstance().getReference();
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("users").child(uId);
 
-        databaseReference.runTransaction(new Transaction.Handler() {
-            @NonNull
-            @Override
-            public Transaction.Result doTransaction(@NonNull MutableData mutableData) {
-//                User user = mutableData.getValue(User.class);
-                Map<String, Object> user = (Map<String, Object>) mutableData.getValue();
-                if (user == null) {
-                    return Transaction.success(mutableData);
-                }
-                int tmp = Integer.parseInt(user.get("userClass").toString());
-                tmp = tmp + point;
-                user.put("userClass", tmp);
 
-                mutableData.setValue(user);
-                return Transaction.success(mutableData);
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                Map<String, Object> user = (Map<String, Object>) dataSnapshot.getValue();
+                int currentPoint = Integer.parseInt(String.valueOf(user.get("userClass")));
+                currentPoint = currentPoint + point;
+                tmpRef.child("users").child(uId).child("userClass").setValue(currentPoint);
+
             }
 
             @Override
-            public void onComplete(@Nullable DatabaseError databaseError, boolean b, @Nullable DataSnapshot dataSnapshot) {
+            public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
         });

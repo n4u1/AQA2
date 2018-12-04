@@ -27,6 +27,7 @@ import com.n4u1.AQA.AQA.R;
 import com.n4u1.AQA.AQA.dialog.GUIDFailDialog;
 import com.n4u1.AQA.AQA.dialog.GUIDInitDialog;
 import com.n4u1.AQA.AQA.dialog.LiveIdDialog;
+import com.n4u1.AQA.AQA.dialog.NullEmailDialog;
 import com.n4u1.AQA.AQA.views.HomeActivity;
 import com.n4u1.AQA.AQA.views.LoginActivity;
 
@@ -72,33 +73,23 @@ public class SplashLoadingActivity extends AppCompatActivity
 //                            startActivity(intent);
 //                            finish();
                         } else {
-                            // If sign in fails, display a message to the user.
-                            Handler hd = new Handler();
-                            hd.postDelayed(new splashhandlerLogin(), 100);
-                            Toast.makeText(getApplicationContext(), "로그인 실패", Toast.LENGTH_LONG).show();
+                            if (task.getException().toString().contains("There is no user record corresponding to this identifier")) {
+//                                NullEmailDialog nullEmailDialog = new NullEmailDialog();
+//                                nullEmailDialog.show(getSupportFragmentManager(), "nullEmailDialog");
+                                Handler hd = new Handler();
+                                hd.postDelayed(new splashhandlerLogin(), 100);
+                                Toast.makeText(getApplicationContext(), "가입되어있는 이메일이 없습니다.", Toast.LENGTH_LONG).show();
+                            } else {
+                                Handler hd = new Handler();
+                                hd.postDelayed(new splashhandlerLogin(), 100);
+                                Toast.makeText(getApplicationContext(), "로그인 실패", Toast.LENGTH_LONG).show();
+                            }
+
+
                         }
                     }
                 });
 
-
-//        Thread thread = new Thread(new Runnable() {
-//            @Override
-//            public void run() {
-//                // 3초가 지나면
-//                TimerTask task = new TimerTask() {
-//                    @Override
-//                    public void run() {
-//                        Intent intent = new Intent(SplashLoadingActivity.this, HomeActivity.class);
-//                        startActivity(intent);
-//                        finish();
-//                    }
-//                };
-//
-//                Timer timer = new Timer();
-//                timer.schedule(task, 3000);
-//            }
-//        });
-//        thread.start();
 
     }
 
