@@ -36,10 +36,10 @@
             android:padding="16dp">
 
             <!--<Button-->
-                <!--android:id="@+id/buttonShare"-->
-                <!--android:text="test"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="wrap_content" />-->
+            <!--android:id="@+id/buttonShare"-->
+            <!--android:text="test"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content" />-->
 
             <!--제목-->
             <LinearLayout
@@ -97,6 +97,7 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_gravity="left"
+                    android:layout_marginRight="4dp"
                     android:layout_weight="0.5" />
 
                 <TextView
@@ -272,11 +273,11 @@
                     android:textSize="14dp" />
 
                 <ImageView
-                    android:paddingRight="16dp"
                     android:id="@+id/pollActivity_imageView_share"
                     android:layout_width="0dp"
                     android:layout_height="20dp"
                     android:layout_weight="4"
+                    android:paddingRight="16dp"
                     android:src="@drawable/ic_share_black_24dp" />
 
                 <ImageView
@@ -296,12 +297,12 @@
                 android:id="@+id/pollActivity_textView_state"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="8dp"
-                android:layout_gravity="center"
-                android:textStyle="bold"
                 android:textColor="#636363"
-                android:textSize="14sp" />
+                android:textSize="14sp"
+                android:textStyle="bold" />
 
 
             <View

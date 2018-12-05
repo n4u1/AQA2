@@ -116,11 +116,9 @@ public class SplashActivity extends AppCompatActivity implements GUIDFailDialog.
                                 guidAsyncTask.execute();
                             } else {
                                 Handler hd = new Handler();
-                                hd.postDelayed(new splashhandlerLogin(), 10);
+                                hd.postDelayed(new splashhandlerLogin(), 1000);
                             }
                             // If sign in fails, display a message to the user.
-                            Handler hd = new Handler();
-                            hd.postDelayed(new splashhandlerLogin(), 10);
 
                         }
                     }
@@ -167,7 +165,7 @@ public class SplashActivity extends AppCompatActivity implements GUIDFailDialog.
                         Map<String, Object> user = (Map<String, Object>) dataSnapshot.getValue();
                         if (user.get("guid").toString().equals(advertId)) {
                             Handler hd = new Handler();
-                            hd.postDelayed(new splashhandlerHome() , 10);
+                            hd.postDelayed(new splashhandlerHome() , 1000);
                         } else {
                             GUIDFailDialog guidFailDialog = new GUIDFailDialog();
                             guidFailDialog.show(getSupportFragmentManager(), "guidFailDialog");

@@ -564,11 +564,11 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
 //                        Log.d("lkj replyLike1", String.valueOf(replyDTOS.get(1).getLikeCount()));
 //                        Log.d("lkj replyLike2", String.valueOf(replyDTOS.get(2).getLikeCount()));
 
-                        if (replyDTOS.isEmpty()) {
-                            return;
-                        } else {
+                        if (!replyDTOS.isEmpty()) {
                             openBestReply(replyDTOS);
                         }
+
+
                     }
 
                     @Override
