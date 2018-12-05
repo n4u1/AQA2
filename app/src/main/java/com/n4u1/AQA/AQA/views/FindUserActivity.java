@@ -1,5 +1,6 @@
 package com.n4u1.AQA.AQA.views;
 
+import android.content.pm.ActivityInfo;
 import android.media.Image;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -31,6 +32,7 @@ public class FindUserActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT);
         setContentView(R.layout.activity_find_user);
 
         findUser_ImageView_findUser = findViewById(R.id.findUser_ImageView_findUser);

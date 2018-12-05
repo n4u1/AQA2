@@ -1,6 +1,7 @@
 package com.n4u1.AQA.AQA.views;
 
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -41,6 +42,7 @@ public class MyReplyContentsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT);
         setContentView(R.layout.activity_my_reply_contents);
 
         Toolbar myToolbar = findViewById(R.id.my_toolbar);

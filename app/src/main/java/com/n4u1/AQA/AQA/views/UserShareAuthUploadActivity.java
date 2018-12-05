@@ -2,6 +2,7 @@ package com.n4u1.AQA.AQA.views;
 
 import android.content.CursorLoader;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.database.Cursor;
 import android.net.Uri;
 import android.provider.MediaStore;
@@ -66,6 +67,7 @@ public class UserShareAuthUploadActivity extends AppCompatActivity implements Go
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT);
         setContentView(R.layout.activity_user_share_auth_upload);
 
         Toolbar myToolbar = findViewById(R.id.my_toolbar);

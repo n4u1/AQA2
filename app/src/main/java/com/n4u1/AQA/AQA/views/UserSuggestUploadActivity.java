@@ -2,6 +2,7 @@ package com.n4u1.AQA.AQA.views;
 
 import android.content.CursorLoader;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.database.Cursor;
 import android.net.Uri;
 import android.provider.MediaStore;
@@ -68,6 +69,7 @@ public class UserSuggestUploadActivity extends AppCompatActivity implements GoHo
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT);
         setContentView(R.layout.activity_user_suggest_upload);
 
 

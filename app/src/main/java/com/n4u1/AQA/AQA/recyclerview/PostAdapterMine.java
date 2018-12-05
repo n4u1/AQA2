@@ -28,7 +28,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class PostAdapterMine extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private Context mContext;
@@ -145,9 +144,9 @@ public class PostAdapterMine extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 try {
                     int userClass = Integer.parseInt(dataSnapshot.getValue().toString());
                     if (userClass >= 0 && userClass < 50) {
-                        ((PostViewHolderMine)holder).imageView_userClass.setImageResource(R.drawable.q_class_red_1);
-                    } else if (userClass >= 50 && userClass < 100) {
                         ((PostViewHolderMine)holder).imageView_userClass.setImageResource(R.drawable.q_class_red_2);
+                    } else if (userClass >= 50 && userClass < 100) {
+                        ((PostViewHolderMine)holder).imageView_userClass.setImageResource(R.drawable.q_class_red_1);
                     } else if (userClass >= 100 && userClass < 150) {
                         ((PostViewHolderMine)holder).imageView_userClass.setImageResource(R.drawable.q_class_orange_1);
                     } else if (userClass >= 150 && userClass < 200) {
@@ -161,7 +160,7 @@ public class PostAdapterMine extends RecyclerView.Adapter<RecyclerView.ViewHolde
                     } else if (userClass >= 350 && userClass < 400) {
                         ((PostViewHolderMine)holder).imageView_userClass.setImageResource(R.drawable.q_class_green_2);
                     } else if (userClass >= 400 && userClass < 450) {
-                        ((PostViewHolderMine)holder).imageView_userClass.setImageResource(R.drawable.q_class_blue_1);
+                        ((PostViewHolderMine)holder).imageView_userClass.setImageResource(R.drawable.q_class_blue_2);
                     } else if (userClass >= 450 && userClass < 501) {
                         ((PostViewHolderMine)holder).imageView_userClass.setImageResource(R.drawable.q_class_blue_2);
                     }

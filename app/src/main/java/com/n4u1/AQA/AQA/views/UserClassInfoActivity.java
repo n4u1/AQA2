@@ -1,5 +1,6 @@
 package com.n4u1.AQA.AQA.views;
 
+import android.content.pm.ActivityInfo;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;

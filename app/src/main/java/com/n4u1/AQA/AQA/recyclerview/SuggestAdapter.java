@@ -2,7 +2,6 @@ package com.n4u1.AQA.AQA.recyclerview;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -16,11 +15,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.n4u1.AQA.AQA.R;
-import com.n4u1.AQA.AQA.models.ContentDTO;
 import com.n4u1.AQA.AQA.models.SuggestDTO;
-import com.n4u1.AQA.AQA.views.PollRankingActivity;
-import com.n4u1.AQA.AQA.views.PollSingleActivity;
-import com.n4u1.AQA.AQA.views.SuggestActivity;
 import com.n4u1.AQA.AQA.views.SuggestDetailActivity;
 
 import java.util.ArrayList;
@@ -82,9 +77,9 @@ public class SuggestAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 try {
                     int userClass = Integer.parseInt(dataSnapshot.getValue().toString());
                     if (userClass >= 0 && userClass < 50) {
-                        ((SuggestViewHolder) viewHolder).imageView_userClass.setImageResource(R.drawable.q_class_red_1);
-                    } else if (userClass >= 50 && userClass < 100) {
                         ((SuggestViewHolder) viewHolder).imageView_userClass.setImageResource(R.drawable.q_class_red_2);
+                    } else if (userClass >= 50 && userClass < 100) {
+                        ((SuggestViewHolder) viewHolder).imageView_userClass.setImageResource(R.drawable.q_class_red_1);
                     } else if (userClass >= 100 && userClass < 150) {
                         ((SuggestViewHolder) viewHolder).imageView_userClass.setImageResource(R.drawable.q_class_orange_1);
                     } else if (userClass >= 150 && userClass < 200) {
@@ -98,7 +93,7 @@ public class SuggestAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                     } else if (userClass >= 350 && userClass < 400) {
                         ((SuggestViewHolder) viewHolder).imageView_userClass.setImageResource(R.drawable.q_class_green_2);
                     } else if (userClass >= 400 && userClass < 450) {
-                        ((SuggestViewHolder) viewHolder).imageView_userClass.setImageResource(R.drawable.q_class_blue_1);
+                        ((SuggestViewHolder) viewHolder).imageView_userClass.setImageResource(R.drawable.q_class_blue_2);
                     } else if (userClass >= 450 && userClass < 501) {
                         ((SuggestViewHolder) viewHolder).imageView_userClass.setImageResource(R.drawable.q_class_blue_2);
                     }

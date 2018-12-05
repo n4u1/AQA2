@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="300dp"
-    android:layout_height="400dp"
+    android:layout_height="600dp"
     android:orientation="vertical"
     android:padding="10dp"
     tools:context=".views.UserClassInfoActivity">
@@ -62,7 +62,7 @@
                     android:layout_weight="1"
                     android:gravity="center"
                     android:scaleType="fitCenter"
-                    android:src="@drawable/ic_aqa_qw"
+                    android:src="@drawable/ic_aqa_qicon"
                     android:text="모양" />
 
                 <TextView

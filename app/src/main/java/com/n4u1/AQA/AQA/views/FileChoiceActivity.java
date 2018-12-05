@@ -2,6 +2,7 @@ package com.n4u1.AQA.AQA.views;
 
 import android.content.CursorLoader;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.database.Cursor;
 import android.net.Uri;
 import android.provider.MediaStore;
@@ -77,13 +78,14 @@ public class FileChoiceActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT);
         setContentView(R.layout.activity_file_choice);
 
         Toolbar myToolbar = findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
         if (getSupportActionBar() != null) {
             getSupportActionBar().setTitle(null);
-            getSupportActionBar().setHomeAsUpIndicator(R.mipmap.ic_aqa_custom);
+            getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_aqa);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
         }

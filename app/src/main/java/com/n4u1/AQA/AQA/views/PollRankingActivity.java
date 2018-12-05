@@ -5,9 +5,9 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
 import android.graphics.drawable.ColorDrawable;
-import android.media.audiofx.AudioEffect;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.renderscript.Allocation;
@@ -17,7 +17,6 @@ import android.renderscript.ScriptIntrinsicBlur;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -32,7 +31,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -45,25 +43,13 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.transition.Transition;
-import com.google.android.gms.common.util.VisibleForTesting;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.ChildEventListener;
-import com.google.firebase.dynamiclinks.DynamicLink;
-import com.google.firebase.dynamiclinks.FirebaseDynamicLinks;
-import com.google.firebase.dynamiclinks.PendingDynamicLinkData;
-import com.google.firebase.dynamiclinks.ShortDynamicLink;
 import com.n4u1.AQA.AQA.R;
 import com.n4u1.AQA.AQA.dialog.AlarmDoneDialog;
 import com.n4u1.AQA.AQA.dialog.ContentDeleteDialog;
 import com.n4u1.AQA.AQA.dialog.DeleteModificationActivity;
 import com.n4u1.AQA.AQA.dialog.PollButtonInfoDialog;
 import com.n4u1.AQA.AQA.dialog.PollInitInfoDialog;
-import com.n4u1.AQA.AQA.dialog.PollResultAnonymousDialog;
 import com.n4u1.AQA.AQA.dialog.PollResultRankingDialog;
 import com.n4u1.AQA.AQA.dialog.PollRankingChoiceActivity;
 import com.n4u1.AQA.AQA.dialog.ShareDialog;
@@ -93,8 +79,6 @@ import java.util.Iterator;
 import java.util.Locale;
 import java.util.Map;
 import java.util.TimeZone;
-
-import jp.wasabeef.glide.transformations.BlurTransformation;
 
 public class PollRankingActivity extends AppCompatActivity implements View.OnClickListener,
         ContentDeleteDialog.ContentDeleteDialogListener, PollButtonInfoDialog.PollButtonInfoDialogListener,
@@ -173,6 +157,7 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT);
         setContentView(R.layout.activity_poll_ranking);
 
         Toolbar myToolbar = findViewById(R.id.my_toolbar);
@@ -913,10 +898,21 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
         findViewById(R.id.pollActivity_imageView_share).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                try {
+                    shareUrl = shareContent.getShareUrl();
+                } catch (Exception e) {
+
+                }
+
                 String id = pollActivity_textView_userId.getText().toString();
-                ShareDialog shareDialog = ShareDialog.newInstance(id);
-                shareDialog.show(getSupportFragmentManager(), "shareDialog");
-                shareUrl = shareContent.getShareUrl();
+                if (shareUrl == null) {
+                    Toast.makeText(PollRankingActivity.this, "URL을 생성중입니다. 다시 시도해주세요.", Toast.LENGTH_LONG).show();
+                } else {
+                    ShareDialog shareDialog = ShareDialog.newInstance(id);
+                    shareDialog.show(getSupportFragmentManager(), "shareDialog");
+
+                }
+
             }
         });
     }
@@ -932,9 +928,9 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
                 try {
                     int userClass = Integer.parseInt(dataSnapshot.getValue().toString());
                     if (userClass >= 0 && userClass < 50) {
-                        pollActivity_imageView_userClass.setImageResource(R.drawable.q_class_red_1);
-                    } else if (userClass >= 50 && userClass < 100) {
                         pollActivity_imageView_userClass.setImageResource(R.drawable.q_class_red_2);
+                    } else if (userClass >= 50 && userClass < 100) {
+                        pollActivity_imageView_userClass.setImageResource(R.drawable.q_class_red_1);
                     } else if (userClass >= 100 && userClass < 150) {
                         pollActivity_imageView_userClass.setImageResource(R.drawable.q_class_orange_1);
                     } else if (userClass >= 150 && userClass < 200) {
@@ -948,7 +944,7 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
                     } else if (userClass >= 350 && userClass < 400) {
                         pollActivity_imageView_userClass.setImageResource(R.drawable.q_class_green_2);
                     } else if (userClass >= 400 && userClass < 450) {
-                        pollActivity_imageView_userClass.setImageResource(R.drawable.q_class_blue_1);
+                        pollActivity_imageView_userClass.setImageResource(R.drawable.q_class_blue_2);
                     } else if (userClass >= 450 && userClass < 501) {
                         pollActivity_imageView_userClass.setImageResource(R.drawable.q_class_blue_2);
                     } else if (userClass == 1000) {
@@ -1064,9 +1060,9 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
                 if (replyDTOS.get(0) != null && replyDTOS.get(0).likeCount > 0) {
                     int userClass = replyDTOS.get(0).getqPoint();
                     if (userClass >= 0 && userClass < 50) {
-                        imageView_userClass0.setImageResource(R.drawable.q_class_red_1);
-                    } else if (userClass >= 50 && userClass < 100) {
                         imageView_userClass0.setImageResource(R.drawable.q_class_red_2);
+                    } else if (userClass >= 50 && userClass < 100) {
+                        imageView_userClass0.setImageResource(R.drawable.q_class_red_1);
                     } else if (userClass >= 100 && userClass < 150) {
                         imageView_userClass0.setImageResource(R.drawable.q_class_orange_1);
                     } else if (userClass >= 150 && userClass < 200) {
@@ -1080,7 +1076,7 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
                     } else if (userClass >= 350 && userClass < 400) {
                         imageView_userClass0.setImageResource(R.drawable.q_class_green_2);
                     } else if (userClass >= 400 && userClass < 450) {
-                        imageView_userClass0.setImageResource(R.drawable.q_class_blue_1);
+                        imageView_userClass0.setImageResource(R.drawable.q_class_blue_2);
                     } else if (userClass >= 450 && userClass < 501) {
                         imageView_userClass0.setImageResource(R.drawable.q_class_blue_2);
                     }
@@ -1094,9 +1090,9 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
                 if (replyDTOS.get(1) != null && replyDTOS.get(1).likeCount > 0) {
                     int userClass = replyDTOS.get(1).getqPoint();
                     if (userClass >= 0 && userClass < 50) {
-                        imageView_userClass1.setImageResource(R.drawable.q_class_red_1);
-                    } else if (userClass >= 50 && userClass < 100) {
                         imageView_userClass1.setImageResource(R.drawable.q_class_red_2);
+                    } else if (userClass >= 50 && userClass < 100) {
+                        imageView_userClass1.setImageResource(R.drawable.q_class_red_1);
                     } else if (userClass >= 100 && userClass < 150) {
                         imageView_userClass1.setImageResource(R.drawable.q_class_orange_1);
                     } else if (userClass >= 150 && userClass < 200) {
@@ -1110,7 +1106,7 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
                     } else if (userClass >= 350 && userClass < 400) {
                         imageView_userClass1.setImageResource(R.drawable.q_class_green_2);
                     } else if (userClass >= 400 && userClass < 450) {
-                        imageView_userClass1.setImageResource(R.drawable.q_class_blue_1);
+                        imageView_userClass1.setImageResource(R.drawable.q_class_blue_2);
                     } else if (userClass >= 450 && userClass < 501) {
                         imageView_userClass1.setImageResource(R.drawable.q_class_blue_2);
                     }
@@ -1124,9 +1120,9 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
                 if (replyDTOS.get(2) != null && replyDTOS.get(2).likeCount > 0) {
                     int userClass = replyDTOS.get(2).getqPoint();
                     if (userClass >= 0 && userClass < 50) {
-                        imageView_userClass2.setImageResource(R.drawable.q_class_red_1);
-                    } else if (userClass >= 50 && userClass < 100) {
                         imageView_userClass2.setImageResource(R.drawable.q_class_red_2);
+                    } else if (userClass >= 50 && userClass < 100) {
+                        imageView_userClass2.setImageResource(R.drawable.q_class_red_1);
                     } else if (userClass >= 100 && userClass < 150) {
                         imageView_userClass2.setImageResource(R.drawable.q_class_orange_1);
                     } else if (userClass >= 150 && userClass < 200) {
@@ -1140,7 +1136,7 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
                     } else if (userClass >= 350 && userClass < 400) {
                         imageView_userClass2.setImageResource(R.drawable.q_class_green_2);
                     } else if (userClass >= 400 && userClass < 450) {
-                        imageView_userClass2.setImageResource(R.drawable.q_class_blue_1);
+                        imageView_userClass2.setImageResource(R.drawable.q_class_blue_2);
                     } else if (userClass >= 450 && userClass < 501) {
                         imageView_userClass2.setImageResource(R.drawable.q_class_blue_2);
                     }
@@ -2637,7 +2633,7 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
             intent.setType("text/plain");
 //                     Set default text message
 //                     카톡, 이메일, MMS 다 이걸로 설정 가능
-            String subject = "AQA 둘중에 하나만 골라!";
+            String subject = "하나만 선택해 어서! AQA!";
             String text = shareUrl;
             intent.putExtra(Intent.EXTRA_SUBJECT, subject);
             intent.putExtra(Intent.EXTRA_TEXT, text);

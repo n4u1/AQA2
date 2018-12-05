@@ -16,7 +16,8 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingLeft="16dp"
+            android:layout_gravity="center"
+            android:paddingStart="4dp"
             android:paddingTop="8dp"
             android:paddingRight="16dp"
             android:paddingBottom="8dp">
@@ -24,8 +25,8 @@
 
             <ImageView
                 android:id="@+id/imageView_userClass"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
+                android:layout_width="16dp"
+                android:layout_height="16dp"
                 android:layout_centerVertical="true" />
 
 
@@ -33,7 +34,9 @@
                 android:id="@+id/textView_userName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="4dp"
                 android:layout_toRightOf="@id/imageView_userClass"
+                android:gravity="center"
                 android:maxLines="1"
                 android:textColor="#000000" />
 
@@ -200,7 +203,6 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:textColor="#737373" />
-
 
 
             <ImageView

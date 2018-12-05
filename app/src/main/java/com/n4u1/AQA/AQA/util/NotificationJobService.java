@@ -144,13 +144,11 @@ public class NotificationJobService extends JobService {
 
     public void notificationShow(String title, int hitCount, String contentKey, String mode, int itemViewType) {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this, "default");
-        builder.setSmallIcon(R.mipmap.ic_q_custom);
+        builder.setSmallIcon(R.drawable.ic_aqa_qicon);
         builder.setContentTitle(title);
         builder.setContentText(hitCount + "분께서 투표하셨어요!");
 
         PendingIntent pendingIntent;
-        String urlRanking = "aqaapp://aqa_ranking_deeplink";
-        String urlSingle = "aqaapp://aqas_ingleg_deeplink";
         int requestID = (int) System.currentTimeMillis();
 
         Log.d("lkj hitCount", String.valueOf(hitCount));
@@ -160,27 +158,19 @@ public class NotificationJobService extends JobService {
         Log.d("lkj itemViewType", String.valueOf(itemViewType));
 
         if (mode.equals("순위 투표")) {
-            Intent intentRanking = new Intent(Intent.ACTION_VIEW, Uri.parse(urlRanking));
+            Intent intentRanking = new Intent(getApplicationContext(), HomeActivity.class);
             TaskStackBuilder stackBuilder = TaskStackBuilder.create(getApplicationContext());
-            stackBuilder.addParentStack(HomeActivity.class);
             stackBuilder.addNextIntent(intentRanking);
-            Bundle bundle = new Bundle();
-            bundle.putString("contentKey", contentKey);
-            bundle.putInt("itemViewType", itemViewType);
-            bundle.putInt("contentHit", hitCount);
-            intentRanking.putExtras(bundle);
+            intentRanking.putExtra("contentKey", contentKey);
+            intentRanking.putExtra("mode", "ranking");
             pendingIntent = stackBuilder.getPendingIntent(requestID, PendingIntent.FLAG_UPDATE_CURRENT);
 
         } else {
-            Intent intentSingle = new Intent(Intent.ACTION_VIEW, Uri.parse(urlSingle));
+            Intent intentSingle = new Intent(getApplicationContext(), HomeActivity.class);
             TaskStackBuilder stackBuilder = TaskStackBuilder.create(getApplicationContext());
-            stackBuilder.addParentStack(HomeActivity.class);
             stackBuilder.addNextIntent(intentSingle);
-            Bundle bundle = new Bundle();
-            bundle.putString("contentKey", contentKey);
-            bundle.putInt("itemViewType", itemViewType);
-            bundle.putInt("contentHit", hitCount);
-            intentSingle.putExtras(bundle);
+            intentSingle.putExtra("contentKey", contentKey);
+            intentSingle.putExtra("mode", "single");
             pendingIntent = stackBuilder.getPendingIntent(requestID, PendingIntent.FLAG_UPDATE_CURRENT);
         }
 
@@ -205,7 +195,7 @@ public class NotificationJobService extends JobService {
 
         builder.setContentIntent(pendingIntent);
 
-        Bitmap largeIcon = BitmapFactory.decodeResource(getResources(), R.mipmap.ic_aqa_custom);
+        Bitmap largeIcon = BitmapFactory.decodeResource(getResources(), R.drawable.ic_aqa);
         builder.setLargeIcon(largeIcon);
 
         Uri ringtoneUri = RingtoneManager.getActualDefaultRingtoneUri(this, RingtoneManager.TYPE_NOTIFICATION);

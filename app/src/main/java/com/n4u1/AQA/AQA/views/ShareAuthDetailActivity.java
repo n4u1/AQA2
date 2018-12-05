@@ -1,26 +1,16 @@
 package com.n4u1.AQA.AQA.views;
 
-import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.util.Log;
-import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
@@ -32,20 +22,13 @@ import com.google.firebase.database.MutableData;
 import com.google.firebase.database.Transaction;
 import com.google.firebase.database.ValueEventListener;
 import com.n4u1.AQA.AQA.R;
-import com.n4u1.AQA.AQA.dialog.DeleteModificationActivity;
-import com.n4u1.AQA.AQA.dialog.GoHomeDialog;
-import com.n4u1.AQA.AQA.models.ReplyDTO;
 import com.n4u1.AQA.AQA.models.ShareAuthDTO;
 import com.n4u1.AQA.AQA.models.SuggestDTO;
-import com.n4u1.AQA.AQA.recyclerview.ReplySuggestAdapter;
 import com.n4u1.AQA.AQA.util.GlideApp;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
 import java.util.Locale;
-import java.util.Map;
 import java.util.TimeZone;
 
 public class ShareAuthDetailActivity extends AppCompatActivity {
@@ -66,6 +49,7 @@ public class ShareAuthDetailActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT);
         setContentView(R.layout.activity_share_auth_detail);
 
 
@@ -156,9 +140,9 @@ public class ShareAuthDetailActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 int userClass = Integer.parseInt(dataSnapshot.getValue().toString());
                 if (userClass >= 0 && userClass < 50) {
-                    shareAuthDetailActivity_imageView_userClass.setImageResource(R.drawable.q_class_red_1);
-                } else if (userClass >= 50 && userClass < 100) {
                     shareAuthDetailActivity_imageView_userClass.setImageResource(R.drawable.q_class_red_2);
+                } else if (userClass >= 50 && userClass < 100) {
+                    shareAuthDetailActivity_imageView_userClass.setImageResource(R.drawable.q_class_red_1);
                 } else if (userClass >= 100 && userClass < 150) {
                     shareAuthDetailActivity_imageView_userClass.setImageResource(R.drawable.q_class_orange_1);
                 } else if (userClass >= 150 && userClass < 200) {
@@ -172,7 +156,7 @@ public class ShareAuthDetailActivity extends AppCompatActivity {
                 } else if (userClass >= 350 && userClass < 400) {
                     shareAuthDetailActivity_imageView_userClass.setImageResource(R.drawable.q_class_green_2);
                 } else if (userClass >= 400 && userClass < 450) {
-                    shareAuthDetailActivity_imageView_userClass.setImageResource(R.drawable.q_class_blue_1);
+                    shareAuthDetailActivity_imageView_userClass.setImageResource(R.drawable.q_class_blue_2);
                 } else if (userClass >= 450 && userClass < 501) {
                     shareAuthDetailActivity_imageView_userClass.setImageResource(R.drawable.q_class_blue_2);
                 }

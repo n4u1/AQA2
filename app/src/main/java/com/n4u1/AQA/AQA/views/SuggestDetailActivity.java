@@ -2,6 +2,7 @@ package com.n4u1.AQA.AQA.views;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -33,10 +34,8 @@ import com.google.firebase.database.Transaction;
 import com.google.firebase.database.ValueEventListener;
 import com.n4u1.AQA.AQA.R;
 import com.n4u1.AQA.AQA.dialog.DeleteModificationActivity;
-import com.n4u1.AQA.AQA.models.ContentDTO;
 import com.n4u1.AQA.AQA.models.ReplyDTO;
 import com.n4u1.AQA.AQA.models.SuggestDTO;
-import com.n4u1.AQA.AQA.recyclerview.ReplyAdapter;
 import com.n4u1.AQA.AQA.recyclerview.ReplySuggestAdapter;
 import com.n4u1.AQA.AQA.util.GlideApp;
 
@@ -70,6 +69,7 @@ public class SuggestDetailActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT);
         setContentView(R.layout.activity_suggest_detail);
 
 
@@ -462,28 +462,33 @@ public class SuggestDetailActivity extends AppCompatActivity {
         mDatabaseReference.child("users").child(uId).child("userClass").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                int userClass = Integer.parseInt(dataSnapshot.getValue().toString());
-                if (userClass >= 0 && userClass < 50) {
-                    suggestDetailActivity_imageView_userClass.setImageResource(R.drawable.q_class_red_1);
-                } else if (userClass >= 50 && userClass < 100) {
-                    suggestDetailActivity_imageView_userClass.setImageResource(R.drawable.q_class_red_2);
-                } else if (userClass >= 100 && userClass < 150) {
-                    suggestDetailActivity_imageView_userClass.setImageResource(R.drawable.q_class_orange_1);
-                } else if (userClass >= 150 && userClass < 200) {
-                    suggestDetailActivity_imageView_userClass.setImageResource(R.drawable.q_class_orange_2);
-                } else if (userClass >= 200 && userClass < 250) {
-                    suggestDetailActivity_imageView_userClass.setImageResource(R.drawable.q_class_yellow_1);
-                } else if (userClass >= 250 && userClass < 300) {
-                    suggestDetailActivity_imageView_userClass.setImageResource(R.drawable.q_class_yellow_2);
-                } else if (userClass >= 300 && userClass < 350) {
-                    suggestDetailActivity_imageView_userClass.setImageResource(R.drawable.q_class_green_1);
-                } else if (userClass >= 350 && userClass < 400) {
-                    suggestDetailActivity_imageView_userClass.setImageResource(R.drawable.q_class_green_2);
-                } else if (userClass >= 400 && userClass < 450) {
-                    suggestDetailActivity_imageView_userClass.setImageResource(R.drawable.q_class_blue_1);
-                } else if (userClass >= 450 && userClass < 501) {
-                    suggestDetailActivity_imageView_userClass.setImageResource(R.drawable.q_class_blue_2);
+                try {
+                    int userClass = Integer.parseInt(dataSnapshot.getValue().toString());
+                    if (userClass >= 0 && userClass < 50) {
+                        suggestDetailActivity_imageView_userClass.setImageResource(R.drawable.q_class_red_2);
+                    } else if (userClass >= 50 && userClass < 100) {
+                        suggestDetailActivity_imageView_userClass.setImageResource(R.drawable.q_class_red_1);
+                    } else if (userClass >= 100 && userClass < 150) {
+                        suggestDetailActivity_imageView_userClass.setImageResource(R.drawable.q_class_orange_1);
+                    } else if (userClass >= 150 && userClass < 200) {
+                        suggestDetailActivity_imageView_userClass.setImageResource(R.drawable.q_class_orange_2);
+                    } else if (userClass >= 200 && userClass < 250) {
+                        suggestDetailActivity_imageView_userClass.setImageResource(R.drawable.q_class_yellow_1);
+                    } else if (userClass >= 250 && userClass < 300) {
+                        suggestDetailActivity_imageView_userClass.setImageResource(R.drawable.q_class_yellow_2);
+                    } else if (userClass >= 300 && userClass < 350) {
+                        suggestDetailActivity_imageView_userClass.setImageResource(R.drawable.q_class_green_1);
+                    } else if (userClass >= 350 && userClass < 400) {
+                        suggestDetailActivity_imageView_userClass.setImageResource(R.drawable.q_class_green_2);
+                    } else if (userClass >= 400 && userClass < 450) {
+                        suggestDetailActivity_imageView_userClass.setImageResource(R.drawable.q_class_blue_2);
+                    } else if (userClass >= 450 && userClass < 501) {
+                        suggestDetailActivity_imageView_userClass.setImageResource(R.drawable.q_class_blue_2);
+                    }
+                } catch (Exception e) {
+                    suggestDetailActivity_imageView_userClass.setImageResource(R.drawable.q_class_null);
                 }
+
             }
 
             @Override

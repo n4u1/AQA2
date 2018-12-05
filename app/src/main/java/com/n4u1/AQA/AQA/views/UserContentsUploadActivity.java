@@ -2,6 +2,7 @@ package com.n4u1.AQA.AQA.views;
 
 import android.Manifest;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.os.Build;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
@@ -41,10 +42,6 @@ public class UserContentsUploadActivity extends AppCompatActivity implements Con
     private static final int GALLEY_CODE = 100;
     private static final int VIDEO_CODE = 200;
 
-    ImageView imageView_userAddContent_1;
-    ImageView imageView_userAddContent_2;
-    ImageView imageView_userAddContent_3;
-
     TextView textView_next;
 
     EditText editText_title;
@@ -63,12 +60,13 @@ public class UserContentsUploadActivity extends AppCompatActivity implements Con
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT);
         setContentView(R.layout.activity_user_contents_upload);
 
 
         Toolbar myToolbar = findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
-        getSupportActionBar().setHomeAsUpIndicator(R.mipmap.ic_aqa_custom);
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_aqa);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         if (getSupportActionBar() != null) {

@@ -719,6 +719,7 @@
                     android:src="@drawable/ic_logout" />
 
                 <TextView
+                    android:id="@+id/mineActivity_textView_logOut"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="10"

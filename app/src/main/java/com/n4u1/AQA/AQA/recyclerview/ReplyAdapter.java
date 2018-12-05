@@ -3,27 +3,16 @@ package com.n4u1.AQA.AQA.recyclerview;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.MutableData;
-import com.google.firebase.database.Transaction;
-import com.google.firebase.database.ValueEventListener;
 import com.n4u1.AQA.AQA.R;
-import com.n4u1.AQA.AQA.models.ContentDTO;
 import com.n4u1.AQA.AQA.models.ReplyDTO;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
 public class ReplyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
@@ -80,9 +69,9 @@ public class ReplyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         });
 
         if (userClass >= 0 && userClass < 50) {
-            ((ReplyViewHolder)holder).imageView_userClass.setImageResource(R.drawable.q_class_red_1);
-        } else if (userClass >= 50 && userClass < 100) {
             ((ReplyViewHolder)holder).imageView_userClass.setImageResource(R.drawable.q_class_red_2);
+        } else if (userClass >= 50 && userClass < 100) {
+            ((ReplyViewHolder)holder).imageView_userClass.setImageResource(R.drawable.q_class_red_1);
         } else if (userClass >= 100 && userClass < 150) {
             ((ReplyViewHolder)holder).imageView_userClass.setImageResource(R.drawable.q_class_orange_1);
         } else if (userClass >= 150 && userClass < 200) {
@@ -96,13 +85,13 @@ public class ReplyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         } else if (userClass >= 350 && userClass < 400) {
             ((ReplyViewHolder)holder).imageView_userClass.setImageResource(R.drawable.q_class_green_2);
         } else if (userClass >= 400 && userClass < 450) {
-            ((ReplyViewHolder)holder).imageView_userClass.setImageResource(R.drawable.q_class_blue_1);
+            ((ReplyViewHolder)holder).imageView_userClass.setImageResource(R.drawable.q_class_blue_2);
         } else if (userClass >= 450 && userClass < 501) {
             ((ReplyViewHolder)holder).imageView_userClass.setImageResource(R.drawable.q_class_blue_2);
         } else if (userClass == 1000) {
             ((ReplyViewHolder)holder).imageView_userClass.setImageResource(R.drawable.q_class_black);
         } else {
-            ((ReplyViewHolder)holder).imageView_userClass.setImageResource(R.drawable.q_class_red_1);
+            ((ReplyViewHolder)holder).imageView_userClass.setImageResource(R.drawable.q_class_red_2);
         }
 
 

@@ -54,12 +54,15 @@
         <activity android:name=".splash.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
+
                 <data
                     android:host="aqa.ranking.com"
                     android:scheme="https" />
@@ -68,8 +71,7 @@
                     android:scheme="http" />
             </intent-filter>
         </activity>
-        <activity android:name=".splash.SplashDynamicLinkActivity"/>
-
+        <activity android:name=".splash.SplashDynamicLinkActivity" />
         <activity
             android:name=".dialog.DeleteModificationActivity"
             android:theme="@style/Theme.DialogFragmentActivity" />
@@ -134,6 +136,7 @@
         <activity android:name=".views.FullImageActivity" />
 
         <!-- ////////////////////////////////////////activity///////////////////////////////////////// -->
+        <activity android:name=".views.ChangeEmailActivity"></activity>
     </application>
 
 </manifest>

@@ -109,6 +109,7 @@ public class HomeActivity extends AppCompatActivity implements SwipeRefreshLayou
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT);
         setContentView(R.layout.activity_home);
 
 
@@ -121,7 +122,6 @@ public class HomeActivity extends AppCompatActivity implements SwipeRefreshLayou
             getSupportActionBar().setDisplayShowHomeEnabled(true);
             getSupportActionBar().setTitle(null);
         }
-
 
 
         final SwipeRefreshLayout mSwipeRefreshLayout = findViewById(R.id.swipeRFL);
@@ -553,6 +553,29 @@ public class HomeActivity extends AppCompatActivity implements SwipeRefreshLayou
                     }
                 });
 
+        //노티 데이터 받기
+        String notiDataContentKey = getIntent().getStringExtra("contentKey");
+        String notiDataPollMode = getIntent().getStringExtra("mode");
+        if (notiDataContentKey != null | notiDataPollMode != null) {
+            Log.d("Data in intent", notiDataContentKey);
+            Log.d("Data in intent", notiDataPollMode);
+
+
+            if (notiDataPollMode.equals("single")) {
+                Intent intent = new Intent(HomeActivity.this, PollSingleActivity.class);
+                intent.putExtra("contentKey", notiDataContentKey);
+                startActivity(intent);
+            }
+            if (notiDataPollMode.equals("ranking")) {
+                Intent intent = new Intent(HomeActivity.this, PollRankingActivity.class);
+                intent.putExtra("contentKey", notiDataContentKey);
+                Log.d("lkj key???", notiDataContentKey);
+                Log.d("lkj mode???", notiDataPollMode);
+                startActivity(intent);
+            }
+
+        }
+
     }
 
 
@@ -757,24 +780,18 @@ public class HomeActivity extends AppCompatActivity implements SwipeRefreshLayou
 //                    toast.show();
 
 
-
-
 //                    real 버전
                     Intent intent = new Intent(android.content.Intent.ACTION_SEND);
                     intent.setType("text/plain");
 //                     Set default text message
 //                     카톡, 이메일, MMS 다 이걸로 설정 가능
-                    String subject = "AQA 둘중에 하나만 골라!";
+                    String subject = "하나만 선택해 어서! AQA!";
                     String text = shareContent.getShareUrl();
                     intent.putExtra(Intent.EXTRA_SUBJECT, subject);
                     intent.putExtra(Intent.EXTRA_TEXT, text);
 //                     Title of intent
                     Intent chooser = Intent.createChooser(intent, "공유하기");
                     startActivity(chooser);
-
-
-
-
 
 
 //                    AQA이미지 공유기능
@@ -797,9 +814,6 @@ public class HomeActivity extends AppCompatActivity implements SwipeRefreshLayou
                     Log.d("lkj shareErr", e.toString());
                 }
                 Log.d("lkj share", "share");
-
-
-
 
 
                 break;

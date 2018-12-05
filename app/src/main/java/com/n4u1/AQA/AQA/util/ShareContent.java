@@ -30,7 +30,7 @@ public class ShareContent {
 
 
     public String getShareUrl() {
-        Log.d("lkj getShareUrl", shortLink.toString());
+//        Log.d("lkj getShareUrl", shortLink.toString());
         return shortLink.toString();
     }
 
@@ -49,9 +49,14 @@ public class ShareContent {
                             shortLink = task.getResult().getShortLink();
                         } else {
                             Log.w("lkj fail??", task.toString());
+                            reTryMakeUrl();
                         }
                     }
                 });
+    }
+
+    private void reTryMakeUrl() {
+        makeUrl();
     }
 
     private Uri getPromotionDeepLink() {

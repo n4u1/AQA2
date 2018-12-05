@@ -1,6 +1,7 @@
 package com.n4u1.AQA.AQA.views;
 
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Html;
@@ -44,6 +45,7 @@ public class CreateUserActivity extends AppCompatActivity implements CreateUserA
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT);
         setContentView(R.layout.activity_create_user);
 
         ImageView createUser_imageView_start = findViewById(R.id.createUser_imageView_start);

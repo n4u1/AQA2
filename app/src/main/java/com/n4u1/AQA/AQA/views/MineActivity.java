@@ -2,6 +2,7 @@ package com.n4u1.AQA.AQA.views;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.ActivityInfo;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -53,11 +54,12 @@ public class MineActivity extends AppCompatActivity implements LogOutDialog.LogO
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT);
         setContentView(R.layout.activity_mine);
 
         Toolbar myToolbar = findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
-        if (getSupportActionBar() != null){
+        if (getSupportActionBar() != null) {
             getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_arrow_back_black_24dp);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
@@ -70,6 +72,7 @@ public class MineActivity extends AppCompatActivity implements LogOutDialog.LogO
         mDatabaseReferenceAdmin = FirebaseDatabase.getInstance().getReference("adminAuth").child("1");
 
 //        AdView adView = findViewById(R.id.adView);
+        TextView mineActivity_textView_logOut = findViewById(R.id.mineActivity_textView_logOut);
         final TextView mineActivity_textView_id = findViewById(R.id.mineActivity_textView_id);
         final TextView mineActivity_textView_userClass = findViewById(R.id.mineActivity_textView_userClass);
         final TextView mineActivity_textView_gender = findViewById(R.id.mineActivity_textView_gender);
@@ -97,8 +100,6 @@ public class MineActivity extends AppCompatActivity implements LogOutDialog.LogO
         final LinearLayout mineActivity_linearLayout_adminEtc = findViewById(R.id.mineActivity_linearLayout_adminEtc);
         final LinearLayout mineActivity_linearLayout_adminContents = findViewById(R.id.mineActivity_linearLayout_adminContents);
         final LinearLayout mineActivity_linearLayout_adminUser = findViewById(R.id.mineActivity_linearLayout_adminUser);
-
-
 
 
         //admin 페이지 활성화
@@ -160,20 +161,27 @@ public class MineActivity extends AppCompatActivity implements LogOutDialog.LogO
         });
 
 
-
-
         //이메일 가져오기
-        mineActivity_textView_account.setText(mFireBaseUser.getEmail());
+        if (mUser.isAnonymous()) {
+            mineActivity_textView_account.setText("비회원");
+        } else {
+            mineActivity_textView_account.setText(mFireBaseUser.getEmail());
+        }
 
 
         //이메일 변경하기
         mineActivity_linearLayout_email.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                Toast toast = Toast.makeText(getApplicationContext(), "만들고 있어요", Toast.LENGTH_SHORT);
-                toast.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL, 0, 0);
-                toast.show();
+                if (!mUser.isAnonymous()) {
+                    Toast toast = Toast.makeText(getApplicationContext(), "만들고 있어요", Toast.LENGTH_SHORT);
+                    toast.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL, 0, 0);
+                    toast.show();
+                } else {
+                    Toast toast = Toast.makeText(getApplicationContext(), "회원가입을 해야합니다.", Toast.LENGTH_SHORT);
+                    toast.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL, 0, 0);
+                    toast.show();
+                }
 
             }
         });
@@ -183,17 +191,24 @@ public class MineActivity extends AppCompatActivity implements LogOutDialog.LogO
             @Override
             public void onDataChange(@Nullable DataSnapshot dataSnapshot) {
                 try {
-                    Map<String, Object> users = (Map<String, Object>) dataSnapshot.getValue();
-                    mineActivity_textView_gender.setText(String.valueOf(users.get("sex")));
-                    mineActivity_textView_age.setText(String.valueOf(users.get("age")));
-                    mineActivity_textView_id.setText(String.valueOf(users.get("userId")));
+                    if (mUser.isAnonymous()) {
+                        mineActivity_textView_gender.setText("비회원");
+                        mineActivity_textView_age.setText("비회원");
+                        mineActivity_textView_id.setText("비회원");
+                    } else {
+                        Map<String, Object> users = (Map<String, Object>) dataSnapshot.getValue();
+                        mineActivity_textView_gender.setText(String.valueOf(users.get("sex")));
+                        mineActivity_textView_age.setText(String.valueOf(users.get("age")));
+                        mineActivity_textView_id.setText(String.valueOf(users.get("userId")));
+                    }
+
                 } catch (Exception e) {
 
                 }
 
 
-
             }
+
             @Override
             public void onCancelled(@Nullable DatabaseError databaseError) {
 
@@ -208,9 +223,9 @@ public class MineActivity extends AppCompatActivity implements LogOutDialog.LogO
                     int userClass = Integer.parseInt(dataSnapshot.getValue().toString());
                     mineActivity_textView_userClass.setText(String.valueOf(userClass));
                     if (userClass >= 0 && userClass < 50) {
-                        mineActivity_imageView_userClass.setImageResource(R.drawable.q_class_red_1);
-                    } else if (userClass >= 50 && userClass < 100) {
                         mineActivity_imageView_userClass.setImageResource(R.drawable.q_class_red_2);
+                    } else if (userClass >= 50 && userClass < 100) {
+                        mineActivity_imageView_userClass.setImageResource(R.drawable.q_class_red_1);
                     } else if (userClass >= 100 && userClass < 150) {
                         mineActivity_imageView_userClass.setImageResource(R.drawable.q_class_orange_1);
                     } else if (userClass >= 150 && userClass < 200) {
@@ -224,23 +239,24 @@ public class MineActivity extends AppCompatActivity implements LogOutDialog.LogO
                     } else if (userClass >= 350 && userClass < 400) {
                         mineActivity_imageView_userClass.setImageResource(R.drawable.q_class_green_2);
                     } else if (userClass >= 400 && userClass < 450) {
-                        mineActivity_imageView_userClass.setImageResource(R.drawable.q_class_blue_1);
+                        mineActivity_imageView_userClass.setImageResource(R.drawable.q_class_blue_2);
                     } else if (userClass >= 450 && userClass < 501) {
                         mineActivity_imageView_userClass.setImageResource(R.drawable.q_class_blue_2);
                     } else if (userClass >= 501) {
                         mineActivity_imageView_userClass.setImageResource(R.drawable.q_class_black);
                     }
                 } catch (Exception e) {
-
+                    mineActivity_imageView_userClass.setImageResource(R.drawable.ic_aqa_qw);
+                    mineActivity_textView_userClass.setText("비회원");
                 }
 
             }
+
             @Override
             public void onCancelled(@Nullable DatabaseError databaseError) {
 
             }
         });
-
 
 
         //Q포인트 점수 알아보기
@@ -295,15 +311,20 @@ public class MineActivity extends AppCompatActivity implements LogOutDialog.LogO
         });
 
 
-
         //비밀번호 변경하기
         mineActivity_linearLayout_password.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                FirebaseAuth auth = FirebaseAuth.getInstance();
-                String emailAddress = auth.getCurrentUser().getEmail();
-                FindEmailDialog findEmailDialog = FindEmailDialog.newInstance(emailAddress);
-                findEmailDialog.show(getSupportFragmentManager(), "findEmailDialog");
+                if (mUser.isAnonymous()) {
+                    Toast toast = Toast.makeText(getApplicationContext(), "회원가입을 해야합니다.", Toast.LENGTH_SHORT);
+                    toast.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL, 0, 0);
+                    toast.show();
+                } else {
+                    FirebaseAuth auth = FirebaseAuth.getInstance();
+                    String emailAddress = auth.getCurrentUser().getEmail();
+                    FindEmailDialog findEmailDialog = FindEmailDialog.newInstance(emailAddress);
+                    findEmailDialog.show(getSupportFragmentManager(), "findEmailDialog");
+                }
 
 
             }
@@ -316,9 +337,6 @@ public class MineActivity extends AppCompatActivity implements LogOutDialog.LogO
 //        } else {
 //            mineActivity_textView_noti.setText("알람(미사용중)");
 //        }
-
-
-
 
 
         //좋아요 누른 게시물 모아보기
@@ -357,15 +375,6 @@ public class MineActivity extends AppCompatActivity implements LogOutDialog.LogO
             }
         });
 
-        //로그 아웃
-        mineActivity_linearLayout_logOut.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                LogOutDialog logOutDialog = new LogOutDialog();
-                logOutDialog.show(getSupportFragmentManager(), "logOutDialog");
-
-            }
-        });
 
         //이용약관
         mineActivity_linearLayout_servicePolicy.setOnClickListener(new View.OnClickListener() {
@@ -386,7 +395,31 @@ public class MineActivity extends AppCompatActivity implements LogOutDialog.LogO
             }
         });
 
-        //회원 탈퇴
+
+        //로그 아웃 버튼
+        if (mUser.isAnonymous()) {
+            mineActivity_textView_logOut.setText("회원가입");
+        }
+        mineActivity_linearLayout_logOut.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (mUser.isAnonymous()) {
+                    Intent intent = new Intent(MineActivity.this, LoginActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent);
+                } else {
+                    LogOutDialog logOutDialog = new LogOutDialog();
+                    logOutDialog.show(getSupportFragmentManager(), "logOutDialog");
+                }
+
+
+            }
+        });
+
+        //회원 탈퇴 버튼
+        if (mUser.isAnonymous()) {
+            mineActivity_linearLayout_authOut.setVisibility(View.GONE);
+        }
         mineActivity_linearLayout_authOut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -397,8 +430,6 @@ public class MineActivity extends AppCompatActivity implements LogOutDialog.LogO
         });
 
     }
-
-
 
 
     @Override
@@ -465,8 +496,6 @@ public class MineActivity extends AppCompatActivity implements LogOutDialog.LogO
             editor.commit();
 
 
-
-
             user.delete()
                     .addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
@@ -476,7 +505,6 @@ public class MineActivity extends AppCompatActivity implements LogOutDialog.LogO
                             }
                         }
                     });
-
 
 
             Intent intent = new Intent(MineActivity.this, LoginActivity.class);
