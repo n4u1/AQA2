@@ -7,28 +7,25 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
-import android.view.Gravity;
-import android.widget.Toast;
 
-import com.n4u1.AQA.AQA.R;
+import java.util.ArrayList;
 
-public class PreviewDialog extends DialogFragment {
-    public PreviewDialog() {
+public class ChangeEmailDoneDialog extends DialogFragment {
+    public ChangeEmailDoneDialog() {
     }
 
-    public interface PreviewDialogListener {
-        public void PreviewDialogCallback(String string);
+    public interface ChangeEmailDoneDialogListener {
+        public void ChangeEmailDoneDialogCallback(String string);
     }
 
-    PreviewDialogListener mListener;
+    ChangeEmailDoneDialogListener mListener;
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
         try {
             // Instantiate the NoticeDialogListener so we can send events to the host
-//            mListener = (GoHomeDialog.GoHomeDialogListener) getActivity();
-            mListener = (PreviewDialog.PreviewDialogListener) getActivity();
+            mListener = (ChangeEmailDoneDialog.ChangeEmailDoneDialogListener) getActivity();
         } catch (ClassCastException e) {
             // The activity doesn't implement the interface, throw exception
             throw new ClassCastException(context.toString()
@@ -36,8 +33,6 @@ public class PreviewDialog extends DialogFragment {
         }
 
     }
-
-
 
     @Override
     public void onStart() {
@@ -49,8 +44,8 @@ public class PreviewDialog extends DialogFragment {
 
     @Override
     public void onDetach() {
-        mListener = null;
         super.onDetach();
+        mListener = null;
     }
 
     @NonNull
@@ -59,17 +54,11 @@ public class PreviewDialog extends DialogFragment {
         final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setPositiveButton("확 인", new DialogInterface.OnClickListener() {
             @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                mListener.PreviewDialogCallback("확인");
-
+            public void onClick(DialogInterface dialog, int which) {
+                mListener.ChangeEmailDoneDialogCallback("확인");
             }
-        }).setMessage("간단한 확인만 가능합니다.\n");
-        builder.setNeutralButton("취 소", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-
-            }
-        });
+        })
+                .setMessage("이메일이 변경 되었습니다.");
         return builder.create();
     }
 }

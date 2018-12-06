@@ -3,6 +3,7 @@ package com.n4u1.AQA.AQA.views;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.graphics.drawable.ColorDrawable;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -52,7 +53,7 @@ public class CreateUserEmailActivity extends AppCompatActivity implements GuidCh
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT);
         setContentView(R.layout.activity_create_user_email);
         final LoadingDialog loadingDialog = new LoadingDialog(CreateUserEmailActivity.this);
-
+        loadingDialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
         guid = getIntent().getStringExtra("guid");
         mRef = FirebaseDatabase.getInstance().getReference();
         createUserEmail_textView_next = findViewById(R.id.createUserEmail_textView_next);

@@ -163,9 +163,11 @@ public class PostAdapterMine extends RecyclerView.Adapter<RecyclerView.ViewHolde
                         ((PostViewHolderMine)holder).imageView_userClass.setImageResource(R.drawable.q_class_blue_2);
                     } else if (userClass >= 450 && userClass < 501) {
                         ((PostViewHolderMine)holder).imageView_userClass.setImageResource(R.drawable.q_class_blue_2);
+                    } else {
+                        ((PostViewHolderMine)holder).imageView_userClass.setImageResource(R.drawable.q_class_black);
                     }
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    ((PostViewHolderMine)holder).imageView_userClass.setImageResource(R.drawable.q_class_null);
                 }
 
             }

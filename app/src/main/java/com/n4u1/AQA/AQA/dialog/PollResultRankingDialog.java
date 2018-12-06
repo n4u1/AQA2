@@ -329,7 +329,7 @@ public class PollResultRankingDialog extends DialogFragment {
     }
 
 
-    //차트 초기 세팅 (전체 데이터)
+
     private void setChartPartData(final int contentN, String key, final View v, final int[] integerArrayList) {
 
         mDatabaseReference = FirebaseDatabase.getInstance().getReference();
@@ -382,7 +382,7 @@ public class PollResultRankingDialog extends DialogFragment {
                 pollActivity_horizontalBarChart_result.setDoubleTapToZoomEnabled(false);
                 pollActivity_horizontalBarChart_result.setPinchZoom(false);
                 pollActivity_horizontalBarChart_result.setDescription(null);
-                pollActivity_horizontalBarChart_result.animateY(2500);
+                pollActivity_horizontalBarChart_result.animateY(1200);
                 pollActivity_horizontalBarChart_result.setFitBars(true);
                 pollActivity_horizontalBarChart_result.setDrawBarShadow(false);
                 pollActivity_horizontalBarChart_result.getAxisLeft().setEnabled(false);

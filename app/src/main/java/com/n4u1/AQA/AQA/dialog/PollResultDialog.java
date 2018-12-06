@@ -128,28 +128,11 @@ public class PollResultDialog extends DialogFragment {
             }
         });
 
-//
-//        pollResultDialog_spinner_age.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-//            @Override
-//            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-//                ageRange = ageRangeList.get(position);
-//                Log.d("lkj in ag", ageRange);
-//                Log.d("lkj in ag_", selectedDivide);
-//                parsingData(selectedDivide, ageRange);
-//            }
-//
-//            @Override
-//            public void onNothingSelected(AdapterView<?> parent) {
-//
-//            }
-//        });
 
         //차트클릭시 다이얼로그 닫기
         pollActivity_horizontalBarChart_result.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                PollRankingActivity pollRankingActivity = (PollRankingActivity)getActivity();
-//                pollRankingActivity.refreshActivity();
                 PollSingleActivity pollSingleActivity = (PollSingleActivity)getActivity();
                 pollSingleActivity.refreshActivity();
                 dismiss();
@@ -389,7 +372,7 @@ public class PollResultDialog extends DialogFragment {
                 pollActivity_horizontalBarChart_result.setDoubleTapToZoomEnabled(false);
                 pollActivity_horizontalBarChart_result.setPinchZoom(false);
                 pollActivity_horizontalBarChart_result.setDescription(null);
-                pollActivity_horizontalBarChart_result.animateY(2500);
+                pollActivity_horizontalBarChart_result.animateY(1200);
                 pollActivity_horizontalBarChart_result.setFitBars(true);
                 pollActivity_horizontalBarChart_result.setDrawBarShadow(false);
                 pollActivity_horizontalBarChart_result.getAxisLeft().setEnabled(false);
@@ -619,7 +602,7 @@ public class PollResultDialog extends DialogFragment {
     public class ResultValueFormatter implements IValueFormatter {
         private DecimalFormat mFormat;
 
-        public ResultValueFormatter() {
+        private ResultValueFormatter() {
             mFormat = new DecimalFormat("###,###,##0");
 
 
@@ -638,7 +621,7 @@ public class PollResultDialog extends DialogFragment {
     public class CategoryBarChartXaxisFormatter implements IAxisValueFormatter {
         ArrayList<String> mValues;
 
-        public CategoryBarChartXaxisFormatter(ArrayList<String> values) {
+        private CategoryBarChartXaxisFormatter(ArrayList<String> values) {
             this.mValues = values;
         }
 

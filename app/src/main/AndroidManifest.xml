@@ -54,15 +54,12 @@
         <activity android:name=".splash.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
-
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-
                 <data
                     android:host="aqa.ranking.com"
                     android:scheme="https" />
@@ -134,9 +131,9 @@
         <activity android:name=".views.MyUploadActivity" />
         <activity android:name=".splash.SplashLoadingActivity" />
         <activity android:name=".views.FullImageActivity" />
-
+        <activity android:name=".views.ChangeEmailActivity"/>
         <!-- ////////////////////////////////////////activity///////////////////////////////////////// -->
-        <activity android:name=".views.ChangeEmailActivity"></activity>
+
     </application>
 
 </manifest>

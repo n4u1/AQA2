@@ -35,6 +35,7 @@ import com.n4u1.AQA.AQA.admin.AdminUserActivity;
 import com.n4u1.AQA.AQA.dialog.FindEmailDialog;
 import com.n4u1.AQA.AQA.dialog.SignOutDialog;
 import com.n4u1.AQA.AQA.dialog.LogOutDialog;
+import com.n4u1.AQA.AQA.models.User;
 
 import java.util.Map;
 
@@ -78,7 +79,7 @@ public class MineActivity extends AppCompatActivity implements LogOutDialog.LogO
         final TextView mineActivity_textView_gender = findViewById(R.id.mineActivity_textView_gender);
         final TextView mineActivity_textView_age = findViewById(R.id.mineActivity_textView_age);
         final ImageView mineActivity_imageView_userClass = findViewById(R.id.mineActivity_imageView_userClass);
-        TextView mineActivity_textView_account = findViewById(R.id.mineActivity_textView_account);
+        final TextView mineActivity_textView_account = findViewById(R.id.mineActivity_textView_account);
         LinearLayout mineActivity_linearLayout_email = findViewById(R.id.mineActivity_linearLayout_email);
         LinearLayout mineActivity_linearLayout_like = findViewById(R.id.mineActivity_linearLayout_like);
         LinearLayout mineActivity_linearLayout_pickContent = findViewById(R.id.mineActivity_linearLayout_pickContent);
@@ -165,8 +166,20 @@ public class MineActivity extends AppCompatActivity implements LogOutDialog.LogO
         if (mUser.isAnonymous()) {
             mineActivity_textView_account.setText("비회원");
         } else {
-            mineActivity_textView_account.setText(mFireBaseUser.getEmail());
+            mDatabaseReference.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    Map<String, Object> user = (Map<String, Object>) dataSnapshot.getValue();
+                    mineActivity_textView_account.setText(String.valueOf(user.get("email")));
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
         }
+
 
 
         //이메일 변경하기
@@ -174,9 +187,8 @@ public class MineActivity extends AppCompatActivity implements LogOutDialog.LogO
             @Override
             public void onClick(View view) {
                 if (!mUser.isAnonymous()) {
-                    Toast toast = Toast.makeText(getApplicationContext(), "만들고 있어요", Toast.LENGTH_SHORT);
-                    toast.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL, 0, 0);
-                    toast.show();
+                    Intent intent = new Intent(MineActivity.this, ChangeEmailActivity.class);
+                    startActivity(intent);
                 } else {
                     Toast toast = Toast.makeText(getApplicationContext(), "회원가입을 해야합니다.", Toast.LENGTH_SHORT);
                     toast.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL, 0, 0);

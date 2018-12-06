@@ -50,6 +50,7 @@ import com.n4u1.AQA.AQA.dialog.ContentDeleteDialog;
 import com.n4u1.AQA.AQA.dialog.DeleteModificationActivity;
 import com.n4u1.AQA.AQA.dialog.PollButtonInfoDialog;
 import com.n4u1.AQA.AQA.dialog.PollInitInfoDialog;
+import com.n4u1.AQA.AQA.dialog.PollResultAnonymousDialog;
 import com.n4u1.AQA.AQA.dialog.PollResultRankingDialog;
 import com.n4u1.AQA.AQA.dialog.PollRankingChoiceActivity;
 import com.n4u1.AQA.AQA.dialog.ShareDialog;
@@ -305,6 +306,7 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
         pollActivity_textView_check_10.setOnClickListener(this);
 
 
+
         //처음사용자 Q 버튼 알려주기
         if (user.isAnonymous()) {
             SharedPreferences pref = getSharedPreferences("com.n4u1.AQA", MODE_PRIVATE);
@@ -369,77 +371,83 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
         final ReplyAdapter replyAdapter = new ReplyAdapter(getApplicationContext(), replyDTOS, new ReplyAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(final View view, final int position) {
-                FirebaseDatabase replyDatabase;
-                replyDatabase = FirebaseDatabase.getInstance();
-                replyDatabase.getReference().child("users").child(auth.getCurrentUser().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        Map<String, Object> users = (Map<String, Object>) dataSnapshot.getValue();
-                        if (replyDTOS.get(position).getId().equals(users.get("userId").toString())) {
-                            if (view.getTag().equals("replyAdapter_relativeLayout_like")) { //댓글 좋아요 클릭
-                                Toast.makeText(getApplicationContext(), users.get("userId").toString() + "님 댓글 입니다.", Toast.LENGTH_SHORT).show();
-                            } else if (view.getTag().equals("replyAdapter_relativeLayout_main")) { //댓글 클릭, 삭제or수정
-                                firebaseDatabase.getReference().child("reply").child(contentKey).addListenerForSingleValueEvent(new ValueEventListener() {
-                                    @Override
-                                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                        replyDTOS.clear();
-                                        ArrayList<ReplyDTO> replyDTOTemp = new ArrayList<>();
+                if (!user.isAnonymous()) {
+                    FirebaseDatabase replyDatabase;
+                    replyDatabase = FirebaseDatabase.getInstance();
+                    replyDatabase.getReference().child("users").child(auth.getCurrentUser().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            Map<String, Object> users = (Map<String, Object>) dataSnapshot.getValue();
+                            if (replyDTOS.get(position).getId().equals(users.get("userId").toString())) {
+                                if (view.getTag().equals("replyAdapter_relativeLayout_like")) { //댓글 좋아요 클릭
+                                    Toast.makeText(getApplicationContext(), users.get("userId").toString() + "님 댓글 입니다.", Toast.LENGTH_SHORT).show();
+                                } else if (view.getTag().equals("replyAdapter_relativeLayout_main")) { //댓글 클릭, 삭제or수정
+                                    firebaseDatabase.getReference().child("reply").child(contentKey).addListenerForSingleValueEvent(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                            replyDTOS.clear();
+                                            ArrayList<ReplyDTO> replyDTOTemp = new ArrayList<>();
 
-                                        for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                                            ReplyDTO replyDTO = snapshot.getValue(ReplyDTO.class);
-                                            replyDTOTemp.add(replyDTO);
-                                        }
+                                            for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                                                ReplyDTO replyDTO = snapshot.getValue(ReplyDTO.class);
+                                                replyDTOTemp.add(replyDTO);
+                                            }
 //                                Collections.reverse(replyDTOTemp);
-                                        replyDTOS.addAll(replyDTOTemp);
+                                            replyDTOS.addAll(replyDTOTemp);
 //                                int adminAuthId = replyDTOS.size() - position - 1;
-                                        String replyKey = replyDTOTemp.get(position).getReplyKey();
+                                            String replyKey = replyDTOTemp.get(position).getReplyKey();
 
-                                        //수정하기, 선택하기 액티비티(다이얼로그)띄우기
-                                        Intent intent = new Intent(PollRankingActivity.this, DeleteModificationActivity.class);
-                                        intent.putExtra("replyKey", replyKey);
-                                        startActivityForResult(intent, 10000);
-                                    }
-
-                                    @Override
-                                    public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                                    }
-                                });
-                            }
-                        }
-                        //본인이 아닌 댓글,좋아요 클릭시
-                        else {
-                            if (view.getTag().equals("replyAdapter_relativeLayout_like")) { //댓글 좋아요 클릭
-                                firebaseDatabase.getReference().child("reply").child(contentKey).addListenerForSingleValueEvent(new ValueEventListener() {
-                                    @Override
-                                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                        replyDTOS.clear();
-                                        ArrayList<ReplyDTO> replyDTOTemp = new ArrayList<>();
-
-                                        for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                                            ReplyDTO replyDTO = snapshot.getValue(ReplyDTO.class);
-                                            replyDTOTemp.add(replyDTO);
+                                            //수정하기, 선택하기 액티비티(다이얼로그)띄우기
+                                            Intent intent = new Intent(PollRankingActivity.this, DeleteModificationActivity.class);
+                                            intent.putExtra("replyKey", replyKey);
+                                            startActivityForResult(intent, 10000);
                                         }
-                                        Collections.reverse(replyDTOTemp);
-                                        replyDTOS.addAll(replyDTOTemp);
-                                        int temp = replyDTOS.size() - position - 1;
-                                        onReplyLikeClicked(firebaseDatabase.getReference().child("reply").child(contentKey).child(replyDTOTemp.get(temp).getReplyKey()));
-                                    }
 
-                                    @Override
-                                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                                        @Override
+                                        public void onCancelled(@NonNull DatabaseError databaseError) {
 
-                                    }
-                                });
+                                        }
+                                    });
+                                }
+                            }
+                            //본인이 아닌 댓글,좋아요 클릭시
+                            else {
+                                if (view.getTag().equals("replyAdapter_relativeLayout_like")) { //댓글 좋아요 클릭
+                                    firebaseDatabase.getReference().child("reply").child(contentKey).addListenerForSingleValueEvent(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                            replyDTOS.clear();
+                                            ArrayList<ReplyDTO> replyDTOTemp = new ArrayList<>();
+
+                                            for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                                                ReplyDTO replyDTO = snapshot.getValue(ReplyDTO.class);
+                                                replyDTOTemp.add(replyDTO);
+                                            }
+                                            Collections.reverse(replyDTOTemp);
+                                            replyDTOS.addAll(replyDTOTemp);
+                                            int temp = replyDTOS.size() - position - 1;
+                                            onReplyLikeClicked(firebaseDatabase.getReference().child("reply").child(contentKey).child(replyDTOTemp.get(temp).getReplyKey()));
+                                        }
+
+                                        @Override
+                                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                        }
+                                    });
+                                }
                             }
                         }
-                    }
 
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
 
-                    }
-                });
+                        }
+                    });
+                } else {
+                    Toast.makeText(getApplicationContext(), "로그인 해야 합니다.", Toast.LENGTH_LONG).show();
+
+                }
+
             }
         });
 
@@ -452,27 +460,29 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
         pollActivity_imageView_state.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mDatabaseReferencePicker.child(auth.getCurrentUser().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        Map<String, Object> user = (Map<String, Object>) dataSnapshot.getValue();
-                        Object object = user.get("age");
-                        int currentAge = Integer.parseInt(object.toString());
-                        String currentGender = user.get("sex").toString();
-                        onResultClicked(firebaseDatabase.getReference().child("user_contents").child(contentKey), currentAge, currentGender);
+                if (user.isAnonymous()) {
+                    startAnonymousPollResult(contentKey);
 //                        issueContents 테스트 디비 입력용
 //                        long issueDate = getCurrentDate();
 //                        issueMap.put(String.valueOf(issueDate), contentKey);
 //                        firebaseDatabase.getReference().child("issueContents").child(String.valueOf(issueDate)).setValue(issueMap);
-                    }
+                } else {
+                    mDatabaseReferencePicker.child(auth.getCurrentUser().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            Map<String, Object> user = (Map<String, Object>) dataSnapshot.getValue();
+                            Object object = user.get("age");
+                            int currentAge = Integer.parseInt(object.toString());
+                            String currentGender = user.get("sex").toString();
+                            onResultClicked(firebaseDatabase.getReference().child("user_contents").child(contentKey), currentAge, currentGender);
+                        }
 
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
 
-                    }
-                });
-
-
+                        }
+                    });
+                }
             }
         });
 
@@ -480,29 +490,37 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
         pollActivity_fab_result.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mDatabaseReferencePicker.child(auth.getCurrentUser().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        Map<String, Object> user = (Map<String, Object>) dataSnapshot.getValue();
-                        Object object = user.get("age");
-                        int currentAge = Integer.parseInt(object.toString());
-                        String currentGender = user.get("sex").toString();
-                        onResultClicked(firebaseDatabase.getReference().child("user_contents").child(contentKey), currentAge, currentGender);
+                if (user.isAnonymous()) {
+                    startAnonymousPollResult(contentKey);
 //                        issueContents 테스트 디비 입력용
 //                        long issueDate = getCurrentDate();
 //                        issueMap.put(String.valueOf(issueDate), contentKey);
 //                        firebaseDatabase.getReference().child("issueContents").child(String.valueOf(issueDate)).setValue(issueMap);
-                    }
+                } else {
+                    mDatabaseReferencePicker.child(auth.getCurrentUser().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            Map<String, Object> user = (Map<String, Object>) dataSnapshot.getValue();
+                            Object object = user.get("age");
+                            int currentAge = Integer.parseInt(object.toString());
+                            String currentGender = user.get("sex").toString();
+                            onResultClicked(firebaseDatabase.getReference().child("user_contents").child(contentKey), currentAge, currentGender);
+                        }
 
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
 
-                    }
-                });
+                        }
+                    });
+                }
+
 
             }
         });
 
+        if (user.isAnonymous()) {
+            pollActivity_editText_reply.setHint("댓글을 작성하시려면 로그인해주세요.");
+        }
 
         //댓글 등록 버튼 색 변경
         pollActivity_editText_reply.addTextChangedListener(new TextWatcher() {
@@ -634,7 +652,14 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
         pollActivity_imageView_like.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                likeClick();
+                Log.d("lkj like click test", "test1111111");
+                if (user.isAnonymous()) {
+                    Log.d("lkj like click test", "test");
+                    Toast.makeText(getApplicationContext(), "로그인 해야 합니다.", Toast.LENGTH_LONG).show();
+                } else {
+                    likeClick();
+                }
+
             }
         });
 
@@ -642,7 +667,13 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
         pollActivity_textView_likeCount.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                likeClick();
+                Log.d("lkj like click test", "test1111111");
+                if (user.isAnonymous()) {
+                    Log.d("lkj like click test", "test");
+                    Toast.makeText(getApplicationContext(), "로그인 해야 합니다.", Toast.LENGTH_LONG).show();
+                } else {
+                    likeClick();
+                }
             }
         });
 
@@ -671,39 +702,45 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
         pollActivity_button_replySend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (pollActivity_editText_reply.getText().length() > 0) {
-                    FirebaseDatabase replyDatabase;
-                    replyDatabase = FirebaseDatabase.getInstance();
-                    replyDatabase.getReference().child("users").child(auth.getCurrentUser().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (user.isAnonymous()) {
+                    InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE); //키보드 숨기기
+                    inputMethodManager.hideSoftInputFromWindow(pollActivity_editText_reply.getWindowToken(), 0); //키보드 숨기기
+                } else {
+                    if (pollActivity_editText_reply.getText().length() > 0) {
+                        FirebaseDatabase replyDatabase;
+                        replyDatabase = FirebaseDatabase.getInstance();
+                        replyDatabase.getReference().child("users").child(auth.getCurrentUser().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 //                            User user = dataSnapshot.getValue(User.class);
-                            Map<String, Object> users = (Map<String, Object>) dataSnapshot.getValue();
-                            String date = getDate();
-                            onReplyClicked(firebaseDatabase.getReference().child("user_contents").child(contentKey));
-                            replyKey = firebaseDatabase.getReference().child("reply").push().getKey();
-                            ReplyDTO replyDTO = new ReplyDTO();
-                            replyDTO.setReplyKey(replyKey);
-                            replyDTO.setDate(date);
-                            replyDTO.setId(users.get("userId").toString());
-                            replyDTO.setuId(auth.getCurrentUser().getUid());
-                            replyDTO.setReply(pollActivity_editText_reply.getText().toString());
-                            replyDTO.setqPoint(Integer.parseInt(users.get("userClass").toString()));
-                            replyDTO.setContentKey(contentKey);
-                            firebaseDatabase.getReference().child("reply").child(contentKey).child(replyKey).setValue(replyDTO);
-                            firebaseDatabase.getReference().child("users").child(auth.getCurrentUser().getUid()).child("reply").child(contentKey).push().setValue(replyDTO);
-                            pollActivity_editText_reply.setText(null);//editText 초기화
-                            pollActivity_editText_reply.setHint("댓글...");
-                            InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE); //키보드 숨기기
-                            inputMethodManager.hideSoftInputFromWindow(pollActivity_editText_reply.getWindowToken(), 0); //키보드 숨기기
-                        }
+                                Map<String, Object> users = (Map<String, Object>) dataSnapshot.getValue();
+                                String date = getDate();
+                                onReplyClicked(firebaseDatabase.getReference().child("user_contents").child(contentKey));
+                                replyKey = firebaseDatabase.getReference().child("reply").push().getKey();
+                                ReplyDTO replyDTO = new ReplyDTO();
+                                replyDTO.setReplyKey(replyKey);
+                                replyDTO.setDate(date);
+                                replyDTO.setId(users.get("userId").toString());
+                                replyDTO.setuId(auth.getCurrentUser().getUid());
+                                replyDTO.setReply(pollActivity_editText_reply.getText().toString());
+                                replyDTO.setqPoint(Integer.parseInt(users.get("userClass").toString()));
+                                replyDTO.setContentKey(contentKey);
+                                firebaseDatabase.getReference().child("reply").child(contentKey).child(replyKey).setValue(replyDTO);
+                                firebaseDatabase.getReference().child("users").child(auth.getCurrentUser().getUid()).child("reply").child(contentKey).push().setValue(replyDTO);
+                                pollActivity_editText_reply.setText(null);//editText 초기화
+                                pollActivity_editText_reply.setHint("댓글...");
+                                InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE); //키보드 숨기기
+                                inputMethodManager.hideSoftInputFromWindow(pollActivity_editText_reply.getWindowToken(), 0); //키보드 숨기기
+                            }
 
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError databaseError) {
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
 
-                        }
-                    });
+                            }
+                        });
+                    }
                 }
+
             }
         });
 
@@ -917,6 +954,30 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
         });
     }
 
+    private void startAnonymousPollResult(final String c_Key) {
+        DatabaseReference tmpRef = FirebaseDatabase.getInstance().getReference();
+        tmpRef.child("user_contents").child(c_Key).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                Map<String, Object> contentMap = (Map<String, Object>) dataSnapshot.getValue();
+                PollResultAnonymousDialog pollResultAnonymousDialog = new PollResultAnonymousDialog();
+                Bundle bundle = new Bundle();
+                bundle.putInt("imagePick", currentPick());
+                bundle.putInt("imageN", contentAmount);
+                bundle.putInt("contentHits", contentHit);
+                bundle.putString("currentContent", c_Key);
+                bundle.putString("statisticsCode", String.valueOf(contentMap.get("statistics_code")));
+                pollResultAnonymousDialog.setArguments(bundle);
+                pollResultAnonymousDialog.show(getSupportFragmentManager(), "pollResultAnonymousDialog");
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
     /*
     onCreate();
      */
@@ -1004,50 +1065,56 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
 
 
     private void likeClick() {
-        final Uri data = getIntent().getData();
-        if (data != null) {
-            contentKey = data.getQueryParameter("contentKey");
+        FirebaseUser muUser = FirebaseAuth.getInstance().getCurrentUser();
+        if (muUser.isAnonymous()) {
+            Toast.makeText(getApplicationContext(), "로그인 해야 합니다.", Toast.LENGTH_LONG).show();
         } else {
-            contentKey = getIntent().getStringExtra("contentKey");
-        }
-        firebaseDatabase.getReference().child("user_contents").child(contentKey).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                ContentDTO contentDTO = dataSnapshot.getValue(ContentDTO.class);
-                Log.d("lkj contentdto", contentDTO.description);
-                if (contentDTO.uid.equals(auth.getCurrentUser().getUid())) {
-                    Toast toast = Toast.makeText(getApplicationContext(), contentDTO.userID + "님의 투표입니다!", Toast.LENGTH_SHORT);
-                    toast.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL, 0, 0);
-                    toast.show();
-                } else {
-                    onLikeClicked(firebaseDatabase.getReference().child("user_contents").child(contentKey));
+            final Uri data = getIntent().getData();
+            if (data != null) {
+                contentKey = data.getQueryParameter("contentKey");
+            } else {
+                contentKey = getIntent().getStringExtra("contentKey");
+            }
+            firebaseDatabase.getReference().child("user_contents").child(contentKey).addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    ContentDTO contentDTO = dataSnapshot.getValue(ContentDTO.class);
+                    Log.d("lkj contentdto", contentDTO.description);
+                    if (contentDTO.uid.equals(auth.getCurrentUser().getUid())) {
+                        Toast toast = Toast.makeText(getApplicationContext(), contentDTO.userID + "님의 투표입니다!", Toast.LENGTH_SHORT);
+                        toast.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL, 0, 0);
+                        toast.show();
+                    } else {
+                        onLikeClicked(firebaseDatabase.getReference().child("user_contents").child(contentKey));
+                    }
+
+                    likeFirebaseDatabase.getReference().child("user_contents").child(contentKey).addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            ContentDTO contentDTO_ = dataSnapshot.getValue(ContentDTO.class);
+                            if (contentDTO_.likes.containsKey(auth.getCurrentUser().getUid())) {
+                                pollActivity_imageView_like.setImageResource(R.drawable.ic_thumb_up_blue);
+                                pollActivity_textView_likeCount.setText(String.valueOf(contentDTO_.likeCount));
+                            } else {
+                                pollActivity_imageView_like.setImageResource(R.drawable.ic_outline_thumb_up_24px);
+                                pollActivity_textView_likeCount.setText(String.valueOf(contentDTO_.likeCount));
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                        }
+                    });
                 }
 
-                likeFirebaseDatabase.getReference().child("user_contents").child(contentKey).addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        ContentDTO contentDTO_ = dataSnapshot.getValue(ContentDTO.class);
-                        if (contentDTO_.likes.containsKey(auth.getCurrentUser().getUid())) {
-                            pollActivity_imageView_like.setImageResource(R.drawable.ic_thumb_up_blue);
-                            pollActivity_textView_likeCount.setText(String.valueOf(contentDTO_.likeCount));
-                        } else {
-                            pollActivity_imageView_like.setImageResource(R.drawable.ic_outline_thumb_up_24px);
-                            pollActivity_textView_likeCount.setText(String.valueOf(contentDTO_.likeCount));
-                        }
-                    }
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
 
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                }
+            });
+        }
 
-                    }
-                });
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
     }
 
 

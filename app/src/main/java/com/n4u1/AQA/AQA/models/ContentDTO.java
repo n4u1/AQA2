@@ -87,6 +87,7 @@ public class ContentDTO {
         result.put("imageUrl_8", imageUrl_8);
         result.put("imageUrl_9", imageUrl_9);
         result.put("alarm", alarm);
+        result.put("statistics_code", statistics_code);
 
 //        result.put("contentPicker", contentPicker);
 

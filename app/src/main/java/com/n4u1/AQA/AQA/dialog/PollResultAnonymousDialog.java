@@ -71,6 +71,7 @@ public class PollResultAnonymousDialog extends DialogFragment {
         HorizontalBarChart pollActivity_horizontalBarChart_result = view.findViewById(R.id.pollActivity_horizontalBarChart_result);
 //        pollResultDialog_spinner_age = view.findViewById(R.id.pollResultDialog_spinner_age);
         AppCompatSpinner pollResultDialog_spinner_divide = view.findViewById(R.id.pollResultDialog_spinner_divide);
+        final TextView textView_login_alarm = view.findViewById(R.id.textView_login_alarm);
         pollResultDialog_close = view.findViewById(R.id.pollResultDialog_close);
 
         divideList.add("전 체");
@@ -127,7 +128,7 @@ public class PollResultAnonymousDialog extends DialogFragment {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 selectedDivide = divideList.get(position);
 //                Log.d("lkj in gd_", ageRange);
-                parsingData(selectedDivide);
+                parsingData(selectedDivide, textView_login_alarm);
             }
 
             @Override
@@ -136,6 +137,7 @@ public class PollResultAnonymousDialog extends DialogFragment {
             }
         });
 
+
         //차트클릭시 다이얼로그 닫기
         pollActivity_horizontalBarChart_result.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -143,6 +145,8 @@ public class PollResultAnonymousDialog extends DialogFragment {
                 dismiss();
             }
         });
+
+
         //닫기 버튼 클릭
         pollResultDialog_close.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -151,6 +155,7 @@ public class PollResultAnonymousDialog extends DialogFragment {
             }
         });
 
+        //데이터 번들로 받아오기
         Bundle bundle = this.getArguments();
         if (bundle != null) {
             contentKey = bundle.getString("currentContent", null);
@@ -163,97 +168,124 @@ public class PollResultAnonymousDialog extends DialogFragment {
             Log.d("lkj currentPick", String.valueOf(currentPick));
             Log.d("lkj currentHits", String.valueOf(contentHit));
             Log.d("lkj statisticsCodeeee", statisticsCode);
-
-//            getPicker(contentKey);            //textView Test
-
         }
         return view;
     }
-
-
-    /**
-     * onCreateView()     onCreateView()     onCreateView()     onCreateView()     onCreateView()     onCreateView()
+    /*
+      onCreateView()     onCreateView()     onCreateView()     onCreateView()     onCreateView()     onCreateView()
      */
 
 
     //차트 초기 세팅 (전체 데이터)
     private void setChartFullData(final int contentN, String key, final View v) {
 
-        ArrayList<String> labels = new ArrayList<>();
-        ArrayList<BarEntry> yValue = new ArrayList<>();
-        ArrayList<Integer> tmp = new ArrayList<>();
+        mDatabaseReference = FirebaseDatabase.getInstance().getReference();
+        mDatabaseReference.child("user_contents").child(key).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                Map<String, Object> contentDTO = (Map<String, Object>) dataSnapshot.getValue();
 
-        for (int i = 0; i < contentN + 1; i++) {
-            int j = contentN - i + 1;
-            labels.add("`" + String.valueOf(j));
-        }
+                ArrayList<String> labels = new ArrayList<>();
+                ArrayList<BarEntry> yValue = new ArrayList<>();
+                ArrayList<Integer> tmp = new ArrayList<>();
 
-        tmp.add(128);
-        tmp.add(20);
-        tmp.add(231);
-        tmp.add(98);
+                for (int i = 0; i < contentN + 1; i++) {
+                    int j = contentN - i + 1;
+                    labels.add("`" + String.valueOf(j));
+                }
 
+                Object object0 = contentDTO.get("candidateScore_0");
+                Object object1 = contentDTO.get("candidateScore_1");
+                Object object2 = contentDTO.get("candidateScore_2");
+                Object object3 = contentDTO.get("candidateScore_3");
+                Object object4 = contentDTO.get("candidateScore_4");
+                Object object5 = contentDTO.get("candidateScore_5");
+                Object object6 = contentDTO.get("candidateScore_6");
+                Object object7 = contentDTO.get("candidateScore_7");
+                Object object8 = contentDTO.get("candidateScore_8");
+                Object object9 = contentDTO.get("candidateScore_9");
 
-        HorizontalBarChart pollActivity_horizontalBarChart_result = v.findViewById(R.id.pollActivity_horizontalBarChart_result);
+                tmp.add(Integer.parseInt(object0.toString()));
+                tmp.add(Integer.parseInt(object1.toString()));
+                tmp.add(Integer.parseInt(object2.toString()));
+                tmp.add(Integer.parseInt(object3.toString()));
+                tmp.add(Integer.parseInt(object4.toString()));
+                tmp.add(Integer.parseInt(object5.toString()));
+                tmp.add(Integer.parseInt(object6.toString()));
+                tmp.add(Integer.parseInt(object7.toString()));
+                tmp.add(Integer.parseInt(object8.toString()));
+                tmp.add(Integer.parseInt(object9.toString()));
+
+                HorizontalBarChart pollActivity_horizontalBarChart_result = v.findViewById(R.id.pollActivity_horizontalBarChart_result);
 //                HorizontalBarChart pollActivity_horizontalBarChart_result1 = v.findViewById(R.id.pollActivity_horizontalBarChart_result1);
 
-        CategoryBarChartXaxisFormatter xAxisFormatter = new CategoryBarChartXaxisFormatter(labels);
-        XAxis xAxis = pollActivity_horizontalBarChart_result.getXAxis();
-        xAxis.setValueFormatter(xAxisFormatter);
-        xAxis.setDrawAxisLine(false);
-        xAxis.setDrawGridLines(false);
-        xAxis.setGranularity(1);
-        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
-        xAxis.setXOffset(10); // 후보 1,2,3,4,5....위치
-        xAxis.setTextSize(20f); // 후보 1,2,3,4,5... 크기
+                CategoryBarChartXaxisFormatter xAxisFormatter = new CategoryBarChartXaxisFormatter(labels);
+                XAxis xAxis = pollActivity_horizontalBarChart_result.getXAxis();
+                xAxis.setValueFormatter(xAxisFormatter);
+                xAxis.setDrawAxisLine(false);
+                xAxis.setDrawGridLines(false);
+                xAxis.setGranularity(1);
+                xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+                xAxis.setXOffset(10); // 후보 1,2,3,4,5....위치
+                xAxis.setTextSize(20f); // 후보 1,2,3,4,5... 크기
 
-        YAxis yAxis = pollActivity_horizontalBarChart_result.getAxisLeft();
-        yAxis.setAxisMinimum(0);
-        yAxis.setMinWidth(0);
-        yAxis.setMaxWidth(3);
-        yAxis.setDrawZeroLine(true);
-        yAxis.setDrawTopYLabelEntry(true);
+                YAxis yAxis = pollActivity_horizontalBarChart_result.getAxisLeft();
+                yAxis.setAxisMinimum(0);
+                yAxis.setMinWidth(0);
+                yAxis.setMaxWidth(3);
+                yAxis.setDrawZeroLine(true);
+                yAxis.setDrawTopYLabelEntry(true);
 
-        yAxis.setCenterAxisLabels(true);
-        yAxis.setEnabled(true);
+                yAxis.setCenterAxisLabels(true);
+                yAxis.setEnabled(true);
 
 //                pollActivity_horizontalBarChart_result.getDescription().setEnabled(false);
-        pollActivity_horizontalBarChart_result.setTouchEnabled(true);
-        pollActivity_horizontalBarChart_result.setDragEnabled(false);
-        pollActivity_horizontalBarChart_result.setDoubleTapToZoomEnabled(false);
-        pollActivity_horizontalBarChart_result.setPinchZoom(false);
-        pollActivity_horizontalBarChart_result.setDescription(null);
-        pollActivity_horizontalBarChart_result.animateY(1200);
-        pollActivity_horizontalBarChart_result.setFitBars(true);
-        pollActivity_horizontalBarChart_result.setDrawBarShadow(false);
-        pollActivity_horizontalBarChart_result.getAxisLeft().setEnabled(false);
-        pollActivity_horizontalBarChart_result.getAxisRight().setEnabled(false);
-        pollActivity_horizontalBarChart_result.getXAxis().setEnabled(true);
-        pollActivity_horizontalBarChart_result.setDrawValueAboveBar(true);
-        pollActivity_horizontalBarChart_result.setDrawGridBackground(false);
-        pollActivity_horizontalBarChart_result.getLegend().setEnabled(false);
+                pollActivity_horizontalBarChart_result.setTouchEnabled(true);
+                pollActivity_horizontalBarChart_result.setDragEnabled(false);
+                pollActivity_horizontalBarChart_result.setDoubleTapToZoomEnabled(false);
+                pollActivity_horizontalBarChart_result.setPinchZoom(false);
+                pollActivity_horizontalBarChart_result.setDescription(null);
+                pollActivity_horizontalBarChart_result.animateY(1200);
+                pollActivity_horizontalBarChart_result.setFitBars(true);
+                pollActivity_horizontalBarChart_result.setDrawBarShadow(false);
+                pollActivity_horizontalBarChart_result.getAxisLeft().setEnabled(false);
+                pollActivity_horizontalBarChart_result.getAxisRight().setEnabled(false);
+                pollActivity_horizontalBarChart_result.getXAxis().setEnabled(true);
+                pollActivity_horizontalBarChart_result.setDrawValueAboveBar(true);
+                pollActivity_horizontalBarChart_result.setDrawGridBackground(false);
+                pollActivity_horizontalBarChart_result.getLegend().setEnabled(false);
 
 
-        for (int i = 0; i < 4; i++) {
-            yValue.add(new BarEntry((float) 4 - i, tmp.get(i)));
-        }
+                for (int i = 0; i < contentN; i++) {
+                    yValue.add(new BarEntry((float) contentN - i, tmp.get(i)));
+                }
 
-        BarDataSet set1 = new BarDataSet(yValue, null);
+                BarDataSet set1 = new BarDataSet(yValue, null);
 //                set1.setColor(Color.GRAY);
-        set1.setColors(ColorTemplate.LIBERTY_COLORS);
+                set1.setColors(ColorTemplate.LIBERTY_COLORS);
 //                set1.setColors(0xff4485c9);
 
-        BarData data1 = new BarData(set1);
-        data1.setBarWidth(0.5f); //바 크기
-        data1.setValueTextSize(15f); //결과값 크기
-        data1.setValueTextColor(Color.GRAY);
+                BarData data1 = new BarData(set1);
+                data1.setBarWidth(0.5f); //바 크기
+                data1.setValueTextSize(15f); //결과값 크기
+                data1.setValueTextColor(Color.GRAY);
 
 
-        ResultValueFormatter resultValueFormatter = new ResultValueFormatter();
-        data1.setValueFormatter(resultValueFormatter);
+                ResultValueFormatter resultValueFormatter = new ResultValueFormatter();
+                data1.setValueFormatter(resultValueFormatter);
 
-        pollActivity_horizontalBarChart_result.setData(data1);
-        pollActivity_horizontalBarChart_result.invalidate(); //refresh
+                pollActivity_horizontalBarChart_result.setData(data1);
+                pollActivity_horizontalBarChart_result.invalidate(); //refresh
+
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.d("lkj setChartData", "setChartData ERR");
+
+            }
+        });
 
     }
 
@@ -338,8 +370,16 @@ public class PollResultAnonymousDialog extends DialogFragment {
     }
 
 
-    private void parsingData(String gR) {
-        setChartFullData(imageN, contentKey, getView());
+    private void parsingData(String gR, TextView textView_login_alarm) {
+
+        if (gR.equals("전 체")) {
+            textView_login_alarm.setVisibility(View.GONE);
+            setChartFullData(imageN, contentKey, getView());
+        } else {
+            textView_login_alarm.setVisibility(View.VISIBLE);
+            setChartFullData(imageN, contentKey, getView());
+        }
+
 
     }
 
