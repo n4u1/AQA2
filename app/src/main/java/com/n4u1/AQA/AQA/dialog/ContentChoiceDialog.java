@@ -75,7 +75,7 @@ public class ContentChoiceDialog extends DialogFragment {
                         // User clicked OK, so save the mSelectedItems results somewhere
                         // or return them to the component that opened the dialog
                         ArrayList mSelectedItemsResult = new ArrayList();
-                        for (int i = 0; i < 69; i++) {
+                        for (int i = 0; i < 70; i++) {
                             if (mSelectedItems.contains(i)) {
                                 switch (i) {
                                     case 0 : mSelectedItemsResult.add("개그"); break;
@@ -146,7 +146,8 @@ public class ContentChoiceDialog extends DialogFragment {
                                     case 65 : mSelectedItemsResult.add("취업"); break;
                                     case 66 : mSelectedItemsResult.add("컴퓨터"); break;
                                     case 67 : mSelectedItemsResult.add("패션"); break;
-                                    case 68 : mSelectedItemsResult.add("휴가"); break;
+                                    case 68 : mSelectedItemsResult.add("페미니스트"); break;
+                                    case 69 : mSelectedItemsResult.add("휴가"); break;
 
                                 }
                             }

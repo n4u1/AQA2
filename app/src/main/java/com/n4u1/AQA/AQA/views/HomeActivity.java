@@ -386,8 +386,8 @@ public class HomeActivity extends AppCompatActivity implements SwipeRefreshLayou
 
 
         //onCreate시 액티비티 최초1회 바인딩
+        //init recyclerView
         mDatabase.getReference().child("user_contents").addListenerForSingleValueEvent(new ValueEventListener() {
-
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 contentDTOS.clear();

@@ -751,184 +751,193 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 ContentDTO contentDTO = dataSnapshot.getValue(ContentDTO.class);
-                tmpContentKey = contentDTO.getContentKey();
-                tmpPollMode = contentDTO.getPollMode();
-                tmpPollMode = tmpPollMode.replaceAll(" ", "");
-                pollActivity_textView_date.setText(contentDTO.getUploadDate());
-                pollActivity_textView_title.setText(contentDTO.getTitle());
-                pollActivity_textView_contentId.setText(contentDTO.getContentId());
-                pollActivity_textView_contentType.setText(contentDTO.getContentType());
-                pollActivity_textView_description.setText(contentDTO.getDescription());
-                pollActivity_textView_pollMode.setText(contentDTO.getPollMode());
-                pollActivity_textView_hitCount.setText(String.valueOf(contentDTO.getContentHit()));
-                pollActivity_textView_likeCount.setText(String.valueOf(contentDTO.getLikeCount()));
-                pollActivity_textView_replyCount.setText(String.valueOf(contentDTO.getReplyCount()));
-                pollActivity_textView_userId.setText(contentDTO.getUserID());
-                settingUserIcon(contentDTO.getUid());
-                settingUserAlarm(contentKey);
-                contentHit = contentDTO.getContentHit();
-                contentAmount = contentDTO.getItemViewType();
+                try {
+//                    tmpContentKey = contentDTO.getContentKey();
+//                    tmpPollMode = contentDTO.getPollMode();
+//                    tmpPollMode = tmpPollMode.replaceAll(" ", "");
+                    pollActivity_textView_date.setText(contentDTO.getUploadDate());
+                    pollActivity_textView_title.setText(contentDTO.getTitle());
+                    pollActivity_textView_contentId.setText(contentDTO.getContentId());
+                    pollActivity_textView_contentType.setText(contentDTO.getContentType());
+                    pollActivity_textView_description.setText(contentDTO.getDescription());
+                    pollActivity_textView_pollMode.setText(contentDTO.getPollMode());
+                    pollActivity_textView_hitCount.setText(String.valueOf(contentDTO.getContentHit()));
+                    pollActivity_textView_likeCount.setText(String.valueOf(contentDTO.getLikeCount()));
+                    pollActivity_textView_replyCount.setText(String.valueOf(contentDTO.getReplyCount()));
+                    pollActivity_textView_userId.setText(contentDTO.getUserID());
+                    settingUserIcon(contentDTO.getUid());
+                    settingUserAlarm(contentKey);
+                    contentHit = contentDTO.getContentHit();
+                    contentAmount = contentDTO.getItemViewType();
 
-                if (user.isAnonymous()) {
-                    pollActivity_textView_state.setText("투표에 참여하시려면 로그인 해주세요.");
-                } else if (contentDTO.contentPicker.get(auth.getCurrentUser().getUid()) == null) {
-                    pollActivity_textView_state.setText("투표 전 입니다");
-                } else {
-                    int picked = contentDTO.contentPicker.get(auth.getCurrentUser().getUid());
-                    if (picked == 9999) {
-                        pollActivity_textView_state.setText(contentDTO.getUserID() + "님의 투표입니다.");
+                    if (user.isAnonymous()) {
+                        pollActivity_textView_state.setText("투표에 참여하시려면 로그인 해주세요.");
+                    } else if (contentDTO.contentPicker.get(auth.getCurrentUser().getUid()) == null) {
+                        pollActivity_textView_state.setText("투표 전 입니다");
                     } else {
-                        pollActivity_textView_state.setText(picked + 1 + "번에 1위 투표 하셧습니다.");
+                        int picked = contentDTO.contentPicker.get(auth.getCurrentUser().getUid());
+                        if (picked == 9999) {
+                            pollActivity_textView_state.setText(contentDTO.getUserID() + "님의 투표입니다.");
+                        } else {
+                            pollActivity_textView_state.setText(picked + 1 + "번에 1위 투표 하셧습니다.");
+                        }
                     }
+
+
+                    if (contentDTO.likes.containsKey(auth.getCurrentUser().getUid())) {
+                        pollActivity_imageView_like.setImageResource(R.drawable.ic_thumb_up_blue);
+                    } else {
+                        pollActivity_imageView_like.setImageResource(R.drawable.ic_outline_thumb_up_24px);
+                    }
+
+                    switch (contentDTO.getItemViewType()) {
+                        case 2:
+                            pollActivity_imageView_userAddContent_1.setVisibility(View.VISIBLE);
+                            pollActivity_imageView_userAddContent_2.setVisibility(View.VISIBLE);
+                            GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_0()).centerCrop().thumbnail(Glide.with(getApplicationContext()).load(R.drawable.loadingicon)).into(pollActivity_imageView_userAddContent_1).getView();
+                            GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_1()).centerCrop().thumbnail(Glide.with(getApplicationContext()).load(R.drawable.loadingicon)).into(pollActivity_imageView_userAddContent_2).getView();
+                            break;
+                        case 3:
+                            pollActivity_imageView_userAddContent_1.setVisibility(View.VISIBLE);
+                            pollActivity_imageView_userAddContent_2.setVisibility(View.VISIBLE);
+                            pollActivity_imageView_userAddContent_3.setVisibility(View.VISIBLE);
+                            GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_0()).centerCrop().thumbnail(Glide.with(getApplicationContext()).load(R.drawable.loadingicon)).into(pollActivity_imageView_userAddContent_1).getView();
+                            GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_1()).centerCrop().thumbnail(Glide.with(getApplicationContext()).load(R.drawable.loadingicon)).into(pollActivity_imageView_userAddContent_2).getView();
+                            GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_2()).centerCrop().thumbnail(Glide.with(getApplicationContext()).load(R.drawable.loadingicon)).into(pollActivity_imageView_userAddContent_3).getView();
+                            break;
+                        case 4:
+                            pollActivity_imageView_userAddContent_1.setVisibility(View.VISIBLE);
+                            pollActivity_imageView_userAddContent_2.setVisibility(View.VISIBLE);
+                            pollActivity_imageView_userAddContent_3.setVisibility(View.VISIBLE);
+                            pollActivity_imageView_userAddContent_4.setVisibility(View.VISIBLE);
+                            GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_0()).centerCrop().thumbnail(Glide.with(getApplicationContext()).load(R.drawable.loadingicon)).into(pollActivity_imageView_userAddContent_1).getView();
+                            GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_1()).centerCrop().thumbnail(Glide.with(getApplicationContext()).load(R.drawable.loadingicon)).into(pollActivity_imageView_userAddContent_2).getView();
+                            GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_2()).centerCrop().thumbnail(Glide.with(getApplicationContext()).load(R.drawable.loadingicon)).into(pollActivity_imageView_userAddContent_3).getView();
+                            GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_3()).centerCrop().thumbnail(Glide.with(getApplicationContext()).load(R.drawable.loadingicon)).into(pollActivity_imageView_userAddContent_4).getView();
+                            break;
+                        case 5:
+                            pollActivity_imageView_userAddContent_1.setVisibility(View.VISIBLE);
+                            pollActivity_imageView_userAddContent_2.setVisibility(View.VISIBLE);
+                            pollActivity_imageView_userAddContent_3.setVisibility(View.VISIBLE);
+                            pollActivity_imageView_userAddContent_4.setVisibility(View.VISIBLE);
+                            pollActivity_imageView_userAddContent_5.setVisibility(View.VISIBLE);
+                            GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_0()).centerCrop().thumbnail(Glide.with(getApplicationContext()).load(R.drawable.loadingicon)).into(pollActivity_imageView_userAddContent_1).getView();
+                            GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_1()).centerCrop().thumbnail(Glide.with(getApplicationContext()).load(R.drawable.loadingicon)).into(pollActivity_imageView_userAddContent_2).getView();
+                            GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_2()).centerCrop().thumbnail(Glide.with(getApplicationContext()).load(R.drawable.loadingicon)).into(pollActivity_imageView_userAddContent_3).getView();
+                            GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_3()).centerCrop().thumbnail(Glide.with(getApplicationContext()).load(R.drawable.loadingicon)).into(pollActivity_imageView_userAddContent_4).getView();
+                            GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_4()).centerCrop().thumbnail(Glide.with(getApplicationContext()).load(R.drawable.loadingicon)).into(pollActivity_imageView_userAddContent_5).getView();
+                            break;
+                        case 6:
+                            pollActivity_imageView_userAddContent_1.setVisibility(View.VISIBLE);
+                            pollActivity_imageView_userAddContent_2.setVisibility(View.VISIBLE);
+                            pollActivity_imageView_userAddContent_3.setVisibility(View.VISIBLE);
+                            pollActivity_imageView_userAddContent_4.setVisibility(View.VISIBLE);
+                            pollActivity_imageView_userAddContent_5.setVisibility(View.VISIBLE);
+                            pollActivity_imageView_userAddContent_6.setVisibility(View.VISIBLE);
+                            GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_0()).centerCrop().thumbnail(Glide.with(getApplicationContext()).load(R.drawable.loadingicon)).into(pollActivity_imageView_userAddContent_1).getView();
+                            GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_1()).centerCrop().thumbnail(Glide.with(getApplicationContext()).load(R.drawable.loadingicon)).into(pollActivity_imageView_userAddContent_2).getView();
+                            GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_2()).centerCrop().thumbnail(Glide.with(getApplicationContext()).load(R.drawable.loadingicon)).into(pollActivity_imageView_userAddContent_3).getView();
+                            GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_3()).centerCrop().thumbnail(Glide.with(getApplicationContext()).load(R.drawable.loadingicon)).into(pollActivity_imageView_userAddContent_4).getView();
+                            GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_4()).centerCrop().thumbnail(Glide.with(getApplicationContext()).load(R.drawable.loadingicon)).into(pollActivity_imageView_userAddContent_5).getView();
+                            GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_5()).centerCrop().thumbnail(Glide.with(getApplicationContext()).load(R.drawable.loadingicon)).into(pollActivity_imageView_userAddContent_6).getView();
+                            break;
+                        case 7:
+                            pollActivity_imageView_userAddContent_1.setVisibility(View.VISIBLE);
+                            pollActivity_imageView_userAddContent_2.setVisibility(View.VISIBLE);
+                            pollActivity_imageView_userAddContent_3.setVisibility(View.VISIBLE);
+                            pollActivity_imageView_userAddContent_4.setVisibility(View.VISIBLE);
+                            pollActivity_imageView_userAddContent_5.setVisibility(View.VISIBLE);
+                            pollActivity_imageView_userAddContent_6.setVisibility(View.VISIBLE);
+                            pollActivity_imageView_userAddContent_7.setVisibility(View.VISIBLE);
+                            GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_0()).centerCrop().thumbnail(Glide.with(getApplicationContext()).load(R.drawable.loadingicon)).into(pollActivity_imageView_userAddContent_1).getView();
+                            GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_1()).centerCrop().thumbnail(Glide.with(getApplicationContext()).load(R.drawable.loadingicon)).into(pollActivity_imageView_userAddContent_2).getView();
+                            GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_2()).centerCrop().thumbnail(Glide.with(getApplicationContext()).load(R.drawable.loadingicon)).into(pollActivity_imageView_userAddContent_3).getView();
+                            GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_3()).centerCrop().thumbnail(Glide.with(getApplicationContext()).load(R.drawable.loadingicon)).into(pollActivity_imageView_userAddContent_4).getView();
+                            GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_4()).centerCrop().thumbnail(Glide.with(getApplicationContext()).load(R.drawable.loadingicon)).into(pollActivity_imageView_userAddContent_5).getView();
+                            GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_5()).centerCrop().thumbnail(Glide.with(getApplicationContext()).load(R.drawable.loadingicon)).into(pollActivity_imageView_userAddContent_6).getView();
+                            GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_6()).centerCrop().thumbnail(Glide.with(getApplicationContext()).load(R.drawable.loadingicon)).into(pollActivity_imageView_userAddContent_7).getView();
+                            break;
+                        case 8:
+                            pollActivity_imageView_userAddContent_1.setVisibility(View.VISIBLE);
+                            pollActivity_imageView_userAddContent_2.setVisibility(View.VISIBLE);
+                            pollActivity_imageView_userAddContent_3.setVisibility(View.VISIBLE);
+                            pollActivity_imageView_userAddContent_4.setVisibility(View.VISIBLE);
+                            pollActivity_imageView_userAddContent_5.setVisibility(View.VISIBLE);
+                            pollActivity_imageView_userAddContent_6.setVisibility(View.VISIBLE);
+                            pollActivity_imageView_userAddContent_7.setVisibility(View.VISIBLE);
+                            pollActivity_imageView_userAddContent_8.setVisibility(View.VISIBLE);
+                            GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_0()).centerCrop().thumbnail(Glide.with(getApplicationContext()).load(R.drawable.loadingicon)).into(pollActivity_imageView_userAddContent_1).getView();
+                            GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_1()).centerCrop().thumbnail(Glide.with(getApplicationContext()).load(R.drawable.loadingicon)).into(pollActivity_imageView_userAddContent_2).getView();
+                            GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_2()).centerCrop().thumbnail(Glide.with(getApplicationContext()).load(R.drawable.loadingicon)).into(pollActivity_imageView_userAddContent_3).getView();
+                            GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_3()).centerCrop().thumbnail(Glide.with(getApplicationContext()).load(R.drawable.loadingicon)).into(pollActivity_imageView_userAddContent_4).getView();
+                            GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_4()).centerCrop().thumbnail(Glide.with(getApplicationContext()).load(R.drawable.loadingicon)).into(pollActivity_imageView_userAddContent_5).getView();
+                            GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_5()).centerCrop().thumbnail(Glide.with(getApplicationContext()).load(R.drawable.loadingicon)).into(pollActivity_imageView_userAddContent_6).getView();
+                            GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_6()).centerCrop().thumbnail(Glide.with(getApplicationContext()).load(R.drawable.loadingicon)).into(pollActivity_imageView_userAddContent_7).getView();
+                            GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_7()).centerCrop().thumbnail(Glide.with(getApplicationContext()).load(R.drawable.loadingicon)).into(pollActivity_imageView_userAddContent_8).getView();
+                            break;
+                        case 9:
+                            pollActivity_imageView_userAddContent_1.setVisibility(View.VISIBLE);
+                            pollActivity_imageView_userAddContent_2.setVisibility(View.VISIBLE);
+                            pollActivity_imageView_userAddContent_3.setVisibility(View.VISIBLE);
+                            pollActivity_imageView_userAddContent_4.setVisibility(View.VISIBLE);
+                            pollActivity_imageView_userAddContent_5.setVisibility(View.VISIBLE);
+                            pollActivity_imageView_userAddContent_6.setVisibility(View.VISIBLE);
+                            pollActivity_imageView_userAddContent_7.setVisibility(View.VISIBLE);
+                            pollActivity_imageView_userAddContent_8.setVisibility(View.VISIBLE);
+                            pollActivity_imageView_userAddContent_9.setVisibility(View.VISIBLE);
+                            GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_0()).centerCrop().thumbnail(Glide.with(getApplicationContext()).load(R.drawable.loadingicon)).into(pollActivity_imageView_userAddContent_1).getView();
+                            GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_1()).centerCrop().thumbnail(Glide.with(getApplicationContext()).load(R.drawable.loadingicon)).into(pollActivity_imageView_userAddContent_2).getView();
+                            GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_2()).centerCrop().thumbnail(Glide.with(getApplicationContext()).load(R.drawable.loadingicon)).into(pollActivity_imageView_userAddContent_3).getView();
+                            GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_3()).centerCrop().thumbnail(Glide.with(getApplicationContext()).load(R.drawable.loadingicon)).into(pollActivity_imageView_userAddContent_4).getView();
+                            GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_4()).centerCrop().thumbnail(Glide.with(getApplicationContext()).load(R.drawable.loadingicon)).into(pollActivity_imageView_userAddContent_5).getView();
+                            GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_5()).centerCrop().thumbnail(Glide.with(getApplicationContext()).load(R.drawable.loadingicon)).into(pollActivity_imageView_userAddContent_6).getView();
+                            GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_6()).centerCrop().thumbnail(Glide.with(getApplicationContext()).load(R.drawable.loadingicon)).into(pollActivity_imageView_userAddContent_7).getView();
+                            GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_7()).centerCrop().thumbnail(Glide.with(getApplicationContext()).load(R.drawable.loadingicon)).into(pollActivity_imageView_userAddContent_8).getView();
+                            GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_8()).centerCrop().thumbnail(Glide.with(getApplicationContext()).load(R.drawable.loadingicon)).into(pollActivity_imageView_userAddContent_9).getView();
+                            break;
+                        case 10:
+                            pollActivity_imageView_userAddContent_1.setVisibility(View.VISIBLE);
+                            pollActivity_imageView_userAddContent_2.setVisibility(View.VISIBLE);
+                            pollActivity_imageView_userAddContent_3.setVisibility(View.VISIBLE);
+                            pollActivity_imageView_userAddContent_4.setVisibility(View.VISIBLE);
+                            pollActivity_imageView_userAddContent_5.setVisibility(View.VISIBLE);
+                            pollActivity_imageView_userAddContent_6.setVisibility(View.VISIBLE);
+                            pollActivity_imageView_userAddContent_7.setVisibility(View.VISIBLE);
+                            pollActivity_imageView_userAddContent_8.setVisibility(View.VISIBLE);
+                            pollActivity_imageView_userAddContent_9.setVisibility(View.VISIBLE);
+                            pollActivity_imageView_userAddContent_10.setVisibility(View.VISIBLE);
+                            GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_0()).centerCrop().thumbnail(Glide.with(getApplicationContext()).load(R.drawable.loadingicon)).into(pollActivity_imageView_userAddContent_1).getView();
+                            GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_1()).centerCrop().thumbnail(Glide.with(getApplicationContext()).load(R.drawable.loadingicon)).into(pollActivity_imageView_userAddContent_2).getView();
+                            GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_2()).centerCrop().thumbnail(Glide.with(getApplicationContext()).load(R.drawable.loadingicon)).into(pollActivity_imageView_userAddContent_3).getView();
+                            GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_3()).centerCrop().thumbnail(Glide.with(getApplicationContext()).load(R.drawable.loadingicon)).into(pollActivity_imageView_userAddContent_4).getView();
+                            GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_4()).centerCrop().thumbnail(Glide.with(getApplicationContext()).load(R.drawable.loadingicon)).into(pollActivity_imageView_userAddContent_5).getView();
+                            GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_5()).centerCrop().thumbnail(Glide.with(getApplicationContext()).load(R.drawable.loadingicon)).into(pollActivity_imageView_userAddContent_6).getView();
+                            GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_6()).centerCrop().thumbnail(Glide.with(getApplicationContext()).load(R.drawable.loadingicon)).into(pollActivity_imageView_userAddContent_7).getView();
+                            GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_7()).centerCrop().thumbnail(Glide.with(getApplicationContext()).load(R.drawable.loadingicon)).into(pollActivity_imageView_userAddContent_8).getView();
+                            GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_8()).centerCrop().thumbnail(Glide.with(getApplicationContext()).load(R.drawable.loadingicon)).into(pollActivity_imageView_userAddContent_9).getView();
+                            GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_9()).centerCrop().thumbnail(Glide.with(getApplicationContext()).load(R.drawable.loadingicon)).into(pollActivity_imageView_userAddContent_10).getView();
+                            break;
+                    }
+                } catch (Exception e) {
+
                 }
 
 
-                if (contentDTO.likes.containsKey(auth.getCurrentUser().getUid())) {
-                    pollActivity_imageView_like.setImageResource(R.drawable.ic_thumb_up_blue);
-                } else {
-                    pollActivity_imageView_like.setImageResource(R.drawable.ic_outline_thumb_up_24px);
-                }
-
-                switch (contentDTO.getItemViewType()) {
-                    case 2:
-                        pollActivity_imageView_userAddContent_1.setVisibility(View.VISIBLE);
-                        pollActivity_imageView_userAddContent_2.setVisibility(View.VISIBLE);
-                        GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_0()).centerCrop().thumbnail(Glide.with(getApplicationContext()).load(R.drawable.loadingicon)).into(pollActivity_imageView_userAddContent_1).getView();
-                        GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_1()).centerCrop().thumbnail(Glide.with(getApplicationContext()).load(R.drawable.loadingicon)).into(pollActivity_imageView_userAddContent_2).getView();
-                        break;
-                    case 3:
-                        pollActivity_imageView_userAddContent_1.setVisibility(View.VISIBLE);
-                        pollActivity_imageView_userAddContent_2.setVisibility(View.VISIBLE);
-                        pollActivity_imageView_userAddContent_3.setVisibility(View.VISIBLE);
-                        GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_0()).centerCrop().thumbnail(Glide.with(getApplicationContext()).load(R.drawable.loadingicon)).into(pollActivity_imageView_userAddContent_1).getView();
-                        GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_1()).centerCrop().thumbnail(Glide.with(getApplicationContext()).load(R.drawable.loadingicon)).into(pollActivity_imageView_userAddContent_2).getView();
-                        GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_2()).centerCrop().thumbnail(Glide.with(getApplicationContext()).load(R.drawable.loadingicon)).into(pollActivity_imageView_userAddContent_3).getView();
-                        break;
-                    case 4:
-                        pollActivity_imageView_userAddContent_1.setVisibility(View.VISIBLE);
-                        pollActivity_imageView_userAddContent_2.setVisibility(View.VISIBLE);
-                        pollActivity_imageView_userAddContent_3.setVisibility(View.VISIBLE);
-                        pollActivity_imageView_userAddContent_4.setVisibility(View.VISIBLE);
-                        GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_0()).centerCrop().thumbnail(Glide.with(getApplicationContext()).load(R.drawable.loadingicon)).into(pollActivity_imageView_userAddContent_1).getView();
-                        GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_1()).centerCrop().thumbnail(Glide.with(getApplicationContext()).load(R.drawable.loadingicon)).into(pollActivity_imageView_userAddContent_2).getView();
-                        GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_2()).centerCrop().thumbnail(Glide.with(getApplicationContext()).load(R.drawable.loadingicon)).into(pollActivity_imageView_userAddContent_3).getView();
-                        GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_3()).centerCrop().thumbnail(Glide.with(getApplicationContext()).load(R.drawable.loadingicon)).into(pollActivity_imageView_userAddContent_4).getView();
-                        break;
-                    case 5:
-                        pollActivity_imageView_userAddContent_1.setVisibility(View.VISIBLE);
-                        pollActivity_imageView_userAddContent_2.setVisibility(View.VISIBLE);
-                        pollActivity_imageView_userAddContent_3.setVisibility(View.VISIBLE);
-                        pollActivity_imageView_userAddContent_4.setVisibility(View.VISIBLE);
-                        pollActivity_imageView_userAddContent_5.setVisibility(View.VISIBLE);
-                        GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_0()).centerCrop().thumbnail(Glide.with(getApplicationContext()).load(R.drawable.loadingicon)).into(pollActivity_imageView_userAddContent_1).getView();
-                        GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_1()).centerCrop().thumbnail(Glide.with(getApplicationContext()).load(R.drawable.loadingicon)).into(pollActivity_imageView_userAddContent_2).getView();
-                        GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_2()).centerCrop().thumbnail(Glide.with(getApplicationContext()).load(R.drawable.loadingicon)).into(pollActivity_imageView_userAddContent_3).getView();
-                        GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_3()).centerCrop().thumbnail(Glide.with(getApplicationContext()).load(R.drawable.loadingicon)).into(pollActivity_imageView_userAddContent_4).getView();
-                        GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_4()).centerCrop().thumbnail(Glide.with(getApplicationContext()).load(R.drawable.loadingicon)).into(pollActivity_imageView_userAddContent_5).getView();
-                        break;
-                    case 6:
-                        pollActivity_imageView_userAddContent_1.setVisibility(View.VISIBLE);
-                        pollActivity_imageView_userAddContent_2.setVisibility(View.VISIBLE);
-                        pollActivity_imageView_userAddContent_3.setVisibility(View.VISIBLE);
-                        pollActivity_imageView_userAddContent_4.setVisibility(View.VISIBLE);
-                        pollActivity_imageView_userAddContent_5.setVisibility(View.VISIBLE);
-                        pollActivity_imageView_userAddContent_6.setVisibility(View.VISIBLE);
-                        GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_0()).centerCrop().thumbnail(Glide.with(getApplicationContext()).load(R.drawable.loadingicon)).into(pollActivity_imageView_userAddContent_1).getView();
-                        GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_1()).centerCrop().thumbnail(Glide.with(getApplicationContext()).load(R.drawable.loadingicon)).into(pollActivity_imageView_userAddContent_2).getView();
-                        GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_2()).centerCrop().thumbnail(Glide.with(getApplicationContext()).load(R.drawable.loadingicon)).into(pollActivity_imageView_userAddContent_3).getView();
-                        GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_3()).centerCrop().thumbnail(Glide.with(getApplicationContext()).load(R.drawable.loadingicon)).into(pollActivity_imageView_userAddContent_4).getView();
-                        GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_4()).centerCrop().thumbnail(Glide.with(getApplicationContext()).load(R.drawable.loadingicon)).into(pollActivity_imageView_userAddContent_5).getView();
-                        GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_5()).centerCrop().thumbnail(Glide.with(getApplicationContext()).load(R.drawable.loadingicon)).into(pollActivity_imageView_userAddContent_6).getView();
-                        break;
-                    case 7:
-                        pollActivity_imageView_userAddContent_1.setVisibility(View.VISIBLE);
-                        pollActivity_imageView_userAddContent_2.setVisibility(View.VISIBLE);
-                        pollActivity_imageView_userAddContent_3.setVisibility(View.VISIBLE);
-                        pollActivity_imageView_userAddContent_4.setVisibility(View.VISIBLE);
-                        pollActivity_imageView_userAddContent_5.setVisibility(View.VISIBLE);
-                        pollActivity_imageView_userAddContent_6.setVisibility(View.VISIBLE);
-                        pollActivity_imageView_userAddContent_7.setVisibility(View.VISIBLE);
-                        GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_0()).centerCrop().thumbnail(Glide.with(getApplicationContext()).load(R.drawable.loadingicon)).into(pollActivity_imageView_userAddContent_1).getView();
-                        GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_1()).centerCrop().thumbnail(Glide.with(getApplicationContext()).load(R.drawable.loadingicon)).into(pollActivity_imageView_userAddContent_2).getView();
-                        GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_2()).centerCrop().thumbnail(Glide.with(getApplicationContext()).load(R.drawable.loadingicon)).into(pollActivity_imageView_userAddContent_3).getView();
-                        GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_3()).centerCrop().thumbnail(Glide.with(getApplicationContext()).load(R.drawable.loadingicon)).into(pollActivity_imageView_userAddContent_4).getView();
-                        GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_4()).centerCrop().thumbnail(Glide.with(getApplicationContext()).load(R.drawable.loadingicon)).into(pollActivity_imageView_userAddContent_5).getView();
-                        GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_5()).centerCrop().thumbnail(Glide.with(getApplicationContext()).load(R.drawable.loadingicon)).into(pollActivity_imageView_userAddContent_6).getView();
-                        GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_6()).centerCrop().thumbnail(Glide.with(getApplicationContext()).load(R.drawable.loadingicon)).into(pollActivity_imageView_userAddContent_7).getView();
-                        break;
-                    case 8:
-                        pollActivity_imageView_userAddContent_1.setVisibility(View.VISIBLE);
-                        pollActivity_imageView_userAddContent_2.setVisibility(View.VISIBLE);
-                        pollActivity_imageView_userAddContent_3.setVisibility(View.VISIBLE);
-                        pollActivity_imageView_userAddContent_4.setVisibility(View.VISIBLE);
-                        pollActivity_imageView_userAddContent_5.setVisibility(View.VISIBLE);
-                        pollActivity_imageView_userAddContent_6.setVisibility(View.VISIBLE);
-                        pollActivity_imageView_userAddContent_7.setVisibility(View.VISIBLE);
-                        pollActivity_imageView_userAddContent_8.setVisibility(View.VISIBLE);
-                        GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_0()).centerCrop().thumbnail(Glide.with(getApplicationContext()).load(R.drawable.loadingicon)).into(pollActivity_imageView_userAddContent_1).getView();
-                        GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_1()).centerCrop().thumbnail(Glide.with(getApplicationContext()).load(R.drawable.loadingicon)).into(pollActivity_imageView_userAddContent_2).getView();
-                        GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_2()).centerCrop().thumbnail(Glide.with(getApplicationContext()).load(R.drawable.loadingicon)).into(pollActivity_imageView_userAddContent_3).getView();
-                        GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_3()).centerCrop().thumbnail(Glide.with(getApplicationContext()).load(R.drawable.loadingicon)).into(pollActivity_imageView_userAddContent_4).getView();
-                        GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_4()).centerCrop().thumbnail(Glide.with(getApplicationContext()).load(R.drawable.loadingicon)).into(pollActivity_imageView_userAddContent_5).getView();
-                        GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_5()).centerCrop().thumbnail(Glide.with(getApplicationContext()).load(R.drawable.loadingicon)).into(pollActivity_imageView_userAddContent_6).getView();
-                        GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_6()).centerCrop().thumbnail(Glide.with(getApplicationContext()).load(R.drawable.loadingicon)).into(pollActivity_imageView_userAddContent_7).getView();
-                        GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_7()).centerCrop().thumbnail(Glide.with(getApplicationContext()).load(R.drawable.loadingicon)).into(pollActivity_imageView_userAddContent_8).getView();
-                        break;
-                    case 9:
-                        pollActivity_imageView_userAddContent_1.setVisibility(View.VISIBLE);
-                        pollActivity_imageView_userAddContent_2.setVisibility(View.VISIBLE);
-                        pollActivity_imageView_userAddContent_3.setVisibility(View.VISIBLE);
-                        pollActivity_imageView_userAddContent_4.setVisibility(View.VISIBLE);
-                        pollActivity_imageView_userAddContent_5.setVisibility(View.VISIBLE);
-                        pollActivity_imageView_userAddContent_6.setVisibility(View.VISIBLE);
-                        pollActivity_imageView_userAddContent_7.setVisibility(View.VISIBLE);
-                        pollActivity_imageView_userAddContent_8.setVisibility(View.VISIBLE);
-                        pollActivity_imageView_userAddContent_9.setVisibility(View.VISIBLE);
-                        GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_0()).centerCrop().thumbnail(Glide.with(getApplicationContext()).load(R.drawable.loadingicon)).into(pollActivity_imageView_userAddContent_1).getView();
-                        GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_1()).centerCrop().thumbnail(Glide.with(getApplicationContext()).load(R.drawable.loadingicon)).into(pollActivity_imageView_userAddContent_2).getView();
-                        GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_2()).centerCrop().thumbnail(Glide.with(getApplicationContext()).load(R.drawable.loadingicon)).into(pollActivity_imageView_userAddContent_3).getView();
-                        GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_3()).centerCrop().thumbnail(Glide.with(getApplicationContext()).load(R.drawable.loadingicon)).into(pollActivity_imageView_userAddContent_4).getView();
-                        GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_4()).centerCrop().thumbnail(Glide.with(getApplicationContext()).load(R.drawable.loadingicon)).into(pollActivity_imageView_userAddContent_5).getView();
-                        GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_5()).centerCrop().thumbnail(Glide.with(getApplicationContext()).load(R.drawable.loadingicon)).into(pollActivity_imageView_userAddContent_6).getView();
-                        GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_6()).centerCrop().thumbnail(Glide.with(getApplicationContext()).load(R.drawable.loadingicon)).into(pollActivity_imageView_userAddContent_7).getView();
-                        GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_7()).centerCrop().thumbnail(Glide.with(getApplicationContext()).load(R.drawable.loadingicon)).into(pollActivity_imageView_userAddContent_8).getView();
-                        GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_8()).centerCrop().thumbnail(Glide.with(getApplicationContext()).load(R.drawable.loadingicon)).into(pollActivity_imageView_userAddContent_9).getView();
-                        break;
-                    case 10:
-                        pollActivity_imageView_userAddContent_1.setVisibility(View.VISIBLE);
-                        pollActivity_imageView_userAddContent_2.setVisibility(View.VISIBLE);
-                        pollActivity_imageView_userAddContent_3.setVisibility(View.VISIBLE);
-                        pollActivity_imageView_userAddContent_4.setVisibility(View.VISIBLE);
-                        pollActivity_imageView_userAddContent_5.setVisibility(View.VISIBLE);
-                        pollActivity_imageView_userAddContent_6.setVisibility(View.VISIBLE);
-                        pollActivity_imageView_userAddContent_7.setVisibility(View.VISIBLE);
-                        pollActivity_imageView_userAddContent_8.setVisibility(View.VISIBLE);
-                        pollActivity_imageView_userAddContent_9.setVisibility(View.VISIBLE);
-                        pollActivity_imageView_userAddContent_10.setVisibility(View.VISIBLE);
-                        GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_0()).centerCrop().thumbnail(Glide.with(getApplicationContext()).load(R.drawable.loadingicon)).into(pollActivity_imageView_userAddContent_1).getView();
-                        GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_1()).centerCrop().thumbnail(Glide.with(getApplicationContext()).load(R.drawable.loadingicon)).into(pollActivity_imageView_userAddContent_2).getView();
-                        GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_2()).centerCrop().thumbnail(Glide.with(getApplicationContext()).load(R.drawable.loadingicon)).into(pollActivity_imageView_userAddContent_3).getView();
-                        GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_3()).centerCrop().thumbnail(Glide.with(getApplicationContext()).load(R.drawable.loadingicon)).into(pollActivity_imageView_userAddContent_4).getView();
-                        GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_4()).centerCrop().thumbnail(Glide.with(getApplicationContext()).load(R.drawable.loadingicon)).into(pollActivity_imageView_userAddContent_5).getView();
-                        GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_5()).centerCrop().thumbnail(Glide.with(getApplicationContext()).load(R.drawable.loadingicon)).into(pollActivity_imageView_userAddContent_6).getView();
-                        GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_6()).centerCrop().thumbnail(Glide.with(getApplicationContext()).load(R.drawable.loadingicon)).into(pollActivity_imageView_userAddContent_7).getView();
-                        GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_7()).centerCrop().thumbnail(Glide.with(getApplicationContext()).load(R.drawable.loadingicon)).into(pollActivity_imageView_userAddContent_8).getView();
-                        GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_8()).centerCrop().thumbnail(Glide.with(getApplicationContext()).load(R.drawable.loadingicon)).into(pollActivity_imageView_userAddContent_9).getView();
-                        GlideApp.with(getApplicationContext()).load(contentDTO.getImageUrl_9()).centerCrop().thumbnail(Glide.with(getApplicationContext()).load(R.drawable.loadingicon)).into(pollActivity_imageView_userAddContent_10).getView();
-                        break;
-                }
 
 
-                //비트맵 만들고 blur효과 이후에 캐시에 저장
-                BlurAsyncTask blurAsyncTask = new BlurAsyncTask();
-                blurAsyncTask.execute();
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
+
+
         });
+
+        //비트맵 만들고 blur효과 이후에 캐시에 저장
+        BlurAsyncTask blurAsyncTask = new BlurAsyncTask();
+        blurAsyncTask.execute();
 
 
         //공유 클릭
@@ -2221,13 +2230,18 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 ContentDTO contentDTO = dataSnapshot.getValue(ContentDTO.class);
-                if (contentDTO.getUid().equals(auth.getCurrentUser().getUid())) {
-                    item.setVisible(true);
-                    pollActivity_imageView_alarm.setVisibility(View.VISIBLE);
-                } else {
-                    item.setVisible(false);
-                    pollActivity_imageView_alarm.setVisibility(View.GONE);
+                try {
+                    if (contentDTO.getUid().equals(auth.getCurrentUser().getUid())) {
+                        item.setVisible(true);
+                        pollActivity_imageView_alarm.setVisibility(View.VISIBLE);
+                    } else {
+                        item.setVisible(false);
+                        pollActivity_imageView_alarm.setVisibility(View.GONE);
+                    }
+                } catch (Exception e) {
+
                 }
+
             }
 
             @Override
@@ -2719,575 +2733,580 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     final ContentDTO contentDTO = dataSnapshot.getValue(ContentDTO.class);
+                    try {
+                        switch (contentDTO.getItemViewType()) {
+                            case 2:
+                                Glide.with(getApplicationContext()).asBitmap().load(contentDTO.getImageUrl_0())
+                                        .apply(new RequestOptions().override(200, 200))
+                                        .into(new SimpleTarget<Bitmap>() {
+                                            @Override
+                                            public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+                                                Bitmap bitmap = imageBlur(getApplicationContext(), resource, 24f);
+                                                ImageSaver imageSaver = new ImageSaver(getApplicationContext());
+                                                imageSaver.setFileName(contentDTO.contentKey + "_1").setDirectoryName("AQA").save(bitmap);
+                                            }
+                                        });
+                                Glide.with(getApplicationContext()).asBitmap().load(contentDTO.getImageUrl_1())
+                                        .apply(new RequestOptions().override(200, 200))
+                                        .into(new SimpleTarget<Bitmap>() {
+                                            @Override
+                                            public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+                                                Bitmap bitmap = imageBlur(getApplicationContext(), resource, 24f);
+                                                ImageSaver imageSaver = new ImageSaver(getApplicationContext());
+                                                imageSaver.setFileName(contentDTO.contentKey + "_2").setDirectoryName("AQA").save(bitmap);
+                                            }
+                                        });
+                                break;
+                            case 3:
+                                Glide.with(getApplicationContext()).asBitmap().load(contentDTO.getImageUrl_0())
+                                        .apply(new RequestOptions().override(200, 200))
+                                        .into(new SimpleTarget<Bitmap>() {
+                                            @Override
+                                            public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+                                                Bitmap bitmap = imageBlur(getApplicationContext(), resource, 24f);
+                                                ImageSaver imageSaver = new ImageSaver(getApplicationContext());
+                                                imageSaver.setFileName(contentDTO.contentKey + "_1").setDirectoryName("AQA").save(bitmap);
+                                            }
+                                        });
+                                Glide.with(getApplicationContext()).asBitmap().load(contentDTO.getImageUrl_1())
+                                        .apply(new RequestOptions().override(200, 200))
+                                        .into(new SimpleTarget<Bitmap>() {
+                                            @Override
+                                            public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+                                                Bitmap bitmap = imageBlur(getApplicationContext(), resource, 24f);
+                                                ImageSaver imageSaver = new ImageSaver(getApplicationContext());
+                                                imageSaver.setFileName(contentDTO.contentKey + "_2").setDirectoryName("AQA").save(bitmap);
+                                            }
+                                        });
+                                Glide.with(getApplicationContext()).asBitmap().load(contentDTO.getImageUrl_2())
+                                        .apply(new RequestOptions().override(200, 200))
+                                        .into(new SimpleTarget<Bitmap>() {
+                                            @Override
+                                            public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+                                                Bitmap bitmap = imageBlur(getApplicationContext(), resource, 24f);
+                                                ImageSaver imageSaver = new ImageSaver(getApplicationContext());
+                                                imageSaver.setFileName(contentDTO.contentKey + "_3").setDirectoryName("AQA").save(bitmap);
+                                            }
+                                        });
+                                break;
+                            case 4:
+                                Glide.with(getApplicationContext()).asBitmap().load(contentDTO.getImageUrl_0())
+                                        .apply(new RequestOptions().override(200, 200))
+                                        .into(new SimpleTarget<Bitmap>() {
+                                            @Override
+                                            public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+                                                Bitmap bitmap = imageBlur(getApplicationContext(), resource, 24f);
+                                                ImageSaver imageSaver = new ImageSaver(getApplicationContext());
+                                                imageSaver.setFileName(contentDTO.contentKey + "_1").setDirectoryName("AQA").save(bitmap);
+                                            }
+                                        });
+                                Glide.with(getApplicationContext()).asBitmap().load(contentDTO.getImageUrl_1())
+                                        .apply(new RequestOptions().override(200, 200))
+                                        .into(new SimpleTarget<Bitmap>() {
+                                            @Override
+                                            public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+                                                Bitmap bitmap = imageBlur(getApplicationContext(), resource, 24f);
+                                                ImageSaver imageSaver = new ImageSaver(getApplicationContext());
+                                                imageSaver.setFileName(contentDTO.contentKey + "_2").setDirectoryName("AQA").save(bitmap);
+                                            }
+                                        });
+                                Glide.with(getApplicationContext()).asBitmap().load(contentDTO.getImageUrl_2())
+                                        .apply(new RequestOptions().override(200, 200))
+                                        .into(new SimpleTarget<Bitmap>() {
+                                            @Override
+                                            public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+                                                Bitmap bitmap = imageBlur(getApplicationContext(), resource, 24f);
+                                                ImageSaver imageSaver = new ImageSaver(getApplicationContext());
+                                                imageSaver.setFileName(contentDTO.contentKey + "_3").setDirectoryName("AQA").save(bitmap);
+                                            }
+                                        });
+                                Glide.with(getApplicationContext()).asBitmap().load(contentDTO.getImageUrl_3())
+                                        .apply(new RequestOptions().override(200, 200))
+                                        .into(new SimpleTarget<Bitmap>() {
+                                            @Override
+                                            public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+                                                Bitmap bitmap = imageBlur(getApplicationContext(), resource, 24f);
+                                                ImageSaver imageSaver = new ImageSaver(getApplicationContext());
+                                                imageSaver.setFileName(contentDTO.contentKey + "_4").setDirectoryName("AQA").save(bitmap);
+                                            }
+                                        });
+                            case 5:
+                                Glide.with(getApplicationContext()).asBitmap().load(contentDTO.getImageUrl_0())
+                                        .apply(new RequestOptions().override(200, 200))
+                                        .into(new SimpleTarget<Bitmap>() {
+                                            @Override
+                                            public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+                                                Bitmap bitmap = imageBlur(getApplicationContext(), resource, 24f);
+                                                ImageSaver imageSaver = new ImageSaver(getApplicationContext());
+                                                imageSaver.setFileName(contentDTO.contentKey + "_1").setDirectoryName("AQA").save(bitmap);
+                                            }
+                                        });
+                                Glide.with(getApplicationContext()).asBitmap().load(contentDTO.getImageUrl_1())
+                                        .apply(new RequestOptions().override(200, 200))
+                                        .into(new SimpleTarget<Bitmap>() {
+                                            @Override
+                                            public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+                                                Bitmap bitmap = imageBlur(getApplicationContext(), resource, 24f);
+                                                ImageSaver imageSaver = new ImageSaver(getApplicationContext());
+                                                imageSaver.setFileName(contentDTO.contentKey + "_2").setDirectoryName("AQA").save(bitmap);
+                                            }
+                                        });
+                                Glide.with(getApplicationContext()).asBitmap().load(contentDTO.getImageUrl_2())
+                                        .apply(new RequestOptions().override(200, 200))
+                                        .into(new SimpleTarget<Bitmap>() {
+                                            @Override
+                                            public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+                                                Bitmap bitmap = imageBlur(getApplicationContext(), resource, 24f);
+                                                ImageSaver imageSaver = new ImageSaver(getApplicationContext());
+                                                imageSaver.setFileName(contentDTO.contentKey + "_3").setDirectoryName("AQA").save(bitmap);
+                                            }
+                                        });
+                                Glide.with(getApplicationContext()).asBitmap().load(contentDTO.getImageUrl_3())
+                                        .apply(new RequestOptions().override(200, 200))
+                                        .into(new SimpleTarget<Bitmap>() {
+                                            @Override
+                                            public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+                                                Bitmap bitmap = imageBlur(getApplicationContext(), resource, 24f);
+                                                ImageSaver imageSaver = new ImageSaver(getApplicationContext());
+                                                imageSaver.setFileName(contentDTO.contentKey + "_4").setDirectoryName("AQA").save(bitmap);
+                                            }
+                                        });
 
-                    switch (contentDTO.getItemViewType()) {
-                        case 2:
-                            Glide.with(getApplicationContext()).asBitmap().load(contentDTO.getImageUrl_0())
-                                    .apply(new RequestOptions().override(200, 200))
-                                    .into(new SimpleTarget<Bitmap>() {
-                                        @Override
-                                        public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
-                                            Bitmap bitmap = imageBlur(getApplicationContext(), resource, 24f);
-                                            ImageSaver imageSaver = new ImageSaver(getApplicationContext());
-                                            imageSaver.setFileName(contentDTO.contentKey + "_1").setDirectoryName("AQA").save(bitmap);
-                                        }
-                                    });
-                            Glide.with(getApplicationContext()).asBitmap().load(contentDTO.getImageUrl_1())
-                                    .apply(new RequestOptions().override(200, 200))
-                                    .into(new SimpleTarget<Bitmap>() {
-                                        @Override
-                                        public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
-                                            Bitmap bitmap = imageBlur(getApplicationContext(), resource, 24f);
-                                            ImageSaver imageSaver = new ImageSaver(getApplicationContext());
-                                            imageSaver.setFileName(contentDTO.contentKey + "_2").setDirectoryName("AQA").save(bitmap);
-                                        }
-                                    });
-                            break;
-                        case 3:
-                            Glide.with(getApplicationContext()).asBitmap().load(contentDTO.getImageUrl_0())
-                                    .apply(new RequestOptions().override(200, 200))
-                                    .into(new SimpleTarget<Bitmap>() {
-                                        @Override
-                                        public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
-                                            Bitmap bitmap = imageBlur(getApplicationContext(), resource, 24f);
-                                            ImageSaver imageSaver = new ImageSaver(getApplicationContext());
-                                            imageSaver.setFileName(contentDTO.contentKey + "_1").setDirectoryName("AQA").save(bitmap);
-                                        }
-                                    });
-                            Glide.with(getApplicationContext()).asBitmap().load(contentDTO.getImageUrl_1())
-                                    .apply(new RequestOptions().override(200, 200))
-                                    .into(new SimpleTarget<Bitmap>() {
-                                        @Override
-                                        public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
-                                            Bitmap bitmap = imageBlur(getApplicationContext(), resource, 24f);
-                                            ImageSaver imageSaver = new ImageSaver(getApplicationContext());
-                                            imageSaver.setFileName(contentDTO.contentKey + "_2").setDirectoryName("AQA").save(bitmap);
-                                        }
-                                    });
-                            Glide.with(getApplicationContext()).asBitmap().load(contentDTO.getImageUrl_2())
-                                    .apply(new RequestOptions().override(200, 200))
-                                    .into(new SimpleTarget<Bitmap>() {
-                                        @Override
-                                        public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
-                                            Bitmap bitmap = imageBlur(getApplicationContext(), resource, 24f);
-                                            ImageSaver imageSaver = new ImageSaver(getApplicationContext());
-                                            imageSaver.setFileName(contentDTO.contentKey + "_3").setDirectoryName("AQA").save(bitmap);
-                                        }
-                                    });
-                            break;
-                        case 4:
-                            Glide.with(getApplicationContext()).asBitmap().load(contentDTO.getImageUrl_0())
-                                    .apply(new RequestOptions().override(200, 200))
-                                    .into(new SimpleTarget<Bitmap>() {
-                                        @Override
-                                        public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
-                                            Bitmap bitmap = imageBlur(getApplicationContext(), resource, 24f);
-                                            ImageSaver imageSaver = new ImageSaver(getApplicationContext());
-                                            imageSaver.setFileName(contentDTO.contentKey + "_1").setDirectoryName("AQA").save(bitmap);
-                                        }
-                                    });
-                            Glide.with(getApplicationContext()).asBitmap().load(contentDTO.getImageUrl_1())
-                                    .apply(new RequestOptions().override(200, 200))
-                                    .into(new SimpleTarget<Bitmap>() {
-                                        @Override
-                                        public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
-                                            Bitmap bitmap = imageBlur(getApplicationContext(), resource, 24f);
-                                            ImageSaver imageSaver = new ImageSaver(getApplicationContext());
-                                            imageSaver.setFileName(contentDTO.contentKey + "_2").setDirectoryName("AQA").save(bitmap);
-                                        }
-                                    });
-                            Glide.with(getApplicationContext()).asBitmap().load(contentDTO.getImageUrl_2())
-                                    .apply(new RequestOptions().override(200, 200))
-                                    .into(new SimpleTarget<Bitmap>() {
-                                        @Override
-                                        public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
-                                            Bitmap bitmap = imageBlur(getApplicationContext(), resource, 24f);
-                                            ImageSaver imageSaver = new ImageSaver(getApplicationContext());
-                                            imageSaver.setFileName(contentDTO.contentKey + "_3").setDirectoryName("AQA").save(bitmap);
-                                        }
-                                    });
-                            Glide.with(getApplicationContext()).asBitmap().load(contentDTO.getImageUrl_3())
-                                    .apply(new RequestOptions().override(200, 200))
-                                    .into(new SimpleTarget<Bitmap>() {
-                                        @Override
-                                        public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
-                                            Bitmap bitmap = imageBlur(getApplicationContext(), resource, 24f);
-                                            ImageSaver imageSaver = new ImageSaver(getApplicationContext());
-                                            imageSaver.setFileName(contentDTO.contentKey + "_4").setDirectoryName("AQA").save(bitmap);
-                                        }
-                                    });
-                        case 5:
-                            Glide.with(getApplicationContext()).asBitmap().load(contentDTO.getImageUrl_0())
-                                    .apply(new RequestOptions().override(200, 200))
-                                    .into(new SimpleTarget<Bitmap>() {
-                                        @Override
-                                        public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
-                                            Bitmap bitmap = imageBlur(getApplicationContext(), resource, 24f);
-                                            ImageSaver imageSaver = new ImageSaver(getApplicationContext());
-                                            imageSaver.setFileName(contentDTO.contentKey + "_1").setDirectoryName("AQA").save(bitmap);
-                                        }
-                                    });
-                            Glide.with(getApplicationContext()).asBitmap().load(contentDTO.getImageUrl_1())
-                                    .apply(new RequestOptions().override(200, 200))
-                                    .into(new SimpleTarget<Bitmap>() {
-                                        @Override
-                                        public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
-                                            Bitmap bitmap = imageBlur(getApplicationContext(), resource, 24f);
-                                            ImageSaver imageSaver = new ImageSaver(getApplicationContext());
-                                            imageSaver.setFileName(contentDTO.contentKey + "_2").setDirectoryName("AQA").save(bitmap);
-                                        }
-                                    });
-                            Glide.with(getApplicationContext()).asBitmap().load(contentDTO.getImageUrl_2())
-                                    .apply(new RequestOptions().override(200, 200))
-                                    .into(new SimpleTarget<Bitmap>() {
-                                        @Override
-                                        public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
-                                            Bitmap bitmap = imageBlur(getApplicationContext(), resource, 24f);
-                                            ImageSaver imageSaver = new ImageSaver(getApplicationContext());
-                                            imageSaver.setFileName(contentDTO.contentKey + "_3").setDirectoryName("AQA").save(bitmap);
-                                        }
-                                    });
-                            Glide.with(getApplicationContext()).asBitmap().load(contentDTO.getImageUrl_3())
-                                    .apply(new RequestOptions().override(200, 200))
-                                    .into(new SimpleTarget<Bitmap>() {
-                                        @Override
-                                        public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
-                                            Bitmap bitmap = imageBlur(getApplicationContext(), resource, 24f);
-                                            ImageSaver imageSaver = new ImageSaver(getApplicationContext());
-                                            imageSaver.setFileName(contentDTO.contentKey + "_4").setDirectoryName("AQA").save(bitmap);
-                                        }
-                                    });
+                                Glide.with(getApplicationContext()).asBitmap().load(contentDTO.getImageUrl_4())
+                                        .apply(new RequestOptions().override(200, 200))
+                                        .into(new SimpleTarget<Bitmap>() {
+                                            @Override
+                                            public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+                                                Bitmap bitmap = imageBlur(getApplicationContext(), resource, 24f);
+                                                ImageSaver imageSaver = new ImageSaver(getApplicationContext());
+                                                imageSaver.setFileName(contentDTO.contentKey + "_5").setDirectoryName("AQA").save(bitmap);
+                                            }
+                                        });
+                                break;
+                            case 6:
+                                Glide.with(getApplicationContext()).asBitmap().load(contentDTO.getImageUrl_0())
+                                        .apply(new RequestOptions().override(200, 200))
+                                        .into(new SimpleTarget<Bitmap>() {
+                                            @Override
+                                            public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+                                                Bitmap bitmap = imageBlur(getApplicationContext(), resource, 24f);
+                                                ImageSaver imageSaver = new ImageSaver(getApplicationContext());
+                                                imageSaver.setFileName(contentDTO.contentKey + "_1").setDirectoryName("AQA").save(bitmap);
+                                            }
+                                        });
+                                Glide.with(getApplicationContext()).asBitmap().load(contentDTO.getImageUrl_1())
+                                        .apply(new RequestOptions().override(200, 200))
+                                        .into(new SimpleTarget<Bitmap>() {
+                                            @Override
+                                            public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+                                                Bitmap bitmap = imageBlur(getApplicationContext(), resource, 24f);
+                                                ImageSaver imageSaver = new ImageSaver(getApplicationContext());
+                                                imageSaver.setFileName(contentDTO.contentKey + "_2").setDirectoryName("AQA").save(bitmap);
+                                            }
+                                        });
+                                Glide.with(getApplicationContext()).asBitmap().load(contentDTO.getImageUrl_2())
+                                        .apply(new RequestOptions().override(200, 200))
+                                        .into(new SimpleTarget<Bitmap>() {
+                                            @Override
+                                            public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+                                                Bitmap bitmap = imageBlur(getApplicationContext(), resource, 24f);
+                                                ImageSaver imageSaver = new ImageSaver(getApplicationContext());
+                                                imageSaver.setFileName(contentDTO.contentKey + "_3").setDirectoryName("AQA").save(bitmap);
+                                            }
+                                        });
+                                Glide.with(getApplicationContext()).asBitmap().load(contentDTO.getImageUrl_3())
+                                        .apply(new RequestOptions().override(200, 200))
+                                        .into(new SimpleTarget<Bitmap>() {
+                                            @Override
+                                            public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+                                                Bitmap bitmap = imageBlur(getApplicationContext(), resource, 24f);
+                                                ImageSaver imageSaver = new ImageSaver(getApplicationContext());
+                                                imageSaver.setFileName(contentDTO.contentKey + "_4").setDirectoryName("AQA").save(bitmap);
+                                            }
+                                        });
 
-                            Glide.with(getApplicationContext()).asBitmap().load(contentDTO.getImageUrl_4())
-                                    .apply(new RequestOptions().override(200, 200))
-                                    .into(new SimpleTarget<Bitmap>() {
-                                        @Override
-                                        public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
-                                            Bitmap bitmap = imageBlur(getApplicationContext(), resource, 24f);
-                                            ImageSaver imageSaver = new ImageSaver(getApplicationContext());
-                                            imageSaver.setFileName(contentDTO.contentKey + "_5").setDirectoryName("AQA").save(bitmap);
-                                        }
-                                    });
-                            break;
-                        case 6:
-                            Glide.with(getApplicationContext()).asBitmap().load(contentDTO.getImageUrl_0())
-                                    .apply(new RequestOptions().override(200, 200))
-                                    .into(new SimpleTarget<Bitmap>() {
-                                        @Override
-                                        public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
-                                            Bitmap bitmap = imageBlur(getApplicationContext(), resource, 24f);
-                                            ImageSaver imageSaver = new ImageSaver(getApplicationContext());
-                                            imageSaver.setFileName(contentDTO.contentKey + "_1").setDirectoryName("AQA").save(bitmap);
-                                        }
-                                    });
-                            Glide.with(getApplicationContext()).asBitmap().load(contentDTO.getImageUrl_1())
-                                    .apply(new RequestOptions().override(200, 200))
-                                    .into(new SimpleTarget<Bitmap>() {
-                                        @Override
-                                        public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
-                                            Bitmap bitmap = imageBlur(getApplicationContext(), resource, 24f);
-                                            ImageSaver imageSaver = new ImageSaver(getApplicationContext());
-                                            imageSaver.setFileName(contentDTO.contentKey + "_2").setDirectoryName("AQA").save(bitmap);
-                                        }
-                                    });
-                            Glide.with(getApplicationContext()).asBitmap().load(contentDTO.getImageUrl_2())
-                                    .apply(new RequestOptions().override(200, 200))
-                                    .into(new SimpleTarget<Bitmap>() {
-                                        @Override
-                                        public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
-                                            Bitmap bitmap = imageBlur(getApplicationContext(), resource, 24f);
-                                            ImageSaver imageSaver = new ImageSaver(getApplicationContext());
-                                            imageSaver.setFileName(contentDTO.contentKey + "_3").setDirectoryName("AQA").save(bitmap);
-                                        }
-                                    });
-                            Glide.with(getApplicationContext()).asBitmap().load(contentDTO.getImageUrl_3())
-                                    .apply(new RequestOptions().override(200, 200))
-                                    .into(new SimpleTarget<Bitmap>() {
-                                        @Override
-                                        public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
-                                            Bitmap bitmap = imageBlur(getApplicationContext(), resource, 24f);
-                                            ImageSaver imageSaver = new ImageSaver(getApplicationContext());
-                                            imageSaver.setFileName(contentDTO.contentKey + "_4").setDirectoryName("AQA").save(bitmap);
-                                        }
-                                    });
+                                Glide.with(getApplicationContext()).asBitmap().load(contentDTO.getImageUrl_4())
+                                        .apply(new RequestOptions().override(200, 200))
+                                        .into(new SimpleTarget<Bitmap>() {
+                                            @Override
+                                            public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+                                                Bitmap bitmap = imageBlur(getApplicationContext(), resource, 24f);
+                                                ImageSaver imageSaver = new ImageSaver(getApplicationContext());
+                                                imageSaver.setFileName(contentDTO.contentKey + "_5").setDirectoryName("AQA").save(bitmap);
+                                            }
+                                        });
+                                Glide.with(getApplicationContext()).asBitmap().load(contentDTO.getImageUrl_5())
+                                        .apply(new RequestOptions().override(200, 200))
+                                        .into(new SimpleTarget<Bitmap>() {
+                                            @Override
+                                            public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+                                                Bitmap bitmap = imageBlur(getApplicationContext(), resource, 24f);
+                                                ImageSaver imageSaver = new ImageSaver(getApplicationContext());
+                                                imageSaver.setFileName(contentDTO.contentKey + "_6").setDirectoryName("AQA").save(bitmap);
+                                            }
+                                        });
+                                break;
+                            case 7:
+                                Glide.with(getApplicationContext()).asBitmap().load(contentDTO.getImageUrl_0())
+                                        .apply(new RequestOptions().override(200, 200))
+                                        .into(new SimpleTarget<Bitmap>() {
+                                            @Override
+                                            public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+                                                Bitmap bitmap = imageBlur(getApplicationContext(), resource, 24f);
+                                                ImageSaver imageSaver = new ImageSaver(getApplicationContext());
+                                                imageSaver.setFileName(contentDTO.contentKey + "_1").setDirectoryName("AQA").save(bitmap);
+                                            }
+                                        });
+                                Glide.with(getApplicationContext()).asBitmap().load(contentDTO.getImageUrl_1())
+                                        .apply(new RequestOptions().override(200, 200))
+                                        .into(new SimpleTarget<Bitmap>() {
+                                            @Override
+                                            public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+                                                Bitmap bitmap = imageBlur(getApplicationContext(), resource, 24f);
+                                                ImageSaver imageSaver = new ImageSaver(getApplicationContext());
+                                                imageSaver.setFileName(contentDTO.contentKey + "_2").setDirectoryName("AQA").save(bitmap);
+                                            }
+                                        });
+                                Glide.with(getApplicationContext()).asBitmap().load(contentDTO.getImageUrl_2())
+                                        .apply(new RequestOptions().override(200, 200))
+                                        .into(new SimpleTarget<Bitmap>() {
+                                            @Override
+                                            public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+                                                Bitmap bitmap = imageBlur(getApplicationContext(), resource, 24f);
+                                                ImageSaver imageSaver = new ImageSaver(getApplicationContext());
+                                                imageSaver.setFileName(contentDTO.contentKey + "_3").setDirectoryName("AQA").save(bitmap);
+                                            }
+                                        });
+                                Glide.with(getApplicationContext()).asBitmap().load(contentDTO.getImageUrl_3())
+                                        .apply(new RequestOptions().override(200, 200))
+                                        .into(new SimpleTarget<Bitmap>() {
+                                            @Override
+                                            public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+                                                Bitmap bitmap = imageBlur(getApplicationContext(), resource, 24f);
+                                                ImageSaver imageSaver = new ImageSaver(getApplicationContext());
+                                                imageSaver.setFileName(contentDTO.contentKey + "_4").setDirectoryName("AQA").save(bitmap);
+                                            }
+                                        });
 
-                            Glide.with(getApplicationContext()).asBitmap().load(contentDTO.getImageUrl_4())
-                                    .apply(new RequestOptions().override(200, 200))
-                                    .into(new SimpleTarget<Bitmap>() {
-                                        @Override
-                                        public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
-                                            Bitmap bitmap = imageBlur(getApplicationContext(), resource, 24f);
-                                            ImageSaver imageSaver = new ImageSaver(getApplicationContext());
-                                            imageSaver.setFileName(contentDTO.contentKey + "_5").setDirectoryName("AQA").save(bitmap);
-                                        }
-                                    });
-                            Glide.with(getApplicationContext()).asBitmap().load(contentDTO.getImageUrl_5())
-                                    .apply(new RequestOptions().override(200, 200))
-                                    .into(new SimpleTarget<Bitmap>() {
-                                        @Override
-                                        public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
-                                            Bitmap bitmap = imageBlur(getApplicationContext(), resource, 24f);
-                                            ImageSaver imageSaver = new ImageSaver(getApplicationContext());
-                                            imageSaver.setFileName(contentDTO.contentKey + "_6").setDirectoryName("AQA").save(bitmap);
-                                        }
-                                    });
-                            break;
-                        case 7:
-                            Glide.with(getApplicationContext()).asBitmap().load(contentDTO.getImageUrl_0())
-                                    .apply(new RequestOptions().override(200, 200))
-                                    .into(new SimpleTarget<Bitmap>() {
-                                        @Override
-                                        public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
-                                            Bitmap bitmap = imageBlur(getApplicationContext(), resource, 24f);
-                                            ImageSaver imageSaver = new ImageSaver(getApplicationContext());
-                                            imageSaver.setFileName(contentDTO.contentKey + "_1").setDirectoryName("AQA").save(bitmap);
-                                        }
-                                    });
-                            Glide.with(getApplicationContext()).asBitmap().load(contentDTO.getImageUrl_1())
-                                    .apply(new RequestOptions().override(200, 200))
-                                    .into(new SimpleTarget<Bitmap>() {
-                                        @Override
-                                        public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
-                                            Bitmap bitmap = imageBlur(getApplicationContext(), resource, 24f);
-                                            ImageSaver imageSaver = new ImageSaver(getApplicationContext());
-                                            imageSaver.setFileName(contentDTO.contentKey + "_2").setDirectoryName("AQA").save(bitmap);
-                                        }
-                                    });
-                            Glide.with(getApplicationContext()).asBitmap().load(contentDTO.getImageUrl_2())
-                                    .apply(new RequestOptions().override(200, 200))
-                                    .into(new SimpleTarget<Bitmap>() {
-                                        @Override
-                                        public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
-                                            Bitmap bitmap = imageBlur(getApplicationContext(), resource, 24f);
-                                            ImageSaver imageSaver = new ImageSaver(getApplicationContext());
-                                            imageSaver.setFileName(contentDTO.contentKey + "_3").setDirectoryName("AQA").save(bitmap);
-                                        }
-                                    });
-                            Glide.with(getApplicationContext()).asBitmap().load(contentDTO.getImageUrl_3())
-                                    .apply(new RequestOptions().override(200, 200))
-                                    .into(new SimpleTarget<Bitmap>() {
-                                        @Override
-                                        public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
-                                            Bitmap bitmap = imageBlur(getApplicationContext(), resource, 24f);
-                                            ImageSaver imageSaver = new ImageSaver(getApplicationContext());
-                                            imageSaver.setFileName(contentDTO.contentKey + "_4").setDirectoryName("AQA").save(bitmap);
-                                        }
-                                    });
+                                Glide.with(getApplicationContext()).asBitmap().load(contentDTO.getImageUrl_4())
+                                        .apply(new RequestOptions().override(200, 200))
+                                        .into(new SimpleTarget<Bitmap>() {
+                                            @Override
+                                            public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+                                                Bitmap bitmap = imageBlur(getApplicationContext(), resource, 24f);
+                                                ImageSaver imageSaver = new ImageSaver(getApplicationContext());
+                                                imageSaver.setFileName(contentDTO.contentKey + "_5").setDirectoryName("AQA").save(bitmap);
+                                            }
+                                        });
+                                Glide.with(getApplicationContext()).asBitmap().load(contentDTO.getImageUrl_5())
+                                        .apply(new RequestOptions().override(200, 200))
+                                        .into(new SimpleTarget<Bitmap>() {
+                                            @Override
+                                            public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+                                                Bitmap bitmap = imageBlur(getApplicationContext(), resource, 24f);
+                                                ImageSaver imageSaver = new ImageSaver(getApplicationContext());
+                                                imageSaver.setFileName(contentDTO.contentKey + "_6").setDirectoryName("AQA").save(bitmap);
+                                            }
+                                        });
+                                Glide.with(getApplicationContext()).asBitmap().load(contentDTO.getImageUrl_6())
+                                        .apply(new RequestOptions().override(200, 200))
+                                        .into(new SimpleTarget<Bitmap>() {
+                                            @Override
+                                            public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+                                                Bitmap bitmap = imageBlur(getApplicationContext(), resource, 24f);
+                                                ImageSaver imageSaver = new ImageSaver(getApplicationContext());
+                                                imageSaver.setFileName(contentDTO.contentKey + "_7").setDirectoryName("AQA").save(bitmap);
+                                            }
+                                        });
+                                break;
+                            case 8:
+                                Glide.with(getApplicationContext()).asBitmap().load(contentDTO.getImageUrl_0())
+                                        .apply(new RequestOptions().override(200, 200))
+                                        .into(new SimpleTarget<Bitmap>() {
+                                            @Override
+                                            public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+                                                Bitmap bitmap = imageBlur(getApplicationContext(), resource, 24f);
+                                                ImageSaver imageSaver = new ImageSaver(getApplicationContext());
+                                                imageSaver.setFileName(contentDTO.contentKey + "_1").setDirectoryName("AQA").save(bitmap);
+                                            }
+                                        });
+                                Glide.with(getApplicationContext()).asBitmap().load(contentDTO.getImageUrl_1())
+                                        .apply(new RequestOptions().override(200, 200))
+                                        .into(new SimpleTarget<Bitmap>() {
+                                            @Override
+                                            public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+                                                Bitmap bitmap = imageBlur(getApplicationContext(), resource, 24f);
+                                                ImageSaver imageSaver = new ImageSaver(getApplicationContext());
+                                                imageSaver.setFileName(contentDTO.contentKey + "_2").setDirectoryName("AQA").save(bitmap);
+                                            }
+                                        });
+                                Glide.with(getApplicationContext()).asBitmap().load(contentDTO.getImageUrl_2())
+                                        .apply(new RequestOptions().override(200, 200))
+                                        .into(new SimpleTarget<Bitmap>() {
+                                            @Override
+                                            public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+                                                Bitmap bitmap = imageBlur(getApplicationContext(), resource, 24f);
+                                                ImageSaver imageSaver = new ImageSaver(getApplicationContext());
+                                                imageSaver.setFileName(contentDTO.contentKey + "_3").setDirectoryName("AQA").save(bitmap);
+                                            }
+                                        });
+                                Glide.with(getApplicationContext()).asBitmap().load(contentDTO.getImageUrl_3())
+                                        .apply(new RequestOptions().override(200, 200))
+                                        .into(new SimpleTarget<Bitmap>() {
+                                            @Override
+                                            public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+                                                Bitmap bitmap = imageBlur(getApplicationContext(), resource, 24f);
+                                                ImageSaver imageSaver = new ImageSaver(getApplicationContext());
+                                                imageSaver.setFileName(contentDTO.contentKey + "_4").setDirectoryName("AQA").save(bitmap);
+                                            }
+                                        });
 
-                            Glide.with(getApplicationContext()).asBitmap().load(contentDTO.getImageUrl_4())
-                                    .apply(new RequestOptions().override(200, 200))
-                                    .into(new SimpleTarget<Bitmap>() {
-                                        @Override
-                                        public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
-                                            Bitmap bitmap = imageBlur(getApplicationContext(), resource, 24f);
-                                            ImageSaver imageSaver = new ImageSaver(getApplicationContext());
-                                            imageSaver.setFileName(contentDTO.contentKey + "_5").setDirectoryName("AQA").save(bitmap);
-                                        }
-                                    });
-                            Glide.with(getApplicationContext()).asBitmap().load(contentDTO.getImageUrl_5())
-                                    .apply(new RequestOptions().override(200, 200))
-                                    .into(new SimpleTarget<Bitmap>() {
-                                        @Override
-                                        public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
-                                            Bitmap bitmap = imageBlur(getApplicationContext(), resource, 24f);
-                                            ImageSaver imageSaver = new ImageSaver(getApplicationContext());
-                                            imageSaver.setFileName(contentDTO.contentKey + "_6").setDirectoryName("AQA").save(bitmap);
-                                        }
-                                    });
-                            Glide.with(getApplicationContext()).asBitmap().load(contentDTO.getImageUrl_6())
-                                    .apply(new RequestOptions().override(200, 200))
-                                    .into(new SimpleTarget<Bitmap>() {
-                                        @Override
-                                        public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
-                                            Bitmap bitmap = imageBlur(getApplicationContext(), resource, 24f);
-                                            ImageSaver imageSaver = new ImageSaver(getApplicationContext());
-                                            imageSaver.setFileName(contentDTO.contentKey + "_7").setDirectoryName("AQA").save(bitmap);
-                                        }
-                                    });
-                            break;
-                        case 8:
-                            Glide.with(getApplicationContext()).asBitmap().load(contentDTO.getImageUrl_0())
-                                    .apply(new RequestOptions().override(200, 200))
-                                    .into(new SimpleTarget<Bitmap>() {
-                                        @Override
-                                        public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
-                                            Bitmap bitmap = imageBlur(getApplicationContext(), resource, 24f);
-                                            ImageSaver imageSaver = new ImageSaver(getApplicationContext());
-                                            imageSaver.setFileName(contentDTO.contentKey + "_1").setDirectoryName("AQA").save(bitmap);
-                                        }
-                                    });
-                            Glide.with(getApplicationContext()).asBitmap().load(contentDTO.getImageUrl_1())
-                                    .apply(new RequestOptions().override(200, 200))
-                                    .into(new SimpleTarget<Bitmap>() {
-                                        @Override
-                                        public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
-                                            Bitmap bitmap = imageBlur(getApplicationContext(), resource, 24f);
-                                            ImageSaver imageSaver = new ImageSaver(getApplicationContext());
-                                            imageSaver.setFileName(contentDTO.contentKey + "_2").setDirectoryName("AQA").save(bitmap);
-                                        }
-                                    });
-                            Glide.with(getApplicationContext()).asBitmap().load(contentDTO.getImageUrl_2())
-                                    .apply(new RequestOptions().override(200, 200))
-                                    .into(new SimpleTarget<Bitmap>() {
-                                        @Override
-                                        public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
-                                            Bitmap bitmap = imageBlur(getApplicationContext(), resource, 24f);
-                                            ImageSaver imageSaver = new ImageSaver(getApplicationContext());
-                                            imageSaver.setFileName(contentDTO.contentKey + "_3").setDirectoryName("AQA").save(bitmap);
-                                        }
-                                    });
-                            Glide.with(getApplicationContext()).asBitmap().load(contentDTO.getImageUrl_3())
-                                    .apply(new RequestOptions().override(200, 200))
-                                    .into(new SimpleTarget<Bitmap>() {
-                                        @Override
-                                        public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
-                                            Bitmap bitmap = imageBlur(getApplicationContext(), resource, 24f);
-                                            ImageSaver imageSaver = new ImageSaver(getApplicationContext());
-                                            imageSaver.setFileName(contentDTO.contentKey + "_4").setDirectoryName("AQA").save(bitmap);
-                                        }
-                                    });
+                                Glide.with(getApplicationContext()).asBitmap().load(contentDTO.getImageUrl_4())
+                                        .apply(new RequestOptions().override(200, 200))
+                                        .into(new SimpleTarget<Bitmap>() {
+                                            @Override
+                                            public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+                                                Bitmap bitmap = imageBlur(getApplicationContext(), resource, 24f);
+                                                ImageSaver imageSaver = new ImageSaver(getApplicationContext());
+                                                imageSaver.setFileName(contentDTO.contentKey + "_5").setDirectoryName("AQA").save(bitmap);
+                                            }
+                                        });
+                                Glide.with(getApplicationContext()).asBitmap().load(contentDTO.getImageUrl_5())
+                                        .apply(new RequestOptions().override(200, 200))
+                                        .into(new SimpleTarget<Bitmap>() {
+                                            @Override
+                                            public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+                                                Bitmap bitmap = imageBlur(getApplicationContext(), resource, 24f);
+                                                ImageSaver imageSaver = new ImageSaver(getApplicationContext());
+                                                imageSaver.setFileName(contentDTO.contentKey + "_6").setDirectoryName("AQA").save(bitmap);
+                                            }
+                                        });
+                                Glide.with(getApplicationContext()).asBitmap().load(contentDTO.getImageUrl_6())
+                                        .apply(new RequestOptions().override(200, 200))
+                                        .into(new SimpleTarget<Bitmap>() {
+                                            @Override
+                                            public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+                                                Bitmap bitmap = imageBlur(getApplicationContext(), resource, 24f);
+                                                ImageSaver imageSaver = new ImageSaver(getApplicationContext());
+                                                imageSaver.setFileName(contentDTO.contentKey + "_7").setDirectoryName("AQA").save(bitmap);
+                                            }
+                                        });
 
-                            Glide.with(getApplicationContext()).asBitmap().load(contentDTO.getImageUrl_4())
-                                    .apply(new RequestOptions().override(200, 200))
-                                    .into(new SimpleTarget<Bitmap>() {
-                                        @Override
-                                        public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
-                                            Bitmap bitmap = imageBlur(getApplicationContext(), resource, 24f);
-                                            ImageSaver imageSaver = new ImageSaver(getApplicationContext());
-                                            imageSaver.setFileName(contentDTO.contentKey + "_5").setDirectoryName("AQA").save(bitmap);
-                                        }
-                                    });
-                            Glide.with(getApplicationContext()).asBitmap().load(contentDTO.getImageUrl_5())
-                                    .apply(new RequestOptions().override(200, 200))
-                                    .into(new SimpleTarget<Bitmap>() {
-                                        @Override
-                                        public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
-                                            Bitmap bitmap = imageBlur(getApplicationContext(), resource, 24f);
-                                            ImageSaver imageSaver = new ImageSaver(getApplicationContext());
-                                            imageSaver.setFileName(contentDTO.contentKey + "_6").setDirectoryName("AQA").save(bitmap);
-                                        }
-                                    });
-                            Glide.with(getApplicationContext()).asBitmap().load(contentDTO.getImageUrl_6())
-                                    .apply(new RequestOptions().override(200, 200))
-                                    .into(new SimpleTarget<Bitmap>() {
-                                        @Override
-                                        public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
-                                            Bitmap bitmap = imageBlur(getApplicationContext(), resource, 24f);
-                                            ImageSaver imageSaver = new ImageSaver(getApplicationContext());
-                                            imageSaver.setFileName(contentDTO.contentKey + "_7").setDirectoryName("AQA").save(bitmap);
-                                        }
-                                    });
+                                Glide.with(getApplicationContext()).asBitmap().load(contentDTO.getImageUrl_7())
+                                        .apply(new RequestOptions().override(200, 200))
+                                        .into(new SimpleTarget<Bitmap>() {
+                                            @Override
+                                            public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+                                                Bitmap bitmap = imageBlur(getApplicationContext(), resource, 24f);
+                                                ImageSaver imageSaver = new ImageSaver(getApplicationContext());
+                                                imageSaver.setFileName(contentDTO.contentKey + "_8").setDirectoryName("AQA").save(bitmap);
+                                            }
+                                        });
+                                break;
+                            case 9:
+                                Glide.with(getApplicationContext()).asBitmap().load(contentDTO.getImageUrl_0())
+                                        .apply(new RequestOptions().override(200, 200))
+                                        .into(new SimpleTarget<Bitmap>() {
+                                            @Override
+                                            public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+                                                Bitmap bitmap = imageBlur(getApplicationContext(), resource, 24f);
+                                                ImageSaver imageSaver = new ImageSaver(getApplicationContext());
+                                                imageSaver.setFileName(contentDTO.contentKey + "_1").setDirectoryName("AQA").save(bitmap);
+                                            }
+                                        });
+                                Glide.with(getApplicationContext()).asBitmap().load(contentDTO.getImageUrl_1())
+                                        .apply(new RequestOptions().override(200, 200))
+                                        .into(new SimpleTarget<Bitmap>() {
+                                            @Override
+                                            public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+                                                Bitmap bitmap = imageBlur(getApplicationContext(), resource, 24f);
+                                                ImageSaver imageSaver = new ImageSaver(getApplicationContext());
+                                                imageSaver.setFileName(contentDTO.contentKey + "_2").setDirectoryName("AQA").save(bitmap);
+                                            }
+                                        });
+                                Glide.with(getApplicationContext()).asBitmap().load(contentDTO.getImageUrl_2())
+                                        .apply(new RequestOptions().override(200, 200))
+                                        .into(new SimpleTarget<Bitmap>() {
+                                            @Override
+                                            public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+                                                Bitmap bitmap = imageBlur(getApplicationContext(), resource, 24f);
+                                                ImageSaver imageSaver = new ImageSaver(getApplicationContext());
+                                                imageSaver.setFileName(contentDTO.contentKey + "_3").setDirectoryName("AQA").save(bitmap);
+                                            }
+                                        });
+                                Glide.with(getApplicationContext()).asBitmap().load(contentDTO.getImageUrl_3())
+                                        .apply(new RequestOptions().override(200, 200))
+                                        .into(new SimpleTarget<Bitmap>() {
+                                            @Override
+                                            public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+                                                Bitmap bitmap = imageBlur(getApplicationContext(), resource, 24f);
+                                                ImageSaver imageSaver = new ImageSaver(getApplicationContext());
+                                                imageSaver.setFileName(contentDTO.contentKey + "_4").setDirectoryName("AQA").save(bitmap);
+                                            }
+                                        });
 
-                            Glide.with(getApplicationContext()).asBitmap().load(contentDTO.getImageUrl_7())
-                                    .apply(new RequestOptions().override(200, 200))
-                                    .into(new SimpleTarget<Bitmap>() {
-                                        @Override
-                                        public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
-                                            Bitmap bitmap = imageBlur(getApplicationContext(), resource, 24f);
-                                            ImageSaver imageSaver = new ImageSaver(getApplicationContext());
-                                            imageSaver.setFileName(contentDTO.contentKey + "_8").setDirectoryName("AQA").save(bitmap);
-                                        }
-                                    });
-                            break;
-                        case 9:
-                            Glide.with(getApplicationContext()).asBitmap().load(contentDTO.getImageUrl_0())
-                                    .apply(new RequestOptions().override(200, 200))
-                                    .into(new SimpleTarget<Bitmap>() {
-                                        @Override
-                                        public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
-                                            Bitmap bitmap = imageBlur(getApplicationContext(), resource, 24f);
-                                            ImageSaver imageSaver = new ImageSaver(getApplicationContext());
-                                            imageSaver.setFileName(contentDTO.contentKey + "_1").setDirectoryName("AQA").save(bitmap);
-                                        }
-                                    });
-                            Glide.with(getApplicationContext()).asBitmap().load(contentDTO.getImageUrl_1())
-                                    .apply(new RequestOptions().override(200, 200))
-                                    .into(new SimpleTarget<Bitmap>() {
-                                        @Override
-                                        public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
-                                            Bitmap bitmap = imageBlur(getApplicationContext(), resource, 24f);
-                                            ImageSaver imageSaver = new ImageSaver(getApplicationContext());
-                                            imageSaver.setFileName(contentDTO.contentKey + "_2").setDirectoryName("AQA").save(bitmap);
-                                        }
-                                    });
-                            Glide.with(getApplicationContext()).asBitmap().load(contentDTO.getImageUrl_2())
-                                    .apply(new RequestOptions().override(200, 200))
-                                    .into(new SimpleTarget<Bitmap>() {
-                                        @Override
-                                        public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
-                                            Bitmap bitmap = imageBlur(getApplicationContext(), resource, 24f);
-                                            ImageSaver imageSaver = new ImageSaver(getApplicationContext());
-                                            imageSaver.setFileName(contentDTO.contentKey + "_3").setDirectoryName("AQA").save(bitmap);
-                                        }
-                                    });
-                            Glide.with(getApplicationContext()).asBitmap().load(contentDTO.getImageUrl_3())
-                                    .apply(new RequestOptions().override(200, 200))
-                                    .into(new SimpleTarget<Bitmap>() {
-                                        @Override
-                                        public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
-                                            Bitmap bitmap = imageBlur(getApplicationContext(), resource, 24f);
-                                            ImageSaver imageSaver = new ImageSaver(getApplicationContext());
-                                            imageSaver.setFileName(contentDTO.contentKey + "_4").setDirectoryName("AQA").save(bitmap);
-                                        }
-                                    });
+                                Glide.with(getApplicationContext()).asBitmap().load(contentDTO.getImageUrl_4())
+                                        .apply(new RequestOptions().override(200, 200))
+                                        .into(new SimpleTarget<Bitmap>() {
+                                            @Override
+                                            public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+                                                Bitmap bitmap = imageBlur(getApplicationContext(), resource, 24f);
+                                                ImageSaver imageSaver = new ImageSaver(getApplicationContext());
+                                                imageSaver.setFileName(contentDTO.contentKey + "_5").setDirectoryName("AQA").save(bitmap);
+                                            }
+                                        });
+                                Glide.with(getApplicationContext()).asBitmap().load(contentDTO.getImageUrl_5())
+                                        .apply(new RequestOptions().override(200, 200))
+                                        .into(new SimpleTarget<Bitmap>() {
+                                            @Override
+                                            public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+                                                Bitmap bitmap = imageBlur(getApplicationContext(), resource, 24f);
+                                                ImageSaver imageSaver = new ImageSaver(getApplicationContext());
+                                                imageSaver.setFileName(contentDTO.contentKey + "_6").setDirectoryName("AQA").save(bitmap);
+                                            }
+                                        });
+                                Glide.with(getApplicationContext()).asBitmap().load(contentDTO.getImageUrl_6())
+                                        .apply(new RequestOptions().override(200, 200))
+                                        .into(new SimpleTarget<Bitmap>() {
+                                            @Override
+                                            public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+                                                Bitmap bitmap = imageBlur(getApplicationContext(), resource, 24f);
+                                                ImageSaver imageSaver = new ImageSaver(getApplicationContext());
+                                                imageSaver.setFileName(contentDTO.contentKey + "_7").setDirectoryName("AQA").save(bitmap);
+                                            }
+                                        });
 
-                            Glide.with(getApplicationContext()).asBitmap().load(contentDTO.getImageUrl_4())
-                                    .apply(new RequestOptions().override(200, 200))
-                                    .into(new SimpleTarget<Bitmap>() {
-                                        @Override
-                                        public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
-                                            Bitmap bitmap = imageBlur(getApplicationContext(), resource, 24f);
-                                            ImageSaver imageSaver = new ImageSaver(getApplicationContext());
-                                            imageSaver.setFileName(contentDTO.contentKey + "_5").setDirectoryName("AQA").save(bitmap);
-                                        }
-                                    });
-                            Glide.with(getApplicationContext()).asBitmap().load(contentDTO.getImageUrl_5())
-                                    .apply(new RequestOptions().override(200, 200))
-                                    .into(new SimpleTarget<Bitmap>() {
-                                        @Override
-                                        public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
-                                            Bitmap bitmap = imageBlur(getApplicationContext(), resource, 24f);
-                                            ImageSaver imageSaver = new ImageSaver(getApplicationContext());
-                                            imageSaver.setFileName(contentDTO.contentKey + "_6").setDirectoryName("AQA").save(bitmap);
-                                        }
-                                    });
-                            Glide.with(getApplicationContext()).asBitmap().load(contentDTO.getImageUrl_6())
-                                    .apply(new RequestOptions().override(200, 200))
-                                    .into(new SimpleTarget<Bitmap>() {
-                                        @Override
-                                        public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
-                                            Bitmap bitmap = imageBlur(getApplicationContext(), resource, 24f);
-                                            ImageSaver imageSaver = new ImageSaver(getApplicationContext());
-                                            imageSaver.setFileName(contentDTO.contentKey + "_7").setDirectoryName("AQA").save(bitmap);
-                                        }
-                                    });
+                                Glide.with(getApplicationContext()).asBitmap().load(contentDTO.getImageUrl_7())
+                                        .apply(new RequestOptions().override(200, 200))
+                                        .into(new SimpleTarget<Bitmap>() {
+                                            @Override
+                                            public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+                                                Bitmap bitmap = imageBlur(getApplicationContext(), resource, 24f);
+                                                ImageSaver imageSaver = new ImageSaver(getApplicationContext());
+                                                imageSaver.setFileName(contentDTO.contentKey + "_8").setDirectoryName("AQA").save(bitmap);
+                                            }
+                                        });
+                                Glide.with(getApplicationContext()).asBitmap().load(contentDTO.getImageUrl_8())
+                                        .apply(new RequestOptions().override(200, 200))
+                                        .into(new SimpleTarget<Bitmap>() {
+                                            @Override
+                                            public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+                                                Bitmap bitmap = imageBlur(getApplicationContext(), resource, 24f);
+                                                ImageSaver imageSaver = new ImageSaver(getApplicationContext());
+                                                imageSaver.setFileName(contentDTO.contentKey + "_9").setDirectoryName("AQA").save(bitmap);
+                                            }
+                                        });
+                                break;
+                            case 10:
+                                Glide.with(getApplicationContext()).asBitmap().load(contentDTO.getImageUrl_0())
+                                        .apply(new RequestOptions().override(200, 200))
+                                        .into(new SimpleTarget<Bitmap>() {
+                                            @Override
+                                            public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+                                                Bitmap bitmap = imageBlur(getApplicationContext(), resource, 24f);
+                                                ImageSaver imageSaver = new ImageSaver(getApplicationContext());
+                                                imageSaver.setFileName(contentDTO.contentKey + "_1").setDirectoryName("AQA").save(bitmap);
+                                            }
+                                        });
+                                Glide.with(getApplicationContext()).asBitmap().load(contentDTO.getImageUrl_1())
+                                        .apply(new RequestOptions().override(200, 200))
+                                        .into(new SimpleTarget<Bitmap>() {
+                                            @Override
+                                            public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+                                                Bitmap bitmap = imageBlur(getApplicationContext(), resource, 24f);
+                                                ImageSaver imageSaver = new ImageSaver(getApplicationContext());
+                                                imageSaver.setFileName(contentDTO.contentKey + "_2").setDirectoryName("AQA").save(bitmap);
+                                            }
+                                        });
+                                Glide.with(getApplicationContext()).asBitmap().load(contentDTO.getImageUrl_2())
+                                        .apply(new RequestOptions().override(200, 200))
+                                        .into(new SimpleTarget<Bitmap>() {
+                                            @Override
+                                            public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+                                                Bitmap bitmap = imageBlur(getApplicationContext(), resource, 24f);
+                                                ImageSaver imageSaver = new ImageSaver(getApplicationContext());
+                                                imageSaver.setFileName(contentDTO.contentKey + "_3").setDirectoryName("AQA").save(bitmap);
+                                            }
+                                        });
+                                Glide.with(getApplicationContext()).asBitmap().load(contentDTO.getImageUrl_3())
+                                        .apply(new RequestOptions().override(200, 200))
+                                        .into(new SimpleTarget<Bitmap>() {
+                                            @Override
+                                            public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+                                                Bitmap bitmap = imageBlur(getApplicationContext(), resource, 24f);
+                                                ImageSaver imageSaver = new ImageSaver(getApplicationContext());
+                                                imageSaver.setFileName(contentDTO.contentKey + "_4").setDirectoryName("AQA").save(bitmap);
+                                            }
+                                        });
 
-                            Glide.with(getApplicationContext()).asBitmap().load(contentDTO.getImageUrl_7())
-                                    .apply(new RequestOptions().override(200, 200))
-                                    .into(new SimpleTarget<Bitmap>() {
-                                        @Override
-                                        public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
-                                            Bitmap bitmap = imageBlur(getApplicationContext(), resource, 24f);
-                                            ImageSaver imageSaver = new ImageSaver(getApplicationContext());
-                                            imageSaver.setFileName(contentDTO.contentKey + "_8").setDirectoryName("AQA").save(bitmap);
-                                        }
-                                    });
-                            Glide.with(getApplicationContext()).asBitmap().load(contentDTO.getImageUrl_8())
-                                    .apply(new RequestOptions().override(200, 200))
-                                    .into(new SimpleTarget<Bitmap>() {
-                                        @Override
-                                        public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
-                                            Bitmap bitmap = imageBlur(getApplicationContext(), resource, 24f);
-                                            ImageSaver imageSaver = new ImageSaver(getApplicationContext());
-                                            imageSaver.setFileName(contentDTO.contentKey + "_9").setDirectoryName("AQA").save(bitmap);
-                                        }
-                                    });
-                            break;
-                        case 10:
-                            Glide.with(getApplicationContext()).asBitmap().load(contentDTO.getImageUrl_0())
-                                    .apply(new RequestOptions().override(200, 200))
-                                    .into(new SimpleTarget<Bitmap>() {
-                                        @Override
-                                        public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
-                                            Bitmap bitmap = imageBlur(getApplicationContext(), resource, 24f);
-                                            ImageSaver imageSaver = new ImageSaver(getApplicationContext());
-                                            imageSaver.setFileName(contentDTO.contentKey + "_1").setDirectoryName("AQA").save(bitmap);
-                                        }
-                                    });
-                            Glide.with(getApplicationContext()).asBitmap().load(contentDTO.getImageUrl_1())
-                                    .apply(new RequestOptions().override(200, 200))
-                                    .into(new SimpleTarget<Bitmap>() {
-                                        @Override
-                                        public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
-                                            Bitmap bitmap = imageBlur(getApplicationContext(), resource, 24f);
-                                            ImageSaver imageSaver = new ImageSaver(getApplicationContext());
-                                            imageSaver.setFileName(contentDTO.contentKey + "_2").setDirectoryName("AQA").save(bitmap);
-                                        }
-                                    });
-                            Glide.with(getApplicationContext()).asBitmap().load(contentDTO.getImageUrl_2())
-                                    .apply(new RequestOptions().override(200, 200))
-                                    .into(new SimpleTarget<Bitmap>() {
-                                        @Override
-                                        public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
-                                            Bitmap bitmap = imageBlur(getApplicationContext(), resource, 24f);
-                                            ImageSaver imageSaver = new ImageSaver(getApplicationContext());
-                                            imageSaver.setFileName(contentDTO.contentKey + "_3").setDirectoryName("AQA").save(bitmap);
-                                        }
-                                    });
-                            Glide.with(getApplicationContext()).asBitmap().load(contentDTO.getImageUrl_3())
-                                    .apply(new RequestOptions().override(200, 200))
-                                    .into(new SimpleTarget<Bitmap>() {
-                                        @Override
-                                        public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
-                                            Bitmap bitmap = imageBlur(getApplicationContext(), resource, 24f);
-                                            ImageSaver imageSaver = new ImageSaver(getApplicationContext());
-                                            imageSaver.setFileName(contentDTO.contentKey + "_4").setDirectoryName("AQA").save(bitmap);
-                                        }
-                                    });
+                                Glide.with(getApplicationContext()).asBitmap().load(contentDTO.getImageUrl_4())
+                                        .apply(new RequestOptions().override(200, 200))
+                                        .into(new SimpleTarget<Bitmap>() {
+                                            @Override
+                                            public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+                                                Bitmap bitmap = imageBlur(getApplicationContext(), resource, 24f);
+                                                ImageSaver imageSaver = new ImageSaver(getApplicationContext());
+                                                imageSaver.setFileName(contentDTO.contentKey + "_5").setDirectoryName("AQA").save(bitmap);
+                                            }
+                                        });
+                                Glide.with(getApplicationContext()).asBitmap().load(contentDTO.getImageUrl_5())
+                                        .apply(new RequestOptions().override(200, 200))
+                                        .into(new SimpleTarget<Bitmap>() {
+                                            @Override
+                                            public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+                                                Bitmap bitmap = imageBlur(getApplicationContext(), resource, 24f);
+                                                ImageSaver imageSaver = new ImageSaver(getApplicationContext());
+                                                imageSaver.setFileName(contentDTO.contentKey + "_6").setDirectoryName("AQA").save(bitmap);
+                                            }
+                                        });
+                                Glide.with(getApplicationContext()).asBitmap().load(contentDTO.getImageUrl_6())
+                                        .apply(new RequestOptions().override(200, 200))
+                                        .into(new SimpleTarget<Bitmap>() {
+                                            @Override
+                                            public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+                                                Bitmap bitmap = imageBlur(getApplicationContext(), resource, 24f);
+                                                ImageSaver imageSaver = new ImageSaver(getApplicationContext());
+                                                imageSaver.setFileName(contentDTO.contentKey + "_7").setDirectoryName("AQA").save(bitmap);
+                                            }
+                                        });
 
-                            Glide.with(getApplicationContext()).asBitmap().load(contentDTO.getImageUrl_4())
-                                    .apply(new RequestOptions().override(200, 200))
-                                    .into(new SimpleTarget<Bitmap>() {
-                                        @Override
-                                        public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
-                                            Bitmap bitmap = imageBlur(getApplicationContext(), resource, 24f);
-                                            ImageSaver imageSaver = new ImageSaver(getApplicationContext());
-                                            imageSaver.setFileName(contentDTO.contentKey + "_5").setDirectoryName("AQA").save(bitmap);
-                                        }
-                                    });
-                            Glide.with(getApplicationContext()).asBitmap().load(contentDTO.getImageUrl_5())
-                                    .apply(new RequestOptions().override(200, 200))
-                                    .into(new SimpleTarget<Bitmap>() {
-                                        @Override
-                                        public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
-                                            Bitmap bitmap = imageBlur(getApplicationContext(), resource, 24f);
-                                            ImageSaver imageSaver = new ImageSaver(getApplicationContext());
-                                            imageSaver.setFileName(contentDTO.contentKey + "_6").setDirectoryName("AQA").save(bitmap);
-                                        }
-                                    });
-                            Glide.with(getApplicationContext()).asBitmap().load(contentDTO.getImageUrl_6())
-                                    .apply(new RequestOptions().override(200, 200))
-                                    .into(new SimpleTarget<Bitmap>() {
-                                        @Override
-                                        public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
-                                            Bitmap bitmap = imageBlur(getApplicationContext(), resource, 24f);
-                                            ImageSaver imageSaver = new ImageSaver(getApplicationContext());
-                                            imageSaver.setFileName(contentDTO.contentKey + "_7").setDirectoryName("AQA").save(bitmap);
-                                        }
-                                    });
+                                Glide.with(getApplicationContext()).asBitmap().load(contentDTO.getImageUrl_7())
+                                        .apply(new RequestOptions().override(200, 200))
+                                        .into(new SimpleTarget<Bitmap>() {
+                                            @Override
+                                            public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+                                                Bitmap bitmap = imageBlur(getApplicationContext(), resource, 24f);
+                                                ImageSaver imageSaver = new ImageSaver(getApplicationContext());
+                                                imageSaver.setFileName(contentDTO.contentKey + "_8").setDirectoryName("AQA").save(bitmap);
+                                            }
+                                        });
+                                Glide.with(getApplicationContext()).asBitmap().load(contentDTO.getImageUrl_8())
+                                        .apply(new RequestOptions().override(200, 200))
+                                        .into(new SimpleTarget<Bitmap>() {
+                                            @Override
+                                            public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+                                                Bitmap bitmap = imageBlur(getApplicationContext(), resource, 24f);
+                                                ImageSaver imageSaver = new ImageSaver(getApplicationContext());
+                                                imageSaver.setFileName(contentDTO.contentKey + "_9").setDirectoryName("AQA").save(bitmap);
+                                            }
+                                        });
+                                Glide.with(getApplicationContext()).asBitmap().load(contentDTO.getImageUrl_9())
+                                        .apply(new RequestOptions().override(200, 200))
+                                        .into(new SimpleTarget<Bitmap>() {
+                                            @Override
+                                            public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+                                                Bitmap bitmap = imageBlur(getApplicationContext(), resource, 24f);
+                                                ImageSaver imageSaver = new ImageSaver(getApplicationContext());
+                                                imageSaver.setFileName(contentDTO.contentKey + "_10").setDirectoryName("AQA").save(bitmap);
+                                            }
+                                        });
+                                break;
+                        }
 
-                            Glide.with(getApplicationContext()).asBitmap().load(contentDTO.getImageUrl_7())
-                                    .apply(new RequestOptions().override(200, 200))
-                                    .into(new SimpleTarget<Bitmap>() {
-                                        @Override
-                                        public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
-                                            Bitmap bitmap = imageBlur(getApplicationContext(), resource, 24f);
-                                            ImageSaver imageSaver = new ImageSaver(getApplicationContext());
-                                            imageSaver.setFileName(contentDTO.contentKey + "_8").setDirectoryName("AQA").save(bitmap);
-                                        }
-                                    });
-                            Glide.with(getApplicationContext()).asBitmap().load(contentDTO.getImageUrl_8())
-                                    .apply(new RequestOptions().override(200, 200))
-                                    .into(new SimpleTarget<Bitmap>() {
-                                        @Override
-                                        public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
-                                            Bitmap bitmap = imageBlur(getApplicationContext(), resource, 24f);
-                                            ImageSaver imageSaver = new ImageSaver(getApplicationContext());
-                                            imageSaver.setFileName(contentDTO.contentKey + "_9").setDirectoryName("AQA").save(bitmap);
-                                        }
-                                    });
-                            Glide.with(getApplicationContext()).asBitmap().load(contentDTO.getImageUrl_9())
-                                    .apply(new RequestOptions().override(200, 200))
-                                    .into(new SimpleTarget<Bitmap>() {
-                                        @Override
-                                        public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
-                                            Bitmap bitmap = imageBlur(getApplicationContext(), resource, 24f);
-                                            ImageSaver imageSaver = new ImageSaver(getApplicationContext());
-                                            imageSaver.setFileName(contentDTO.contentKey + "_10").setDirectoryName("AQA").save(bitmap);
-                                        }
-                                    });
-                            break;
+                    } catch (Exception e) {
+
                     }
+
                 }
 
                 @Override

@@ -8,25 +8,31 @@
     tools:context=".views.FindUserActivity">
 
     <ImageView
-        android:id="@+id/imageView"
+        android:id="@+id/findUser_imageView_back"
+        android:paddingTop="16dp"
+        android:paddingLeft="16dp"
+        android:src="@drawable/ic_arrow_back_gray_24dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <ImageView
         android:layout_width="106dp"
         android:layout_height="80dp"
         android:layout_gravity="center"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="60dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
         app:srcCompat="@drawable/ic_aqa" />
 
     <android.support.design.widget.TextInputLayout
-        android:layout_gravity="center"
         android:id="@+id/textInputLayout2"
         android:layout_width="330dp"
         android:layout_height="73dp"
+        android:layout_gravity="center"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-
         android:gravity="center"
         android:theme="@style/TextLabel">
 
@@ -58,13 +64,13 @@
             android:layout_weight="1" />
 
         <TextView
-            android:layout_marginBottom="20dp"
-            android:paddingBottom="20dp"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="top"
+            android:layout_marginBottom="20dp"
             android:layout_weight="7"
             android:gravity="top"
+            android:paddingBottom="20dp"
             android:text="※가입되어있는 이메일을 입력해주세요.\n     이메일로 비밀번호 변경 안내 메일이 발송됩니다."
             android:textSize="14dp" />
 
@@ -74,12 +80,35 @@
             android:layout_weight="1" />
     </LinearLayout>
 
-
-    <ImageView
+    <LinearLayout
         android:layout_gravity="center"
-        android:src="@drawable/ic_find_replace_black_24dp"
-        android:layout_marginTop="40dp"
-        android:id="@+id/findUser_ImageView_findUser"
-        android:layout_width="40dp"
-        android:layout_height="40dp" />
+        android:id="@+id/findUser_LinearLayout_findUser"
+        android:layout_width="280dp"
+        android:layout_height="56dp"
+        android:layout_marginTop="4dp"
+        android:background="@drawable/shape"
+        android:elevation="2dp"
+        android:gravity="center|start"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textInputLayout2">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginLeft="16dp"
+            android:drawableStart="@drawable/ic_passwordicon"
+            android:text="   비밀번호 변경 메일 발송"
+            android:textColor="#454545"
+            android:textSize="16dp" />
+    </LinearLayout>
+
+    <!--<ImageView-->
+        <!--android:id="@+id/findUser_ImageView_findUser"-->
+        <!--android:layout_width="40dp"-->
+        <!--android:layout_height="40dp"-->
+        <!--android:layout_gravity="center"-->
+        <!--android:layout_marginTop="40dp"-->
+        <!--android:src="@drawable/ic_find_replace_black_24dp" />-->
 </LinearLayout>
