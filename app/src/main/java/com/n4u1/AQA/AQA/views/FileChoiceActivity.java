@@ -192,10 +192,16 @@ public class FileChoiceActivity extends AppCompatActivity
                 loadingSec = getLoadingSec(imgStrings);//1000 = 1M
                 Log.d("lkjsec", String.valueOf(loadingSec));
                 if (imgStrings[1].length()==0) {
-                    Toast toast = Toast.makeText(getApplicationContext(), "최소 2장의 이미지는 업로드 되야 합니다.", Toast.LENGTH_SHORT);
+                    Toast toast = Toast.makeText(getApplicationContext(), "최소 2장의 이미지는 업로드 되어야 합니다.", Toast.LENGTH_SHORT);
                     toast.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL, 0, 0);
                     toast.show();
                 } else {
+
+//                    imgStrings = new String[10];
+//                    String[] imgStrings_addUniqueName;
+//                    imgStrings_addUniqueName = new String[10];
+//                    imgStrings_addUniqueName = addFileName(imgStrings);
+
                     upload(imgStrings);
                 }
 
@@ -213,6 +219,17 @@ public class FileChoiceActivity extends AppCompatActivity
 
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private String[] addFileName(String[] imgStrings) {
+        for (int i = 0; i < 10; i++) {
+            if (!imgStrings[i].isEmpty()) {
+                Log.d("lkj imgString1", i + " : " + imgStrings[i]);
+                imgStrings[i] = imgStrings[i] + getFileDate();
+                Log.d("lkj imgString2", i + " : " + imgStrings[i]);
+            }
+        }
+        return imgStrings;
     }
 
     private int getLoadingSec(String[] imgStrings) {
@@ -268,7 +285,11 @@ public class FileChoiceActivity extends AppCompatActivity
                 Map<String, Object> user = (Map<String, Object>) dataSnapshot.getValue();
                 int currentPoint = Integer.parseInt(String.valueOf(user.get("userClass")));
                 currentPoint = currentPoint + point;
-                tmpRef.child("users").child(uId).child("userClass").setValue(currentPoint);
+                if (currentPoint > 500) {
+                    tmpRef.child("users").child(uId).child("userClass").setValue(500);
+                } else {
+                    tmpRef.child("users").child(uId).child("userClass").setValue(currentPoint);
+                }
 
             }
 
@@ -279,6 +300,7 @@ public class FileChoiceActivity extends AppCompatActivity
         });
 
     }
+
 
 
     //upload할 파일의 경로를 리스너로 받음 → 현재프레그먼트에 따라서 → FireBase 에 업로드
@@ -300,8 +322,6 @@ public class FileChoiceActivity extends AppCompatActivity
 
             mdatabaseRef = FirebaseDatabase.getInstance().getReference();
             key = mdatabaseRef.child("user_contents").push().getKey();
-
-
 
             //content input start into fireBase "user_contents"
             ContentDTO contentDTO = new ContentDTO();
@@ -327,6 +347,7 @@ public class FileChoiceActivity extends AppCompatActivity
 
                 storageRef = storage.getReferenceFromUrl("gs://test130-1068f.appspot.com");
                 riversRef = storageRef.child("videos/" + file_0.getLastPathSegment());
+
                 uploadTask = riversRef.putFile(file_0);
                 uploadTask.addOnFailureListener(new OnFailureListener() {
                     @Override
@@ -603,8 +624,12 @@ public class FileChoiceActivity extends AppCompatActivity
             if (uri[0].length() != 0) {
                 Uri file_0 = Uri.fromFile(new File(uri[0]));
                 storageRef = storage.getReferenceFromUrl("gs://test130-1068f.appspot.com");
-                riversRef = storageRef.child("images/" + file_0.getLastPathSegment());
+
+                //파일명앞에 날짜시분초 붙임 20181113091654_fileName.jpg
+                riversRef = storageRef.child("images/" + getFileDate() + "_" + file_0.getLastPathSegment());
                 uploadTask = riversRef.putFile(file_0);
+                Log.d("lkj file1", file_0.toString());
+                Log.d("lkj file2", file_0.getLastPathSegment());
                 uploadTask.addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception exception) {
@@ -624,13 +649,10 @@ public class FileChoiceActivity extends AppCompatActivity
             }
 
             if (uri[1].length() != 0) {
-
-
                 itemViewTypeCount++;
                 Uri file_1 = Uri.fromFile(new File(uri[1]));
-
                 StorageReference storageRef = storage.getReferenceFromUrl("gs://test130-1068f.appspot.com");
-                final StorageReference riversRef = storageRef.child("images/" + file_1.getLastPathSegment());
+                final StorageReference riversRef = storageRef.child("images/" + getFileDate() + file_1.getLastPathSegment());
                 UploadTask uploadTask = riversRef.putFile(file_1);
                 uploadTask.addOnFailureListener(new OnFailureListener() {
                     @Override
@@ -654,7 +676,7 @@ public class FileChoiceActivity extends AppCompatActivity
                 itemViewTypeCount++;
                 Uri file_2 = Uri.fromFile(new File(uri[2]));
                 StorageReference storageRef = storage.getReferenceFromUrl("gs://test130-1068f.appspot.com");
-                final StorageReference riversRef = storageRef.child("images/" + file_2.getLastPathSegment());
+                final StorageReference riversRef = storageRef.child("images/" + getFileDate() + file_2.getLastPathSegment());
                 UploadTask uploadTask = riversRef.putFile(file_2);
                 uploadTask.addOnFailureListener(new OnFailureListener() {
                     @Override
@@ -678,7 +700,7 @@ public class FileChoiceActivity extends AppCompatActivity
                 itemViewTypeCount++;
                 Uri file_3 = Uri.fromFile(new File(uri[3]));
                 StorageReference storageRef = storage.getReferenceFromUrl("gs://test130-1068f.appspot.com");
-                final StorageReference riversRef = storageRef.child("images/" + file_3.getLastPathSegment());
+                final StorageReference riversRef = storageRef.child("images/" + getFileDate() + file_3.getLastPathSegment());
                 UploadTask uploadTask = riversRef.putFile(file_3);
                 uploadTask.addOnFailureListener(new OnFailureListener() {
                     @Override
@@ -702,7 +724,7 @@ public class FileChoiceActivity extends AppCompatActivity
                 itemViewTypeCount++;
                 Uri file_4 = Uri.fromFile(new File(uri[4]));
                 StorageReference storageRef = storage.getReferenceFromUrl("gs://test130-1068f.appspot.com");
-                final StorageReference riversRef = storageRef.child("images/" + file_4.getLastPathSegment());
+                final StorageReference riversRef = storageRef.child("images/" + getFileDate() + file_4.getLastPathSegment());
                 UploadTask uploadTask = riversRef.putFile(file_4);
                 uploadTask.addOnFailureListener(new OnFailureListener() {
                     @Override
@@ -726,7 +748,7 @@ public class FileChoiceActivity extends AppCompatActivity
                 itemViewTypeCount++;
                 Uri file_5 = Uri.fromFile(new File(uri[5]));
                 StorageReference storageRef = storage.getReferenceFromUrl("gs://test130-1068f.appspot.com");
-                final StorageReference riversRef = storageRef.child("images/" + file_5.getLastPathSegment());
+                final StorageReference riversRef = storageRef.child("images/" + getFileDate() + file_5.getLastPathSegment());
                 UploadTask uploadTask = riversRef.putFile(file_5);
                 uploadTask.addOnFailureListener(new OnFailureListener() {
                     @Override
@@ -750,7 +772,7 @@ public class FileChoiceActivity extends AppCompatActivity
                 itemViewTypeCount++;
                 Uri file_6 = Uri.fromFile(new File(uri[6]));
                 StorageReference storageRef = storage.getReferenceFromUrl("gs://test130-1068f.appspot.com");
-                final StorageReference riversRef = storageRef.child("images/" + file_6.getLastPathSegment());
+                final StorageReference riversRef = storageRef.child("images/" + getFileDate() + file_6.getLastPathSegment());
                 UploadTask uploadTask = riversRef.putFile(file_6);
                 uploadTask.addOnFailureListener(new OnFailureListener() {
                     @Override
@@ -774,7 +796,7 @@ public class FileChoiceActivity extends AppCompatActivity
                 itemViewTypeCount++;
                 Uri file_7 = Uri.fromFile(new File(uri[7]));
                 StorageReference storageRef = storage.getReferenceFromUrl("gs://test130-1068f.appspot.com");
-                final StorageReference riversRef = storageRef.child("images/" + file_7.getLastPathSegment());
+                final StorageReference riversRef = storageRef.child("images/" + getFileDate() + file_7.getLastPathSegment());
                 UploadTask uploadTask = riversRef.putFile(file_7);
                 uploadTask.addOnFailureListener(new OnFailureListener() {
                     @Override
@@ -798,7 +820,7 @@ public class FileChoiceActivity extends AppCompatActivity
                 itemViewTypeCount++;
                 Uri file_8 = Uri.fromFile(new File(uri[8]));
                 StorageReference storageRef = storage.getReferenceFromUrl("gs://test130-1068f.appspot.com");
-                final StorageReference riversRef = storageRef.child("images/" + file_8.getLastPathSegment());
+                final StorageReference riversRef = storageRef.child("images/" + getFileDate() + file_8.getLastPathSegment());
                 UploadTask uploadTask = riversRef.putFile(file_8);
                 uploadTask.addOnFailureListener(new OnFailureListener() {
                     @Override
@@ -822,7 +844,7 @@ public class FileChoiceActivity extends AppCompatActivity
                 itemViewTypeCount++;
                 Uri file_9 = Uri.fromFile(new File(uri[9]));
                 StorageReference storageRef = storage.getReferenceFromUrl("gs://test130-1068f.appspot.com");
-                final StorageReference riversRef = storageRef.child("images/" + file_9.getLastPathSegment());
+                final StorageReference riversRef = storageRef.child("images/" + getFileDate() + file_9.getLastPathSegment());
                 UploadTask uploadTask = riversRef.putFile(file_9);
                 uploadTask.addOnFailureListener(new OnFailureListener() {
                     @Override
@@ -888,7 +910,7 @@ public class FileChoiceActivity extends AppCompatActivity
             if (uri[0].length() != 0) {
                 Uri file_0 = Uri.fromFile(new File(uri[0]));
                 storageRef = storage.getReferenceFromUrl("gs://test130-1068f.appspot.com");
-                riversRef = storageRef.child("images/" + file_0.getLastPathSegment());
+                riversRef = storageRef.child("images/" + getFileDate() + "_" + file_0.getLastPathSegment());
                 uploadTask = riversRef.putFile(file_0);
                 uploadTask.addOnFailureListener(new OnFailureListener() {
                     @Override
@@ -912,7 +934,7 @@ public class FileChoiceActivity extends AppCompatActivity
                 itemViewTypeCount++;
                 Uri file_1 = Uri.fromFile(new File(uri[1]));
                 StorageReference storageRef = storage.getReferenceFromUrl("gs://test130-1068f.appspot.com");
-                final StorageReference riversRef = storageRef.child("images/" + file_1.getLastPathSegment());
+                final StorageReference riversRef = storageRef.child("images/" + getFileDate() + "_" + file_1.getLastPathSegment());
                 UploadTask uploadTask = riversRef.putFile(file_1);
                 uploadTask.addOnFailureListener(new OnFailureListener() {
                     @Override
@@ -936,7 +958,7 @@ public class FileChoiceActivity extends AppCompatActivity
                 itemViewTypeCount++;
                 Uri file_2 = Uri.fromFile(new File(uri[2]));
                 StorageReference storageRef = storage.getReferenceFromUrl("gs://test130-1068f.appspot.com");
-                final StorageReference riversRef = storageRef.child("images/" + file_2.getLastPathSegment());
+                final StorageReference riversRef = storageRef.child("images/" + getFileDate() + "_" + file_2.getLastPathSegment());
                 UploadTask uploadTask = riversRef.putFile(file_2);
                 uploadTask.addOnFailureListener(new OnFailureListener() {
                     @Override
@@ -960,7 +982,7 @@ public class FileChoiceActivity extends AppCompatActivity
                 itemViewTypeCount++;
                 Uri file_3 = Uri.fromFile(new File(uri[3]));
                 StorageReference storageRef = storage.getReferenceFromUrl("gs://test130-1068f.appspot.com");
-                final StorageReference riversRef = storageRef.child("images/" + file_3.getLastPathSegment());
+                final StorageReference riversRef = storageRef.child("images/" + getFileDate() + "_" + file_3.getLastPathSegment());
                 UploadTask uploadTask = riversRef.putFile(file_3);
                 uploadTask.addOnFailureListener(new OnFailureListener() {
                     @Override
@@ -984,7 +1006,7 @@ public class FileChoiceActivity extends AppCompatActivity
                 itemViewTypeCount++;
                 Uri file_4 = Uri.fromFile(new File(uri[4]));
                 StorageReference storageRef = storage.getReferenceFromUrl("gs://test130-1068f.appspot.com");
-                final StorageReference riversRef = storageRef.child("images/" + file_4.getLastPathSegment());
+                final StorageReference riversRef = storageRef.child("images/" + getFileDate() + "_" + file_4.getLastPathSegment());
                 UploadTask uploadTask = riversRef.putFile(file_4);
                 uploadTask.addOnFailureListener(new OnFailureListener() {
                     @Override
@@ -1008,7 +1030,7 @@ public class FileChoiceActivity extends AppCompatActivity
                 itemViewTypeCount++;
                 Uri file_5 = Uri.fromFile(new File(uri[5]));
                 StorageReference storageRef = storage.getReferenceFromUrl("gs://test130-1068f.appspot.com");
-                final StorageReference riversRef = storageRef.child("images/" + file_5.getLastPathSegment());
+                final StorageReference riversRef = storageRef.child("images/" + getFileDate() + "_" + file_5.getLastPathSegment());
                 UploadTask uploadTask = riversRef.putFile(file_5);
                 uploadTask.addOnFailureListener(new OnFailureListener() {
                     @Override
@@ -1032,7 +1054,7 @@ public class FileChoiceActivity extends AppCompatActivity
                 itemViewTypeCount++;
                 Uri file_6 = Uri.fromFile(new File(uri[6]));
                 StorageReference storageRef = storage.getReferenceFromUrl("gs://test130-1068f.appspot.com");
-                final StorageReference riversRef = storageRef.child("images/" + file_6.getLastPathSegment());
+                final StorageReference riversRef = storageRef.child("images/" + getFileDate() + "_" + file_6.getLastPathSegment());
                 UploadTask uploadTask = riversRef.putFile(file_6);
                 uploadTask.addOnFailureListener(new OnFailureListener() {
                     @Override
@@ -1056,7 +1078,7 @@ public class FileChoiceActivity extends AppCompatActivity
                 itemViewTypeCount++;
                 Uri file_7 = Uri.fromFile(new File(uri[7]));
                 StorageReference storageRef = storage.getReferenceFromUrl("gs://test130-1068f.appspot.com");
-                final StorageReference riversRef = storageRef.child("images/" + file_7.getLastPathSegment());
+                final StorageReference riversRef = storageRef.child("images/" + getFileDate() + "_" + file_7.getLastPathSegment());
                 UploadTask uploadTask = riversRef.putFile(file_7);
                 uploadTask.addOnFailureListener(new OnFailureListener() {
                     @Override
@@ -1080,7 +1102,7 @@ public class FileChoiceActivity extends AppCompatActivity
                 itemViewTypeCount++;
                 Uri file_8 = Uri.fromFile(new File(uri[8]));
                 StorageReference storageRef = storage.getReferenceFromUrl("gs://test130-1068f.appspot.com");
-                final StorageReference riversRef = storageRef.child("images/" + file_8.getLastPathSegment());
+                final StorageReference riversRef = storageRef.child("images/" + getFileDate() + "_" + file_8.getLastPathSegment());
                 UploadTask uploadTask = riversRef.putFile(file_8);
                 uploadTask.addOnFailureListener(new OnFailureListener() {
                     @Override
@@ -1104,7 +1126,7 @@ public class FileChoiceActivity extends AppCompatActivity
                 itemViewTypeCount++;
                 Uri file_9 = Uri.fromFile(new File(uri[9]));
                 StorageReference storageRef = storage.getReferenceFromUrl("gs://test130-1068f.appspot.com");
-                final StorageReference riversRef = storageRef.child("images/" + file_9.getLastPathSegment());
+                final StorageReference riversRef = storageRef.child("images/" + getFileDate() + "_" + file_9.getLastPathSegment());
                 UploadTask uploadTask = riversRef.putFile(file_9);
                 uploadTask.addOnFailureListener(new OnFailureListener() {
                     @Override
@@ -1159,6 +1181,17 @@ public class FileChoiceActivity extends AppCompatActivity
         timeZone = TimeZone.getTimeZone("Asia/Seoul");
         Date date = new Date();
         SimpleDateFormat df = new SimpleDateFormat("yyyy.MM.dd(E)HH:mm:ssSS", Locale.KOREAN);
+        df.setTimeZone(timeZone);
+        String currentDate = df.format(date);
+        return currentDate;
+    }
+
+
+    public String getFileDate() {
+        TimeZone timeZone;
+        timeZone = TimeZone.getTimeZone("Asia/Seoul");
+        Date date = new Date();
+        SimpleDateFormat df = new SimpleDateFormat("yyyyMMddHHmmss", Locale.KOREAN);
         df.setTimeZone(timeZone);
         String currentDate = df.format(date);
         return currentDate;

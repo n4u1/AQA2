@@ -153,9 +153,14 @@ public class HomeActivity extends AppCompatActivity implements SwipeRefreshLayou
 
         //시작시 권한요청
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.CAMERA}, 0);
+
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (!user.isAnonymous()) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.CAMERA}, 0);
+            }
         }
+
 
         //testActivity
 //        findViewById(R.id.testActivity).setOnClickListener(new View.OnClickListener() {

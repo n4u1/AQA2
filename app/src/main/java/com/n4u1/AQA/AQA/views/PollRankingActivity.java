@@ -43,7 +43,11 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.transition.Transition;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import com.n4u1.AQA.AQA.R;
 import com.n4u1.AQA.AQA.dialog.AlarmDoneDialog;
 import com.n4u1.AQA.AQA.dialog.ContentDeleteDialog;
@@ -2149,7 +2153,11 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
                 Map<String, Object> user = (Map<String, Object>) dataSnapshot.getValue();
                 int currentPoint = Integer.parseInt(String.valueOf(user.get("userClass")));
                 currentPoint = currentPoint + point;
-                tmpRef.child("users").child(uId).child("userClass").setValue(currentPoint);
+                if (currentPoint > 500) {
+                    tmpRef.child("users").child(uId).child("userClass").setValue(500);
+                } else {
+                    tmpRef.child("users").child(uId).child("userClass").setValue(currentPoint);
+                }
 
             }
 
@@ -2290,7 +2298,7 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
     private void openContentDeleteDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("삭제 알림");
-        builder.setMessage("정말 이 투표를 삭제 하시겠습니까?\n 삭제되면 복구는 불가능 합니다.");
+        builder.setMessage("정말 이 투표를 삭제 하시겠습니까?\n 삭제되면 복구할 수 없습니다.");
         builder.setPositiveButton("확 인", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
@@ -2299,19 +2307,16 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
                 String pollKey;
                 Uri data = getIntent().getData();
                 if (data != null) {
-                    Log.d("lkj Data2 in intent2", data.toString());
-                    Log.d("lkj Data2 in intent3", data.getLastPathSegment());
-                    Log.d("lkj Data2 in intent4", data.getQueryParameter("contentKey"));
                     pollKey = data.getQueryParameter("contentKey");
                 } else {
                     pollKey = getIntent().getStringExtra("contentKey");
                 }
-//                String pollKey = getIntent().getStringExtra("contentKey");
+                storageDelete();
                 mReference.child("user_contents").child(pollKey).removeValue();
                 mReference.child("users").child(mUser.getUid()).child("uploadContent").child(pollKey).removeValue();
-//                Toast toast = Toast.makeText(getApplicationContext(), "삭제 되었습니다.", Toast.LENGTH_SHORT);
-//                toast.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL, 0, 0);
-//                toast.show();
+                Toast toast = Toast.makeText(getApplicationContext(), "삭제 되었습니다.", Toast.LENGTH_SHORT);
+                toast.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL, 0, 0);
+                toast.show();
                 finish();
 
 
@@ -2328,6 +2333,97 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
             }
         });
         builder.create().show();
+    }
+
+    private void storageDelete() {
+        DatabaseReference mRef = FirebaseDatabase.getInstance().getReference();
+        mRef.child("user_contents").child(contentKey).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                ContentDTO contentDTO = dataSnapshot.getValue(ContentDTO.class);
+
+                try {
+                    String url_0 = contentDTO.imageUrl_0;
+                    if (!url_0.isEmpty()) {
+                        startDelete(getFileName(url_0));
+                    }
+                    String url_1 = contentDTO.imageUrl_1;
+                    if (!url_1.isEmpty()) {
+                        startDelete(getFileName(url_1));
+                    }
+                    String url_2 = contentDTO.imageUrl_2;
+                    if (!url_2.isEmpty()) {
+                        startDelete(getFileName(url_2));
+                    }
+                    String url_3 = contentDTO.imageUrl_3;
+                    if (!url_3.isEmpty()) {
+                        startDelete(getFileName(url_3));
+                    }
+                    String url_4 = contentDTO.imageUrl_4;
+                    if (!url_4.isEmpty()) {
+                        startDelete(getFileName(url_4));
+                    }
+                    String url_5 = contentDTO.imageUrl_5;
+                    if (!url_5.isEmpty()) {
+                        startDelete(getFileName(url_5));
+                    }
+                    String url_6 = contentDTO.imageUrl_6;
+                    if (!url_6.isEmpty()) {
+                        startDelete(getFileName(url_6));
+                    }
+                    String url_7 = contentDTO.imageUrl_7;
+                    if (!url_7.isEmpty()) {
+                        startDelete(getFileName(url_7));
+                    }
+                    String url_8 = contentDTO.imageUrl_8;
+                    if (!url_8.isEmpty()) {
+                        startDelete(getFileName(url_8));
+                    }
+                    String url_9 = contentDTO.imageUrl_9;
+                    if (!url_9.isEmpty()) {
+                        startDelete(getFileName(url_9));
+                    }
+                } catch (Exception e) {
+
+                }
+
+
+                FirebaseUser mUser = FirebaseAuth.getInstance().getCurrentUser();
+                DatabaseReference mReference = FirebaseDatabase.getInstance().getReference();
+                mReference.child("user_contents").child(contentKey).removeValue();
+                mReference.child("users").child(mUser.getUid()).child("uploadContent").child(contentKey).removeValue();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+    }
+
+    private void startDelete(Object fileName) {
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        StorageReference storageRef = storage.getReference();
+        StorageReference desertRef = storageRef.child("images/" + fileName);
+        desertRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+
+            }
+        });
+    }
+
+    private Object getFileName(String url) {
+        url = url.substring(81);
+        String[] urlArray = url.split("\\?");
+        urlArray[1] = null;
+        return urlArray[0];
     }
 
 

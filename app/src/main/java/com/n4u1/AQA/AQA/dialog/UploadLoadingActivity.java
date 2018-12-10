@@ -66,7 +66,7 @@ public class UploadLoadingActivity extends AppCompatActivity {
         ringProgressBar.setOnProgressListener(new RingProgressBar.OnProgressListener() {
             @Override
             public void progressToComplete() {
-                Toast.makeText(getApplicationContext(), "complete!!!", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "투표가 시작 되었습니다.", Toast.LENGTH_LONG).show();
                 finish();
             }
         });

@@ -281,7 +281,11 @@ public class UserSuggestUploadActivity extends AppCompatActivity implements GoHo
                 Map<String, Object> user = (Map<String, Object>) dataSnapshot.getValue();
                 int currentPoint = Integer.parseInt(String.valueOf(user.get("userClass")));
                 currentPoint = currentPoint + point;
-                tmpRef.child("users").child(uId).child("userClass").setValue(currentPoint);
+                if (currentPoint > 500) {
+                    tmpRef.child("users").child(uId).child("userClass").setValue(500);
+                } else {
+                    tmpRef.child("users").child(uId).child("userClass").setValue(currentPoint);
+                }
 
             }
 
