@@ -8,16 +8,9 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Toast;
-
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.ValueEventListener;
 import com.n4u1.AQA.AQA.R;
-import com.n4u1.AQA.AQA.dialog.ShareDialog;
 
-import java.util.Map;
+
 
 public class AqaIsActivity extends AppCompatActivity {
 

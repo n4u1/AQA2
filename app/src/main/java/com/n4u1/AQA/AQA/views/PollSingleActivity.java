@@ -42,6 +42,10 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.transition.Transition;
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseUser;
@@ -83,6 +87,8 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.TimeZone;
 
+import static com.google.ads.AdRequest.LOGTAG;
+
 
 public class PollSingleActivity extends AppCompatActivity implements View.OnClickListener,
         ContentDeleteDialog.ContentDeleteDialogListener, ShareDialog.ShareDialogListener {
@@ -108,6 +114,8 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
     final ArrayList<ReplyDTO> replyDTOS = new ArrayList<>();
     private HashMap<String, String> issueMap = new HashMap<>();
     private ShareContent shareContent;
+
+
 
 
 //    private LruCache<String, Bitmap> mMemoryCache;
@@ -136,7 +144,8 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
     RecyclerView pollActivity_recyclerView_reply;
     RelativeLayout pollActivity_relativeLayout_reply;
 
-    LinearLayout linearLayout_bestReply0, linearLayout_bestReply1, linearLayout_bestReply2;
+
+    LinearLayout linearLayout_bestReply0, linearLayout_bestReply1, linearLayout_bestReply2, pollActivity_linearLayout_reply;
     TextView bestReply_id0, bestReply_id1, bestReply_id2, bestReply_reply0, bestReply_reply1, bestReply_reply2,
             bestReply_date0, bestReply_date1, bestReply_date2, bestReply_likeCount0, bestReply_likeCount1, bestReply_likeCount2;
     ImageView bestReply_thumbImg0, bestReply_thumbImg1, bestReply_thumbImg2;
@@ -151,6 +160,8 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
     TextView pollActivity_textView_hitCount, pollActivity_textView_likeCount, pollActivity_textView_contentId, pollActivity_textView_replyCount;
     ImageView pollActivity_imageView_state, pollActivity_imageView_like, pollActivity_imageView_alarm;
     String shareUrl;
+
+    AdView adView;
 
 
     @Override
@@ -169,12 +180,9 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
             getSupportActionBar().setDisplayShowHomeEnabled(true);
         }
 
-
+        //contentKey받기
         final Uri data = getIntent().getData();
         if (data != null) {
-            Log.d("lkj Data2 in intent2", data.toString());
-            Log.d("lkj Data2 in intent3", data.getLastPathSegment());
-            Log.d("lkj Data2 in intent4", data.getQueryParameter("contentKey"));
             contentKey = data.getQueryParameter("contentKey");
         } else {
             contentKey = getIntent().getStringExtra("contentKey");
@@ -187,6 +195,8 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
 
         Log.d("lkj noti", contentKey);
 
+        MobileAds.initialize(this, "ca-app-pub-1854873514128645~3190074937");
+        adView = findViewById(R.id.adView);
         mDatabaseReference = FirebaseDatabase.getInstance().getReference("user_contents").child(contentKey);
         mDatabaseReferenceInitAlarm = FirebaseDatabase.getInstance().getReference("users");
         mDatabaseReferencePicker = FirebaseDatabase.getInstance().getReference("users");
@@ -251,6 +261,7 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
         pollActivity_recyclerView_reply = findViewById(R.id.pollActivity_recyclerView_reply);
         pollActivity_editText_reply = findViewById(R.id.pollActivity_editText_reply);
         pollActivity_button_replySend = findViewById(R.id.pollActivity_button_replySend);
+        pollActivity_linearLayout_reply = findViewById(R.id.pollActivity_linearLayout_reply);
 
 
         pollActivity_textView_check_1 = findViewById(R.id.pollActivity_textView_check_1);
@@ -338,6 +349,29 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
                 }
             });
         }
+
+
+
+
+        //광고넣기
+        AdRequest adRequest = new AdRequest.Builder()
+                .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)        // All emulators
+                .addTestDevice("C39C4F095E193D0C5E7BBCB91B89B469")  // TestDeviceId
+                .build();
+        adView.loadAd(adRequest);
+        adView.setAdListener(new AdListener(){
+            @Override
+            public void onAdLoaded() {
+                Log.d("lkj onAdLoaded", "onAdLoaded");
+            }
+
+            @Override
+            public void onAdClosed() {
+                Log.d("lkj onAdClosed", "onAdClosed");
+            }
+        });
+
+
 
 
         //알람설정 클릭
@@ -988,10 +1022,19 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
 
                 String id = pollActivity_textView_userId.getText().toString();
                 if (shareUrl == null) {
-                    Toast.makeText(PollSingleActivity.this, "URL을 생성중입니다. 다시 시도해주세요.", Toast.LENGTH_LONG).show();
+                    Toast.makeText(PollSingleActivity.this, "공유 URL을 생성중입니다. 다시 시도해주세요.", Toast.LENGTH_LONG).show();
                 } else {
-                    ShareDialog shareDialog = ShareDialog.newInstance(id);
-                    shareDialog.show(getSupportFragmentManager(), "shareDialog");
+                    Intent intent = new Intent(android.content.Intent.ACTION_SEND);
+                    intent.setType("text/plain");
+//                     Set default text message
+//                     카톡, 이메일, MMS 다 이걸로 설정 가능
+                    String subject = "하나만 선택해 어서! AQA!\n";
+                    String text = shareUrl;
+                    intent.putExtra(Intent.EXTRA_SUBJECT, subject);
+                    intent.putExtra(Intent.EXTRA_TEXT, text);
+//                     Title of intent
+                    Intent chooser = Intent.createChooser(intent, "공유하기");
+                    startActivity(chooser);
 
                 }
             }
@@ -1228,6 +1271,7 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
             pollActivity_recyclerView_reply.setVisibility(View.VISIBLE);
             pollActivity_editText_reply.setVisibility(View.VISIBLE);
             pollActivity_button_replySend.setVisibility(View.VISIBLE);
+            pollActivity_linearLayout_reply.setVisibility(View.VISIBLE);
             pollActivity_fab_result.hide();
             ACTIVITY_REPLY_FLAG = true;
         } else {
@@ -1239,6 +1283,7 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
             pollActivity_recyclerView_reply.setVisibility(View.GONE);
             pollActivity_editText_reply.setVisibility(View.GONE);
             pollActivity_button_replySend.setVisibility(View.GONE);
+            pollActivity_linearLayout_reply.setVisibility(View.GONE);
             pollActivity_fab_result.show();
             ACTIVITY_REPLY_FLAG = false;
         }
@@ -3861,20 +3906,30 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
     }
 
     @Override
-    protected void onDestroy() {
+    protected void onPause() {
+        super.onPause();
+        if (adView != null) {
+            adView.pause();
+        }
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (adView != null) {
+            adView.resume();
+        }
+
+    }
+
+    @Override
+    protected void onDestroy() {
         super.onDestroy();
-//
-//        mMemoryCache.remove("img_0");
-//        mMemoryCache.remove("img_1");
-//        mMemoryCache.remove("img_2");
-//        mMemoryCache.remove("img_3");
-//        mMemoryCache.remove("img_4");
-//        mMemoryCache.remove("img_5");
-//        mMemoryCache.remove("img_6");
-//        mMemoryCache.remove("img_7");
-//        mMemoryCache.remove("img_8");
-//        mMemoryCache.remove("img_9");
+        if (adView != null) {
+            adView.destroy();
+            adView = null;
+        }
 
     }
 }

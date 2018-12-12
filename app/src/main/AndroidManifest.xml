@@ -96,24 +96,25 @@
         <activity
             android:name=".dialog.PollRankingChoiceActivity"
             android:theme="@style/Theme.DialogFragmentActivity" />
-        <activity android:name=".views.LoginActivity" />
+        <activity android:name=".views.PollRankingActivity"/>
+        <activity android:name=".views.PollSingleActivity"/>
         <activity android:name=".dialog.BaseLoadingActivity" />
+        <activity android:name=".splash.SplashCreateUserActivity" />
+        <activity android:name=".splash.SplashGuidActivity" />
+        <activity android:name=".splash.SplashLoadingActivity" />
+        <activity android:name=".admin.AdminUserActivity" />
+        <activity android:name=".admin.AdminContentsActivity" />
+        <activity android:name=".admin.AdminEtcActivity" />
+        <activity android:name=".views.LoginActivity" />
         <activity android:name=".views.HomeActivity" />
         <activity android:name=".views.UserContentsUploadActivity" />
         <activity android:name=".views.PrivacyPolicyDetailActivity" />
         <activity android:name=".views.ServicePolicyActivity" />
-        <activity android:name=".splash.SplashCreateUserActivity" />
+        <activity android:name=".views.TestActivity" />
         <activity android:name=".views.AqaIsActivity" />
         <activity android:name=".views.CreateUserEmailActivity" />
         <activity android:name=".views.CreateUserIdActivity" />
         <activity android:name=".views.CreateUserAGActivity" />
-        <activity android:name=".splash.SplashGuidActivity" />
-        <activity android:name=".views.TestActivity" />
-        <activity android:name=".admin.AdminUserActivity" />
-        <activity android:name=".admin.AdminContentsActivity" />
-        <activity android:name=".admin.AdminEtcActivity" />
-        <activity android:name=".views.PollRankingActivity" />
-        <activity android:name=".views.PollSingleActivity" />
         <activity android:name=".views.CreateUserActivity" />
         <activity android:name=".views.SearchHomeActivity" />
         <activity android:name=".views.MineActivity" />
@@ -129,7 +130,6 @@
         <activity android:name=".views.ShareAuthDetailActivity" />
         <activity android:name=".views.VersionInfoActivity" />
         <activity android:name=".views.MyUploadActivity" />
-        <activity android:name=".splash.SplashLoadingActivity" />
         <activity android:name=".views.FullImageActivity" />
         <activity android:name=".views.ChangeEmailActivity"/>
         <!-- ////////////////////////////////////////activity///////////////////////////////////////// -->

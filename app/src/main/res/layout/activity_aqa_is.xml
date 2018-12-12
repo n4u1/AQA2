@@ -38,62 +38,62 @@
                 android:layout_height="wrap_content"/>
             <!-- ㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ-->
 
-            <TextView
-                android:textSize="18dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Funny" />
+            <!--<TextView-->
+                <!--android:textSize="18dp"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:text="Funny" />-->
 
-            <TextView
-                android:textSize="14dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="가볍게 참여하되 의미있는 결과를 기대합니다.
-여러분의 재치있는 투표 많이 게시해주세요!" />
+            <!--<TextView-->
+                <!--android:textSize="14dp"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:text="가볍게 참여하되 의미있는 결과를 기대합니다.-->
+<!--여러분의 재치있는 투표 많이 게시해주세요!" />-->
 
-            <TextView
-                android:textSize="24dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
-            <!-- ㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ-->
-            <TextView
-                android:textSize="18dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Trustly" />
+            <!--<TextView-->
+                <!--android:textSize="24dp"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"/>-->
+            <!--&lt;!&ndash; ㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ&ndash;&gt;-->
+            <!--<TextView-->
+                <!--android:textSize="18dp"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:text="Trustly" />-->
 
-            <TextView
-                android:textSize="14dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="1인 1계정을 원칙으로 합니다.
-현재는 하나의 기기에서 하나의 계정만 생성 가능하지만,
-인증을 통하여 1인 1계정으로 변경할 예정입니다.
-시간이 지나 참여자가 많아 지면 무시할 수 없는 수준의 결과를 기대합니다." />
+            <!--<TextView-->
+                <!--android:textSize="14dp"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:text="1인 1계정을 원칙으로 합니다.-->
+<!--현재는 하나의 기기에서 하나의 계정만 생성 가능하지만,-->
+<!--인증을 통하여 1인 1계정으로 변경할 예정입니다.-->
+<!--시간이 지나 참여자가 많아 지면 무시할 수 없는 수준의 결과를 기대합니다." />-->
 
-            <TextView
-                android:textSize="24dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+            <!--<TextView-->
+                <!--android:textSize="24dp"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"/>-->
 
-            <!-- ㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ-->
-            <TextView
-                android:textSize="18dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Purely" />
+            <!--&lt;!&ndash; ㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ&ndash;&gt;-->
+            <!--<TextView-->
+                <!--android:textSize="18dp"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:text="Purely" />-->
 
-            <TextView
-                android:textSize="14dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="투표인원의 Email 일부를 공개할 예정입니다.
-(예)ab***@daum.net 이벤트 당첨자등도 마찬가지 입니다." />
+            <!--<TextView-->
+                <!--android:textSize="14dp"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:text="투표인원의 Email 일부를 공개할 예정입니다.-->
+<!--(예)ab***@daum.net 이벤트 당첨자등도 마찬가지 입니다." />-->
 
-            <TextView
-                android:textSize="14dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+            <!--<TextView-->
+                <!--android:textSize="14dp"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"/>-->
 
             <!-- ㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ-->
 
@@ -164,13 +164,13 @@
                 android:textSize="18dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="순위투표의 점수는 어떻게 계산 되나요?" />
+                android:text="투표의 점수는 어떻게 계산 되나요?" />
 
             <TextView
                 android:textSize="14dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="단일 투표는 1투표당 1점, 순위 투표는 1위가 후보수-1점 입니다. 예를 들어 후보의 수가 4개이면 1위는 3점 2위는 2점 3위는 1점 4위는 0점 입니다." />
+                android:text="단일 투표는 1투표당 1점, 순위 투표는 1위가 후보수-1점 입니다. 예를 들어 후보의 수가 4개이면 1위는 3점, 2위는 2점, 3위는 1점, 4위는 0점 입니다." />
 
             <TextView
                 android:textSize="24dp"

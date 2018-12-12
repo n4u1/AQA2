@@ -5,7 +5,9 @@
     <!--test-->
     <string name="banner_ad_unit_id">ca-app-pub-3940256099942544/6300978111</string>
     <!--real-->
-    <!--<string name="banner_ad_unit_id_">ca-app-pub-1854873514128645/3569596301</string>-->
+    <string name="banner_ad_unit_id_home">ca-app-pub-1854873514128645/2926654312</string>
+    <string name="banner_ad_unit_id_single">ca-app-pub-1854873514128645/7604265923</string>
+    <string name="banner_ad_unit_id_ranking">ca-app-pub-1854873514128645/6589856710</string>
 
     <string name="dynamic_links_uri_prefix">aqapoll.page.link</string>
 

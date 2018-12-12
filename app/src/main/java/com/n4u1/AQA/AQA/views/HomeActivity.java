@@ -2,21 +2,15 @@ package com.n4u1.AQA.AQA.views;
 
 import android.Manifest;
 import android.app.Activity;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
-import android.content.pm.PackageManager;
-import android.content.pm.ResolveInfo;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.content.FileProvider;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -25,12 +19,10 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.OvershootInterpolator;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
@@ -40,7 +32,7 @@ import com.firebase.jobdispatcher.Job;
 import com.firebase.jobdispatcher.Lifetime;
 import com.firebase.jobdispatcher.RetryStrategy;
 import com.firebase.jobdispatcher.Trigger;
-import com.github.mikephil.charting.utils.FileUtils;
+import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
@@ -152,8 +144,6 @@ public class HomeActivity extends AppCompatActivity implements SwipeRefreshLayou
         AdView adView = findViewById(R.id.adView);
 
         //시작시 권한요청
-
-
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (!user.isAnonymous()) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -200,14 +190,17 @@ public class HomeActivity extends AppCompatActivity implements SwipeRefreshLayou
                 .addTestDevice("C39C4F095E193D0C5E7BBCB91B89B469")  // TestDeviceId
                 .build();
         adView.loadAd(adRequest);
-        //test AdView click
-//        adView.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Intent intent = new Intent(HomeActivity.this, TestActivity.class);
-//                startActivity(intent);
-//            }
-//        });
+        adView.setAdListener(new AdListener(){
+            @Override
+            public void onAdLoaded() {
+                Log.d("lkj onAdLoaded", "onAdLoaded");
+            }
+
+            @Override
+            public void onAdClosed() {
+                Log.d("lkj onAdClosed", "onAdClosed");
+            }
+        });
 
 
         //실시간 투표순위 5개
@@ -744,20 +737,31 @@ public class HomeActivity extends AppCompatActivity implements SwipeRefreshLayou
                 break;
 
             case R.id.menu_share:
-                firebaseDatabase.getReference().child("users").child(auth.getCurrentUser().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        Map<String, Object> users = (Map<String, Object>) dataSnapshot.getValue();
-                        String id = String.valueOf(users.get("userId"));
-                        ShareDialog shareDialog = ShareDialog.newInstance(id);
-                        shareDialog.show(getSupportFragmentManager(), "shareDialog");
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                    }
-                });
+                Intent intent = new Intent(android.content.Intent.ACTION_SEND);
+                intent.setType("text/plain");
+//                     Set default text message
+//                     카톡, 이메일, MMS 다 이걸로 설정 가능
+                String subject = "하나만 선택해 어서! AQA!\n";
+                String text = shareContent.getShareUrl();
+                intent.putExtra(Intent.EXTRA_SUBJECT, subject);
+                intent.putExtra(Intent.EXTRA_TEXT, text);
+//                     Title of intent
+                Intent chooser = Intent.createChooser(intent, "공유하기");
+                startActivity(chooser);
+//                firebaseDatabase.getReference().child("users").child(auth.getCurrentUser().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+//                    @Override
+//                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//                        Map<String, Object> users = (Map<String, Object>) dataSnapshot.getValue();
+//                        String id = String.valueOf(users.get("userId"));
+//                        ShareDialog shareDialog = ShareDialog.newInstance(id);
+//                        shareDialog.show(getSupportFragmentManager(), "shareDialog");
+//                    }
+//
+//                    @Override
+//                    public void onCancelled(@NonNull DatabaseError databaseError) {
+//
+//                    }
+//                });
                 break;
 
             case android.R.id.home:
