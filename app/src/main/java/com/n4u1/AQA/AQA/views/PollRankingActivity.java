@@ -54,8 +54,10 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.n4u1.AQA.AQA.R;
 import com.n4u1.AQA.AQA.dialog.AlarmDoneDialog;
+import com.n4u1.AQA.AQA.dialog.CannotDeleteDialog;
 import com.n4u1.AQA.AQA.dialog.ContentDeleteDialog;
 import com.n4u1.AQA.AQA.dialog.DeleteModificationActivity;
+import com.n4u1.AQA.AQA.dialog.MustPollDialog;
 import com.n4u1.AQA.AQA.dialog.PollButtonInfoDialog;
 import com.n4u1.AQA.AQA.dialog.PollInitInfoDialog;
 import com.n4u1.AQA.AQA.dialog.PollResultAnonymousDialog;
@@ -577,8 +579,18 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         ContentDTO contentDTO = dataSnapshot.getValue(ContentDTO.class);
-                        int replyCount = contentDTO.getReplyCount();
-                        openReply(replyCount);
+                        try {
+                            int replyCount = contentDTO.getReplyCount();
+                            openReply(replyCount);
+                        } catch (Exception e) {
+                            pollActivity_imageView_replyView_1.setVisibility(View.GONE);
+                            pollActivity_imageView_replyView_2.setVisibility(View.GONE);
+                            pollActivity_recyclerView_reply.setVisibility(View.GONE);
+                            pollActivity_editText_reply.setVisibility(View.GONE);
+                            pollActivity_button_replySend.setVisibility(View.GONE);
+                            pollActivity_linearLayout_reply.setVisibility(View.GONE);
+
+                        }
                     }
 
                     @Override
@@ -1121,25 +1133,33 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     ContentDTO contentDTO = dataSnapshot.getValue(ContentDTO.class);
-                    Log.d("lkj contentdto", contentDTO.description);
-                    if (contentDTO.uid.equals(auth.getCurrentUser().getUid())) {
-                        Toast toast = Toast.makeText(getApplicationContext(), contentDTO.userID + "님의 투표입니다!", Toast.LENGTH_SHORT);
-                        toast.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL, 0, 0);
-                        toast.show();
-                    } else {
-                        onLikeClicked(firebaseDatabase.getReference().child("user_contents").child(contentKey));
+                    try {
+                        if (contentDTO.uid.equals(auth.getCurrentUser().getUid())) {
+                            Toast toast = Toast.makeText(getApplicationContext(), contentDTO.userID + "님의 투표입니다!", Toast.LENGTH_SHORT);
+                            toast.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL, 0, 0);
+                            toast.show();
+                        } else {
+                            onLikeClicked(firebaseDatabase.getReference().child("user_contents").child(contentKey));
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
+
 
                     likeFirebaseDatabase.getReference().child("user_contents").child(contentKey).addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                             ContentDTO contentDTO_ = dataSnapshot.getValue(ContentDTO.class);
-                            if (contentDTO_.likes.containsKey(auth.getCurrentUser().getUid())) {
-                                pollActivity_imageView_like.setImageResource(R.drawable.ic_thumb_up_blue);
-                                pollActivity_textView_likeCount.setText(String.valueOf(contentDTO_.likeCount));
-                            } else {
-                                pollActivity_imageView_like.setImageResource(R.drawable.ic_outline_thumb_up_24px);
-                                pollActivity_textView_likeCount.setText(String.valueOf(contentDTO_.likeCount));
+                            try {
+                                if (contentDTO_.likes.containsKey(auth.getCurrentUser().getUid())) {
+                                    pollActivity_imageView_like.setImageResource(R.drawable.ic_thumb_up_blue);
+                                    pollActivity_textView_likeCount.setText(String.valueOf(contentDTO_.likeCount));
+                                } else {
+                                    pollActivity_imageView_like.setImageResource(R.drawable.ic_outline_thumb_up_24px);
+                                    pollActivity_textView_likeCount.setText(String.valueOf(contentDTO_.likeCount));
+                                }
+                            } catch (Exception e) {
+
                             }
                         }
 
@@ -1501,7 +1521,9 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                Toast.makeText(getApplicationContext(), "투표하면 알랴쥼 ^ㅠ^", Toast.LENGTH_SHORT).show();
+//                                Toast.makeText(getApplicationContext(), "투표하면 알랴쥼 ^ㅠ^", Toast.LENGTH_SHORT).show();
+                                MustPollDialog mustPollDialog = new MustPollDialog();
+                                mustPollDialog.show(getSupportFragmentManager(), "mustPollDialog");
                             }
                         });
                     } else {
@@ -2306,18 +2328,28 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
                 startActivity(intent);
                 break;
             case R.id.menu_delete:
-                openContentDeleteDialog();
-                Log.d("lkj delete", "dedete");
+                DatabaseReference mRef = FirebaseDatabase.getInstance().getReference();
+                mRef.child("user_contents").child(contentKey).addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        Map<String, Object> map = (Map<String, Object>) dataSnapshot.getValue();
+                        Log.d("lkj replyCount", String.valueOf(map.get("replyCount")));
+                        if (Integer.parseInt(String.valueOf(map.get("replyCount"))) == 0) {
+                            openContentDeleteDialog();
+                        } else {
+                            CannotDeleteDialog cannotDeleteDialog = new CannotDeleteDialog();
+                            cannotDeleteDialog.show(getSupportFragmentManager(), "cannotDeleteDialog");
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
 
                 break;
-//            case R.id.alarm:
-//                Log.d("lkj alara", "dedete");
-//                String contentKey = getIntent().getStringExtra("contentKey");
-//                Intent intentShowMore = new Intent(PollRankingActivity.this, UserAlarmDialog.class);
-//                intentShowMore.putExtra("pollKey", contentKey);
-//                intentShowMore.putExtra("hitCount", contentHit);
-//                startActivityForResult(intentShowMore, 20000);
-//                break;
+
             case android.R.id.home:
                 onBackPressed();
                 break;
@@ -2342,6 +2374,8 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
                 } else {
                     pollKey = getIntent().getStringExtra("contentKey");
                 }
+
+
                 storageDelete();
                 mReference.child("user_contents").child(pollKey).removeValue();
                 mReference.child("users").child(mUser.getUid()).child("uploadContent").child(pollKey).removeValue();

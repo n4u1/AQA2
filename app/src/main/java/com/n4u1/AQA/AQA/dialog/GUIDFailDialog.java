@@ -24,10 +24,11 @@ public class GUIDFailDialog extends DialogFragment {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 //        builder.setTitle("사용해주셔서 감사합니다.");
-        builder.setMessage("하나의 기기에서 하나의 계정만 생성 가능합니다.\n해당 기기에 아이디를 등록하고 로그인 하시겠습니까?\n재등록은 하루 한번만 가능합니다.");
+        builder.setMessage("하나의 기기에서 하나의 계정만 생성 가능합니다.\n현재 기기에 아이디를 등록하고 로그인 하시겠습니까?\n재등록은 하루 한번만 가능합니다.");
         builder.setNegativeButton("취 소", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
+                mListener.GUIDFailDialogCallback("취소");
             }
         });
         builder.setPositiveButton("확 인", new DialogInterface.OnClickListener() {

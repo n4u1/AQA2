@@ -290,8 +290,8 @@ public class PollResultDialog extends DialogFragment {
 
                 BarDataSet set1 = new BarDataSet(yValue, null);
 //                set1.setColor(Color.GRAY);
-                set1.setColors(ColorTemplate.LIBERTY_COLORS);
-//                set1.setColors(0xff4485c9);
+//                set1.setColors(ColorTemplate.LIBERTY_COLORS);
+                set1.setColors(0xff4485c9);
 //                set1.setColors(0xFF949494);
 
                 BarData data1 = new BarData(set1);

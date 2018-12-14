@@ -35,7 +35,6 @@ import java.util.regex.Pattern;
 
 public class CreateUserEmailActivity extends AppCompatActivity implements GuidCheckDialog.GuidCheckDialogListener {
 
-
     private DatabaseReference mRef;
     EditText createUserEmail_editText_email, createUserEmail_editText_pw, createUserEmail_editText_pwComfirm;
     TextView createUserEmail_textView_next;
@@ -43,8 +42,6 @@ public class CreateUserEmailActivity extends AppCompatActivity implements GuidCh
     boolean GUID_CHECK_FLAG = true;
     boolean CURRENT_EMAIL_CHECK_FLAG = true;
     String guid;
-    String TAG = "lkjlkj ";
-
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
@@ -52,6 +49,7 @@ public class CreateUserEmailActivity extends AppCompatActivity implements GuidCh
         super.onCreate(savedInstanceState);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT);
         setContentView(R.layout.activity_create_user_email);
+
         final LoadingDialog loadingDialog = new LoadingDialog(CreateUserEmailActivity.this);
         loadingDialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
         guid = getIntent().getStringExtra("guid");
@@ -70,7 +68,7 @@ public class CreateUserEmailActivity extends AppCompatActivity implements GuidCh
                     Map<String, Object> user = (Map<String, Object>) usersIterator.next().getValue();
                     String guid_ = String.valueOf(user.get("guid"));
                     if (guid_.equals(guid)) {
-                        GUID_CHECK_FLAG = true;
+                        GUID_CHECK_FLAG = false;
                     }
                 }
             }
@@ -198,7 +196,7 @@ public class CreateUserEmailActivity extends AppCompatActivity implements GuidCh
     @Override
     public void GuidCheckDialogCallback(String string) {
         if (string.equals("확인")) {
-            onBackPressed();
+            finish();
         }
     }
 }

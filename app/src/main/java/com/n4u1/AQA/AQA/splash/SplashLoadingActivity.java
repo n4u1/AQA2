@@ -24,6 +24,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.n4u1.AQA.AQA.R;
+import com.n4u1.AQA.AQA.dialog.DeviceInitFailDialog;
 import com.n4u1.AQA.AQA.dialog.GUIDFailDialog;
 import com.n4u1.AQA.AQA.dialog.GUIDInitDialog;
 import com.n4u1.AQA.AQA.dialog.LiveIdDialog;
@@ -32,11 +33,16 @@ import com.n4u1.AQA.AQA.views.HomeActivity;
 import com.n4u1.AQA.AQA.views.LoginActivity;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Iterator;
+import java.util.Locale;
 import java.util.Map;
+import java.util.TimeZone;
 
 public class SplashLoadingActivity extends AppCompatActivity
-        implements GUIDFailDialog.GUIDFailDialogListener, GUIDInitDialog.GUIDInitDialogListener {
+        implements GUIDFailDialog.GUIDFailDialogListener, GUIDInitDialog.GUIDInitDialogListener
+, DeviceInitFailDialog.DeviceInitFailDialogListener {
 
     String email, password;
     FirebaseAuth mAuth;
@@ -92,6 +98,7 @@ public class SplashLoadingActivity extends AppCompatActivity
 
 
     }
+
 
     /*
     onCreate();
@@ -164,7 +171,8 @@ public class SplashLoadingActivity extends AppCompatActivity
                             0       	2		정상 로그인 :
                             0       	0		이럴경우는 없겠지?
                             1       	0		구글ID가 디비에는 있는데 현재 로그인한 계정과 맞지 않을경우 : 다른 이메일로 로그인 시도
-                            0       	1		처음 사용하는 다른 기기에서 기존 이메일로 로그인 시도는? : 다른 기기에서 로그인시도
+                            0       	1		처음 사용하는 다른 기기에서 기존 이메일로 로그인 시도는? : 다른 기기에서 로그인 시도 2
+                            1           1       기존 사용했던 기록이 있는 기기에서 기존 이메일로 로그인시도는? : 다른 기기에서 로그인 시도 1
                             2	        1		구글아이디가 2개인데 현재 로그인하려는 계정과 연결 되어있지 않음
                             3       	1		구글아이디가 3개인데 현재 로그인하려는 계정과 연결 되어있지 않음
                             4       	1		구글아이디가 4개인데 현재 로그인하려는 계정과 연결 되어있지 않음
@@ -190,13 +198,24 @@ public class SplashLoadingActivity extends AppCompatActivity
                             guidFailDialog.show(getSupportFragmentManager(), "guidFailDialog");
 
                         }
-                        //다른 기기에서 로그인 시도
+                        //다른 기기에서 로그인 시도 1
+                        else if (adIdFlag_1 == 1 && adIdFlag_2 == 1) {
+                            GUIDInitDialog guidInitDialog = new GUIDInitDialog();
+                            guidInitDialog.show(getSupportFragmentManager(), "guidInitDialog");
+                        }
+                        //다른 기기에서 로그인 시도 2
                         else if (adIdFlag_1 == 0 && adIdFlag_2 == 1) {
                             GUIDInitDialog guidInitDialog = new GUIDInitDialog();
                             guidInitDialog.show(getSupportFragmentManager(), "guidInitDialog");
 
+
+                        } else if (adIdFlag_1 == 5 && adIdFlag_2 == 1) {
+                            GUIDInitDialog guidInitDialog = new GUIDInitDialog();
+                            guidInitDialog.show(getSupportFragmentManager(), "guidInitDialog");
+
+
                         }
-                        //adminAuth에 포함되어있는 아이디일 경우 로그인
+                        //adminAuth에 포함되어있는 아이디일 경우 로그인 (관리자 및 특정 계정)
                         else {
                             DatabaseReference mDatabaseRefAdmin;
                             mDatabaseRefAdmin = FirebaseDatabase.getInstance().getReference();
@@ -246,18 +265,56 @@ public class SplashLoadingActivity extends AppCompatActivity
     @Override
     public void GUIDFailDialogCallback(String string) {
         if (string.equals("확인")) {
-            DatabaseReference mDatabaseRef = FirebaseDatabase.getInstance().getReference();
-            //초기화를 위해서 기존에 있던건 null로 넣어주고 지금 로그인한 게정에 guid를 넣어줌
-            mDatabaseRef.child("users").child(mAuth.getCurrentUser().getUid()).child("guid").setValue(guid);
-            mDatabaseRef.child("users").child(uIdTemp).child("guid").setValue("");
-            SharedPreferences pref = getSharedPreferences("com.n4u1.AQA", MODE_PRIVATE);
-            SharedPreferences.Editor editor = pref.edit();
-            editor.putString("com.n4u1.AQA.fireBaseUserEmail", email);
-            editor.putString("com.n4u1.AQA.fireBaseUserPassword", password);
-            editor.commit();
+            Log.d("lkj lastTest111111", "lastTest11111111");
+            final DatabaseReference mDatabaseRef = FirebaseDatabase.getInstance().getReference();
 
-            Handler hd = new Handler();
-            hd.postDelayed(new splashhandlerHome(), 100);
+            //초기화를 위해서 기존에 있던건 null로 넣어주고 지금 로그인한 게정에 guid를 넣어줌
+            mDatabaseRef.child("users").child(mAuth.getCurrentUser().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    Map<String, Object> userMap = (Map<String, Object>) dataSnapshot.getValue();
+                    long lastDate = Long.parseLong(String.valueOf(userMap.get("lastGuidDate")));
+                    long currentDate = getCurrentDate();
+                    Log.d("lkj lastDate", String.valueOf(lastDate));
+                    Log.d("lkj currentDate", String.valueOf(currentDate));
+                    if (lastDate + 86400000 < currentDate) {
+
+                        DatabaseReference tmpRef = FirebaseDatabase.getInstance().getReference();
+                        tmpRef.child("users").child(mAuth.getCurrentUser().getUid()).child("guid").setValue(guid);
+                        tmpRef.child("users").child(mAuth.getCurrentUser().getUid()).child("lastGuidDate").setValue(currentDate);
+                        tmpRef.child("users").child(mAuth.getCurrentUser().getUid()).child("lastGuidDateKr").setValue(getDate());
+                        tmpRef.child("users").child(uIdTemp).child("guid").setValue("");
+
+
+                        SharedPreferences pref = getSharedPreferences("com.n4u1.AQA", MODE_PRIVATE);
+                        SharedPreferences.Editor editor = pref.edit();
+                        editor.putString("com.n4u1.AQA.fireBaseUserEmail", email);
+                        editor.putString("com.n4u1.AQA.fireBaseUserPassword", password);
+                        editor.commit();
+
+                        Handler hd = new Handler();
+                        hd.postDelayed(new splashhandlerHome(), 100);
+
+                    } else {
+                        long mustDate = 86400000 - (currentDate - lastDate);
+                        String mustTime = changeDate(mustDate);
+                        Log.d("lkj must date", String.valueOf(mustDate));
+                        Log.d("lkj must date", mustTime);
+                        DeviceInitFailDialog deviceInitFailDialog = DeviceInitFailDialog.newInstance(mustTime);
+                        deviceInitFailDialog.show(getSupportFragmentManager(), "deviceInitFailDialog");
+                    }
+
+
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
+
+        } else if (string.equals("취소")) {
+            finish();
         }
     }
 
@@ -266,25 +323,112 @@ public class SplashLoadingActivity extends AppCompatActivity
     @Override
     public void GUIDInitDialogCallback(String string) {
         if (string.equals("확인")) {
-            DatabaseReference mDatabaseRef = FirebaseDatabase.getInstance().getReference();
-            //초기화를 위해서 현재 로그인한 계정의 guid에 현재의 guid로 변경
-            mDatabaseRef.child("users").child(mAuth.getCurrentUser().getUid()).child("guid").setValue(guid);
-            SharedPreferences pref = getSharedPreferences("com.n4u1.AQA", MODE_PRIVATE);
-            SharedPreferences.Editor editor = pref.edit();
-            editor.putString("com.n4u1.AQA.fireBaseUserEmail", email);
-            editor.putString("com.n4u1.AQA.fireBaseUserPassword", password);
-            editor.commit();
+            Log.d("lkj lastTest22222", "lastTest222222");
+            final DatabaseReference mDatabaseRef = FirebaseDatabase.getInstance().getReference();
 
-            Handler hd = new Handler();
-            hd.postDelayed(new splashhandlerHome(), 100);
+            //초기화를 위해서 현재 로그인한 계정의 guid에 현재의 guid로 변경
+            mDatabaseRef.child("users").child(mAuth.getCurrentUser().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    Map<String, Object> userMap = (Map<String, Object>) dataSnapshot.getValue();
+                    long lastDate = Long.parseLong(String.valueOf(userMap.get("lastGuidDate")));
+                    long currentDate = getCurrentDate();
+                    Log.d("lkj lastDate", String.valueOf(lastDate));
+                    Log.d("lkj currentDate", String.valueOf(currentDate));
+                    if (lastDate + 86400000 < currentDate) {
+
+
+                        DatabaseReference tmpRef = FirebaseDatabase.getInstance().getReference();
+                        tmpRef.child("users").child(mAuth.getCurrentUser().getUid()).child("guid").setValue(guid);
+                        tmpRef.child("users").child(mAuth.getCurrentUser().getUid()).child("lastGuidDate").setValue(currentDate);
+                        tmpRef.child("users").child(mAuth.getCurrentUser().getUid()).child("lastGuidDateKr").setValue(getDate());
+
+                        SharedPreferences pref = getSharedPreferences("com.n4u1.AQA", MODE_PRIVATE);
+                        SharedPreferences.Editor editor = pref.edit();
+                        editor.putString("com.n4u1.AQA.fireBaseUserEmail", email);
+                        editor.putString("com.n4u1.AQA.fireBaseUserPassword", password);
+                        editor.commit();
+
+                        Handler hd = new Handler();
+                        hd.postDelayed(new splashhandlerHome(), 100);
+                    } else {
+                        long mustDate = 86400000 - (currentDate - lastDate);
+                        String mustTime = changeDate(mustDate);
+                        Log.d("lkj must date", String.valueOf(mustDate));
+                        Log.d("lkj must date", mustTime);
+
+                        DeviceInitFailDialog deviceInitFailDialog = DeviceInitFailDialog.newInstance(mustTime);
+                        deviceInitFailDialog.show(getSupportFragmentManager(), "deviceInitFailDialog");
+
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
+
+        } else if (string.equals("취소")) {
+            finish();
         }
+    }
+
+
+    @Override
+    public void DeviceInitFailDialogCallback(String string) {
+        if (string.equals("확인")) {
+            finish();
+        }
+    }
+
+    private String changeDate(long mustDate) {
+        int num = Integer.parseInt(String.valueOf(mustDate)) / 1000;
+
+
+        //시, 분, 초 선언
+
+        int hours, minute, second;
+
+        //시간공식
+
+        hours = num / 3600;//시 공식
+
+        minute = num % 3600 / 60;//분을 구하기위해서 입력되고 남은값에서 또 60을 나눈다.
+
+        second = num % 3600 % 60;//마지막 남은 시간에서 분을 뺀 나머지 시간을 초로 계산함
+
+        String s = hours + "시간 " + minute + "분 " + second + "초";
+
+        return s;
+
+
+    }
+
+
+    private long getCurrentDate() {
+        long currentTimeMillis = System.currentTimeMillis();
+        return currentTimeMillis;
+    }
+
+
+    public String getDate() {
+        TimeZone timeZone;
+        timeZone = TimeZone.getTimeZone("Asia/Seoul");
+        Date date = new Date();
+        SimpleDateFormat df = new SimpleDateFormat("yyyy.MM.dd(E)HH:mm:ss", Locale.KOREAN);
+        df.setTimeZone(timeZone);
+        String currentDate = df.format(date);
+        return currentDate;
     }
 
 
     private class splashhandlerLogin implements Runnable {
         public void run() {
-            startActivity(new Intent(getApplication(), LoginActivity.class)); // 로딩이 끝난후 이동할 Activity
-            SplashLoadingActivity.this.finish(); // 로딩페이지 Activity Stack에서 제거
+            Intent intent = new Intent(SplashLoadingActivity.this, LoginActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            finish();
+            startActivity(intent);
         }
 
     }

@@ -604,6 +604,9 @@ public class FileChoiceActivity extends AppCompatActivity
             Log.d("lkj imageCount", String.valueOf(imageCount));
             if (imageCount == 2) {
                 contentDTO.pollMode = "단일 투표";
+                if (String.valueOf(userInputContents.get(2)).equals("순위 투표")) {
+                    Toast.makeText(getApplicationContext(), "후보가 2개일 경우 단일 투표로 진행 됩니다.", Toast.LENGTH_SHORT).show();
+                }
             } else {
                 contentDTO.pollMode = userInputContents.get(2);
             }
@@ -890,6 +893,9 @@ public class FileChoiceActivity extends AppCompatActivity
             ContentDTO contentDTO = new ContentDTO();
             if (imageCount == 2) {
                 contentDTO.pollMode = "단일 투표";
+                if (String.valueOf(userInputContents.get(2)).equals("순위 투표")) {
+                    Toast.makeText(getApplicationContext(), "후보가 2개일 경우 단일 투표로 진행 됩니다.", Toast.LENGTH_SHORT).show();
+                }
             } else {
                 contentDTO.pollMode = userInputContents.get(2);
             }

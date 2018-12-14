@@ -55,7 +55,7 @@ public class GuidCheckDialog extends DialogFragment {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
-        builder.setMessage("AQA는 공정성을 위해 한 기기에서 하나의 계정만 생성 가능합니다.\n현재 기기에서 가입하신적이 있으신가요?\n비밀번호 찾기 혹은 초기화를 진행해주시기 바랍니다.");
+        builder.setMessage("AQA는 한 기기에서 하나의 계정만 생성 가능합니다.\n현재 기기에서 가입한 기록이 있습니다.");
         builder.setPositiveButton("확인", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {

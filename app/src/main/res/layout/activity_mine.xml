@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:ads="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -13,37 +13,34 @@
     <include layout="@layout/mytoolbar" />
 
 
-
     <!--<ImageView-->
-        <!--android:id="@+id/homeActivity_imageView_googleAd"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="50dp"-->
-        <!--android:layout_alignParentBottom="true"-->
-        <!--android:background="#5f95b3" />-->
+    <!--android:id="@+id/homeActivity_imageView_googleAd"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="50dp"-->
+    <!--android:layout_alignParentBottom="true"-->
+    <!--android:background="#5f95b3" />-->
 
 
     <!--<com.google.android.gms.ads.AdView-->
-        <!--android:id="@+id/adView"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_alignParentBottom="true"-->
-        <!--android:layout_centerHorizontal="true"-->
-        <!--ads:adSize="BANNER"-->
-        <!--ads:adUnitId="@string/banner_ad_unit_id_">-->
+    <!--android:id="@+id/adView"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_alignParentBottom="true"-->
+    <!--android:layout_centerHorizontal="true"-->
+    <!--ads:adSize="BANNER"-->
+    <!--ads:adUnitId="@string/banner_ad_unit_id_">-->
     <!--</com.google.android.gms.ads.AdView>-->
 
 
-    <ScrollView
-        android:layout_above="@id/adView"
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        android:fillViewport="true"
+    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/scrollView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_above="@id/adView"
+        android:fillViewport="true">
 
 
-        <LinearLayout
-            xmlns:android="http://schemas.android.com/apk/res/android"
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="54dp"
@@ -499,7 +496,6 @@
 
             <!--aqa is...-->
             <LinearLayout
-                android:visibility="visible"
                 android:id="@+id/mineActivity_linearLayout_aqa"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -507,7 +503,8 @@
                 android:paddingLeft="12dp"
                 android:paddingTop="20dp"
                 android:paddingRight="12dp"
-                android:paddingBottom="20dp">
+                android:paddingBottom="20dp"
+                android:visibility="visible">
 
                 <ImageView
                     android:layout_width="24dp"
@@ -533,7 +530,6 @@
                     android:textColor="#808080"
                     android:textSize="12dp" />
             </LinearLayout>
-
 
 
             <!--건의-->
@@ -610,7 +606,6 @@
             </LinearLayout>
 
 
-
             <!--개인정보처리방침-->
             <LinearLayout
                 android:id="@+id/mineActivity_linearLayout_privacyPolicy"
@@ -646,7 +641,6 @@
                     android:textColor="#808080"
                     android:textSize="12dp" />
             </LinearLayout>
-
 
 
             <!--version-->
@@ -758,20 +752,22 @@
 
             <LinearLayout
                 android:id="@+id/mineActivity_linearLayout_adminUser"
-                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:paddingLeft="12dp"
                 android:paddingTop="20dp"
                 android:paddingRight="12dp"
-                android:paddingBottom="20dp">
+                android:paddingBottom="20dp"
+                android:visibility="gone">
+
                 <ImageView
                     android:layout_width="24dp"
                     android:layout_height="24dp"
                     android:layout_gravity="center"
                     android:layout_weight="1"
                     android:src="@drawable/ic_star_border_black_24dp" />
+
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -780,22 +776,25 @@
                     android:textColor="#383838"
                     android:textSize="18dp" />
             </LinearLayout>
+
             <LinearLayout
                 android:id="@+id/mineActivity_linearLayout_adminContents"
-                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:paddingLeft="12dp"
                 android:paddingTop="20dp"
                 android:paddingRight="12dp"
-                android:paddingBottom="20dp">
+                android:paddingBottom="20dp"
+                android:visibility="gone">
+
                 <ImageView
                     android:layout_width="24dp"
                     android:layout_height="24dp"
                     android:layout_gravity="center"
                     android:layout_weight="1"
                     android:src="@drawable/ic_star_border_black_24dp" />
+
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -804,22 +803,25 @@
                     android:textColor="#383838"
                     android:textSize="18dp" />
             </LinearLayout>
+
             <LinearLayout
                 android:id="@+id/mineActivity_linearLayout_adminEtc"
-                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:paddingLeft="12dp"
                 android:paddingTop="20dp"
                 android:paddingRight="12dp"
-                android:paddingBottom="20dp">
+                android:paddingBottom="20dp"
+                android:visibility="gone">
+
                 <ImageView
                     android:layout_width="24dp"
                     android:layout_height="24dp"
                     android:layout_gravity="center"
                     android:layout_weight="1"
                     android:src="@drawable/ic_star_border_black_24dp" />
+
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -835,12 +837,8 @@
                 android:layout_height="30dp"
                 android:layout_marginTop="4dp"
                 android:layout_marginBottom="40dp"
-                android:paddingBottom="40dp"
-                android:background="#00000000" />
-
-
-
-
+                android:background="#00000000"
+                android:paddingBottom="40dp" />
 
 
         </LinearLayout>

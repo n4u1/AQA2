@@ -86,6 +86,7 @@ public class ContentDTO {
         result.put("imageUrl_7", imageUrl_7);
         result.put("imageUrl_8", imageUrl_8);
         result.put("imageUrl_9", imageUrl_9);
+        result.put("replyCount", replyCount);
         result.put("alarm", alarm);
         result.put("statistics_code", statistics_code);
 

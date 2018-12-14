@@ -2,16 +2,13 @@ package com.n4u1.AQA.AQA.dialog;
 
 import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
 
-import com.n4u1.AQA.AQA.R;
-
-public class LiveIdDialog extends DialogFragment {
-    public LiveIdDialog() {
+public class CannotDeleteDialog extends DialogFragment {
+    public CannotDeleteDialog() {
     }
 
 
@@ -39,7 +36,7 @@ public class LiveIdDialog extends DialogFragment {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setPositiveButton("확인", null)
-                .setMessage("사용중인 아이디 입니다.");
+                .setMessage("댓글이 있는 투표는 삭제 할 수 없습니다.");
         return builder.create();
     }
 }

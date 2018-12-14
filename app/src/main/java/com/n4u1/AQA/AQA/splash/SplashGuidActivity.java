@@ -18,8 +18,11 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.n4u1.AQA.AQA.R;
 import com.n4u1.AQA.AQA.views.CreateUserEmailActivity;
 import com.n4u1.AQA.AQA.views.HomeActivity;
@@ -27,6 +30,7 @@ import com.n4u1.AQA.AQA.views.LoginActivity;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 public class SplashGuidActivity extends AppCompatActivity {
@@ -89,11 +93,6 @@ public class SplashGuidActivity extends AppCompatActivity {
         protected void onPostExecute(final String advertId) {
             Map<String, String> previewerMap = new HashMap<>();
             String previewerValue = "true";
-            String tempKey;
-
-
-//            issueMap.put(String.valueOf(issueDate), key);
-//            firebaseDatabase.getReference().child("issueContents").child(String.valueOf(issueDate)).setValue(issueMap);
 
             Log.d("lkj advertId", advertId);
             if (userLoginFlag.equals("preView")) {
@@ -126,6 +125,25 @@ public class SplashGuidActivity extends AppCompatActivity {
                     onBackPressed();
                 } else {
                     //guid 찾음
+//                    mDatabaseReference.child("users").addListenerForSingleValueEvent(new ValueEventListener() {
+//                        @Override
+//                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//                            Iterator<DataSnapshot> UserIterator = dataSnapshot.getChildren().iterator();
+//                            while (UserIterator.hasNext()) {
+//                                Map<String, Object> userMap = (Map<String, Object>) UserIterator.next().getValue();
+//                                if (String.valueOf(userMap.get("guid")).equals(advertId)) {
+//
+//                                }
+//
+//                            }
+//                        }
+//
+//                        @Override
+//                        public void onCancelled(@NonNull DatabaseError databaseError) {
+//
+//                        }
+//                    });
+
                     Intent intent = new Intent(SplashGuidActivity.this, CreateUserEmailActivity.class);
                     intent.putExtra("guid", advertId);
                     SplashGuidActivity.this.finish();

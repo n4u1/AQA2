@@ -56,7 +56,7 @@ import java.util.regex.Pattern;
 
 
 public class LoginActivity extends AppCompatActivity
-        implements PreviewDialog.PreviewDialogListener, InitDeviceDialog.InitDeviceDialogListener {
+        implements PreviewDialog.PreviewDialogListener, InitDeviceDialog.InitDeviceDialogListener, GUIDFailDialog.GUIDFailDialogListener {
 
     private FirebaseAuth mAuth;
 
@@ -85,8 +85,6 @@ public class LoginActivity extends AppCompatActivity
 //        String htmlString = "<u>둘러보기</u>";
 
         loadingDialog = new LoadingDialog(LoginActivity.this);
-
-
 
 
         mDatabaseReference = FirebaseDatabase.getInstance().getReference();
@@ -124,8 +122,6 @@ public class LoginActivity extends AppCompatActivity
         });
 
 
-
-
         //둘러보기
         linearLayout_preView.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -159,8 +155,6 @@ public class LoginActivity extends AppCompatActivity
 //                return true;
 //            }
 //        });
-
-
 
 
         //이용약관
@@ -201,15 +195,13 @@ public class LoginActivity extends AppCompatActivity
         textView_hidden.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                Toast.makeText(getApplicationContext(), "Hidden Quest Complete!\n오늘 좋은일이 생길거에요!", Toast.LENGTH_LONG).show();
                 Toast.makeText(getApplicationContext(), "행복한 하루 되세요!", Toast.LENGTH_LONG).show();
 
             }
         });
 
 
-
-        //계정 만들기
+        //아이디 만들기
         linearLayout_createUser.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -243,14 +235,19 @@ public class LoginActivity extends AppCompatActivity
         });
 
 
-
-
         //testButton -> TestActivity
         findViewById(R.id.buttonTest).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(LoginActivity.this, TestActivity.class);
-                startActivity(intent);
+//                Intent intent = new Intent(LoginActivity.this, TestActivity.class);
+//                startActivity(intent);
+
+//                Log.d("lkj currentDate", String.valueOf(getCurrentDate()));
+
+
+                GUIDFailDialog guidFailDialog = new GUIDFailDialog();
+                guidFailDialog.show(getSupportFragmentManager(), "guidFailDialog");
+
             }
         });
 
@@ -299,6 +296,8 @@ public class LoginActivity extends AppCompatActivity
      */
 
 
+
+
     private void loginUser(final String email, final String password) {
         Intent loadingIntent = new Intent(LoginActivity.this, SplashLoadingActivity.class);
         loadingIntent.putExtra("id", email);
@@ -314,8 +313,6 @@ public class LoginActivity extends AppCompatActivity
         boolean isNormal = m.matches();
         return isNormal;
     }
-
-
 
 
     @Override
@@ -335,6 +332,7 @@ public class LoginActivity extends AppCompatActivity
     }
 
 
+    //사용안함
     @Override
     public void InitDeviceDialogCallback(String string) {
         if (string.equals("확인")) {
@@ -348,8 +346,6 @@ public class LoginActivity extends AppCompatActivity
                     }
                 }
             });
-
-
 
 
         }
@@ -374,6 +370,30 @@ public class LoginActivity extends AppCompatActivity
         }
     }
 
+    @Override
+    public void GUIDFailDialogCallback(String string) {
+        if (string.equals("확인")) {
+
+            mDatabaseReference.child("users").child("k3iL4rW9xpNxAG6UQtVf5iLbu0h1").addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    Log.d("lkj lastguiddate1", dataSnapshot.toString());
+                    Map<String, Object> userMap = (Map<String, Object>) dataSnapshot.getValue();
+
+                    Log.d("lkj lastguiddate2", String.valueOf(userMap.get("lastGuidDate")));
+                    long lastDate = Long.parseLong(String.valueOf(userMap.get("lastGuidDate")));
+
+                    Log.d("lkj lastguiddate3", String.valueOf(lastDate));
+
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
+        }
+    }
 
 
     private class GUIDAsyncTask extends AsyncTask<Void, Void, String> {

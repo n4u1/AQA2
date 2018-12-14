@@ -28,6 +28,7 @@ public class GUIDInitDialog extends DialogFragment {
         builder.setNegativeButton("취 소", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
+                mListener.GUIDInitDialogCallback("취소");
             }
         });
         builder.setPositiveButton("확 인", new DialogInterface.OnClickListener() {

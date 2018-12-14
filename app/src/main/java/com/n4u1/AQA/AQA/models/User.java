@@ -13,6 +13,8 @@ public class User {
     private int age, userClass;
     private String search_flag_category, search_flag_title;
     private String pollInitInfo;
+    private String lastGuidDateKr;
+    private long lastGuidDate;
 
     public Map<String, Boolean> likeContent = new HashMap<>();
 
@@ -60,8 +62,25 @@ public class User {
         result.put("search_flag_category", search_flag_category);
         result.put("search_flag_title", search_flag_title);
         result.put("pollInitInfo", pollInitInfo);
+        result.put("lastGuidDate", lastGuidDate);
 
         return result;
+    }
+
+    public String getLastGuidDateKr() {
+        return lastGuidDateKr;
+    }
+
+    public void setLastGuidDateKr(String lastGuidDateKr) {
+        this.lastGuidDateKr = lastGuidDateKr;
+    }
+
+    public long getLastGuidDate() {
+        return lastGuidDate;
+    }
+
+    public void setLastGuidDate(long createUserDate) {
+        this.lastGuidDate = createUserDate;
     }
 
     public String getPollInitInfo() {

@@ -1,5 +1,6 @@
 package com.n4u1.AQA.AQA.views;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.graphics.drawable.ColorDrawable;
@@ -10,9 +11,11 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -37,6 +40,7 @@ import java.util.regex.Pattern;
 
 public class ChangeEmailActivity extends AppCompatActivity implements ChangeEmailDoneDialog.ChangeEmailDoneDialogListener {
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,74 +61,83 @@ public class ChangeEmailActivity extends AppCompatActivity implements ChangeEmai
         final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         final EditText changeEmail_editText_email = findViewById(R.id.changeEmail_editText_email);
         final EditText changeEmail_editText_password = findViewById(R.id.changeEmail_editText_password);
-        final Button changeEmail_button_done = findViewById(R.id.changeEmail_button_done);
+
+        final LinearLayout changeEmail_linearLayout_changePassword = findViewById(R.id.changeEmail_linearLayout_changePassword);
         final DatabaseReference mDatabaseReference = FirebaseDatabase.getInstance().getReference();
 
         loadingDialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
 
 
-        changeEmail_button_done.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                final String inputEmail = changeEmail_editText_email.getText().toString();
-                final String inputPassword = changeEmail_editText_password.getText().toString();
-                //빈칸이 있으면
-                if (inputEmail.length() == 0 | inputPassword.length() == 0) {
-                    NotInputDialog notInputDialog = new NotInputDialog();
-                    notInputDialog.show(getSupportFragmentManager(), "notInputDialog");
-                    //이메일 형식이 아니면
-                } else if (!checkEmail(inputEmail)) {
-                    NotEmailDialog notEmailDialog = new NotEmailDialog();
-                    notEmailDialog.show(getSupportFragmentManager(), "notEmailDialog");
-                    //정상이면 비밀번호 확인후 이메일 변경
-                } else {
-                    loadingDialog.show();
-                    AuthCredential credential = EmailAuthProvider
-                            .getCredential(user.getEmail(), inputPassword);
-                    user.reauthenticate(credential)
-                            .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                @Override
-                                public void onSuccess(Void aVoid) {
-                                    user.updateEmail(inputEmail)
-                                            //변경 완료
-                                            .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                                @Override
-                                                public void onComplete(@NonNull Task<Void> task) {
-                                                    if (task.isSuccessful()) {
-                                                        mDatabaseReference.child("users").child(user.getUid()).child("email").setValue(inputEmail);
-                                                        loadingDialog.dismiss();
-                                                        ChangeEmailDoneDialog changeEmailDoneDialog = new ChangeEmailDoneDialog();
-                                                        changeEmailDoneDialog.show(getSupportFragmentManager(), "changeEmailDoneDialog");
-                                                    }
-                                                }
-                                            })
-                                            //변경 실패
-                                            .addOnFailureListener(new OnFailureListener() {
-                                                @Override
-                                                public void onFailure(@NonNull Exception e) {
-                                                    if (e.toString().contains("The email address is already in use by another account.")) {
-                                                        loadingDialog.dismiss();
-                                                        LiveEmailDialog liveEmailDialog = new LiveEmailDialog();
-                                                        liveEmailDialog.show(getSupportFragmentManager(), "liveEmailDialog");
-                                                    } else {
-                                                        loadingDialog.dismiss();
-                                                        Toast.makeText(ChangeEmailActivity.this, e.toString(), Toast.LENGTH_LONG).show();
-                                                    }
 
-                                                }
-                                            });
-                                }
-                            })
-                            .addOnFailureListener(new OnFailureListener() {
-                                @Override
-                                public void onFailure(@NonNull Exception e) {
-                                    loadingDialog.dismiss();
-                                    Toast toast = Toast.makeText(ChangeEmailActivity.this, "비밀번호를 확인해주세요.", Toast.LENGTH_SHORT);
-                                    toast.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL, 0, 0);
-                                    toast.show();
-                                }
-                            });
+        changeEmail_linearLayout_changePassword.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (MotionEvent.ACTION_UP == event.getAction()) {
+                    changeEmail_linearLayout_changePassword.setBackgroundResource(R.drawable.shape);
                 }
+                if (MotionEvent.ACTION_DOWN == event.getAction()) {
+                    changeEmail_linearLayout_changePassword.setBackgroundResource(R.drawable.shape_click);
+                    final String inputEmail = changeEmail_editText_email.getText().toString();
+                    final String inputPassword = changeEmail_editText_password.getText().toString();
+                    //빈칸이 있으면
+                    if (inputEmail.length() == 0 | inputPassword.length() == 0) {
+                        NotInputDialog notInputDialog = new NotInputDialog();
+                        notInputDialog.show(getSupportFragmentManager(), "notInputDialog");
+                        //이메일 형식이 아니면
+                    } else if (!checkEmail(inputEmail)) {
+                        NotEmailDialog notEmailDialog = new NotEmailDialog();
+                        notEmailDialog.show(getSupportFragmentManager(), "notEmailDialog");
+                        //정상이면 비밀번호 확인후 이메일 변경
+                    } else {
+                        loadingDialog.show();
+                        AuthCredential credential = EmailAuthProvider
+                                .getCredential(user.getEmail(), inputPassword);
+                        user.reauthenticate(credential)
+                                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void aVoid) {
+                                        user.updateEmail(inputEmail)
+                                                //변경 완료
+                                                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                    @Override
+                                                    public void onComplete(@NonNull Task<Void> task) {
+                                                        if (task.isSuccessful()) {
+                                                            mDatabaseReference.child("users").child(user.getUid()).child("email").setValue(inputEmail);
+                                                            loadingDialog.dismiss();
+                                                            ChangeEmailDoneDialog changeEmailDoneDialog = new ChangeEmailDoneDialog();
+                                                            changeEmailDoneDialog.show(getSupportFragmentManager(), "changeEmailDoneDialog");
+                                                        }
+                                                    }
+                                                })
+                                                //변경 실패
+                                                .addOnFailureListener(new OnFailureListener() {
+                                                    @Override
+                                                    public void onFailure(@NonNull Exception e) {
+                                                        if (e.toString().contains("The email address is already in use by another account.")) {
+                                                            loadingDialog.dismiss();
+                                                            LiveEmailDialog liveEmailDialog = new LiveEmailDialog();
+                                                            liveEmailDialog.show(getSupportFragmentManager(), "liveEmailDialog");
+                                                        } else {
+                                                            loadingDialog.dismiss();
+                                                            Toast.makeText(ChangeEmailActivity.this, e.toString(), Toast.LENGTH_LONG).show();
+                                                        }
+
+                                                    }
+                                                });
+                                    }
+                                })
+                                .addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        loadingDialog.dismiss();
+                                        Toast toast = Toast.makeText(ChangeEmailActivity.this, "비밀번호를 확인해주세요.", Toast.LENGTH_SHORT);
+                                        toast.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL, 0, 0);
+                                        toast.show();
+                                    }
+                                });
+                    }
+                }
+                return true;
             }
         });
 

@@ -24,6 +24,10 @@ import com.n4u1.AQA.AQA.models.User;
 import com.n4u1.AQA.AQA.views.HomeActivity;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+import java.util.TimeZone;
 
 public class SplashCreateUserActivity extends AppCompatActivity implements GUIDFailDialog.GUIDFailDialogListener {
 
@@ -86,6 +90,8 @@ public class SplashCreateUserActivity extends AppCompatActivity implements GUIDF
         user.setEmail(email);
         user.setUserClass(0);
         user.setPollInitInfo("true");
+        user.setLastGuidDate(getCurrentDate());
+        user.setLastGuidDateKr(getDate());
         mDatabase.child("users").child(uid).setValue(user);
 
         SharedPreferences pref = getSharedPreferences("com.n4u1.AQA", MODE_PRIVATE);
@@ -103,7 +109,22 @@ public class SplashCreateUserActivity extends AppCompatActivity implements GUIDF
     }
 
 
+    private long getCurrentDate() {
+        long currentTimeMillis = System.currentTimeMillis();
+        return currentTimeMillis;
+    }
 
+
+
+    public String getDate() {
+        TimeZone timeZone;
+        timeZone = TimeZone.getTimeZone("Asia/Seoul");
+        Date date = new Date();
+        SimpleDateFormat df = new SimpleDateFormat("yyyy.MM.dd(E)HH:mm:ss", Locale.KOREAN);
+        df.setTimeZone(timeZone);
+        String currentDate = df.format(date);
+        return currentDate;
+    }
 
     private class GUIDAsyncTask extends AsyncTask<Void, Void, String> {
         @Override
