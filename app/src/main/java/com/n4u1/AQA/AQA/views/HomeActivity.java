@@ -5,12 +5,14 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -42,6 +44,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.dynamiclinks.FirebaseDynamicLinks;
 import com.google.firebase.dynamiclinks.PendingDynamicLinkData;
 import com.n4u1.AQA.AQA.R;
+import com.n4u1.AQA.AQA.dialog.MustLoginDialog;
 import com.n4u1.AQA.AQA.dialog.NotEmailDialog;
 import com.n4u1.AQA.AQA.dialog.NotFoundGUIDDialog;
 import com.n4u1.AQA.AQA.dialog.NoticeHomeDialog;
@@ -144,7 +147,7 @@ public class HomeActivity extends AppCompatActivity implements SwipeRefreshLayou
         AdView adView = findViewById(R.id.adView);
 
         //시작시 권한요청
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (!user.isAnonymous()) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.CAMERA}, 0);
@@ -190,7 +193,7 @@ public class HomeActivity extends AppCompatActivity implements SwipeRefreshLayou
                 .addTestDevice("C39C4F095E193D0C5E7BBCB91B89B469")  // TestDeviceId
                 .build();
         adView.loadAd(adRequest);
-        adView.setAdListener(new AdListener(){
+        adView.setAdListener(new AdListener() {
             @Override
             public void onAdLoaded() {
                 Log.d("lkj onAdLoaded", "onAdLoaded");
@@ -506,12 +509,24 @@ public class HomeActivity extends AppCompatActivity implements SwipeRefreshLayou
             }
         });
 
+
         //글쓰기 FloatingActionButton
         fab_addContent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(HomeActivity.this, UserContentsUploadActivity.class);
-                startActivity(intent);
+                if (user.isAnonymous()) {
+                    MustLoginDialog mustLoginDialog = new MustLoginDialog();
+                    mustLoginDialog.show(getSupportFragmentManager(), "mustLoginDialog");
+                } else {
+                    int permissionCheck_storage = ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.READ_EXTERNAL_STORAGE);
+                    int permissionCheck_camera = ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.CAMERA);
+                    if (permissionCheck_camera == PackageManager.PERMISSION_DENIED || permissionCheck_storage == PackageManager.PERMISSION_DENIED) {
+                        requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.CAMERA}, 0);
+                    } else {
+                        Intent intent = new Intent(HomeActivity.this, UserContentsUploadActivity.class);
+                        startActivity(intent);
+                    }
+                }
 
             }
         });

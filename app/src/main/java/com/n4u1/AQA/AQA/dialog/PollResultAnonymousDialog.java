@@ -34,6 +34,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.n4u1.AQA.AQA.R;
 import com.n4u1.AQA.AQA.views.PollRankingActivity;
+import com.n4u1.AQA.AQA.views.PollSingleActivity;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -145,7 +146,6 @@ public class PollResultAnonymousDialog extends DialogFragment {
                 dismiss();
             }
         });
-
 
         //닫기 버튼 클릭
         pollResultDialog_close.setOnClickListener(new View.OnClickListener() {

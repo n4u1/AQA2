@@ -57,6 +57,7 @@ import com.n4u1.AQA.AQA.dialog.AlarmDoneDialog;
 import com.n4u1.AQA.AQA.dialog.CannotDeleteDialog;
 import com.n4u1.AQA.AQA.dialog.ContentDeleteDialog;
 import com.n4u1.AQA.AQA.dialog.DeleteModificationActivity;
+import com.n4u1.AQA.AQA.dialog.MustLoginDialog;
 import com.n4u1.AQA.AQA.dialog.MustPollDialog;
 import com.n4u1.AQA.AQA.dialog.PollInitInfoDialog;
 import com.n4u1.AQA.AQA.dialog.PollResultAnonymousDialog;
@@ -117,8 +118,6 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
     final ArrayList<ReplyDTO> replyDTOS = new ArrayList<>();
     private HashMap<String, String> issueMap = new HashMap<>();
     private ShareContent shareContent;
-
-
 
 
 //    private LruCache<String, Bitmap> mMemoryCache;
@@ -354,15 +353,13 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
         }
 
 
-
-
         //광고넣기
         AdRequest adRequest = new AdRequest.Builder()
                 .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)        // All emulators
                 .addTestDevice("C39C4F095E193D0C5E7BBCB91B89B469")  // TestDeviceId
                 .build();
         adView.loadAd(adRequest);
-        adView.setAdListener(new AdListener(){
+        adView.setAdListener(new AdListener() {
             @Override
             public void onAdLoaded() {
                 Log.d("lkj onAdLoaded", "onAdLoaded");
@@ -373,8 +370,6 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
                 Log.d("lkj onAdClosed", "onAdClosed");
             }
         });
-
-
 
 
         //알람설정 클릭
@@ -470,7 +465,8 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
                         }
                     });
                 } else {
-                    Toast.makeText(getApplicationContext(), "로그인 해야 합니다.", Toast.LENGTH_LONG).show();
+                    MustLoginDialog mustLoginDialog = new MustLoginDialog();
+                    mustLoginDialog.show(getSupportFragmentManager(), "mustLoginDialog");
                 }
 
             }
@@ -514,6 +510,10 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
             public void onClick(View v) {
                 if (user.isAnonymous()) {
                     startAnonymousPollResult(contentKey);
+//                    issueContents 테스트 디비 입력용
+                    long issueDate = getCurrentDate();
+                    issueMap.put(String.valueOf(issueDate), contentKey);
+                    firebaseDatabase.getReference().child("issueContents").child(String.valueOf(issueDate)).setValue(issueMap);
                 } else {
                     mDatabaseReferencePicker.child(auth.getCurrentUser().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
@@ -662,7 +662,8 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
             @Override
             public void onClick(View v) {
                 if (user.isAnonymous()) {
-                    Toast.makeText(getApplicationContext(), "로그인 해야 합니다.", Toast.LENGTH_LONG).show();
+                    MustLoginDialog mustLoginDialog = new MustLoginDialog();
+                    mustLoginDialog.show(getSupportFragmentManager(), "mustLoginDialog");
                 } else {
                     likeClick();
                 }
@@ -673,7 +674,8 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
             @Override
             public void onClick(View v) {
                 if (user.isAnonymous()) {
-                    Toast.makeText(getApplicationContext(), "로그인 해야 합니다.", Toast.LENGTH_LONG).show();
+                    MustLoginDialog mustLoginDialog = new MustLoginDialog();
+                    mustLoginDialog.show(getSupportFragmentManager(), "mustLoginDialog");
                 } else {
                     likeClick();
                 }
@@ -706,39 +708,45 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
         pollActivity_button_replySend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (pollActivity_editText_reply.getText().length() > 0) {
-                    FirebaseDatabase replyDatabase;
-                    replyDatabase = FirebaseDatabase.getInstance();
-                    replyDatabase.getReference().child("users").child(auth.getCurrentUser().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (user.isAnonymous()) {
+                    InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE); //키보드 숨기기
+                    inputMethodManager.hideSoftInputFromWindow(pollActivity_editText_reply.getWindowToken(), 0); //키보드 숨기기
+                } else {
+                    if (pollActivity_editText_reply.getText().length() > 0) {
+                        FirebaseDatabase replyDatabase;
+                        replyDatabase = FirebaseDatabase.getInstance();
+                        replyDatabase.getReference().child("users").child(auth.getCurrentUser().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 //                            User user = dataSnapshot.getValue(User.class);
-                            Map<String, Object> users = (Map<String, Object>) dataSnapshot.getValue();
-                            String date = getDate();
-                            onReplyClicked(firebaseDatabase.getReference().child("user_contents").child(contentKey));
-                            replyKey = firebaseDatabase.getReference().child("reply").push().getKey();
-                            ReplyDTO replyDTO = new ReplyDTO();
-                            replyDTO.setReplyKey(replyKey);
-                            replyDTO.setDate(date);
-                            replyDTO.setId(users.get("userId").toString());
-                            replyDTO.setReply(pollActivity_editText_reply.getText().toString());
-                            replyDTO.setuId(auth.getCurrentUser().getUid());
-                            replyDTO.setContentKey(contentKey);
-                            replyDTO.setqPoint(Integer.parseInt(users.get("userClass").toString()));
-                            firebaseDatabase.getReference().child("reply").child(contentKey).child(replyKey).setValue(replyDTO);
-                            firebaseDatabase.getReference().child("users").child(auth.getCurrentUser().getUid()).child("reply").child(contentKey).push().setValue(replyDTO);
-                            pollActivity_editText_reply.setText(null);//editText 초기화
-                            pollActivity_editText_reply.setHint("댓글...");
-                            InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE); //키보드 숨기기
-                            inputMethodManager.hideSoftInputFromWindow(pollActivity_editText_reply.getWindowToken(), 0); //키보드 숨기기
-                        }
+                                Map<String, Object> users = (Map<String, Object>) dataSnapshot.getValue();
+                                String date = getDate();
+                                onReplyClicked(firebaseDatabase.getReference().child("user_contents").child(contentKey));
+                                replyKey = firebaseDatabase.getReference().child("reply").push().getKey();
+                                ReplyDTO replyDTO = new ReplyDTO();
+                                replyDTO.setReplyKey(replyKey);
+                                replyDTO.setDate(date);
+                                replyDTO.setId(users.get("userId").toString());
+                                replyDTO.setReply(pollActivity_editText_reply.getText().toString());
+                                replyDTO.setuId(auth.getCurrentUser().getUid());
+                                replyDTO.setContentKey(contentKey);
+                                replyDTO.setqPoint(Integer.parseInt(users.get("userClass").toString()));
+                                firebaseDatabase.getReference().child("reply").child(contentKey).child(replyKey).setValue(replyDTO);
+                                firebaseDatabase.getReference().child("users").child(auth.getCurrentUser().getUid()).child("reply").child(contentKey).push().setValue(replyDTO);
+                                pollActivity_editText_reply.setText(null);//editText 초기화
+                                pollActivity_editText_reply.setHint("댓글...");
+                                InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE); //키보드 숨기기
+                                inputMethodManager.hideSoftInputFromWindow(pollActivity_editText_reply.getWindowToken(), 0); //키보드 숨기기
+                            }
 
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError databaseError) {
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
 
-                        }
-                    });
+                            }
+                        });
+                    }
                 }
+
             }
         });
 
@@ -1107,7 +1115,8 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
         Log.d("lkj like click test", "test");
         FirebaseUser muUser = FirebaseAuth.getInstance().getCurrentUser();
         if (muUser.isAnonymous()) {
-            Toast.makeText(getApplicationContext(), "로그인 해야 합니다.", Toast.LENGTH_LONG).show();
+            MustLoginDialog mustLoginDialog = new MustLoginDialog();
+            mustLoginDialog.show(getSupportFragmentManager(), "mustLoginDialog");
         } else {
             final Uri data = getIntent().getData();
             if (data != null) {

@@ -57,6 +57,7 @@ import com.n4u1.AQA.AQA.dialog.AlarmDoneDialog;
 import com.n4u1.AQA.AQA.dialog.CannotDeleteDialog;
 import com.n4u1.AQA.AQA.dialog.ContentDeleteDialog;
 import com.n4u1.AQA.AQA.dialog.DeleteModificationActivity;
+import com.n4u1.AQA.AQA.dialog.MustLoginDialog;
 import com.n4u1.AQA.AQA.dialog.MustPollDialog;
 import com.n4u1.AQA.AQA.dialog.PollButtonInfoDialog;
 import com.n4u1.AQA.AQA.dialog.PollInitInfoDialog;
@@ -470,7 +471,8 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
                         }
                     });
                 } else {
-                    Toast.makeText(getApplicationContext(), "로그인 해야 합니다.", Toast.LENGTH_LONG).show();
+                    MustLoginDialog mustLoginDialog = new MustLoginDialog();
+                    mustLoginDialog.show(getSupportFragmentManager(), "mustLoginDialog");
 
                 }
 
@@ -706,7 +708,8 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
                 Log.d("lkj like click test", "test1111111");
                 if (user.isAnonymous()) {
                     Log.d("lkj like click test", "test");
-                    Toast.makeText(getApplicationContext(), "로그인 해야 합니다.", Toast.LENGTH_LONG).show();
+                    MustLoginDialog mustLoginDialog = new MustLoginDialog();
+                    mustLoginDialog.show(getSupportFragmentManager(), "mustLoginDialog");
                 } else {
                     likeClick();
                 }
@@ -1121,7 +1124,8 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
     private void likeClick() {
         FirebaseUser muUser = FirebaseAuth.getInstance().getCurrentUser();
         if (muUser.isAnonymous()) {
-            Toast.makeText(getApplicationContext(), "로그인 해야 합니다.", Toast.LENGTH_LONG).show();
+            MustLoginDialog mustLoginDialog = new MustLoginDialog();
+            mustLoginDialog.show(getSupportFragmentManager(), "mustLoginDialog");
         } else {
             final Uri data = getIntent().getData();
             if (data != null) {

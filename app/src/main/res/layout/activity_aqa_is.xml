@@ -9,91 +9,101 @@
 
     <include layout="@layout/mytoolbar" />
 
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:src="@drawable/ic_aqa" />
+
+
     <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
+
         <LinearLayout
-            android:layout_margin="16dp"
-            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:orientation="vertical">
 
             <TextView
-                android:textSize="18dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Funny  Trustly  Purely" />
+                android:text="Funny  Trustly  Purely"
+                android:textSize="18dp" />
 
             <TextView
-                android:textSize="14dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="투명하고, 신뢰도를 바탕으로한 즐거움을 추구합니다. " />
+                android:text="투명하고, 신뢰도를 바탕으로한 즐거움을 추구합니다. "
+                android:textSize="14dp" />
 
 
             <TextView
-                android:textSize="24dp"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:textSize="24dp" />
             <!-- ㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ-->
 
             <!--<TextView-->
-                <!--android:textSize="18dp"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:text="Funny" />-->
+            <!--android:textSize="18dp"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text="Funny" />-->
 
             <!--<TextView-->
-                <!--android:textSize="14dp"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:text="가볍게 참여하되 의미있는 결과를 기대합니다.-->
-<!--여러분의 재치있는 투표 많이 게시해주세요!" />-->
+            <!--android:textSize="14dp"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text="가볍게 참여하되 의미있는 결과를 기대합니다.-->
+            <!--여러분의 재치있는 투표 많이 게시해주세요!" />-->
 
             <!--<TextView-->
-                <!--android:textSize="24dp"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="wrap_content"/>-->
+            <!--android:textSize="24dp"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"/>-->
             <!--&lt;!&ndash; ㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ&ndash;&gt;-->
             <!--<TextView-->
-                <!--android:textSize="18dp"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:text="Trustly" />-->
+            <!--android:textSize="18dp"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text="Trustly" />-->
 
             <!--<TextView-->
-                <!--android:textSize="14dp"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:text="1인 1계정을 원칙으로 합니다.-->
-<!--현재는 하나의 기기에서 하나의 계정만 생성 가능하지만,-->
-<!--인증을 통하여 1인 1계정으로 변경할 예정입니다.-->
-<!--시간이 지나 참여자가 많아 지면 무시할 수 없는 수준의 결과를 기대합니다." />-->
+            <!--android:textSize="14dp"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text="1인 1계정을 원칙으로 합니다.-->
+            <!--현재는 하나의 기기에서 하나의 계정만 생성 가능하지만,-->
+            <!--인증을 통하여 1인 1계정으로 변경할 예정입니다.-->
+            <!--시간이 지나 참여자가 많아 지면 무시할 수 없는 수준의 결과를 기대합니다." />-->
 
             <!--<TextView-->
-                <!--android:textSize="24dp"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="wrap_content"/>-->
+            <!--android:textSize="24dp"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"/>-->
 
             <!--&lt;!&ndash; ㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ&ndash;&gt;-->
             <!--<TextView-->
-                <!--android:textSize="18dp"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:text="Purely" />-->
+            <!--android:textSize="18dp"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text="Purely" />-->
 
             <!--<TextView-->
-                <!--android:textSize="14dp"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:text="투표인원의 Email 일부를 공개할 예정입니다.-->
-<!--(예)ab***@daum.net 이벤트 당첨자등도 마찬가지 입니다." />-->
+            <!--android:textSize="14dp"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text="투표인원의 Email 일부를 공개할 예정입니다.-->
+            <!--(예)ab***@daum.net 이벤트 당첨자등도 마찬가지 입니다." />-->
 
             <!--<TextView-->
-                <!--android:textSize="14dp"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="wrap_content"/>-->
+            <!--android:textSize="14dp"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"/>-->
 
             <!-- ㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ-->
 
@@ -103,6 +113,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="#efefef" />
+
             <View
                 android:id="@+id/view_hidden_2"
                 android:layout_width="match_parent"
@@ -110,182 +121,173 @@
                 android:background="#efefef" />
 
             <TextView
-                android:textSize="14dp"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:textSize="14dp" />
 
             <!-- ㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ-->
 
 
             <TextView
-                android:textSize="18dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="알람 기능도 사용해보세요." />
+                android:text="알람 기능도 사용해보세요."
+                android:textSize="18dp" />
 
             <TextView
-                android:textSize="14dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="자신의 게시글에는 화면 우상단에 알람 아이콘이 생겨납니다.
-알람을 설정해 결과를 바로 확인해보세요. 자신의 게시글에만 삭제,알람 아이콘이 생겨납니다" />
+                android:text="자신의 게시글에는 화면 우측상단에 알람 아이콘이 있습니다.\n알람을 설정해 결과를 바로 확인해보세요. 자신의 게시글에만 삭제,알람 아이콘이 생겨납니다"
+                android:textSize="14dp" />
 
             <TextView
-                android:textSize="24dp"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:textSize="24dp" />
 
             <!-- ㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ-->
 
 
             <TextView
-                android:textSize="18dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="게시한 투표를 수정할 수는 없나요?" />
+                android:text="게시한 투표를 수정할 수는 없나요?"
+                android:textSize="18dp" />
 
             <TextView
-                android:textSize="14dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="네. 투표 진행후 내용을 변경해 정 반대의 결과가 되는것이 우려됩니다.
-번거로우시겠지만 다시 작성해주시기 바랍니다.
-수정 히스토리 관리는 검토중입니다." />
+                android:text="네. 투표 진행후 내용을 변경해 다른 결과로 바뀔수있기 때문입니다."
+                android:textSize="14dp" />
 
             <TextView
-                android:textSize="24dp"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:textSize="24dp" />
 
             <!-- ㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ-->
 
 
             <TextView
-                android:textSize="18dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="투표의 점수는 어떻게 계산 되나요?" />
+                android:text="투표의 점수는 어떻게 계산 되나요?"
+                android:textSize="18dp" />
 
             <TextView
-                android:textSize="14dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="단일 투표는 1투표당 1점, 순위 투표는 1위가 후보수-1점 입니다. 예를 들어 후보의 수가 4개이면 1위는 3점, 2위는 2점, 3위는 1점, 4위는 0점 입니다." />
+                android:text="단일 투표는 1투표당 1점 / 순위 투표는 1위가 후보수-1점 입니다. \n예를 들어 후보의 수가 4개이면 1위는 3점, 2위는 2점, 3위는 1점, 4위는 0점 입니다."
+                android:textSize="14dp" />
 
             <TextView
-                android:textSize="24dp"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:textSize="24dp" />
 
             <!-- ㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ-->
 
 
             <TextView
-                android:textSize="18dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="메인화면 위에서 깜박이는 글자는 뭔가요?" />
+                android:text="메인화면 위에서 깜박이는 글자는 뭔가요?"
+                android:textSize="18dp" />
 
             <TextView
-                android:textSize="14dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="실시간 투표 입니다. 현재는 투표수를 3일 집계해서 상위 10개가 보이도록
-설정해놨습니다. 정식버전에서는 조정할 예정입니다." />
+설정해놨습니다. 정식버전에서는 조정할 예정입니다."
+                android:textSize="14dp" />
 
             <TextView
-                android:textSize="24dp"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:textSize="24dp" />
 
             <!-- ㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ-->
 
 
             <TextView
-                android:textSize="18dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="채팅, 친구추가 기능은 왜 없나요?" />
+                android:text="채팅, 친구추가 기능은 없나요?"
+                android:textSize="18dp" />
 
             <TextView
-                android:textSize="14dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="다수, 익명이 모여 의미있는 결과를 만들어 내는것이 AQA의 취지이고 채팅, 친구추가 기능은
-AQA의 성격과는 거리가 있다고 생각합니다.
-물론 제 생각입니다만.. (사실 기능구현이 귀ㅊ...아 아닙니다)
-차후 변경될 수 있습니다 :)" />
+                android:text="네 아직은 미구현 상태 입니다."
+                android:textSize="14dp" />
 
             <TextView
-                android:textSize="24dp"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:textSize="24dp" />
 
             <!-- ㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ-->
 
 
             <TextView
-                android:textSize="18dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="동영상 업로드는 안되나요?" />
+                android:text="동영상 업로드는 안되나요?"
+                android:textSize="18dp" />
 
             <TextView
-                android:textSize="14dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="다수의 동영상 업로드가 이루어질텐데 속도감당이 안됩니다.
-현재 가능은 하지만 여러 사정으로 인해 잠시 숨겨두었습니다.
-이상 능력부족 핑계였습니다." />
+                android:text="개발중 입니다."
+                android:textSize="14dp" />
 
             <TextView
-                android:textSize="24dp"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:textSize="24dp" />
 
 
             <!-- ㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ-->
 
 
-            <TextView
-                android:textSize="18dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="느려요" />
+            <!--<TextView-->
+            <!--android:textSize="18dp"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text="느려요" />-->
 
-            <TextView
-                android:textSize="14dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="네..공부중입니다..ㅠ_ㅠ" />
+            <!--<TextView-->
+            <!--android:textSize="14dp"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text="네..공부중입니다..ㅠ_ㅠ" />-->
 
-            <TextView
-                android:textSize="24dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+            <!--<TextView-->
+            <!--android:textSize="24dp"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"/>-->
 
 
             <!-- ㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ-->
 
 
-            <TextView
-                android:textSize="18dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="어떤 이벤트가 있나요?" />
+            <!--<TextView-->
+            <!--android:textSize="18dp"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text="어떤 이벤트가 있나요?" />-->
 
-            <TextView
-                android:textSize="14dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="스벅커피를 드리는 공유이벤트가 예정되어 있습니다.
-Q포인트 이벤트는 고민중입니다." />
+            <!--<TextView-->
+            <!--android:textSize="14dp"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text="스벅커피를 드리는 공유이벤트가 예정되어 있습니다.-->
+            <!--Q포인트 이벤트는 고민중입니다." />-->
 
-            <TextView
-                android:textSize="24dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
-
+            <!--<TextView-->
+            <!--android:textSize="24dp"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"/>-->
 
 
         </LinearLayout>
