@@ -62,12 +62,12 @@
     </LinearLayout>
 
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="입력하신 모든 정보는 투표결과 에만 사용 됩니다."
-        android:textSize="16dp"
-        android:textStyle="bold" />
+    <!--<TextView-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="입력하신 모든 정보는 투표결과 에만 사용 됩니다."-->
+        <!--android:textSize="16dp"-->
+        <!--android:textStyle="bold" />-->
 
     <TextView
         android:layout_width="match_parent"
@@ -143,6 +143,8 @@
         android:gravity="center"
         android:text="3/3"
         android:textSize="12dp" />
+
+
 
 
 </LinearLayout>

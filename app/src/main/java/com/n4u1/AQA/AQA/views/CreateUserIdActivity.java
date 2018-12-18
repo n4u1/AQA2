@@ -3,6 +3,8 @@ package com.n4u1.AQA.AQA.views;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -28,6 +30,7 @@ import com.n4u1.AQA.AQA.dialog.NotEmailDialog;
 import com.n4u1.AQA.AQA.dialog.NotGenderDialog;
 import com.n4u1.AQA.AQA.dialog.NotIdlDialog;
 import com.n4u1.AQA.AQA.dialog.NullEmailDialog;
+import com.n4u1.AQA.AQA.dialog.PrivacyPolicyActivity;
 import com.n4u1.AQA.AQA.dialog.ShortIdDialog;
 import com.n4u1.AQA.AQA.splash.LoadingDialog;
 
@@ -37,7 +40,7 @@ import java.util.Map;
 
 public class CreateUserIdActivity extends AppCompatActivity {
 
-    TextView createUserId_textView_next;
+    TextView createUserId_textView_next, createUserId_textView_servicePolicy, createUserId_textView_privacy_policy;
     ImageView createUserId_imageView_back;
     EditText createUserId_editText_id;
     String email, pw;
@@ -55,11 +58,13 @@ public class CreateUserIdActivity extends AppCompatActivity {
         email = getIntent().getStringExtra("email");
         pw = getIntent().getStringExtra("pw");
         final LoadingDialog loadingDialog = new LoadingDialog(CreateUserIdActivity.this);
+        loadingDialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
         mRef = FirebaseDatabase.getInstance().getReference();
         createUserId_textView_next = findViewById(R.id.createUserId_textView_next);
         createUserId_imageView_back = findViewById(R.id.createUserId_imageView_back);
         createUserId_editText_id = findViewById(R.id.createUserId_editText_id);
-
+        createUserId_textView_privacy_policy = findViewById(R.id.createUserId_textView_privacy_policy);
+        createUserId_textView_servicePolicy = findViewById(R.id.createUserId_textView_servicePolicy);
 
 
 
@@ -113,6 +118,41 @@ public class CreateUserIdActivity extends AppCompatActivity {
 
             }
         });
+
+
+        //이용약관 보기
+        createUserId_textView_servicePolicy.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (MotionEvent.ACTION_DOWN == event.getAction()) {
+                    createUserId_textView_servicePolicy.setTextColor(0xFF88B6E7);
+                }
+                if (MotionEvent.ACTION_UP == event.getAction()) {
+                    createUserId_textView_servicePolicy.setTextColor(0xff4485c9);
+                    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://lkj840211.wixsite.com/aqacompany/servicepolicy"));
+                    startActivity(intent);
+                }
+                return true;
+            }
+        });
+
+        //개인정보처리방침 보기
+        createUserId_textView_privacy_policy.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (MotionEvent.ACTION_DOWN == event.getAction()) {
+                    createUserId_textView_privacy_policy.setTextColor(0xFF88B6E7);
+                }
+                if (MotionEvent.ACTION_UP == event.getAction()) {
+                    createUserId_textView_privacy_policy.setTextColor(0xff4485c9);
+                    Intent intent = new Intent(CreateUserIdActivity.this, PrivacyPolicyActivity.class);
+                    startActivity(intent);
+                }
+                return true;
+            }
+        });
+
+
 
         createUserId_imageView_back.setOnClickListener(new View.OnClickListener() {
             @Override

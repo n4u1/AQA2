@@ -16,7 +16,7 @@ public class ShareContent {
     private Uri shortLink;
 
     public ShareContent() {
-        shortLink = Uri.parse("https://aqapoll.page.link/Uxvd");
+        shortLink = Uri.parse("https://aqapoll.page.link/AQA");
     }
 
     public ShareContent(String contentKey, String pollMode) {

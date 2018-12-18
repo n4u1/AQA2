@@ -176,7 +176,6 @@ public class SearchHomeActivity extends AppCompatActivity {
         stringArrayCategoryList.add("사건사고");
         stringArrayCategoryList.add("사진");
         stringArrayCategoryList.add("사회");
-        stringArrayCategoryList.add("세월호");
         stringArrayCategoryList.add("소개팅");
         stringArrayCategoryList.add("술");
         stringArrayCategoryList.add("스포츠");
@@ -216,6 +215,7 @@ public class SearchHomeActivity extends AppCompatActivity {
         stringArrayCategoryList.add("취업");
         stringArrayCategoryList.add("컴퓨터");
         stringArrayCategoryList.add("패션");
+        stringArrayCategoryList.add("페미니즘");
         stringArrayCategoryList.add("휴가");
     }
 

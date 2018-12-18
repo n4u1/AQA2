@@ -77,7 +77,7 @@
                 android:background="#efefef" />
 
 
-            <!--게시자/시간-->
+            <!--작성자/시간-->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -90,7 +90,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="2"
-                    android:text="게시자 :"
+                    android:text="작성자 :"
                     android:textColor="#636363"
                     android:textSize="14dp" />
 
@@ -794,8 +794,9 @@
 
                     <ImageView
                         android:id="@+id/imageView_userClass0"
-                        android:layout_width="24dp"
-                        android:layout_height="24dp" />
+                        android:layout_width="16dp"
+                        android:layout_height="16dp"
+                        android:layout_marginRight="4dp" />
 
 
                     <TextView
@@ -880,8 +881,9 @@
 
                     <ImageView
                         android:id="@+id/imageView_userClass1"
-                        android:layout_width="24dp"
-                        android:layout_height="24dp" />
+                        android:layout_width="16dp"
+                        android:layout_height="16dp"
+                        android:layout_marginRight="4dp"/>
 
                     <TextView
                         android:id="@+id/bestReply_id1"
@@ -967,8 +969,9 @@
                     <ImageView
 
                         android:id="@+id/imageView_userClass2"
-                        android:layout_width="24dp"
-                        android:layout_height="24dp" />
+                        android:layout_width="16dp"
+                        android:layout_height="16dp"
+                        android:layout_marginRight="4dp"/>
 
                     <TextView
                         android:id="@+id/bestReply_id2"
@@ -1038,6 +1041,10 @@
                 android:layout_height="wrap_content"
                 android:visibility="gone" />
 
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#efefef" />
 
             <!--댓글 달기-->
             <LinearLayout

@@ -10,7 +10,6 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
 
-    <!-- INTENT-FILTER 넣어야함 ??? -->
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_aqa_qicon"

@@ -993,17 +993,26 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
                 if (shareUrl == null) {
                     Toast.makeText(PollRankingActivity.this, "공유 URL을 생성중입니다. 다시 시도해주세요.", Toast.LENGTH_LONG).show();
                 } else {
-                    Intent intent = new Intent(android.content.Intent.ACTION_SEND);
-                    intent.setType("text/plain");
-//                     Set default text message
-//                     카톡, 이메일, MMS 다 이걸로 설정 가능
-                    String subject = "하나만 선택해 어서! AQA!\n";
-                    String text = shareUrl;
-                    intent.putExtra(Intent.EXTRA_SUBJECT, subject);
-                    intent.putExtra(Intent.EXTRA_TEXT, text);
-//                     Title of intent
-                    Intent chooser = Intent.createChooser(intent, "공유하기");
-                    startActivity(chooser);
+                    DatabaseReference mRef = FirebaseDatabase.getInstance().getReference();
+                    mRef.child("user_contents").child(contentKey).addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            ContentDTO contentDTO = dataSnapshot.getValue(ContentDTO.class);
+                            Intent intent = new Intent(android.content.Intent.ACTION_SEND);
+                            intent.setType("text/plain");
+                            String subject = contentDTO.getTitle();
+                            String text = shareUrl;
+                            intent.putExtra(Intent.EXTRA_SUBJECT, subject);
+                            intent.putExtra(Intent.EXTRA_TEXT, text);
+                            Intent chooser = Intent.createChooser(intent, "공유하기");
+                            startActivity(chooser);
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                        }
+                    });
 
                 }
 

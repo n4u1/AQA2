@@ -137,24 +137,48 @@ public class CreateUserAGActivity extends AppCompatActivity
 
 
         //시작하기
-        createUserAG_textView_start.setOnClickListener(new View.OnClickListener() {
+        createUserAG_textView_start.setOnTouchListener(new View.OnTouchListener() {
             @Override
-            public void onClick(View v) {
-                if (checkingCreateUser()) {
-                    gender = createUserAG_editText_gender.getText().toString();
-                    age = getYear() + 1 - Integer.parseInt(createUserAG_editText_age.getText().toString());
-
-                    Intent intent = new Intent(CreateUserAGActivity.this, SplashCreateUserActivity.class);
-                    intent.putExtra("gender", gender);
-                    intent.putExtra("userId", userId);
-                    intent.putExtra("email", email);
-                    intent.putExtra("age", age);
-                    intent.putExtra("password", password);
-                    startActivity(intent);
+            public boolean onTouch(View v, MotionEvent event) {
+                if (MotionEvent.ACTION_DOWN == event.getAction()) {
+                    createUserAG_textView_start.setTextColor(0xFF88B6E7);
                 }
-//
+                if (MotionEvent.ACTION_UP == event.getAction()) {
+                    createUserAG_textView_start.setTextColor(0xff4485c9);
+                    if (checkingCreateUser()) {
+                        gender = createUserAG_editText_gender.getText().toString();
+                        age = getYear() + 1 - Integer.parseInt(createUserAG_editText_age.getText().toString());
+
+                        Intent intent = new Intent(CreateUserAGActivity.this, SplashCreateUserActivity.class);
+                        intent.putExtra("gender", gender);
+                        intent.putExtra("userId", userId);
+                        intent.putExtra("email", email);
+                        intent.putExtra("age", age);
+                        intent.putExtra("password", password);
+                        startActivity(intent);
+                    }
+                }
+                return true;
             }
         });
+//        createUserAG_textView_start.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                if (checkingCreateUser()) {
+//                    gender = createUserAG_editText_gender.getText().toString();
+//                    age = getYear() + 1 - Integer.parseInt(createUserAG_editText_age.getText().toString());
+//
+//                    Intent intent = new Intent(CreateUserAGActivity.this, SplashCreateUserActivity.class);
+//                    intent.putExtra("gender", gender);
+//                    intent.putExtra("userId", userId);
+//                    intent.putExtra("email", email);
+//                    intent.putExtra("age", age);
+//                    intent.putExtra("password", password);
+//                    startActivity(intent);
+//                }
+////
+//            }
+//        });
     }
 
 
@@ -170,17 +194,17 @@ public class CreateUserAGActivity extends AppCompatActivity
             notGenderDialog.show(getSupportFragmentManager(), "notGenderDialog");
             return false;
         }
-        if (!createUser_ag_checkBox_privacyPolicy.isChecked()) {
-            PrivacyPolicyDoneDialog privacyPolicyDoneDialog = new PrivacyPolicyDoneDialog();
-            privacyPolicyDoneDialog.show(getSupportFragmentManager(), "privacyPolicyDoneDialog");
-
-            return false;
-        }
         if (!createUser_ag_checkBox_servicePolicy.isChecked()) {
             ServicePolicyDoneDialog servicePolicyDoneDialog = new ServicePolicyDoneDialog();
             servicePolicyDoneDialog.show(getSupportFragmentManager(), "servicePolicyDoneDialog");
             return false;
         }
+        if (!createUser_ag_checkBox_privacyPolicy.isChecked()) {
+            PrivacyPolicyDoneDialog privacyPolicyDoneDialog = new PrivacyPolicyDoneDialog();
+            privacyPolicyDoneDialog.show(getSupportFragmentManager(), "privacyPolicyDoneDialog");
+            return false;
+        }
+
         return true;
     }
 

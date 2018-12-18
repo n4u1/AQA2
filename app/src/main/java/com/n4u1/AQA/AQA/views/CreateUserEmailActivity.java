@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -26,6 +27,7 @@ import com.n4u1.AQA.AQA.dialog.GuidCheckDialog;
 import com.n4u1.AQA.AQA.dialog.LiveEmailDialog;
 import com.n4u1.AQA.AQA.dialog.NotEmailDialog;
 import com.n4u1.AQA.AQA.dialog.NullEmailDialog;
+import com.n4u1.AQA.AQA.dialog.PrivacyPolicyActivity;
 import com.n4u1.AQA.AQA.splash.LoadingDialog;
 
 import java.util.Iterator;
@@ -37,7 +39,7 @@ public class CreateUserEmailActivity extends AppCompatActivity implements GuidCh
 
     private DatabaseReference mRef;
     EditText createUserEmail_editText_email, createUserEmail_editText_pw, createUserEmail_editText_pwComfirm;
-    TextView createUserEmail_textView_next;
+    TextView createUserEmail_textView_next, createUserEmail_textView_privacy_policy, createUserEmail_textView_servicePolicy;
     ImageView createUserEmail_imageView_back;
     boolean GUID_CHECK_FLAG = true;
     boolean CURRENT_EMAIL_CHECK_FLAG = true;
@@ -59,6 +61,8 @@ public class CreateUserEmailActivity extends AppCompatActivity implements GuidCh
         createUserEmail_imageView_back = findViewById(R.id.createUserEmail_imageView_back);
         createUserEmail_editText_pw = findViewById(R.id.createUserEmail_editText_pw);
         createUserEmail_editText_pwComfirm = findViewById(R.id.createUserEmail_editText_pwComfirm);
+        createUserEmail_textView_servicePolicy = findViewById(R.id.createUserEmail_textView_servicePolicy);
+        createUserEmail_textView_privacy_policy = findViewById(R.id.createUserEmail_textView_privacy_policy);
 
         mRef.child("users").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -68,7 +72,7 @@ public class CreateUserEmailActivity extends AppCompatActivity implements GuidCh
                     Map<String, Object> user = (Map<String, Object>) usersIterator.next().getValue();
                     String guid_ = String.valueOf(user.get("guid"));
                     if (guid_.equals(guid)) {
-                        GUID_CHECK_FLAG = false;
+                        GUID_CHECK_FLAG = true;
                     }
                 }
             }
@@ -78,6 +82,39 @@ public class CreateUserEmailActivity extends AppCompatActivity implements GuidCh
 
             }
         });
+
+        //이용약관 보기
+        createUserEmail_textView_servicePolicy.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (MotionEvent.ACTION_DOWN == event.getAction()) {
+                    createUserEmail_textView_servicePolicy.setTextColor(0xFF88B6E7);
+                }
+                if (MotionEvent.ACTION_UP == event.getAction()) {
+                    createUserEmail_textView_servicePolicy.setTextColor(0xff4485c9);
+                    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://lkj840211.wixsite.com/aqacompany/servicepolicy"));
+                    startActivity(intent);
+                }
+                return true;
+            }
+        });
+
+        //개인정보처리방침 보기
+        createUserEmail_textView_privacy_policy.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (MotionEvent.ACTION_DOWN == event.getAction()) {
+                    createUserEmail_textView_privacy_policy.setTextColor(0xFF88B6E7);
+                }
+                if (MotionEvent.ACTION_UP == event.getAction()) {
+                    createUserEmail_textView_privacy_policy.setTextColor(0xff4485c9);
+                    Intent intent = new Intent(CreateUserEmailActivity.this, PrivacyPolicyActivity.class);
+                    startActivity(intent);
+                }
+                return true;
+            }
+        });
+
 
         //다음 클릭
         createUserEmail_textView_next.setOnTouchListener(new View.OnTouchListener() {
