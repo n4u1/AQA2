@@ -165,22 +165,22 @@ public class HomeActivity extends AppCompatActivity implements SwipeRefreshLayou
 
 
         //공지사항 db/notice/flag true일때 공지 다이얼로그
-        firebaseDatabase.getReference().child("notice").child("flag").addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                String flag = dataSnapshot.getValue().toString();
-                Log.d("lkj noticeFlag", flag);
-                if (flag.equals("true")) {
-                    NoticeHomeDialog noticeHomeDialog = new NoticeHomeDialog();
-                    noticeHomeDialog.show(getSupportFragmentManager(), "noticeHomeDialog");
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
+//        firebaseDatabase.getReference().child("notice").child("flag").addListenerForSingleValueEvent(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//                String flag = dataSnapshot.getValue().toString();
+//                Log.d("lkj noticeFlag", flag);
+//                if (flag.equals("true")) {
+//                    NoticeHomeDialog noticeHomeDialog = new NoticeHomeDialog();
+//                    noticeHomeDialog.show(getSupportFragmentManager(), "noticeHomeDialog");
+//                }
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError databaseError) {
+//
+//            }
+//        });
 
 
         //노티 백그라운드 자동 실행

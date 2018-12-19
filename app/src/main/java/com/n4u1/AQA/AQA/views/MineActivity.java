@@ -285,11 +285,11 @@ public class MineActivity extends AppCompatActivity implements LogOutDialog.LogO
         mineActivity_linearLayout_notice.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast toast = Toast.makeText(getApplicationContext(), "아직 공지사항이 없습니다 :)", Toast.LENGTH_SHORT);
-                toast.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL, 0, 0);
-                toast.show();
-//                Intent intent = new Intent(MineActivity.this, CreateUserEmailActivity.class);
-//                startActivity(intent);
+//                Toast toast = Toast.makeText(getApplicationContext(), "아직 공지사항이 없습니다 :)", Toast.LENGTH_SHORT);
+//                toast.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL, 0, 0);
+//                toast.show();
+                Intent intent = new Intent(MineActivity.this, NoticeActivity.class);
+                startActivity(intent);
             }
         });
 

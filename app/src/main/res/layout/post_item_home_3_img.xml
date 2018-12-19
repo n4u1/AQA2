@@ -18,25 +18,26 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:paddingTop="8dp"
             android:paddingStart="4dp"
+            android:paddingTop="8dp"
             android:paddingRight="16dp"
             android:paddingBottom="8dp">
 
             <ImageView
-
                 android:id="@+id/imageView_userClass"
                 android:layout_width="16dp"
                 android:layout_height="16dp"
-                android:layout_centerVertical="true" />
+                android:layout_centerVertical="true"
+                android:gravity="center_vertical" />
 
             <TextView
+
                 android:id="@+id/textView_userName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="4dp"
-                android:layout_toRightOf="@id/imageView_userClass"
-                android:gravity="center"
+                android:layout_marginStart="4dp"
+                android:layout_toEndOf="@id/imageView_userClass"
+                android:gravity="center_vertical"
                 android:maxLines="1"
                 android:textColor="#000000" />
 
@@ -45,17 +46,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:layout_marginLeft="8dp"
-                android:layout_toRightOf="@+id/textView_userName"
-                android:singleLine="true"
+                android:layout_marginStart="8dp"
+                android:layout_toEndOf="@+id/textView_userName"
+                android:ellipsize="end"
+                android:gravity="center_vertical"
+                android:maxLines="1"
                 android:textColor="#737373" />
 
-            <TextView
-                android:id="@+id/textView_replyCount"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_toRightOf="@+id/textView_title"
-                android:maxLines="1" />
         </RelativeLayout>
 
         <LinearLayout
@@ -136,6 +133,8 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="4"
+                android:ellipsize="end"
+                android:maxLines="1"
                 android:text="exec"
                 android:textColor="#737373" />
 

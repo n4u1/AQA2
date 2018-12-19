@@ -157,7 +157,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="네. 투표 진행후 내용을 변경해 다른 결과로 바뀔수있기 때문입니다."
+                android:text="네. 투표 진행후 내용을 수정해 결과가 뒤 바뀔 수 있기 때문입니다."
                 android:textSize="14dp" />
 
             <TextView
@@ -197,8 +197,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="실시간 투표 입니다. 현재는 투표수를 3일 집계해서 상위 10개가 보이도록
-설정해놨습니다. 정식버전에서는 조정할 예정입니다."
+                android:text="실시간으로 이슈되고있는 투표를 보여드립니다."
                 android:textSize="14dp" />
 
             <TextView
@@ -218,7 +217,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="네 아직은 미구현 상태 입니다."
+                android:text="네 없습니다."
                 android:textSize="14dp" />
 
             <TextView

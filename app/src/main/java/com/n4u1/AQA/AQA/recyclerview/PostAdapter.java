@@ -353,11 +353,7 @@ public class PostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 }
 
 
-                if (contentDTOS.get(position).title.length() >= 15) {
-                    ((PostViewHolder1) holder).textView_title.setText(contentDTOS.get(position).title.substring(0,14) + "...");
-                } else {
-                    ((PostViewHolder1) holder).textView_title.setText(contentDTOS.get(position).title);
-                }
+                ((PostViewHolder1) holder).textView_title.setText(contentDTOS.get(position).title);
                 ((PostViewHolder1) holder).textView_userName.setText(contentDTOS.get(position).userID);
 
                 ((PostViewHolder1)holder).textView_pollMode.setText(contentDTOS.get(position).pollMode + " / " + contentDTOS.get(position).itemViewType);
@@ -519,13 +515,8 @@ public class PostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 }
 
 
-                if (contentDTOS.get(position).title.length() >= 15) {
-                    ((PostViewHolder2) holder).textView_title.setText(contentDTOS.get(position).title.substring(0,14) + "...");
-                } else {
-                    ((PostViewHolder2) holder).textView_title.setText(contentDTOS.get(position).title);
-                }
+                ((PostViewHolder2) holder).textView_title.setText(contentDTOS.get(position).title);
                 ((PostViewHolder2) holder).textView_userName.setText(contentDTOS.get(position).userID);
-
                 ((PostViewHolder2)holder).textView_pollMode.setText(contentDTOS.get(position).pollMode + " / " + contentDTOS.get(position).itemViewType);
                 ((PostViewHolder2) holder).textView_contentType.setText(contentDTOS.get(position).contentType);
                 ((PostViewHolder2) holder).textView_hitCount.setText(String.valueOf(contentDTOS.get(position).contentHit));
@@ -694,13 +685,7 @@ public class PostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                     ((PostViewHolder3) holder).imageView_like.setImageResource(R.drawable.ic_outline_thumb_up_24px);
                     ((PostViewHolder3) holder).textView_likeCount.setText(String.valueOf(contentDTOS.get(position).likeCount));
                 }
-
-
-                if (contentDTOS.get(position).title.length() >= 15) {
-                    ((PostViewHolder3) holder).textView_title.setText(contentDTOS.get(position).title.substring(0,14) + "...");
-                } else {
-                    ((PostViewHolder3) holder).textView_title.setText(contentDTOS.get(position).title);
-                }
+                ((PostViewHolder3) holder).textView_title.setText(contentDTOS.get(position).title);
                 ((PostViewHolder3) holder).textView_userName.setText(contentDTOS.get(position).userID);
                 ((PostViewHolder3) holder).textView_pollMode.setText(contentDTOS.get(position).pollMode + " / " + contentDTOS.get(position).itemViewType);
                 ((PostViewHolder3) holder).textView_contentType.setText(contentDTOS.get(position).contentType);
@@ -856,12 +841,7 @@ public class PostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                     ((PostViewHolder100) holder).textView_likeCount.setText(String.valueOf(contentDTOS.get(position).likeCount));
                 }
 
-                //타이틀은 15자 이상이면 '...'표시
-                if (contentDTOS.get(position).title.length() >= 15) {
-                    ((PostViewHolder100) holder).textView_title.setText(contentDTOS.get(position).title.substring(0,14) + "...");
-                } else {
-                    ((PostViewHolder100) holder).textView_title.setText(contentDTOS.get(position).title);
-                }
+                ((PostViewHolder100) holder).textView_title.setText(contentDTOS.get(position).title);
                 ((PostViewHolder100) holder).textView_userName.setText(contentDTOS.get(position).userID);
 
                 //각 아이템들 삽입

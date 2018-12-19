@@ -153,10 +153,10 @@ public class SplashLoadingActivity extends AppCompatActivity
                             Map<String, Object> user = (Map<String, Object>) usersIterator.next().getValue();
                             if (advertId.equals(user.get("guid"))) { // 현재 구글ID가 디비에 있는지?
                                 uIdTemp = String.valueOf(user.get("uid"));
+                                userId = String.valueOf(user.get("userId"));
                                 adIdFlag_1++;
 //                                Log.d("lkj user ad id", String.valueOf(user.get("userId")));
                                 if (String.valueOf(user.get("uid")).equals(mAuth.getCurrentUser().getUid())) {
-                                    userId = String.valueOf(user.get("userId"));
                                     adIdFlag_1--;
                                     adIdFlag_2++;
                                 }
@@ -384,25 +384,14 @@ public class SplashLoadingActivity extends AppCompatActivity
 
     private String changeDate(long mustDate) {
         int num = Integer.parseInt(String.valueOf(mustDate)) / 1000;
-
-
-        //시, 분, 초 선언
-
         int hours, minute, second;
-
         //시간공식
-
         hours = num / 3600;//시 공식
-
         minute = num % 3600 / 60;//분을 구하기위해서 입력되고 남은값에서 또 60을 나눈다.
-
         second = num % 3600 % 60;//마지막 남은 시간에서 분을 뺀 나머지 시간을 초로 계산함
-
         String s = hours + "시간 " + minute + "분 " + second + "초";
 
         return s;
-
-
     }
 
 
