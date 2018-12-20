@@ -95,6 +95,7 @@ public class HomeActivity extends AppCompatActivity implements SwipeRefreshLayou
     final ArrayList<String> tempKey = new ArrayList<>();
     final ArrayList<String> issueContents_ = new ArrayList<>();
     private ShareContent shareContent = new ShareContent();
+    private long issueRange;
 
     FadingTextView fadingTextView;
     String[] issueContents = new String[5];
@@ -146,6 +147,7 @@ public class HomeActivity extends AppCompatActivity implements SwipeRefreshLayou
         postAdapter.notifyDataSetChanged();
         AdView adView = findViewById(R.id.adView);
 
+
         //시작시 권한요청
         final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (!user.isAnonymous()) {
@@ -155,32 +157,17 @@ public class HomeActivity extends AppCompatActivity implements SwipeRefreshLayou
         }
 
 
-        //testActivity
-//        findViewById(R.id.testActivity).setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                startActivity(new Intent(getApplicationContext(), TestActivity.class));
-//            }
-//        });
+        //실시간 이슈 체크하는 시간범위를 db에서 가져오기
+        mDatabase.getReference().child("issueRange").child("inputRange").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                issueRange = Long.parseLong(dataSnapshot.getValue().toString());
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
 
-
-        //공지사항 db/notice/flag true일때 공지 다이얼로그
-//        firebaseDatabase.getReference().child("notice").child("flag").addListenerForSingleValueEvent(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-//                String flag = dataSnapshot.getValue().toString();
-//                Log.d("lkj noticeFlag", flag);
-//                if (flag.equals("true")) {
-//                    NoticeHomeDialog noticeHomeDialog = new NoticeHomeDialog();
-//                    noticeHomeDialog.show(getSupportFragmentManager(), "noticeHomeDialog");
-//                }
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError databaseError) {
-//
-//            }
-//        });
+            }
+        });
 
 
         //노티 백그라운드 자동 실행
@@ -206,9 +193,9 @@ public class HomeActivity extends AppCompatActivity implements SwipeRefreshLayou
         });
 
 
-        //실시간 투표순위 5개
+        //실시간 투표순위 X개
         //fadingTextView init
-        String[] tempString = {" ", "1", "2", "3", "4"};
+        String[] tempString = {" ", "1", "2", "3", "4", "5", "6", "7", "8", "9"};
         fadingTextView.setTimeout(4, TimeUnit.SECONDS);
         if (!BuildConfig.DEBUG) {
             fadingTextView.setTexts(tempString);
@@ -255,6 +242,7 @@ public class HomeActivity extends AppCompatActivity implements SwipeRefreshLayou
                 ArrayList<String> filterIssueDate = new ArrayList<>();
 
 
+                Log.d("lkj IssueRange2", String.valueOf(issueRange));
 //                600000 = 600초 = 10분
 //                6000000 = 6000초 = 1시간40분
 //                3600000 = 3600초 = 1시간
@@ -265,7 +253,7 @@ public class HomeActivity extends AppCompatActivity implements SwipeRefreshLayou
 //                259200000 = 259200 = 3일
 //                1909600000 = 1909600 = 22일2시간
                 for (int i = 0; i < dataSnapshot.getChildrenCount(); i++) {
-                    if (issueLong.get(i) > issueDate_ - 1999699999) {
+                    if (issueLong.get(i) > issueDate_ - issueRange) {
                         filterIssueDate.add(String.valueOf(issueLong.get(i)));
                         filteringCount++;
                     }

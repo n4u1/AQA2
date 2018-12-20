@@ -29,7 +29,9 @@ import java.util.Locale;
 import java.util.TimeZone;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
+/*
+사용하지 않음
+ */
 public class CreateUserActivity extends AppCompatActivity implements CreateUserAgeDialog.CreateUserAgeDialogListener,
         CreateUserGenderDialog.CreateUserGenderDialogListener {
 

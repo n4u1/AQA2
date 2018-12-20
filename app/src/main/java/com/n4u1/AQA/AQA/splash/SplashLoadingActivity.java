@@ -155,8 +155,10 @@ public class SplashLoadingActivity extends AppCompatActivity
                                 uIdTemp = String.valueOf(user.get("uid"));
                                 userId = String.valueOf(user.get("userId"));
                                 adIdFlag_1++;
-//                                Log.d("lkj user ad id", String.valueOf(user.get("userId")));
+                                Log.d("lkj user id1", String.valueOf(user.get("uid")));
+                                Log.d("lkj user id2", mAuth.getCurrentUser().getUid());
                                 if (String.valueOf(user.get("uid")).equals(mAuth.getCurrentUser().getUid())) {
+                                    Log.d("lkj user id3", "????????????????");
                                     adIdFlag_1--;
                                     adIdFlag_2++;
                                 }

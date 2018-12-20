@@ -1,9 +1,12 @@
 package com.n4u1.AQA.AQA.views;
 
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.TextView;
 
 import com.google.firebase.database.DataSnapshot;
@@ -55,5 +58,28 @@ public class NoticeDetailActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.mine_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int curId = item.getItemId();
+        switch (curId) {
+            case R.id.menu_home:
+                Intent intentHome = new Intent(NoticeDetailActivity.this, HomeActivity.class);
+                intentHome.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intentHome);
+                finish();
+                break;
+            case android.R.id.home:
+                onBackPressed();
+                break;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

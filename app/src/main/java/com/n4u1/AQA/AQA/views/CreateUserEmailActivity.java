@@ -26,6 +26,7 @@ import com.n4u1.AQA.AQA.dialog.ConfirmPasswordFailDialog;
 import com.n4u1.AQA.AQA.dialog.GuidCheckDialog;
 import com.n4u1.AQA.AQA.dialog.LiveEmailDialog;
 import com.n4u1.AQA.AQA.dialog.NotEmailDialog;
+import com.n4u1.AQA.AQA.dialog.NullContainPWDialog;
 import com.n4u1.AQA.AQA.dialog.NullEmailDialog;
 import com.n4u1.AQA.AQA.dialog.PrivacyPolicyActivity;
 import com.n4u1.AQA.AQA.splash.LoadingDialog;
@@ -64,6 +65,7 @@ public class CreateUserEmailActivity extends AppCompatActivity implements GuidCh
         createUserEmail_textView_servicePolicy = findViewById(R.id.createUserEmail_textView_servicePolicy);
         createUserEmail_textView_privacy_policy = findViewById(R.id.createUserEmail_textView_privacy_policy);
 
+        //guid가 db에 있으면 다이얼로그 발생
         mRef.child("users").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -72,7 +74,7 @@ public class CreateUserEmailActivity extends AppCompatActivity implements GuidCh
                     Map<String, Object> user = (Map<String, Object>) usersIterator.next().getValue();
                     String guid_ = String.valueOf(user.get("guid"));
                     if (guid_.equals(guid)) {
-                        GUID_CHECK_FLAG = true;
+                        GUID_CHECK_FLAG = false;
                     }
                 }
             }
@@ -206,6 +208,11 @@ public class CreateUserEmailActivity extends AppCompatActivity implements GuidCh
         if (createUserEmail_editText_pw.getText().toString().length() < 6) {
             AgainPasswordDialog againPasswordDialog = new AgainPasswordDialog();
             againPasswordDialog.show(getSupportFragmentManager(), "againPasswordDialog");
+            return false;
+        }
+        if (createUserEmail_editText_pw.getText().toString().contains(" ")) {
+            NullContainPWDialog nullContainPWDialog = new NullContainPWDialog();
+            nullContainPWDialog.show(getSupportFragmentManager(), "nullContainPWDialog");
             return false;
         }
         if (!createUserEmail_editText_pwComfirm.getText().toString().equals(createUserEmail_editText_pw.getText().toString())) {

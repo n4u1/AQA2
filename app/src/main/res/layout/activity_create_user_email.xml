@@ -24,7 +24,6 @@
     <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="64dp"
-
         android:gravity="center"
         android:theme="@style/TextLabel">
 
@@ -134,9 +133,6 @@
             app:layout_constraintStart_toStartOf="parent" />
 
     </android.support.constraint.ConstraintLayout>
-
-
-
 
 
 </LinearLayout>

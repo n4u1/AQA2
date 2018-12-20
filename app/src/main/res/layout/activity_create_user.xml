@@ -6,19 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".views.CreateUserActivity">
 
-
-    <!--<ImageView-->
-    <!--android:id="@+id/createUser_imageView_aqa"-->
-    <!--android:layout_width="80dp"-->
-    <!--android:layout_height="50dp"-->
-    <!--android:layout_alignParentStart="true"-->
-    <!--android:layout_alignParentTop="true"-->
-    <!--android:layout_alignParentEnd="true"-->
-    <!--android:layout_marginStart="152dp"-->
-    <!--android:layout_marginTop="18dp"-->
-    <!--android:layout_marginEnd="152dp"-->
-    <!--android:src="@drawable/aqacustom2" />-->
-
+<!--해당 액티비티는 사용하지 않음-->
 
     <android.support.design.widget.TextInputLayout
         android:id="@+id/textInputLayout3"

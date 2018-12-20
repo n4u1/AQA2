@@ -51,7 +51,7 @@ public class PollResultDialog extends DialogFragment {
     int currentPick;
     String contentKey;
     String statisticsCode;
-    String selectedDivide = "전 체";
+    String selectedDivide = "전 체 (선택)";
     AppCompatSpinner pollResultDialog_spinner_divide;
     TextView pollResultDialog_close;
     List<String> divideList = new ArrayList<>();
@@ -66,7 +66,7 @@ public class PollResultDialog extends DialogFragment {
         pollResultDialog_spinner_divide = view.findViewById(R.id.pollResultDialog_spinner_divide);
         pollResultDialog_close = view.findViewById(R.id.pollResultDialog_close);
 
-        divideList.add("전 체");
+        divideList.add("전 체 (선택)");
         divideList.add("여 자");
         divideList.add("남 자");
         divideList.add("10대 전체 (10 ~ 19)");
@@ -423,7 +423,7 @@ public class PollResultDialog extends DialogFragment {
             tmpStatistics[i] = Integer.parseInt(stringArray[i]);
         }
 
-        if (gR.equals("전 체")) {
+        if (gR.equals("전 체 (선택)")) {
             setChartFullData(imageN, contentKey, getView());
             //10대전체, 20대전체 만들고 선택시 초중후 합치는 로직으로?
         } else {

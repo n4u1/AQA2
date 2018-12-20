@@ -111,6 +111,7 @@ public class SplashGuidActivity extends AppCompatActivity {
                         Intent intent = new Intent(SplashGuidActivity.this, HomeActivity.class);
                         intent.putExtra("guid", advertId);
                         SplashGuidActivity.this.finish();
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         startActivity(intent);
 
                     } catch (Exception e) {
