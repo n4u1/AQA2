@@ -137,7 +137,7 @@ public class PostAdapterMine extends RecyclerView.Adapter<RecyclerView.ViewHolde
             ((PostViewHolderMine) holder).imageView_state.setImageResource(R.drawable.ic_aqa_qw);
         }
         //Q userClass 별로 색 세팅
-        Log.d("lkj dtoUid", contentDTOS.get(position).uid);
+//        Log.d("lkj dtoUid", contentDTOS.get(position).uid);
         mDatabase.getReference().child("users").child(contentDTOS.get(position).uid).child("userClass").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {

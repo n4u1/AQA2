@@ -145,13 +145,13 @@ public class SplashCreateUserActivity extends AppCompatActivity implements GUIDF
             } catch (NullPointerException e) {
                 e.printStackTrace();
             }
-            Log.d("lkj advertId1", advertId);
+//            Log.d("lkj advertId1", advertId);
             return advertId;
         }
 
         @Override
         protected void onPostExecute(final String advertId) {
-            Log.d("lkj advertId2", advertId);
+//            Log.d("lkj advertId2", advertId);
             if (advertId != null && advertId.trim().isEmpty()) {
                 //guid 못찾음
                 HomeActivity homeActivity = new HomeActivity();

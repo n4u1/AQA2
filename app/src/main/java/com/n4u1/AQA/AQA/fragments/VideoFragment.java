@@ -497,25 +497,25 @@ public class VideoFragment extends Fragment {
 
     @Override
     public void onResume() {
-        Log.d("lkjFragment onResume", "onResume");
+//        Log.d("lkjFragment onResume", "onResume");
         super.onResume();
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        Log.d("lkjFragment onViewCrea", "onViewCreated");
+//        Log.d("lkjFragment onViewCrea", "onViewCreated");
         super.onViewCreated(view, savedInstanceState);
     }
 
     @Override
     public void onStop() {
-        Log.d("lkjFragment onStop", "onStop");
+//        Log.d("lkjFragment onStop", "onStop");
         super.onStop();
     }
 
     @Override
     public void onPause() {
-        Log.d("lkjFragment onPause", "onPause");
+//        Log.d("lkjFragment onPause", "onPause");
         super.onPause();
     }
 
@@ -581,19 +581,19 @@ public class VideoFragment extends Fragment {
             player9 = null;
         }
 
-        Log.d("lkjFragment onDestroy", "onDestroy");
+//        Log.d("lkjFragment onDestroy", "onDestroy");
         super.onDestroy();
     }
 
     @Override
     public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
-        Log.d("lkjFragment onViewState", "onViewStateRestored");
+//        Log.d("lkjFragment onViewState", "onViewStateRestored");
         super.onViewStateRestored(savedInstanceState);
     }
 
     @Override
     public void onInflate(Context context, AttributeSet attrs, Bundle savedInstanceState) {
-        Log.d("lkjFragment onInflate", "onInflate");
+//        Log.d("lkjFragment onInflate", "onInflate");
         super.onInflate(context, attrs, savedInstanceState);
     }
     

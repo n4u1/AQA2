@@ -86,7 +86,7 @@ public class UploadLoadingActivity extends AppCompatActivity {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                Log.d("lkjloadingsec", String.valueOf(uploadingTime));
+//                Log.d("lkjloadingsec", String.valueOf(uploadingTime));
                 for (int i = 0; i < 100; i++) {
                     try {
                         //uploadingTime 대략 10당 1초

@@ -58,8 +58,8 @@ public class SplashDynamicLinkActivity extends AppCompatActivity {
                         Uri deepLink = pendingDynamicLinkData.getLink();
                         contentKey = deepLink.getQueryParameter("contentKey");
                         pollMode = deepLink.getQueryParameter("pollMode");
-                        Log.d("lkj Skey???", contentKey);
-                        Log.d("lkj Spmode???", pollMode);
+//                        Log.d("lkj Skey???", contentKey);
+//                        Log.d("lkj Spmode???", pollMode);
 
 //                        if (!TextUtils.isEmpty(contentKey)) {
 //                            Intent intent = new Intent(SplashActivity.this, PollRankingActivity.class);

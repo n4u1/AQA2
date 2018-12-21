@@ -85,7 +85,7 @@ public class PollResultAnonymousDialog extends DialogFragment {
         divideList.add("20대 전체 (20 ~ 29)");
         divideList.add("ㄴ 20대 초반 (20 ~ 22)");
         divideList.add("ㄴ 20대 중반 (23 ~ 26)");
-        divideList.add("ㄴ 20대 후반 (27 ~ 20)");
+        divideList.add("ㄴ 20대 후반 (27 ~ 29)");
         divideList.add("30대 전체 (30 ~ 39)");
         divideList.add("ㄴ 30대 초반 (30 ~ 32)");
         divideList.add("ㄴ 30대 중반 (33 ~ 36)");
@@ -163,11 +163,11 @@ public class PollResultAnonymousDialog extends DialogFragment {
             imageN = bundle.getInt("imageN");
             currentPick = bundle.getInt("imagePick");
             contentHit = bundle.getInt("contentHits");
-            Log.d("lkj contentKey", contentKey);
-            Log.d("lkj imageN", String.valueOf(imageN));
-            Log.d("lkj currentPick", String.valueOf(currentPick));
-            Log.d("lkj currentHits", String.valueOf(contentHit));
-            Log.d("lkj statisticsCodeeee", statisticsCode);
+//            Log.d("lkj contentKey", contentKey);
+//            Log.d("lkj imageN", String.valueOf(imageN));
+//            Log.d("lkj currentPick", String.valueOf(currentPick));
+//            Log.d("lkj currentHits", String.valueOf(contentHit));
+//            Log.d("lkj statisticsCodeeee", statisticsCode);
         }
         return view;
     }

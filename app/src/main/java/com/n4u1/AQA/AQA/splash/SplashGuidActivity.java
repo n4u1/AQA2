@@ -94,7 +94,7 @@ public class SplashGuidActivity extends AppCompatActivity {
             Map<String, String> previewerMap = new HashMap<>();
             String previewerValue = "true";
 
-            Log.d("lkj advertId", advertId);
+//            Log.d("lkj advertId", advertId);
             if (userLoginFlag.equals("preView")) {
                 if (advertId != null && advertId.trim().isEmpty()) {
                     Toast.makeText(getApplicationContext(), "다시 시도해주세요.", Toast.LENGTH_LONG).show();

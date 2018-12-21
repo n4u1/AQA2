@@ -237,12 +237,12 @@ public class HomeActivity extends AppCompatActivity implements SwipeRefreshLayou
                 }
 
                 long issueDate_ = getCurrentDate();
-                Log.d("lkj issueData", String.valueOf(issueDate_));
+//                Log.d("lkj issueData", String.valueOf(issueDate_));
                 int filteringCount = 0;
                 ArrayList<String> filterIssueDate = new ArrayList<>();
 
 
-                Log.d("lkj IssueRange2", String.valueOf(issueRange));
+//                Log.d("lkj IssueRange2", String.valueOf(issueRange));
 //                600000 = 600초 = 10분
 //                6000000 = 6000초 = 1시간40분
 //                3600000 = 3600초 = 1시간
@@ -538,15 +538,15 @@ public class HomeActivity extends AppCompatActivity implements SwipeRefreshLayou
                             if (pollMode.equals("single")) {
                                 Intent intent = new Intent(HomeActivity.this, PollSingleActivity.class);
                                 intent.putExtra("contentKey", contentKey);
-                                Log.d("lkj key?????", contentKey);
-                                Log.d("lkj mode?????", pollMode);
+//                                Log.d("lkj key?????", contentKey);
+//                                Log.d("lkj mode?????", pollMode);
                                 startActivity(intent);
                             }
                             if (pollMode.equals("ranking")) {
                                 Intent intent = new Intent(HomeActivity.this, PollRankingActivity.class);
                                 intent.putExtra("contentKey", contentKey);
-                                Log.d("lkj key???", contentKey);
-                                Log.d("lkj mode???", pollMode);
+//                                Log.d("lkj key???", contentKey);
+//                                Log.d("lkj mode???", pollMode);
                                 startActivity(intent);
                             }
 
@@ -570,8 +570,8 @@ public class HomeActivity extends AppCompatActivity implements SwipeRefreshLayou
             if (notiDataPollMode.equals("ranking")) {
                 Intent intent = new Intent(HomeActivity.this, PollRankingActivity.class);
                 intent.putExtra("contentKey", notiDataContentKey);
-                Log.d("lkj key???", notiDataContentKey);
-                Log.d("lkj mode???", notiDataPollMode);
+//                Log.d("lkj key???", notiDataContentKey);
+//                Log.d("lkj mode???", notiDataPollMode);
                 startActivity(intent);
             }
 

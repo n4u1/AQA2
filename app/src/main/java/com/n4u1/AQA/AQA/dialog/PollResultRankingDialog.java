@@ -86,7 +86,7 @@ public class PollResultRankingDialog extends DialogFragment {
         divideList.add("20대 전체 (20 ~ 29)");
         divideList.add("ㄴ 20대 초반 (20 ~ 22)");
         divideList.add("ㄴ 20대 중반 (23 ~ 26)");
-        divideList.add("ㄴ 20대 후반 (27 ~ 20)");
+        divideList.add("ㄴ 20대 후반 (27 ~ 29)");
         divideList.add("30대 전체 (30 ~ 39)");
         divideList.add("ㄴ 30대 초반 (30 ~ 32)");
         divideList.add("ㄴ 30대 중반 (33 ~ 36)");
@@ -164,11 +164,11 @@ public class PollResultRankingDialog extends DialogFragment {
             imageN = bundle.getInt("imageN");
             currentPick = bundle.getInt("imagePick");
             contentHit = bundle.getInt("contentHits");
-            Log.d("lkj contentKey", contentKey);
-            Log.d("lkj imageN", String.valueOf(imageN));
-            Log.d("lkj currentPick", String.valueOf(currentPick));
-            Log.d("lkj currentHits", String.valueOf(contentHit));
-            Log.d("lkj statisticsCodeeee", statisticsCode);
+//            Log.d("lkj contentKey", contentKey);
+//            Log.d("lkj imageN", String.valueOf(imageN));
+//            Log.d("lkj currentPick", String.valueOf(currentPick));
+//            Log.d("lkj currentHits", String.valueOf(contentHit));
+//            Log.d("lkj statisticsCodeeee", statisticsCode);
 
 //            getPicker(contentKey);            //textView Test
 
@@ -452,15 +452,15 @@ public class PollResultRankingDialog extends DialogFragment {
                     System.arraycopy(tmpStatistics, 20, tmpStatistics_divide, 0, 30);
                     setChartPartData(imageN, contentKey, getView(), ageRangePlus(tmpStatistics_divide));
                     break;
-                case "10대 초반 (10 ~ 12)":
+                case "ㄴ 10대 초반 (10 ~ 12)":
                     System.arraycopy(tmpStatistics, 20, tmpStatistics_divide, 0, 10);
                     setChartPartData(imageN, contentKey, getView(), tmpStatistics_divide);
                     break;
-                case "10대 중반 (13 ~ 16)":
+                case "ㄴ 10대 중반 (13 ~ 16)":
                     System.arraycopy(tmpStatistics, 30, tmpStatistics_divide, 0, 10);
                     setChartPartData(imageN, contentKey, getView(), tmpStatistics_divide);
                     break;
-                case "10대 후반 (17 ~ 19)":
+                case "ㄴ 10대 후반 (17 ~ 19)":
                     System.arraycopy(tmpStatistics, 40, tmpStatistics_divide, 0, 10);
                     setChartPartData(imageN, contentKey, getView(), tmpStatistics_divide);
                     break;
@@ -468,15 +468,15 @@ public class PollResultRankingDialog extends DialogFragment {
                     System.arraycopy(tmpStatistics, 50, tmpStatistics_divide, 0, 30);
                     setChartPartData(imageN, contentKey, getView(), ageRangePlus(tmpStatistics_divide));
                     break;
-                case "20대 초반 (20 ~ 22)":
+                case "ㄴ 20대 초반 (20 ~ 22)":
                     System.arraycopy(tmpStatistics, 50, tmpStatistics_divide, 0, 10);
                     setChartPartData(imageN, contentKey, getView(), tmpStatistics_divide);
                     break;
-                case "20대 중반 (23 ~ 26)":
+                case "ㄴ 20대 중반 (23 ~ 26)":
                     System.arraycopy(tmpStatistics, 60, tmpStatistics_divide, 0, 10);
                     setChartPartData(imageN, contentKey, getView(), tmpStatistics_divide);
                     break;
-                case "20대 후반 (27 ~ 20)":
+                case "ㄴ 20대 후반 (27 ~ 29)":
                     System.arraycopy(tmpStatistics, 70, tmpStatistics_divide, 0, 10);
                     setChartPartData(imageN, contentKey, getView(), tmpStatistics_divide);
                     break;
@@ -484,15 +484,15 @@ public class PollResultRankingDialog extends DialogFragment {
                     System.arraycopy(tmpStatistics, 80, tmpStatistics_divide, 0, 30);
                     setChartPartData(imageN, contentKey, getView(), ageRangePlus(tmpStatistics_divide));
                     break;
-                case "30대 초반 (30 ~ 32)":
+                case "ㄴ 30대 초반 (30 ~ 32)":
                     System.arraycopy(tmpStatistics, 80, tmpStatistics_divide, 0, 10);
                     setChartPartData(imageN, contentKey, getView(), tmpStatistics_divide);
                     break;
-                case "30대 중반 (33 ~ 36)":
+                case "ㄴ 30대 중반 (33 ~ 36)":
                     System.arraycopy(tmpStatistics, 90, tmpStatistics_divide, 0, 10);
                     setChartPartData(imageN, contentKey, getView(), tmpStatistics_divide);
                     break;
-                case "30대 후반 (37 ~ 39)":
+                case "ㄴ 30대 후반 (37 ~ 39)":
                     System.arraycopy(tmpStatistics, 100, tmpStatistics_divide, 0, 10);
                     setChartPartData(imageN, contentKey, getView(), tmpStatistics_divide);
                     break;
@@ -500,15 +500,15 @@ public class PollResultRankingDialog extends DialogFragment {
                     System.arraycopy(tmpStatistics, 110, tmpStatistics_divide, 0, 30);
                     setChartPartData(imageN, contentKey, getView(), ageRangePlus(tmpStatistics_divide));
                     break;
-                case "40대 초반 (40 ~ 42)":
+                case "ㄴ 40대 초반 (40 ~ 42)":
                     System.arraycopy(tmpStatistics, 110, tmpStatistics_divide, 0, 10);
                     setChartPartData(imageN, contentKey, getView(), tmpStatistics_divide);
                     break;
-                case "40대 중반 (43 ~ 46)":
+                case "ㄴ 40대 중반 (43 ~ 46)":
                     System.arraycopy(tmpStatistics, 120, tmpStatistics_divide, 0, 10);
                     setChartPartData(imageN, contentKey, getView(), tmpStatistics_divide);
                     break;
-                case "40대 후반 (47 ~ 40)":
+                case "ㄴ 40대 후반 (47 ~ 40)":
                     System.arraycopy(tmpStatistics, 130, tmpStatistics_divide, 0, 10);
                     setChartPartData(imageN, contentKey, getView(), tmpStatistics_divide);
                     break;
@@ -516,15 +516,15 @@ public class PollResultRankingDialog extends DialogFragment {
                     System.arraycopy(tmpStatistics, 140, tmpStatistics_divide, 0, 30);
                     setChartPartData(imageN, contentKey, getView(), ageRangePlus(tmpStatistics_divide));
                     break;
-                case "50대 초반 (50 ~ 52)":
+                case "ㄴ 50대 초반 (50 ~ 52)":
                     System.arraycopy(tmpStatistics, 140, tmpStatistics_divide, 0, 10);
                     setChartPartData(imageN, contentKey, getView(), tmpStatistics_divide);
                     break;
-                case "50대 중반 (53 ~ 56)":
+                case "ㄴ 50대 중반 (53 ~ 56)":
                     System.arraycopy(tmpStatistics, 150, tmpStatistics_divide, 0, 10);
                     setChartPartData(imageN, contentKey, getView(), tmpStatistics_divide);
                     break;
-                case "50대 후반 (57 ~ 59)":
+                case "ㄴ 50대 후반 (57 ~ 59)":
                     System.arraycopy(tmpStatistics, 160, tmpStatistics_divide, 0, 10);
                     setChartPartData(imageN, contentKey, getView(), tmpStatistics_divide);
                     break;
@@ -532,15 +532,15 @@ public class PollResultRankingDialog extends DialogFragment {
                     System.arraycopy(tmpStatistics, 170, tmpStatistics_divide, 0, 30);
                     setChartPartData(imageN, contentKey, getView(), ageRangePlus(tmpStatistics_divide));
                     break;
-                case "60대 초반 (60 ~ 62)":
+                case "ㄴ 60대 초반 (60 ~ 62)":
                     System.arraycopy(tmpStatistics, 170, tmpStatistics_divide, 0, 10);
                     setChartPartData(imageN, contentKey, getView(), tmpStatistics_divide);
                     break;
-                case "60대 중반 (63 ~ 66)":
+                case "ㄴ 60대 중반 (63 ~ 66)":
                     System.arraycopy(tmpStatistics, 180, tmpStatistics_divide, 0, 10);
                     setChartPartData(imageN, contentKey, getView(), tmpStatistics_divide);
                     break;
-                case "60대 후반 (67 ~ 69)":
+                case "ㄴ 60대 후반 (67 ~ 69)":
                     System.arraycopy(tmpStatistics, 190, tmpStatistics_divide, 0, 10);
                     setChartPartData(imageN, contentKey, getView(), tmpStatistics_divide);
                     break;
@@ -548,15 +548,15 @@ public class PollResultRankingDialog extends DialogFragment {
                     System.arraycopy(tmpStatistics, 200, tmpStatistics_divide, 0, 30);
                     setChartPartData(imageN, contentKey, getView(), ageRangePlus(tmpStatistics_divide));
                     break;
-                case "70대 초반 (70 ~ 72)":
+                case "ㄴ 70대 초반 (70 ~ 72)":
                     System.arraycopy(tmpStatistics, 200, tmpStatistics_divide, 0, 10);
                     setChartPartData(imageN, contentKey, getView(), tmpStatistics_divide);
                     break;
-                case "70대 중반 (73 ~ 76)":
+                case "ㄴ 70대 중반 (73 ~ 76)":
                     System.arraycopy(tmpStatistics, 210, tmpStatistics_divide, 0, 10);
                     setChartPartData(imageN, contentKey, getView(), tmpStatistics_divide);
                     break;
-                case "70대 후반 (77 ~ 79)":
+                case "ㄴ 70대 후반 (77 ~ 79)":
                     System.arraycopy(tmpStatistics, 220, tmpStatistics_divide, 0, 10);
                     setChartPartData(imageN, contentKey, getView(), tmpStatistics_divide);
                     break;
@@ -564,15 +564,15 @@ public class PollResultRankingDialog extends DialogFragment {
                     System.arraycopy(tmpStatistics, 230, tmpStatistics_divide, 0, 30);
                     setChartPartData(imageN, contentKey, getView(), ageRangePlus(tmpStatistics_divide));
                     break;
-                case "80대 초반 (80 ~ 82)":
+                case "ㄴ 80대 초반 (80 ~ 82)":
                     System.arraycopy(tmpStatistics, 230, tmpStatistics_divide, 0, 10);
                     setChartPartData(imageN, contentKey, getView(), tmpStatistics_divide);
                     break;
-                case "80대 중반 (83 ~ 86)":
+                case "ㄴ 80대 중반 (83 ~ 86)":
                     System.arraycopy(tmpStatistics, 240, tmpStatistics_divide, 0, 10);
                     setChartPartData(imageN, contentKey, getView(), tmpStatistics_divide);
                     break;
-                case "80대 후반 (87 ~ 89)":
+                case "ㄴ 80대 후반 (87 ~ 89)":
                     System.arraycopy(tmpStatistics, 250, tmpStatistics_divide, 0, 10);
                     setChartPartData(imageN, contentKey, getView(), tmpStatistics_divide);
                     break;
@@ -580,15 +580,15 @@ public class PollResultRankingDialog extends DialogFragment {
                     System.arraycopy(tmpStatistics, 260, tmpStatistics_divide, 0, 30);
                     setChartPartData(imageN, contentKey, getView(), ageRangePlus(tmpStatistics_divide));
                     break;
-                case "90대 초반 (90 ~ 92)":
+                case "ㄴ 90대 초반 (90 ~ 92)":
                     System.arraycopy(tmpStatistics, 260, tmpStatistics_divide, 0, 10);
                     setChartPartData(imageN, contentKey, getView(), tmpStatistics_divide);
                     break;
-                case "90대 중반 (93 ~ 96)":
+                case "ㄴ 90대 중반 (93 ~ 96)":
                     System.arraycopy(tmpStatistics, 270, tmpStatistics_divide, 0, 10);
                     setChartPartData(imageN, contentKey, getView(), tmpStatistics_divide);
                     break;
-                case "90대 후반 (97 ~ 99)":
+                case "ㄴ 90대 후반 (97 ~ 99)":
                     System.arraycopy(tmpStatistics, 280, tmpStatistics_divide, 0, 10);
                     setChartPartData(imageN, contentKey, getView(), tmpStatistics_divide);
                     break;

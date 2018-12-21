@@ -101,7 +101,7 @@ public class SplashActivity extends AppCompatActivity implements GUIDFailDialog.
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             try {
-                                Log.d("lkj current uid", mAuth.getCurrentUser().getUid());
+//                                Log.d("lkj current uid", mAuth.getCurrentUser().getUid());
                                 GUIDAsyncTask guidAsyncTask = new GUIDAsyncTask();
                                 guidAsyncTask.execute();
 
@@ -111,7 +111,7 @@ public class SplashActivity extends AppCompatActivity implements GUIDFailDialog.
 
                         } else {
                             if (!TextUtils.isEmpty(contentKey) && TextUtils.isEmpty(pollMode)) {
-                                Log.d("lkj current uid2", mAuth.getCurrentUser().getUid());
+//                                Log.d("lkj current uid2", mAuth.getCurrentUser().getUid());
                                 GUIDAsyncTask guidAsyncTask = new GUIDAsyncTask();
                                 guidAsyncTask.execute();
                             } else {

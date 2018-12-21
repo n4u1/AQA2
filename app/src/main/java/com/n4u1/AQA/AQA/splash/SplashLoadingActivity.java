@@ -226,8 +226,8 @@ public class SplashLoadingActivity extends AppCompatActivity
                                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                                     for (int i = 0; i < dataSnapshot.getChildrenCount(); i++) {
                                         Map<String, Boolean> adminMap = (Map<String, Boolean>) dataSnapshot.getValue();
-                                        Log.d("lkj adminId", adminMap.keySet().toString());
-                                        Log.d("lkj current userId", userId);
+//                                        Log.d("lkj adminId", adminMap.keySet().toString());
+//                                        Log.d("lkj current userId", userId);
                                         if (adminMap.keySet().toString().contains(userId)) {
                                             SharedPreferences pref = getSharedPreferences("com.n4u1.AQA", MODE_PRIVATE);
                                             SharedPreferences.Editor editor = pref.edit();
@@ -250,8 +250,8 @@ public class SplashLoadingActivity extends AppCompatActivity
                             Toast.makeText(getApplicationContext(), "로그인 실패", Toast.LENGTH_LONG).show();
                             finish();
                         }
-                        Log.d("lkj flag1", String.valueOf(adIdFlag_1));
-                        Log.d("lkj flag2", String.valueOf(adIdFlag_2));
+//                        Log.d("lkj flag1", String.valueOf(adIdFlag_1));
+//                        Log.d("lkj flag2", String.valueOf(adIdFlag_2));
                     }
 
                     @Override
@@ -277,8 +277,8 @@ public class SplashLoadingActivity extends AppCompatActivity
                     Map<String, Object> userMap = (Map<String, Object>) dataSnapshot.getValue();
                     long lastDate = Long.parseLong(String.valueOf(userMap.get("lastGuidDate")));
                     long currentDate = getCurrentDate();
-                    Log.d("lkj lastDate", String.valueOf(lastDate));
-                    Log.d("lkj currentDate", String.valueOf(currentDate));
+//                    Log.d("lkj lastDate", String.valueOf(lastDate));
+//                    Log.d("lkj currentDate", String.valueOf(currentDate));
                     if (lastDate + 86400000 < currentDate) {
 
                         DatabaseReference tmpRef = FirebaseDatabase.getInstance().getReference();
@@ -300,8 +300,8 @@ public class SplashLoadingActivity extends AppCompatActivity
                     } else {
                         long mustDate = 86400000 - (currentDate - lastDate);
                         String mustTime = changeDate(mustDate);
-                        Log.d("lkj must date", String.valueOf(mustDate));
-                        Log.d("lkj must date", mustTime);
+//                        Log.d("lkj must date", String.valueOf(mustDate));
+//                        Log.d("lkj must date", mustTime);
                         DeviceInitFailDialog deviceInitFailDialog = DeviceInitFailDialog.newInstance(mustTime);
                         deviceInitFailDialog.show(getSupportFragmentManager(), "deviceInitFailDialog");
                     }
@@ -335,8 +335,8 @@ public class SplashLoadingActivity extends AppCompatActivity
                     Map<String, Object> userMap = (Map<String, Object>) dataSnapshot.getValue();
                     long lastDate = Long.parseLong(String.valueOf(userMap.get("lastGuidDate")));
                     long currentDate = getCurrentDate();
-                    Log.d("lkj lastDate", String.valueOf(lastDate));
-                    Log.d("lkj currentDate", String.valueOf(currentDate));
+//                    Log.d("lkj lastDate", String.valueOf(lastDate));
+//                    Log.d("lkj currentDate", String.valueOf(currentDate));
                     if (lastDate + 86400000 < currentDate) {
 
 
@@ -356,8 +356,8 @@ public class SplashLoadingActivity extends AppCompatActivity
                     } else {
                         long mustDate = 86400000 - (currentDate - lastDate);
                         String mustTime = changeDate(mustDate);
-                        Log.d("lkj must date", String.valueOf(mustDate));
-                        Log.d("lkj must date", mustTime);
+//                        Log.d("lkj must date", String.valueOf(mustDate));
+//                        Log.d("lkj must date", mustTime);
 
                         DeviceInitFailDialog deviceInitFailDialog = DeviceInitFailDialog.newInstance(mustTime);
                         deviceInitFailDialog.show(getSupportFragmentManager(), "deviceInitFailDialog");
