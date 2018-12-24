@@ -130,7 +130,7 @@ public class HomeActivity extends AppCompatActivity implements SwipeRefreshLayou
         fadingTextView = findViewById(R.id.fadingTextView);
         firebaseDatabase = FirebaseDatabase.getInstance();
         auth = FirebaseAuth.getInstance();
-        MobileAds.initialize(this, "ca-app-pub-1854873514128645~3190074937");
+        MobileAds.initialize(this, "ca-app-pub-1854873514128645/2926654312");
 
 //        SlideInUpAnimator animatorUp = new SlideInUpAnimator(new OvershootInterpolator(1f));
         SlideInDownAnimator animatorDown = new SlideInDownAnimator(new OvershootInterpolator(1f));
@@ -176,7 +176,7 @@ public class HomeActivity extends AppCompatActivity implements SwipeRefreshLayou
 
         //광고넣기
         AdRequest adRequest = new AdRequest.Builder()
-                .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)        // All emulators
+//                .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)        // All emulators
                 .addTestDevice("C39C4F095E193D0C5E7BBCB91B89B469")  // TestDeviceId
                 .build();
         adView.loadAd(adRequest);

@@ -239,14 +239,12 @@ public class LoginActivity extends AppCompatActivity
         findViewById(R.id.buttonTest).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                Intent intent = new Intent(LoginActivity.this, TestActivity.class);
-//                startActivity(intent);
+                Intent intent = new Intent(LoginActivity.this, TestActivity.class);
+                startActivity(intent);
 
 //                Log.d("lkj currentDate", String.valueOf(getCurrentDate()));
 
 
-                GUIDFailDialog guidFailDialog = new GUIDFailDialog();
-                guidFailDialog.show(getSupportFragmentManager(), "guidFailDialog");
 
             }
         });

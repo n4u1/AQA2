@@ -7,16 +7,26 @@
     android:orientation="vertical"
     tools:context=".views.TestActivity">
 
-    <Button
-        android:id="@+id/btn_share_dynamic_link"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Share(Dyanamic Link)" />
 
-    <Button
-        android:id="@+id/btn_share_invite"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Share(Invite)" />
+    <TextView
+        android:text="APP Version"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    <EditText
+        android:id="@+id/editText_appVersion"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+
+
+    <TextView
+        android:layout_marginTop="24dp"
+        android:text="PlayStore Version"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    <EditText
+        android:id="@+id/editText_playStoreVersion"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 
 </LinearLayout>

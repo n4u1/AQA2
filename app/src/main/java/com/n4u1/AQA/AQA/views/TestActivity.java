@@ -1,14 +1,83 @@
 package com.n4u1.AQA.AQA.views;
 
+import android.content.pm.PackageManager;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.widget.EditText;
+import android.widget.Toast;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
+import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
+import com.n4u1.AQA.AQA.BuildConfig;
 import com.n4u1.AQA.AQA.R;
+import com.n4u1.AQA.AQA.util.MarketVersionChecker;
 
 public class TestActivity extends AppCompatActivity {
+    private FirebaseRemoteConfig mFirebaseRemoteConfig;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_test);
+
+        final EditText editText_appVersion = findViewById(R.id.editText_appVersion);
+        final EditText editText_playStoreVersion = findViewById(R.id.editText_playStoreVersion);
+
+        mFirebaseRemoteConfig = FirebaseRemoteConfig.getInstance();
+
+        FirebaseRemoteConfigSettings configSettings = new FirebaseRemoteConfigSettings.Builder()
+                .setDeveloperModeEnabled(BuildConfig.DEBUG)
+                .build();
+        mFirebaseRemoteConfig.setConfigSettings(configSettings);
+
+
+        mFirebaseRemoteConfig.setDefaults(R.xml.remote_config_defaults);
+
+// cacheExpirationSeconds is set to cacheExpiration here, indicating the next fetch request
+// will use fetch data from the Remote Config service, rather than cached parameter values,
+// if cached parameter values are more than cacheExpiration seconds old.
+// See Best Practices in the README for more information.
+        mFirebaseRemoteConfig.fetch(0)
+                .addOnCompleteListener(this, new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            String device_version = null;
+                            try {
+                                device_version = getPackageManager().getPackageInfo(getPackageName(), 0).versionName;
+                            } catch (PackageManager.NameNotFoundException e) {
+                                e.printStackTrace();
+                            }
+                            // After config data is successfully fetched, it must be activated before newly fetched
+                            // values are returned.
+                            mFirebaseRemoteConfig.activateFetched();
+                            String version = mFirebaseRemoteConfig.getString("aqa_version");
+                            editText_playStoreVersion.setText(version);
+                            editText_appVersion.setText(device_version);
+                        } else {
+                            Toast.makeText(TestActivity.this, "Fetch Failed",
+                                    Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+
+
+
+
+
+//        String store_version = MarketVersionChecker.getMarketVersion(getPackageName());
+//        String device_version;
+//        try {
+//            device_version = getPackageManager().getPackageInfo(getPackageName(), 0).versionName;
+//            editText_appVersion.setText(device_version);
+//        } catch (PackageManager.NameNotFoundException e) {
+//            e.printStackTrace();
+//        }
+//        editText_playStoreVersion.setText(store_version);
+
 
 
     }

@@ -197,7 +197,7 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
 
         Log.d("lkj noti", contentKey);
 
-        MobileAds.initialize(this, "ca-app-pub-1854873514128645~3190074937");
+        MobileAds.initialize(this, "ca-app-pub-1854873514128645/7604265923");
         adView = findViewById(R.id.adView);
         mDatabaseReference = FirebaseDatabase.getInstance().getReference("user_contents").child(contentKey);
         mDatabaseReferenceInitAlarm = FirebaseDatabase.getInstance().getReference("users");
@@ -355,7 +355,7 @@ public class PollSingleActivity extends AppCompatActivity implements View.OnClic
 
         //광고넣기
         AdRequest adRequest = new AdRequest.Builder()
-                .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)        // All emulators
+//                .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)        // All emulators
                 .addTestDevice("C39C4F095E193D0C5E7BBCB91B89B469")  // TestDeviceId
                 .build();
         adView.loadAd(adRequest);
