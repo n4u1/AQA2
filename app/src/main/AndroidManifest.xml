@@ -104,7 +104,6 @@
         <activity android:name=".splash.SplashCreateUserActivity" />
         <activity android:name=".splash.SplashGuidActivity" />
         <activity android:name=".splash.SplashLoadingActivity" />
-        <activity android:name=".admin.AdminUserActivity" />
         <activity android:name=".admin.AdminContentsActivity" />
         <activity android:name=".admin.AdminEtcActivity" />
         <activity android:name=".views.LoginActivity" />

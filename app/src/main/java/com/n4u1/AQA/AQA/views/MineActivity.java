@@ -31,7 +31,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.n4u1.AQA.AQA.admin.AdminContentsActivity;
 import com.n4u1.AQA.AQA.admin.AdminEtcActivity;
-import com.n4u1.AQA.AQA.admin.AdminUserActivity;
 import com.n4u1.AQA.AQA.dialog.FindEmailDialog;
 import com.n4u1.AQA.AQA.dialog.SignOutDialog;
 import com.n4u1.AQA.AQA.dialog.LogOutDialog;
@@ -139,13 +138,7 @@ public class MineActivity extends AppCompatActivity implements LogOutDialog.LogO
 
             }
         });
-        mineActivity_linearLayout_adminUser.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MineActivity.this, AdminUserActivity.class);
-                startActivity(intent);
-            }
-        });
+
         mineActivity_linearLayout_adminContents.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

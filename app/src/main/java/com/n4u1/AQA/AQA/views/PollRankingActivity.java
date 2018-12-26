@@ -521,9 +521,9 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
                 if (user.isAnonymous()) {
                     startAnonymousPollResult(contentKey);
 //                        issueContents 테스트 디비 입력용
-//                        long issueDate = getCurrentDate();
-//                        issueMap.put(String.valueOf(issueDate), contentKey);
-//                        firebaseDatabase.getReference().child("issueContents").child(String.valueOf(issueDate)).setValue(issueMap);
+                        long issueDate = getCurrentDate();
+                        issueMap.put(String.valueOf(issueDate), contentKey);
+                        firebaseDatabase.getReference().child("issueContents").child(String.valueOf(issueDate)).setValue(issueMap);
                 } else {
                     mDatabaseReferencePicker.child(auth.getCurrentUser().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override

@@ -60,7 +60,7 @@
             android:layout_below="@+id/suggestActivity_linearLayout_main"
             android:id="@+id/suggestActivity_recyclerView"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="wrap_content" />
 
 
         <android.support.design.widget.FloatingActionButton

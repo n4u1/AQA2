@@ -89,6 +89,8 @@ public class ContentDTO {
         result.put("replyCount", replyCount);
         result.put("alarm", alarm);
         result.put("statistics_code", statistics_code);
+        result.put("contentId", contentId);
+        result.put("contentKey", contentKey);
 
 //        result.put("contentPicker", contentPicker);
 

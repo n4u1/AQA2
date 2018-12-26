@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".admin.AdminUserActivity">
+    tools:context=".admin.AdminContentsActivity">
 
     <EditText
         android:id="@+id/admin_editText_title"
@@ -46,22 +46,22 @@
         android:layout_width="100dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="8dp"
         android:text="검색"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toEndOf="@+id/admin_editText_email"
-        app:layout_constraintTop_toTopOf="@+id/admin_editText_id" />
+        app:layout_constraintStart_toEndOf="@+id/admin_editText_id"
+        app:layout_constraintTop_toBottomOf="@+id/admin_editText_title" />
 
     <TextView
-        android:id="@+id/admin_textView_email"
+        android:id="@+id/admin_textView_contentKey"
         android:layout_width="348dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="24dp"
         android:layout_marginEnd="8dp"
-        android:text="EMAIL"
+        android:text="contentKey"
         android:textSize="24dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.4"
@@ -80,7 +80,7 @@
         app:layout_constraintEnd_toStartOf="@+id/admin_textView_gender"
         app:layout_constraintHorizontal_bias="0.363"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/admin_textView_email" />
+        app:layout_constraintTop_toBottomOf="@+id/admin_textView_contentKey" />
 
 
     <TextView
@@ -92,7 +92,7 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/admin_textView_email" />
+        app:layout_constraintTop_toBottomOf="@+id/admin_textView_contentKey" />
 
 
     <TextView

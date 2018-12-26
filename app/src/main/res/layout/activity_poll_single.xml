@@ -195,7 +195,7 @@
                     android:id="@+id/pollActivity_textView_contentType"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="10"
+                    android:layout_weight="11"
                     android:textColor="#636363"
                     android:textSize="14dp" />
             </LinearLayout>

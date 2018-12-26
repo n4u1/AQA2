@@ -611,7 +611,7 @@ public class FileChoiceActivity extends AppCompatActivity
                 contentDTO.pollMode = userInputContents.get(2);
             }
             contentDTO.uploadDate = currentDate_;
-            contentDTO.contentId = getContentId(currentDate);
+            contentDTO.contentId = getContentId();
             contentDTO.contentKey = key;
             contentDTO.title = userInputContents.get(0);
             contentDTO.contentType = userInputContents.get(1);
@@ -900,7 +900,7 @@ public class FileChoiceActivity extends AppCompatActivity
                 contentDTO.pollMode = userInputContents.get(2);
             }
             contentDTO.uploadDate = currentDate_;
-            contentDTO.contentId = getContentId(currentDate);
+            contentDTO.contentId = getContentId();
             contentDTO.contentKey = key;
             contentDTO.title = userInputContents.get(0);
             contentDTO.contentType = userInputContents.get(1);
@@ -1203,8 +1203,15 @@ public class FileChoiceActivity extends AppCompatActivity
         return currentDate;
     }
 
-    public String getContentId(String date) {
-        return date.replaceAll("[^0-9]", "");
+    public String getContentId() {
+        TimeZone timeZone;
+        timeZone = TimeZone.getTimeZone("Asia/Seoul");
+        Date date_ = new Date();
+        SimpleDateFormat df = new SimpleDateFormat("yyyyMMdd-HHmmssSS", Locale.KOREAN);
+        df.setTimeZone(timeZone);
+        String currentDate = df.format(date_);
+
+        return currentDate;
     }
 
     @Override
