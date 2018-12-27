@@ -357,7 +357,7 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
         //광고넣기
         AdRequest adRequest = new AdRequest.Builder()
 //                .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)        // All emulators
-                .addTestDevice("C39C4F095E193D0C5E7BBCB91B89B469")  // TestDeviceId
+//                .addTestDevice("C39C4F095E193D0C5E7BBCB91B89B469")  // TestDeviceId
                 .build();
         adView.loadAd(adRequest);
         adView.setAdListener(new AdListener(){
@@ -372,7 +372,7 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
             }
         });
 
-        
+
         //알람설정 클릭
         pollActivity_imageView_alarm.setOnClickListener(new View.OnClickListener() {
             @Override
