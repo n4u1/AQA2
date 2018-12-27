@@ -372,9 +372,7 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
             }
         });
 
-
-
-
+        
         //알람설정 클릭
         pollActivity_imageView_alarm.setOnClickListener(new View.OnClickListener() {
             @Override
