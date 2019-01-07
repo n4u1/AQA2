@@ -377,8 +377,6 @@ public class PollRankingActivity extends AppCompatActivity implements View.OnCli
         pollActivity_imageView_alarm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-
                 if (data != null) {
                     contentKey = data.getQueryParameter("contentKey");
                 } else {
