@@ -42,7 +42,7 @@ import java.util.TimeZone;
 
 public class SplashLoadingActivity extends AppCompatActivity
         implements GUIDFailDialog.GUIDFailDialogListener, GUIDInitDialog.GUIDInitDialogListener
-, DeviceInitFailDialog.DeviceInitFailDialogListener {
+        , DeviceInitFailDialog.DeviceInitFailDialogListener {
 
     String email, password;
     FirebaseAuth mAuth;
@@ -68,8 +68,36 @@ public class SplashLoadingActivity extends AppCompatActivity
                         if (task.isSuccessful()) {
                             try {
                                 Log.d("lkj current uid", mAuth.getCurrentUser().getUid());
-                                GUIDAsyncTask guidAsyncTask = new GUIDAsyncTask();
-                                guidAsyncTask.execute();
+
+                                DatabaseReference mDatabaseRefAdmin;
+                                mDatabaseRefAdmin = FirebaseDatabase.getInstance().getReference();
+                                mDatabaseRefAdmin.child("adminAuth").child("2").addListenerForSingleValueEvent(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                        Map<String, Boolean> adminMap = (Map<String, Boolean>) dataSnapshot.getValue();
+//                                        Log.d("lkj adminId", adminMap.keySet().toString());
+//                                        Log.d("lkj current userId", userId);
+                                        if (adminMap.keySet().toString().contains(mAuth.getCurrentUser().getUid())) {
+                                            SharedPreferences pref = getSharedPreferences("com.n4u1.AQA", MODE_PRIVATE);
+                                            SharedPreferences.Editor editor = pref.edit();
+                                            editor.putString("com.n4u1.AQA.fireBaseUserEmail", email);
+                                            editor.putString("com.n4u1.AQA.fireBaseUserPassword", password);
+                                            editor.commit();
+                                            Handler hd = new Handler();
+                                            hd.postDelayed(new splashhandlerHome(), 100);
+                                            finish();
+                                        } else {
+                                            GUIDAsyncTask guidAsyncTask = new GUIDAsyncTask();
+                                            guidAsyncTask.execute();
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                    }
+                                });
+
 
                             } catch (Exception e) {
                                 e.printStackTrace();
@@ -138,6 +166,7 @@ public class SplashLoadingActivity extends AppCompatActivity
                 toast.show();
             } else {
                 Log.d("lkj test1", "test1");
+
                 DatabaseReference mDatabaseRef;
                 mDatabaseRef = FirebaseDatabase.getInstance().getReference();
                 mDatabaseRef.child("users").addListenerForSingleValueEvent(new ValueEventListener() {
